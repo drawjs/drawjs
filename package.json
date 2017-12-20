@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.2.3",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "start": "gulp",
+    "test": "jasmine"
+  },
+  "name": "ts_draw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "browser-sync": "^2.19.0",
+    "jasmine": "^2.8.0",
+    "rimraf": "^2.6.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
