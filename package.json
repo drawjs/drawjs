@@ -5,7 +5,7 @@
     "typescript": "^2.6.2"
   },
   "scripts": {
-    "start": "gulp",
+    "start": "webpack --watch",
     "test": "jasmine"
   },
   "name": "ts_draw",
@@ -14,7 +14,9 @@
   "dependencies": {
     "browser-sync": "^2.19.0",
     "jasmine": "^2.8.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "ts-loader": "^3.2.0",
+    "webpack": "^3.10.0"
   },
   "keywords": [],
   "author": "",
