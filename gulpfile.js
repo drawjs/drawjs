@@ -4,6 +4,7 @@ const ts = require( "gulp-typescript" )
 const tsProject = ts.createProject( "tsconfig.json" )
 const rimraf = require( "rimraf" )
 const browserSync = require( 'browser-sync' )
+const sourcemaps = require( 'gulp-sourcemaps' )
 
 const distPathStr = 'dist'
 const distPath = PATH.resolve( __dirname, 'dist' )
@@ -13,7 +14,7 @@ const srcOtherFilesGlobs = [
 ]
 const watchingSrcGlob = 'src/**/*'
 const serverPath = distPath
-const shouldRebuildDist = false
+const shouldRebuildDist = true
 
 let watcher = undefined
 let bs = undefined
@@ -28,8 +29,15 @@ function deleteDist() {
 
 function asyncMainTs() {
 	return tsProject.src()
+		.pipe( sourcemaps.init() )
 		.pipe( tsProject() )
-		.js.pipe( gulp.dest( distPathStr ) )
+		.js
+		.pipe( sourcemaps.write( '.', {
+			sourceRoot: function( file ) {
+					return file.cwd + '/src'
+			}
+		} ) )
+		.pipe( gulp.dest( distPathStr ) )
 }
 
 function asyncMainOther() {

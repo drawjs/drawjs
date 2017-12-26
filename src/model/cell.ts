@@ -1,6 +1,11 @@
-// import { generateUniqueId } from '~/src/util/index'
+import { generateUniqueId } from '../util/index'
 
-class Cell {
+
+export default class Cell {
+	private id: string
+	public ctx: CanvasRenderingContext2D
+	public draggable: boolean
+
 	constructor(
 		{
 			canvas
@@ -8,7 +13,11 @@ class Cell {
 			canvas: HTMLCanvasElement
 		}
 	) {
-		// console.log( generateUniqueId() )
+		this.id = generateUniqueId()
+
+		this.ctx = canvas.getContext( '2d' )
+
+		this.draggable = true
 	}
 
 }

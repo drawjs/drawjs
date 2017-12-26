@@ -6,14 +6,19 @@
   },
   "scripts": {
     "start": "webpack --watch",
-    "test": "jasmine"
+    "server": "node server.js"
   },
   "name": "ts_draw",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
     "browser-sync": "^2.19.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.3.1",
+    "gulp-sourcemaps": "^2.6.2",
+    "gulp-tsb": "^2.0.5",
     "jasmine": "^2.8.0",
+    "lodash": "^4.17.4",
     "rimraf": "^2.6.2",
     "ts-loader": "^3.2.0",
     "webpack": "^3.10.0"
