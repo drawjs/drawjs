@@ -1,7 +1,7 @@
 const browserSync = require( 'browser-sync' )
 
 const bs = browserSync.create()
-const serverPath = 'dist'
+const serverPath = __dirname
 
 const serverconfig = {
 	server: {
@@ -9,7 +9,7 @@ const serverconfig = {
 		directory: true,
 	},
 	files: [
-		`${serverPath}/**`
+		`${serverPath}/dist/**`
 	],
 	open: false,
 }

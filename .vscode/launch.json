@@ -5,13 +5,15 @@
     "version": "0.2.0",
     "configurations": [
 		{
-			"type": "node",
+			"type": "chrome",
 			"request": "launch",
-			"name": "Gulp task",
-			"program": "${workspaceFolder}/node_modules/gulp/bin/gulp.js",
-			"args": [
-				"default"
-			]
+			"name": "Launch Chrome ",
+			"url": "http://192.168.20.36:3000/dist/__test__/shape/index.html",
+			"pathMapping": {
+				"/": "${workspaceFolder}"
+				// "/${workspaceFolder}": "${workspaceFolder}/dist"
+			}
+			// "webRoot": "${workspaceFolder}/dist"
 		}
     ]
 }
