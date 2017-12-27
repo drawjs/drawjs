@@ -4,11 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
 	entry: {
-		'draw': './src/index.ts',
+		'draw.js': './src/index.ts',
 		// 'cell': './src/model/cell.ts'
+
+		// for __test__
+		'__test__/rect/index.js': './src/__test__/rect/index.js'
 	},
 	output: {
-		filename: '[name].js',
+		filename: '[name]',
 		path: path.resolve( __dirname, 'dist' )
 	},
 	devtool: 'source-map',

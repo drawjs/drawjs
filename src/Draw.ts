@@ -29,7 +29,6 @@ export default class Draw {
 
 		const renderElement = element => {
 			element.render( this.ctx )
-			this.ctx.save()
 		}
 		this.store.map( renderElement )
 	}

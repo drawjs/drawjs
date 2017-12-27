@@ -32,8 +32,10 @@ export default class Rect {
 	}
 
 	render( ctx ) {
+		ctx.save()
 		ctx.fillStyle = this.fill
 		ctx.fillRect(this.left, this.top, this.width, this.height)
 		ctx.rotate((Math.PI / 180) * this.angle)
+		ctx.restore()
 	}
 }
