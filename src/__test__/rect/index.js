@@ -13,8 +13,8 @@ const rect = new draw.Rect( {
 draw.add( rect )
 
 draw.add( new draw.Rect( {
-	top: 200,
-	left: 200,
+	top: 150,
+	left: 150,
 	fill: 'blue',
 	width: 100,
 	height: 100,
@@ -22,8 +22,3 @@ draw.add( new draw.Rect( {
 } ) )
 
 draw.render()
-
-const a = 123
-setInterval( () => {
-	console.log( a )
-}, 1000 )

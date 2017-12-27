@@ -1,27 +1,43 @@
-let isDragging: boolean= false
+import  'lib/event.js'
+import { DRAW_INSTANCE_NAME } from 'store/constant'
+
 let drawInstance
+
 
 export default function( draw ) {
 	drawInstance = draw
 
-	draw.canvas.addEventListener( 'mousedown', beginDrag, false )
-	draw.canvas.addEventListener( 'mousemove', tryDrag, false )
-	draw.canvas.addEventListener( 'mouseup', endDrag, false )
-	draw.canvas.addEventListener( 'mouseout', endDrag, false )
+	eventjs.add( drawInstance.canvas, 'drag', onDrag);
 }
 
-function beginDrag( e ) {
-	isDragging = true
-	console.log( 'startDrag' )
-}
+function onDrag( event, self ) {
+	const topElement = getTopElementWhenClick( event )
 
-function tryDrag() {
-	if ( drawInstance.draggable && isDragging ) {
-		console.log( 'dragging' )
+	if ( topElement ) {
+		dragElement( topElement, event )
 	}
 }
 
-function endDrag() {
-	isDragging = false
-	console.log( 'endDrag' )
+
+function getTopElementWhenClick( event ) {
+	const elementsContainPoint = getElementsContainPoint( event )
+
+	if ( elementsContainPoint.length > 0 ) {
+		return elementsContainPoint[ elementsContainPoint.length - 1 ]
+	}
+
+	return null
+}
+
+function getElementsContainPoint( event ) {
+	const x = event.offsetX
+	const y = event.offsetY
+	const isContainPoint = element => element.containPoint( x, y )
+	return drawInstance.store.filter( isContainPoint )
+}
+
+function dragElement( element, event ) {
+	element.set( 'x', event.x )
+	element.set( 'y', event.y )
+	element[ DRAW_INSTANCE_NAME ].render()
 }

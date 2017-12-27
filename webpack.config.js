@@ -29,6 +29,8 @@ module.exports = {
 			model: path.resolve( __dirname, './src/model' ),
 			shape: path.resolve( __dirname, './src/shape' ),
 			util: path.resolve( __dirname, './src/util' ),
+			store: path.resolve( __dirname, './src/store' ),
+			lib: path.resolve( __dirname, './src/lib' ),
 		},
 		extensions: [
 			'.tsx',

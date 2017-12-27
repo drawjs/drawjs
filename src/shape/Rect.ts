@@ -1,4 +1,6 @@
-export default class Rect {
+import Shape from './Shape'
+
+export default class Rect extends Shape{
 	public top: number
 	public left: number
 	public width: number
@@ -23,6 +25,8 @@ export default class Rect {
 			angle: number,
 		}
 	) {
+		super()
+
 		this.top = top
 		this.left = left
 		this.fill = fill
@@ -31,11 +35,33 @@ export default class Rect {
 		this.angle = angle
 	}
 
+	public set( field: string, value: any ) {
+		super.set( field, value )
+
+		switch( field ) {
+			case 'x':
+				this.left = value;
+				break
+			case 'y':
+				this.top = value
+				break
+		}
+	}
+
 	render( ctx ) {
 		ctx.save()
 		ctx.fillStyle = this.fill
 		ctx.fillRect(this.left, this.top, this.width, this.height)
 		ctx.rotate((Math.PI / 180) * this.angle)
 		ctx.restore()
+	}
+
+	public containPoint( x, y ) {
+		return (
+			x >= this.left &&
+			x <= this.left + this.width &&
+			y >= this.top &&
+			y <= this.top + this.height
+		)
 	}
 }

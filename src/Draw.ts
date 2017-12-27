@@ -1,5 +1,6 @@
 import { Rect } from 'shape/index'
-
+import { dragAndDrop } from 'util/index'
+import { DRAW_INSTANCE_NAME } from 'store/constant'
 
 export default class Draw {
 	private canvas: HTMLCanvasElement
@@ -11,7 +12,18 @@ export default class Draw {
 		this.ctx = canvas.getContext( '2d' )
 
 		this.addChildrenClass( 'Rect', Rect )
+
+		this.initialize()
 	}
+
+	private initialize() {
+		this.bindEvents()
+	}
+
+	bindEvents() {
+		dragAndDrop( this )
+	}
+
 
 	private addChildrenClass( name:string, value: any ) {
 		this[ name ] = value
@@ -19,6 +31,11 @@ export default class Draw {
 
 	add( element ) {
 		this.store.push( element )
+		this.addDrawToElement( element )
+	}
+
+	addDrawToElement( element ) {
+		element[ DRAW_INSTANCE_NAME ] = this
 	}
 
 	clearEntireCanvas() {
