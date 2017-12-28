@@ -6,7 +6,8 @@
   },
   "scripts": {
     "start": "webpack --watch",
-    "server": "node server.js"
+	"server": "node server.js",
+	"test": "jasmine"
   },
   "name": "ts_draw",
   "version": "1.0.0",

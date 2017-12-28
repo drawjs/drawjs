@@ -50,7 +50,7 @@ function getElementsContainPoint( event: any, eventInfo:any = {} ) {
 	const x = eventInfo.x
 	const y = eventInfo.y
 	const isContainPoint = element => element.containPoint( x, y )
-	return drawInstance.store.filter( isContainPoint )
+	return drawInstance.storeCurrentElements.filter( isContainPoint )
 }
 
 

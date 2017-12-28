@@ -31,6 +31,8 @@ module.exports = {
 			util: path.resolve( __dirname, './src/util' ),
 			store: path.resolve( __dirname, './src/store' ),
 			lib: path.resolve( __dirname, './src/lib' ),
+			interface: path.resolve( __dirname, './src/interface' ),
+			interaction: path.resolve( __dirname, './src/interaction' ),
 		},
 		extensions: [
 			'.tsx',

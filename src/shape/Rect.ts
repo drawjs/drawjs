@@ -42,10 +42,6 @@ export default class Rect extends Shape{
 		this.draggable = true
 	}
 
-	public set( field: string, value: any ) {
-		super.set( field, value )
-	}
-
 	render( ctx ) {
 		ctx.save()
 		ctx.fillStyle = this.fill

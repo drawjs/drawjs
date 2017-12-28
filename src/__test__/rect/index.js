@@ -6,19 +6,21 @@ const rect = new draw.Rect( {
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 100,
+	angle: 0,
 } )
 
 
-draw.add( rect )
+draw.addElement( rect )
 
-draw.add( new draw.Rect( {
+draw.addElement( new draw.Rect( {
 	top: 150,
 	left: 150,
 	fill: 'blue',
 	width: 100,
 	height: 100,
-	angle: 10,
+	angle: 0,
 } ) )
 
 draw.render()
+
+draw.exportData()
