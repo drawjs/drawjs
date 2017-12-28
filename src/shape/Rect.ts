@@ -1,20 +1,18 @@
 import Shape from './Shape'
 
 export default class Rect extends Shape{
-	public top: number
-	public left: number
-	public width: number
-	public height: number
-	public fill: string
-	public angle: number
 	constructor(
 		{
-			top = 0,
-			left = 0,
-			width = 100,
-			height = 100,
-			fill = 'black',
-			angle = 0,
+			top,
+			left,
+			width,
+			height,
+			fill,
+			angle,
+			draggable = false,
+			onDragStart,
+			onDragging,
+			onDragStop,
 		}:
 		{
 			top: number,
@@ -23,29 +21,29 @@ export default class Rect extends Shape{
 			height: number,
 			fill: string,
 			angle: number,
+			draggable: boolean,
+			onDragStart: Function,
+			onDragging: Function,
+			onDragStop: Function,
 		}
 	) {
-		super()
-
-		this.top = top
-		this.left = left
-		this.fill = fill
-		this.width = width
-		this.height = height
-		this.angle = angle
+		super( {
+			top,
+			left,
+			width,
+			height,
+			fill,
+			angle,
+			draggable,
+			onDragStart,
+			onDragging,
+			onDragStop,
+		} )
+		this.draggable = true
 	}
 
 	public set( field: string, value: any ) {
 		super.set( field, value )
-
-		switch( field ) {
-			case 'x':
-				this.left = value;
-				break
-			case 'y':
-				this.top = value
-				break
-		}
 	}
 
 	render( ctx ) {

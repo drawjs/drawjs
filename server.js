@@ -14,4 +14,15 @@ const serverconfig = {
 	open: false,
 }
 
-bs.init( serverconfig )
+
+function init() {
+	try {
+		bs.init( serverconfig )
+	} catch( e ) {
+		init()
+	}
+}
+
+init()
+
+
