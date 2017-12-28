@@ -18,7 +18,7 @@ draw.add( new draw.Rect( {
 	fill: 'blue',
 	width: 100,
 	height: 100,
-	angle: 100,
+	angle: 10,
 } ) )
 
 draw.render()
