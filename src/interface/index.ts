@@ -3,7 +3,7 @@ import { Cell } from 'model/index'
 export interface DrawStore {
 	activePanelId: string
 	panels: DrawStorePanel[]
-	setting?: any
+	// setting?: any
 }
 
 export interface DrawStorePanel {
@@ -13,7 +13,7 @@ export interface DrawStorePanel {
 }
 
 export interface DrawStoreElement {
-	__instance__: Cell,
+	__instance__?: Cell,
 	id: string,
 	type: string,
 	top: number,

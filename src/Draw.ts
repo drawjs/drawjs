@@ -1,6 +1,7 @@
 import * as _ from 'lodash'
 
 import { Rect } from 'shape/index'
+import { Cell } from 'model/index'
 import { dragAndDrop } from 'interaction/index'
 import {
 	DRAW_INSTANCE_NAME,
@@ -75,6 +76,32 @@ export default class Draw {
 		return this.store.panels
 	}
 
+	get __storeIgnoreInstance__(): interfaces.DrawStore {
+		let store:interfaces.DrawStore = _.cloneDeep( this.store )
+
+		store.panels.map( mapPanelElements )
+
+		function mapPanelElements( panel, panelIndex ) {
+
+			panel.elements.map( getDelete__Instance__( panelIndex ) )
+		}
+
+		function getDelete__Instance__( panelIndex ) {
+			return ( element, elementIndex ) => {
+				delete store.panels[ panelIndex ].elements[ elementIndex ].__instance__
+			}
+		}
+
+		return store
+	}
+
+	get __storeActiveElementsInstances__(): Cell[] {
+		function get__instance__( element ) {
+			return element.__instance__
+		}
+		return this.storeActiveElements.map( get__instance__ )
+	}
+
 	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas
 		this.ctx = canvas.getContext( '2d' )
@@ -86,17 +113,17 @@ export default class Draw {
 
 	/****** initialization and render ******/
 	private initialize() {
-		// this.bindEvents()
+		this.bindEvents()
 		this.dispatch( a.MODIFY_ACTIVE_PANEL_ID, this.storeActivePanelId )
 	}
 
 	render() {
 		this.clearEntireCanvas()
 
-		// const renderElement = element => {
-		// 	element.render( this.ctx )
-		// }
-		// this.storeActiveElements.map( renderElement )
+		const renderElement = element => {
+			element.__instance__.render( this.ctx )
+		}
+		this.storeActiveElements.map( renderElement )
 	}
 	/****** initialization and render ******/
 
@@ -123,7 +150,11 @@ export default class Draw {
 			},
 
 			[ a.ADD_ELEMENT ]: (
-				{
+				cellInstance,
+				panelId ?: string
+			): void => {
+				const {
+					__instance__,
 					type,
 					top,
 					left,
@@ -133,6 +164,7 @@ export default class Draw {
 					angle,
 					draggable
 				}: {
+					__instance__: Cell
 					type: string,
 					top: number,
 					left: number,
@@ -141,10 +173,9 @@ export default class Draw {
 					fill: string,
 					angle: number,
 					draggable: boolean
-				},
-				panelId ?: string
-			): void => {
+				} = cellInstance
 				const element = {
+					__instance__: cellInstance,
 					id: this.generateUniqueId(),
 					type,
 					top,
@@ -193,15 +224,25 @@ export default class Draw {
 	}
 
 	private bindEvents() {
-		// dragAndDrop( this )
+		dragAndDrop( this )
 	}
 
 	private clearEntireCanvas() {
 		this.ctx.clearRect( 0, 0, this.canvas.width, this.canvas.height )
 	}
 
+	private importData( dataString ) {
+		if ( checkDataString( dataString ) ) {
+
+		}
+
+		function checkDataString( dataString: string ) {
+
+		}
+	}
+
 	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		const clonedStore = _.cloneDeep( this.store )
+		const clonedStore = _.cloneDeep( this.__storeIgnoreInstance__ )
 
 		const dataString: string = JSON.stringify( clonedStore )
 		download( dataString,  `${ fileName }.json`)
