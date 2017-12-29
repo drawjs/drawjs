@@ -1,25 +1,27 @@
+import { Cell } from 'model/index'
+
 export interface DrawStore {
-	data: {
-		currentPanelIndex: number
-		panels: DrawStorePanel[]
-		setting?: any
-	}
+	activePanelId: string
+	panels: DrawStorePanel[]
+	setting?: any
 }
 
 export interface DrawStorePanel {
+	id: string,
 	name: string,
 	elements: any[]
 }
 
 export interface DrawStoreElement {
+	__instance__: Cell,
+	id: string,
 	type: string,
-	id: number,
 	top: number,
 	left: number,
 	width: number,
 	height: number,
 	fill?: string,
-	angle?: string,
+	angle?: number,
 	draggable?: boolean,
 }
 

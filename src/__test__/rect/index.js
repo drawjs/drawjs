@@ -12,15 +12,15 @@ const rect = new draw.Rect( {
 
 draw.addElement( rect )
 
-draw.addElement( new draw.Rect( {
-	top: 150,
-	left: 150,
-	fill: 'blue',
-	width: 100,
-	height: 100,
-	angle: 0,
-} ) )
+// draw.addElement( new draw.Rect( {
+// 	top: 150,
+// 	left: 150,
+// 	fill: 'blue',
+// 	width: 100,
+// 	height: 100,
+// 	angle: 0,
+// } ) )
 
 draw.render()
 
-draw.exportData()
+// draw.exportData()
