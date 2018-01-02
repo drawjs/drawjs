@@ -4,6 +4,7 @@ import { generateUniqueId } from 'util/index'
 export default class Cell {
 	private id: string = generateUniqueId()
 	private draw
+	public type:string
 	constructor() {
 
 	}

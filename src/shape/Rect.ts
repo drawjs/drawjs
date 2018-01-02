@@ -1,4 +1,5 @@
 import Shape from './Shape'
+import * as cellTypeList from 'store/constant_cellTypeList'
 
 export default class Rect extends Shape{
 	constructor(
@@ -39,6 +40,7 @@ export default class Rect extends Shape{
 			onDragging,
 			onDragStop,
 		} )
+		this.type = cellTypeList.RECT
 		this.draggable = true
 	}
 

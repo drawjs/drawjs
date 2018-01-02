@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import * as Ajv from 'ajv'
 
 import { Rect } from 'shape/index'
 import { Cell } from 'model/index'
@@ -10,11 +11,15 @@ import {
 	DRAW_PANEL_ID_PREFIX,
 } from 'store/constant'
 import * as a from 'store/constant_action'
+import getInstanceByElementWithoutInstance from 'mixin/getInstanceByElementWithoutInstance'
 
 import * as interfaces from 'interface/index'
 import * as download from 'lib/download.js'
 import { getDefaultDrawExportFileName } from 'store/index'
 import { generateUniqueId } from 'util/index'
+import SchemaDrawStoreWithoutInstance from 'schema/SchemaDrawStoreWithoutInstance'
+
+const ajv = new Ajv()
 
 
 export default class Draw {
@@ -150,11 +155,11 @@ export default class Draw {
 			},
 
 			[ a.ADD_ELEMENT ]: (
-				cellInstance,
+				elementWithoutInstance,
 				panelId ?: string
 			): void => {
 				const {
-					__instance__,
+					id,
 					type,
 					top,
 					left,
@@ -164,7 +169,7 @@ export default class Draw {
 					angle,
 					draggable
 				}: {
-					__instance__: Cell
+					id: string,
 					type: string,
 					top: number,
 					left: number,
@@ -173,10 +178,11 @@ export default class Draw {
 					fill: string,
 					angle: number,
 					draggable: boolean
-				} = cellInstance
-				const element = {
-					__instance__: cellInstance,
-					id: this.generateUniqueId(),
+				} = elementWithoutInstance
+
+				const completeElement = {
+					id: ! _.isNil( id ) ? id : this.generateUniqueId(),
+					__instance__: getInstanceByElementWithoutInstance( elementWithoutInstance ),
 					type,
 					top,
 					left,
@@ -186,11 +192,12 @@ export default class Draw {
 					angle,
 					draggable
 				}
+
 				if ( _.isNil( panelId ) ) {
-					this.storeActiveElements.push( element )
+					this.storeActiveElements.push( completeElement )
 				}
 				if (! _.isNil( panelId ) ) {
-					this.getStoreElementsByPanelId( panelId ).push( element )
+					this.getStoreElementsByPanelId( panelId ).push( completeElement )
 				}
 			},
 
@@ -209,8 +216,8 @@ export default class Draw {
 	}
 	/****** store ******/
 
-	addElement( element: interfaces.DrawStoreElement ) {
-		this.dispatch( a.ADD_ELEMENT, element )
+	addElement( element: interfaces.DrawStoreElementWithoutInstance, panelId?: string ) {
+		this.dispatch( a.ADD_ELEMENT, element, panelId )
 	}
 
 
@@ -232,12 +239,61 @@ export default class Draw {
 	}
 
 	private importData( dataString ) {
+		const self = this
 		if ( checkDataString( dataString ) ) {
+			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse( dataString )
+			const storeWithoutInstanceResetElements = resetStoreElements( storeWithoutInstance )
 
+			this.dispatch( a.MODIFY_STORE, storeWithoutInstanceResetElements )
+
+			addStoreElementsAndInstances( storeWithoutInstance )
+
+			this.unbindEvents()
+			this.bindEvents()
+
+			this.render()
 		}
 
 		function checkDataString( dataString: string ) {
+			try {
+				const importedData: interfaces.DrawStoreWithoutInstance = JSON.parse( dataString )
+				const isValid = ajv.validate( SchemaDrawStoreWithoutInstance, importedData )
+				return isValid
+			} catch ( e ) {
+				console.log( e )
+				return false
+			}
+		}
 
+		function addStoreElementsAndInstances( storeResetElements: interfaces.DrawStoreWithoutInstance ) {
+			const store = _.cloneDeep( storeResetElements )
+			if (
+				store &&
+				store.panels
+			) {
+				store.panels.map( resolveElements )
+			}
+
+			function resolveElements( { elements, id: panelId }: { elements: interfaces.DrawStoreElementWithoutInstance[], id: string } ) {
+				elements.map( addElementToDraw( panelId ) )
+			}
+
+			function addElementToDraw( panelId: string ) {
+				return ( element: interfaces.DrawStoreElementWithoutInstance ) => {
+					self.addElement( element, panelId )
+				}
+			}
+		}
+
+		function resetStoreElements( storeWithoutInstance: interfaces.DrawStoreWithoutInstance ): interfaces.DrawStoreWithoutInstance {
+			const store = _.cloneDeep( storeWithoutInstance )
+			store.panels.map( resetElements )
+
+			function resetElements( value, panelIndex: number ) {
+				store.panels[ panelIndex ][ 'elements' ] = []
+			}
+
+			return store
 		}
 	}
 
@@ -261,5 +317,9 @@ export default class Draw {
 			)
 		}
 		return id
+	}
+
+	private unbindEvents() {
+
 	}
 }

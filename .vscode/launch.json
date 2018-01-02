@@ -9,7 +9,7 @@
 		// 	"request": "attach",
 		// 	"name": "Launch Chrome ",
 		// 	"port": 9222,
-		// 	"url": "http://192.168.20.36:3000/dist/__test__/shape/index.html",
+		// 	"url": "http://localhost:3000/dist/__test__/shape/index.html",
 		// 	"pathMapping": {
 		// 		"/": "${workspaceFolder}"
 		// 	}
@@ -21,7 +21,7 @@
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "url": "http://192.168.20.36:3000/dist/__test__/rect/index.html",
+            "url": "http://localhost:3000/dist/__test__/importData/index.html",
             "webRoot": "${workspaceFolder}"
         },
         {
@@ -29,7 +29,7 @@
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "url": "http://192.168.20.36:3000/dist/__test__/rect/index.html",
+            "url": "http://localhost:3000/dist/__test__/importData/index.html",
 			"webRoot": "${workspaceFolder}"
         }
     ]

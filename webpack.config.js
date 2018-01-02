@@ -8,7 +8,9 @@ module.exports = {
 		// 'cell': './src/model/cell.ts'
 
 		// for __test__
-		'__test__/rect/index.js': './src/__test__/rect/index.js'
+		'__test__/dragAndDrop/index.js': './src/__test__/dragAndDrop/index.js',
+		'__test__/exportData/index.js': './src/__test__/exportData/index.js',
+		'__test__/importData/index.js': './src/__test__/importData/index.js',
 	},
 	output: {
 		filename: '[name]',
@@ -33,6 +35,8 @@ module.exports = {
 			lib: path.resolve( __dirname, './src/lib' ),
 			interface: path.resolve( __dirname, './src/interface' ),
 			interaction: path.resolve( __dirname, './src/interaction' ),
+			schema: path.resolve( __dirname, './src/schema' ),
+			mixin: path.resolve( __dirname, './src/mixin' ),
 		},
 		extensions: [
 			'.tsx',
