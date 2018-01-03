@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import * as Ajv from 'ajv'
+import * as Ajv from 'lib/ajv'
 
 import { Rect } from 'shape/index'
 import { Cell } from 'model/index'
@@ -239,10 +239,8 @@ export default class Draw {
 	}
 
 	private importData( dataString ) {
-		console.log( `importData` )
 		const self = this
 		if ( checkDataString( dataString ) ) {
-			console.log( `after checkDataString` )
 			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse( dataString )
 			const storeWithoutInstanceResetElements = resetStoreElements( storeWithoutInstance )
 

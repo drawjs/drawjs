@@ -14,9 +14,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "@types/ajv": "^1.0.0",
     "@types/lodash": "^4.14.91",
-    "ajv": "^5.5.2",
     "browser-sync": "^2.19.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.3.1",

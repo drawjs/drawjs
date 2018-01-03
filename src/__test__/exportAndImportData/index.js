@@ -1,30 +1,31 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
 
 // ******* import *******
-function onFileInputChange( callback ) {
-    try {
-        const reader = new FileReader()
-        function onReaderLoad( event ) {
-            callback( event.target.result )
-        }
-        reader.onload = onReaderLoad
-        reader.readAsText( event.target.files[ 0 ] )
-    } catch ( e ) {
+const fileInput = document.getElementById( 'fileInput' )
 
+fileInput.onclick = onFileInputClick
+fileInput.onchange = onFileInputChange( callback )
+
+function onFileInputClick() {
+    this.value = null
+}
+function onFileInputChange( callback ) {
+    return event => {
+        try {
+            const reader = new FileReader()
+            function onReaderLoad( event ) {
+                callback( event.target.result )
+            }
+            reader.onload = onReaderLoad
+            reader.readAsText( event.target.files[ 0 ] )
+        } catch ( e ) {
+
+        }
     }
 }
-
-function onFileInputClick( event ) {
-	event.target.value = null
+function callback() {
+    draw.importData( text )
 }
-
-function callback( text ) {
-	draw.importData( text )
-}
-
-window[ 'onFileInputChange' ] = onFileInputChange
-window[ 'onFileInputClick' ] = onFileInputClick
-window[ 'callback' ] = callback
 
 // ******* import *******
 
