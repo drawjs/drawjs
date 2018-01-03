@@ -21,7 +21,7 @@
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "url": "http://localhost:3000/dist/__test__/importData/index.html",
+            "url": "http://localhost:3000/dist/__test__/exportAndImportData/index.html",
             "webRoot": "${workspaceFolder}"
         },
         {
@@ -29,7 +29,7 @@
             "type": "chrome",
             "request": "attach",
             "port": 9222,
-            "url": "http://localhost:3000/dist/__test__/importData/index.html",
+            "url": "http://localhost:3000/dist/__test__/exportAndImportData/index.html",
 			"webRoot": "${workspaceFolder}"
         }
     ]

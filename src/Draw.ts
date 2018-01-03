@@ -11,7 +11,7 @@ import {
 	DRAW_PANEL_ID_PREFIX,
 } from 'store/constant'
 import * as a from 'store/constant_action'
-import getInstanceByElementWithoutInstance from 'mixin/getInstanceByElementWithoutInstance'
+import { getInstanceByElementWithoutInstance, updateStoreElementsByTheirInstances } from 'mixin/index'
 
 import * as interfaces from 'interface/index'
 import * as download from 'lib/download.js'
@@ -239,8 +239,10 @@ export default class Draw {
 	}
 
 	private importData( dataString ) {
+		console.log( `importData` )
 		const self = this
 		if ( checkDataString( dataString ) ) {
+			console.log( `after checkDataString` )
 			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse( dataString )
 			const storeWithoutInstanceResetElements = resetStoreElements( storeWithoutInstance )
 
@@ -298,9 +300,9 @@ export default class Draw {
 	}
 
 	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		const clonedStore = _.cloneDeep( this.__storeIgnoreInstance__ )
-
-		const dataString: string = JSON.stringify( clonedStore )
+		const storeUpdatedElements = updateStoreElementsByTheirInstances( this.store )
+		this.dispatch( a.MODIFY_STORE,  storeUpdatedElements)
+		const dataString: string = JSON.stringify( this.__storeIgnoreInstance__ )
 		download( dataString,  `${ fileName }.json`)
 	}
 

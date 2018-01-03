@@ -14,12 +14,16 @@ function onFileInputChange( callback ) {
     }
 }
 
+function onFileInputClick( event ) {
+	event.target.value = null
+}
 
 function callback( text ) {
 	draw.importData( text )
 }
 
 window[ 'onFileInputChange' ] = onFileInputChange
+window[ 'onFileInputClick' ] = onFileInputClick
 window[ 'callback' ] = callback
 
 // ******* import *******
