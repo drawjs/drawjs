@@ -7,5 +7,5 @@ export default function(): string {
 	  i = Math.floor(Math.random()*16).toString(16).toUpperCase();
 	  result = result + i
 	}
-	return `${ result }-${ btoa( ( new Date() ).toISOString() ) }`
+	return `${ result }-${ btoa(  '' +  ( new Date() ).getTime() ) }`
 }

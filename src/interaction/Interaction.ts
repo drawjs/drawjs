@@ -10,7 +10,6 @@ export default class Interaction {
 		this._draw = draw
 	}
 
-
 	private _mousedownListener = ( event, eventInfo ): void => {
 		const isPointOnAnyElementInstanceWhenActivateEvent = this._isPointOnAnyElementInstanceWhenActivateEvent( event, eventInfo )
 

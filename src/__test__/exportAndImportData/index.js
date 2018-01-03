@@ -24,7 +24,7 @@ function onFileInputChange( callback ) {
         }
     }
 }
-function callback() {
+function callback( text ) {
     draw.importData( text )
 }
 
