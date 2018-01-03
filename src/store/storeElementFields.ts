@@ -4,6 +4,7 @@ export default [
 	'fill',
 	'height',
 	'id',
+	'isSelected',
 	'left',
 	'type',
 	'top',

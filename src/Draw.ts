@@ -3,7 +3,7 @@ import * as Ajv from 'lib/ajv'
 
 import { Rect } from 'shape/index'
 import { Cell } from 'model/index'
-import { dragAndDrop } from 'interaction/index'
+import Interaction from 'interaction/Interaction'
 import {
 	DRAW_INSTANCE_NAME,
 	DRAW_STORE_PANEL_DEFAULT_NAME,
@@ -23,8 +23,6 @@ const ajv = new Ajv()
 
 
 export default class Draw {
-	private canvas: HTMLCanvasElement
-	private ctx: CanvasRenderingContext2D
 	public store: interfaces.DrawStore = {
 		activePanelId: null,
 
@@ -34,6 +32,9 @@ export default class Draw {
 			elements: []
 		} ]
 	}
+	private canvas: HTMLCanvasElement
+	private ctx: CanvasRenderingContext2D
+	private interaction: Interaction = new Interaction( this )
 
 	get storeActivePanelId(): string {
 		return (
@@ -167,7 +168,8 @@ export default class Draw {
 					height,
 					fill,
 					angle,
-					draggable
+					draggable,
+					isSelected,
 				}: {
 					id: string,
 					type: string,
@@ -177,7 +179,8 @@ export default class Draw {
 					height: number,
 					fill: string,
 					angle: number,
-					draggable: boolean
+					draggable: boolean,
+					isSelected: boolean,
 				} = elementWithoutInstance
 
 				const completeElement = {
@@ -190,7 +193,8 @@ export default class Draw {
 					height,
 					fill,
 					angle,
-					draggable
+					draggable,
+					isSelected,
 				}
 
 				if ( _.isNil( panelId ) ) {
@@ -231,7 +235,7 @@ export default class Draw {
 	}
 
 	private bindEvents() {
-		dragAndDrop( this )
+		this.interaction.enableSelect()
 	}
 
 	private clearEntireCanvas() {
@@ -242,9 +246,9 @@ export default class Draw {
 		const self = this
 		if ( checkDataString( dataString ) ) {
 			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse( dataString )
-			const storeWithoutInstanceResetElements = resetStoreElements( storeWithoutInstance )
+			const storeWithoutInstanceCleanElements = cleanStoreElements( storeWithoutInstance )
 
-			this.dispatch( a.MODIFY_STORE, storeWithoutInstanceResetElements )
+			this.dispatch( a.MODIFY_STORE, storeWithoutInstanceCleanElements )
 
 			addStoreElementsAndInstances( storeWithoutInstance )
 
@@ -265,8 +269,8 @@ export default class Draw {
 			}
 		}
 
-		function addStoreElementsAndInstances( storeResetElements: interfaces.DrawStoreWithoutInstance ) {
-			const store = _.cloneDeep( storeResetElements )
+		function addStoreElementsAndInstances( storeCleanElements: interfaces.DrawStoreWithoutInstance ) {
+			const store = _.cloneDeep( storeCleanElements )
 			if (
 				store &&
 				store.panels
@@ -285,11 +289,11 @@ export default class Draw {
 			}
 		}
 
-		function resetStoreElements( storeWithoutInstance: interfaces.DrawStoreWithoutInstance ): interfaces.DrawStoreWithoutInstance {
+		function cleanStoreElements( storeWithoutInstance: interfaces.DrawStoreWithoutInstance ): interfaces.DrawStoreWithoutInstance {
 			const store = _.cloneDeep( storeWithoutInstance )
-			store.panels.map( resetElements )
+			store.panels.map( cleanElements )
 
-			function resetElements( value, panelIndex: number ) {
+			function cleanElements( value, panelIndex: number ) {
 				store.panels[ panelIndex ][ 'elements' ] = []
 			}
 

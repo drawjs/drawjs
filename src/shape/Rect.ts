@@ -11,6 +11,7 @@ export default class Rect extends Shape{
 			fill,
 			angle,
 			draggable = false,
+			isSelected,
 			onDragStart,
 			onDragging,
 			onDragStop,
@@ -23,6 +24,7 @@ export default class Rect extends Shape{
 			fill: string,
 			angle: number,
 			draggable: boolean,
+			isSelected: boolean,
 			onDragStart: Function,
 			onDragging: Function,
 			onDragStop: Function,
@@ -36,6 +38,7 @@ export default class Rect extends Shape{
 			fill,
 			angle,
 			draggable,
+			isSelected,
 			onDragStart,
 			onDragging,
 			onDragStop,
@@ -44,7 +47,9 @@ export default class Rect extends Shape{
 		this.draggable = true
 	}
 
-	render( ctx ) {
+	public render( ctx: CanvasRenderingContext2D ) {
+		super.render( ctx )
+
 		ctx.save()
 		ctx.fillStyle = this.fill
 		ctx.rotate((Math.PI / 180) * this.angle)

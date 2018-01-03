@@ -1,5 +1,6 @@
 import  'lib/event.js'
 import { DRAW_INSTANCE_NAME } from 'store/constant'
+import * as interfaces from 'interface/index'
 
 let drawInstance: any
 let draggingElement: any

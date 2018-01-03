@@ -12,6 +12,7 @@ export default class Shape extends Geometry {
 			fill,
 			angle,
 			draggable,
+			isSelected,
 			onDragStart,
 			onDragging,
 			onDragStop,
@@ -23,6 +24,7 @@ export default class Shape extends Geometry {
 			fill: string,
 			angle: number,
 			draggable: boolean,
+			isSelected: boolean,
 			onDragStart: Function,
 			onDragging: Function,
 			onDragStop: Function,
@@ -36,9 +38,14 @@ export default class Shape extends Geometry {
 			fill,
 			angle,
 			draggable,
+			isSelected,
 			onDragStart,
 			onDragging,
 			onDragStop,
 		} )
+	}
+
+	public render( ctx: CanvasRenderingContext2D ) {
+		super.render( ctx )
 	}
 }

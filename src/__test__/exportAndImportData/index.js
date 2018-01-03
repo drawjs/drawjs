@@ -1,14 +1,15 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
 
 // ******* import *******
-const fileInput = document.getElementById( 'fileInput' )
+const uploadButton = document.getElementById( 'uploadButton' )
 
-fileInput.onclick = onFileInputClick
-fileInput.onchange = onFileInputChange( callback )
+uploadButton.onclick = onFileInputClick
+uploadButton.onchange = onFileInputChange( callback )
 
 function onFileInputClick() {
     this.value = null
 }
+
 function onFileInputChange( callback ) {
     return event => {
         try {

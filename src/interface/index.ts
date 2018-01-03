@@ -23,10 +23,16 @@ export interface DrawStoreElementWithoutInstance {
 	left: number,
 	width: number,
 	height: number,
-	fill?: string,
-	angle?: number,
-	draggable?: boolean,
+	fill: string,
+	angle: number,
+	draggable: boolean,
+	isSelected: boolean,
 }
+
+export interface DrawStoreElementInstance extends DrawStoreElementWithoutInstance {
+
+}
+
 
 export interface DrawStore extends DrawStoreWithoutInstance  {
 	panels: DrawStorePanel[]

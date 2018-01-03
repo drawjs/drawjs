@@ -13,4 +13,7 @@ export default class Cell {
 		this[ field ] = value
 	}
 
+	public render( ctx: CanvasRenderingContext2D ) {
+
+	}
 }
