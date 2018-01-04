@@ -32,15 +32,15 @@ export default class Geometry extends Cell {
 		}: {
 			top: number,
 			left: number,
-			width: number,
-			height: number,
-			fill: string,
-			angle: number,
-			draggable: boolean,
-			isSelected: boolean,
-			onDragStart: Function,
-			onDragging: Function,
-			onDragStop: Function,
+			width?: number,
+			height?: number,
+			fill?: string,
+			angle?: number,
+			draggable?: boolean,
+			isSelected?: boolean,
+			onDragStart?: Function,
+			onDragging?: Function,
+			onDragStop?: Function,
 		}
 	) {
 		super()

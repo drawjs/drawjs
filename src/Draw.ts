@@ -123,13 +123,19 @@ export default class Draw {
 		this.dispatch( a.MODIFY_ACTIVE_PANEL_ID, this.storeActivePanelId )
 	}
 
-	render() {
+	public render() {
 		this.clearEntireCanvas()
 
 		const renderElement = element => {
 			element.__instance__.render( this.ctx )
 		}
 		this.storeActiveElements.map( renderElement )
+
+		this._renderInteraction()
+	}
+
+	private _renderInteraction(): void {
+		this.interaction.render()
 	}
 	/****** initialization and render ******/
 

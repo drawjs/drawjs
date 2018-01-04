@@ -21,13 +21,13 @@ export default class Shape extends Geometry {
 			left: number,
 			width: number,
 			height: number,
-			fill: string,
-			angle: number,
-			draggable: boolean,
-			isSelected: boolean,
-			onDragStart: Function,
-			onDragging: Function,
-			onDragStop: Function,
+			fill?: string,
+			angle?: number,
+			draggable?: boolean,
+			isSelected?: boolean,
+			onDragStart?: Function,
+			onDragging?: Function,
+			onDragStop?: Function,
 		}
 	) {
 		super( {

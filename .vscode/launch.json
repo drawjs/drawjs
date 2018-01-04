@@ -22,7 +22,7 @@
             "port": 9222,
 			"url": "http://localhost:3000/dist/__test__/select/index.html",
             "webRoot": "${workspaceFolder}"
-        },
+        }
         // {
         //     "name": "Attach to url with files served from ./out",
         //     "type": "chrome",
