@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import { generateUniqueId } from 'util/index'
 import Geometry from 'model/Geometry'
 
-export default class Graph extends Geometry {
+export default abstract class Graph extends Geometry {
 	constructor(
 		{
 			top,
@@ -13,21 +13,15 @@ export default class Graph extends Geometry {
 			angle,
 			draggable,
 			isSelected=false,
-			onDragStart,
-			onDragging,
-			onDragStop,
 		}: {
-			top: number,
-			left: number,
-			width: number,
-			height: number,
+			top?: number,
+			left?: number,
+			width?: number,
+			height?: number,
 			fill?: string,
 			angle?: number,
 			draggable?: boolean,
 			isSelected?: boolean,
-			onDragStart?: Function,
-			onDragging?: Function,
-			onDragStop?: Function,
 		}
 	) {
 		super( {
@@ -38,9 +32,6 @@ export default class Graph extends Geometry {
 			fill,
 			angle,
 			draggable,
-			onDragStart,
-			onDragging,
-			onDragStop,
 		} )
 
 
@@ -65,4 +56,6 @@ export default class Graph extends Geometry {
 
 		this.isSelected && this._renderSelection( ctx )
 	}
+
+	public abstract containPoint( x: number, y: number ): void
 }

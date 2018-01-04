@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as Ajv from 'lib/ajv'
 
-import { Rect } from 'shape/index'
+import { Rect, Line } from 'shape/index'
 import { Cell } from 'model/index'
 import Interaction from 'interaction/Interaction'
 import {
@@ -113,6 +113,7 @@ export default class Draw {
 		this.ctx = canvas.getContext( '2d' )
 
 		this.attachChildrenClass( 'Rect', Rect )
+		this.attachChildrenClass( 'Line', Line )
 
 		this.initialize()
 	}

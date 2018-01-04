@@ -12,9 +12,6 @@ export default class Rect extends Graph{
 			angle,
 			draggable = false,
 			isSelected,
-			onDragStart,
-			onDragging,
-			onDragStop,
 		}:
 		{
 			top: number,
@@ -25,9 +22,6 @@ export default class Rect extends Graph{
 			angle: number,
 			draggable: boolean,
 			isSelected: boolean,
-			onDragStart: Function,
-			onDragging: Function,
-			onDragStop: Function,
 		}
 	) {
 		super( {
@@ -39,9 +33,6 @@ export default class Rect extends Graph{
 			angle,
 			draggable,
 			isSelected,
-			onDragStart,
-			onDragging,
-			onDragStop,
 		} )
 		this.type = cellTypeList.RECT
 		this.draggable = true

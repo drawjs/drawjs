@@ -139,7 +139,7 @@ export default class Interaction {
 
 	private _getElementInstancesContainPoint( x: number, y: number ): interfaces.DrawStoreElementInstance[] {
 		function isContainPoint( elementInstance ) {
-			return elementInstance.containPoint( x, y )
+			return elementInstance.containPoint && elementInstance.containPoint( x, y )
 		}
 
 		return this._draw.__storeActiveElementsInstances__.filter( isContainPoint )

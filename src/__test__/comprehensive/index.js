@@ -61,9 +61,26 @@ const rect3 = new draw.Rect( {
 } )
 
 
+const line1 = new draw.Line( {
+	points: [
+		{
+			x: 150,
+			y: 150,
+		},
+		{
+			x: 360,
+			y: 360
+		},
+	],
+	fill: 'blue',
+	angle: 0,
+} )
+
 draw.addElement( rect1 )
-draw.addElement( rect2 )
-draw.addElement( rect3 )
+// draw.addElement( rect2 )
+// draw.addElement( rect3 )
+
+draw.addElement( line1 )
 
 draw.render()
 

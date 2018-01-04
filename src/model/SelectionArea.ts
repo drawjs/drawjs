@@ -96,4 +96,8 @@ export default class SelectionArea extends Geometry {
 			ctx.restore()
 		}
 	}
+
+	public containPoint( x, y ) {
+
+	}
 }

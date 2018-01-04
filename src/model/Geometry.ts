@@ -4,7 +4,7 @@ import { generateUniqueId } from 'util/index'
 import Cell from 'model/Cell'
 
 
-export default class Geometry extends Cell {
+export default abstract class Geometry extends Cell {
 	public top: number
 	public left: number
 	public width: number
@@ -32,9 +32,6 @@ export default class Geometry extends Cell {
 			fill = 'black',
 			angle = 0,
 			draggable = false,
-			onDragStart,
-			onDragging,
-			onDragStop,
 		}: {
 			top: number,
 			left: number,
@@ -43,9 +40,6 @@ export default class Geometry extends Cell {
 			fill?: string,
 			angle?: number,
 			draggable?: boolean,
-			onDragStart?: Function,
-			onDragging?: Function,
-			onDragStop?: Function,
 		}
 	) {
 		super()
@@ -56,9 +50,6 @@ export default class Geometry extends Cell {
 		this.height = height
 		this.angle = angle
 		this.draggable = draggable
-		this.onDragStart = onDragStart
-		this.onDragging = onDragging
-		this.onDragStop = onDragStop
 	}
 
 
@@ -66,4 +57,6 @@ export default class Geometry extends Cell {
 	public render( ctx: CanvasRenderingContext2D ) {
 		super.render( ctx )
 	}
+
+	public abstract containPoint( x: number, y: number ): void
 }
