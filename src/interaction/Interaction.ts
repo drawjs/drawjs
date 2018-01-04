@@ -46,18 +46,20 @@ export default class Interaction {
 	}
 
 	private _mousedownListener = ( event ): void => {
-		this.onDragStart( event )
+		this._onDragStart( event )
 	}
 
 	private _mousemoveListener = ( event ): void => {
-		this._isDragging && this.onDragging( event )
+		this._isDragging && this._onDragging( event )
+
+		this._onHover( event )
 	}
 
 	private _mouseupListener = ( event ): void => {
-		this.onDragStop( event )
+		this._onDragStop( event )
 	}
 
-	private onDragStart( event ): void {
+	private _onDragStart( event ): void {
 		this._isDragging = true
 
 		if ( this._isPointOnAnySelectedElementInstance( event ) ) {
@@ -94,7 +96,7 @@ export default class Interaction {
 		this._draw.render()
 	}
 
-	private onDragging( event ): void {
+	private _onDragging( event ): void {
 		// ****** select  ******/
 		this._shouldDrawSelectionArea && this._selectionAreaInstance.drawing( event )
 		// ****** select  ******/
@@ -106,7 +108,7 @@ export default class Interaction {
 		this._draw.render()
 	}
 
-	private onDragStop( event ): void {
+	private _onDragStop( event ): void {
 		this._isDragging = false
 
 		// ****** select  ******/
@@ -124,6 +126,13 @@ export default class Interaction {
 		// ****** drag selected elements instances  ******/
 
 		this._draw.render()
+	}
+
+	private _onHover( event ) {
+		const topElementInstance: interfaces.DrawStoreElementInstance = this._getTopElementInstance( event )
+		if ( ! _.isNil( topElementInstance ) ) {
+
+		}
 	}
 
 	private _getTopElementInstance( event ): interfaces.DrawStoreElementInstance {

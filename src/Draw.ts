@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as Ajv from 'lib/ajv'
 
-import { Rect, Line } from 'shape/index'
+import { Rect, Line } from 'model/shape/index'
 import { Cell } from 'model/index'
 import Interaction from 'interaction/Interaction'
 import {
@@ -32,9 +32,9 @@ export default class Draw {
 			elements: []
 		} ]
 	}
-	private canvas: HTMLCanvasElement
-	private ctx: CanvasRenderingContext2D
-	private interaction: Interaction = new Interaction( this )
+	public canvas: HTMLCanvasElement
+	public ctx: CanvasRenderingContext2D
+	public interaction: Interaction = new Interaction( this )
 
 	get storeActivePanelId(): string {
 		return (
@@ -175,6 +175,7 @@ export default class Draw {
 					height,
 					fill,
 					angle,
+					points,
 					draggable,
 					isSelected,
 				}: {
@@ -186,13 +187,14 @@ export default class Draw {
 					height: number,
 					fill: string,
 					angle: number,
+					points: interfaces.Point[],
 					draggable: boolean,
 					isSelected: boolean,
 				} = elementWithoutInstance
 
 				const completeElement = {
 					id: ! _.isNil( id ) ? id : this.generateUniqueId(),
-					__instance__: getInstanceByElementWithoutInstance( elementWithoutInstance ),
+					__instance__: getInstanceByElementWithoutInstance( elementWithoutInstance, this ),
 					type,
 					top,
 					left,
@@ -200,6 +202,7 @@ export default class Draw {
 					height,
 					fill,
 					angle,
+					points,
 					draggable,
 					isSelected,
 				}
