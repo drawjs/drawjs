@@ -1,7 +1,7 @@
-import Shape from './Shape'
+import Graph from 'model/Graph'
 import * as cellTypeList from 'store/constant_cellTypeList'
 
-export default class Rect extends Shape{
+export default class Rect extends Graph{
 	constructor(
 		{
 			top,

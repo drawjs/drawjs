@@ -8,9 +8,8 @@ module.exports = {
 		// 'cell': './src/model/cell.ts'
 
 		// for __test__
-		'__test__/dragAndDrop/index.js': './src/__test__/dragAndDrop/index.js',
-		'__test__/exportData/index.js': './src/__test__/exportData/index.js',
-		'__test__/importData/index.js': './src/__test__/importData/index.js',
+		// '__test__/exportData/index.js': './src/__test__/exportData/index.js',
+		// '__test__/importData/index.js': './src/__test__/importData/index.js',
 	},
 	output: {
 		filename: '[name]',

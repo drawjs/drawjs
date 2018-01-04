@@ -47,4 +47,7 @@ export interface DrawStoreElement extends DrawStoreElementWithoutInstance {
 }
 
 
-
+export interface Point {
+	x: number,
+	y: number,
+}

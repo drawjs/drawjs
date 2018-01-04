@@ -126,12 +126,12 @@ export default class Draw {
 	public render() {
 		this.clearEntireCanvas()
 
+		this._renderInteraction()
+
 		const renderElement = element => {
 			element.__instance__.render( this.ctx )
 		}
 		this.storeActiveElements.map( renderElement )
-
-		this._renderInteraction()
 	}
 
 	private _renderInteraction(): void {
