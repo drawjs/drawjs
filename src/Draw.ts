@@ -16,6 +16,7 @@ import { getInstanceByElementWithoutInstance, updateStoreElementsByTheirInstance
 import * as interfaces from 'interface/index'
 import * as download from 'lib/download.js'
 import { getDefaultDrawExportFileName } from 'store/index'
+import cellTypeClassMap from 'store/cellTypeClassMap'
 import { generateUniqueId } from 'util/index'
 import SchemaDrawStoreWithoutInstance from 'schema/SchemaDrawStoreWithoutInstance'
 
@@ -35,6 +36,8 @@ export default class Draw {
 	private canvas: HTMLCanvasElement
 	private ctx: CanvasRenderingContext2D
 	private interaction: Interaction = new Interaction( this )
+
+	public cellTypeClassMap: any = cellTypeClassMap
 
 	get storeActivePanelId(): string {
 		return (

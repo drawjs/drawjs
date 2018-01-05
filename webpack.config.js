@@ -7,7 +7,7 @@ module.exports = {
 		'draw.js': './src/index.ts',
 		// 'cell': './src/model/cell.ts'
 
-		// for __test__
+		// generate source map for __test__
 		// '__test__/exportData/index.js': './src/__test__/exportData/index.js',
 		// '__test__/importData/index.js': './src/__test__/importData/index.js',
 	},
