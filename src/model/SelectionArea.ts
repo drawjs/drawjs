@@ -6,7 +6,6 @@ import * as interfaces  from 'interface/index'
 
 
 export default class SelectionArea extends Geometry {
-	private _draw: any
 	public startPoint: interfaces.Point
 	public endPoint: interfaces.Point
 

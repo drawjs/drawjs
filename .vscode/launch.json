@@ -9,7 +9,7 @@
 		// 	"request": "launch",
 		// 	"name": "Launch Chrome ",
 		// 	"port": 9222,
-		// 	"url": "http://localhost:3000/dist/__test__/select/index.html",
+		// 	"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
 		// 	"pathMapping": {
 		// 		"/": "${workspaceFolder}"
 		// 	},
@@ -23,13 +23,5 @@
 			"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
             "webRoot": "${workspaceFolder}"
         }
-        // {
-        //     "name": "Attach to url with files served from ./out",
-        //     "type": "chrome",
-        //     "request": "attach",
-        //     "port": 9222,
-        //     "url": "http://localhost:3000/dist/__test__/select/index.html",
-		// 	"webRoot": "${workspaceFolder}"
-        // }
     ]
 }

@@ -17,6 +17,7 @@ export interface DrawStorePanelWithoutInstance {
 }
 
 export interface DrawStoreElementWithoutInstance {
+	_draw?: any,
 	id: string,
 	type: string,
 	top: number,
@@ -25,6 +26,7 @@ export interface DrawStoreElementWithoutInstance {
 	height: number,
 	fill: string,
 	angle: number,
+	points: Point[],
 	draggable: boolean,
 	isSelected: boolean,
 }
@@ -43,7 +45,7 @@ export interface DrawStorePanel extends DrawStorePanelWithoutInstance {
 }
 
 export interface DrawStoreElement extends DrawStoreElementWithoutInstance {
-	__instance__: Cell
+	__instance__: DrawStoreElementInstance
 }
 
 

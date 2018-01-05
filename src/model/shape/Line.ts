@@ -53,6 +53,6 @@ export default class Line extends Graph{
 	}
 
 	public containPoint( x: number, y: number ) {
-
+		return
 	}
 }
