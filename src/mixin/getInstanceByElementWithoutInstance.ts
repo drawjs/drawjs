@@ -24,6 +24,6 @@ export default function ( elementWithoutInstance: interfaces.DrawStoreElementWit
 	}
 
 	function addDrawInstanceToInstance( instance: interfaces.DrawStoreElementInstance ) {
-		return instance[ '_draw' ] = draw
+		return instance[ 'draw' ] = draw
 	}
 }

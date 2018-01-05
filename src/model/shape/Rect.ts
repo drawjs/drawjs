@@ -1,7 +1,15 @@
+import * as _ from 'lodash'
+
 import Graph from 'model/Graph'
 import * as cellTypeList from 'store/constant_cellTypeList'
 
 export default class Rect extends Graph{
+	get renderPath(): Path2D {
+		const path = new Path2D()
+		path.rect(this.left, this.top, this.width, this.height)
+		return path
+	}
+
 	constructor(
 		{
 			top,
@@ -43,17 +51,24 @@ export default class Rect extends Graph{
 
 		ctx.save()
 		ctx.fillStyle = this.fill
-		ctx.rotate((Math.PI / 180) * this.angle)
-		ctx.fillRect(this.left, this.top, this.width, this.height)
+		// ctx.rotate((Math.PI / 180) * this.angle)
+		ctx.fill( this.renderPath )
+
 		ctx.restore()
+
+
+		function cloneDeepWithCustomizer( value ): void {
+			const type = typeof value
+		}
 	}
 
 	public containPoint( x, y ) {
-		return (
-			x >= this.left &&
-			x <= this.left + this.width &&
-			y >= this.top &&
-			y <= this.top + this.height
-		)
+		return this.draw.ctx.isPointInPath( this.renderPath, x, y )
+		// return (
+		// 	x >= this.left &&
+		// 	x <= this.left + this.width &&
+		// 	y >= this.top &&
+		// 	y <= this.top + this.height
+		// )
 	}
 }

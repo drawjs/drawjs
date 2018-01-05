@@ -2,10 +2,11 @@ import * as _ from 'lodash'
 
 import { Cell, SelectionArea } from 'model/index'
 import * as interfaces from 'interface/index'
+import Draw from '../Draw'
 
 
 export default class Interaction {
-	private _draw: any
+	private draw: Draw
 	private _isDragging: boolean = false
 	private _selectionAreaInstance: SelectionArea
 	private _shouldDrawSelectionArea: boolean = false
@@ -15,14 +16,14 @@ export default class Interaction {
 	 */
 	private _shouldDragAllSelected: boolean = false
 
-	constructor( draw: any ) {
-		this._draw = draw
+	constructor( draw: Draw ) {
+		this.draw = draw
 		this._selectionAreaInstance = new SelectionArea( { draw: draw } )
 	}
 
 	get elementInstancesSelectedBySelectionArea(): interfaces.DrawStoreElementInstance[] {
 		const self = this
-		const selementInstances = this._draw.__storeActiveElementsInstances__.filter( isElementInstanceSelectedBySelectionArea )
+		const selementInstances = this.draw.__storeActiveElementsInstances__.filter( isElementInstanceSelectedBySelectionArea )
 
 		function isElementInstanceSelectedBySelectionArea( { left, top, width, height } ): boolean {
 			return self._selectionAreaInstance.isRectInSelectionArea( { left, top, width, height } )
@@ -32,7 +33,7 @@ export default class Interaction {
 	}
 
 	get __storeSelectedActiveElementsInstances__(): interfaces.DrawStoreElementInstance[] {
-		return this._draw.__storeActiveElementsInstances__
+		return this.draw.__storeActiveElementsInstances__
 			.filter( isSelected )
 
 		function isSelected( elementInstance ) {
@@ -41,9 +42,34 @@ export default class Interaction {
 	}
 
 
-	public render(): void {
-		this._selectionAreaInstance.render( this._draw.ctx )
+	public initialize(): void {
+		this.draw.canvas.removeEventListener( 'mousedown', this._mousedownListener )
+		this.draw.canvas.addEventListener( 'mousedown', this._mousedownListener )
+
+		this.draw.canvas.removeEventListener( 'mousemove', this._mousemoveListener )
+		this.draw.canvas.addEventListener( 'mousemove', this._mousemoveListener )
+
+		this.draw.canvas.removeEventListener( 'mouseup', this._mouseupListener )
+		this.draw.canvas.addEventListener( 'mouseup', this._mouseupListener )
+
+		this.draw.canvas.removeEventListener( 'click', this._clickListener )
+		this.draw.canvas.addEventListener( 'click', this._clickListener )
 	}
+
+	public disableInteraction(): void {
+		this._mousedownListener = null
+		this.draw.canvas.removeEventListener( 'mousedown', this._mousedownListener )
+		this.draw.canvas.removeEventListener( 'mousemove', this._mousemoveListener )
+		this.draw.canvas.removeEventListener( 'mouseup', this._mouseupListener )
+		this.draw.canvas.removeEventListener( 'click', this._clickListener )
+	}
+
+
+	public render(): void {
+		this._selectionAreaInstance.render( this.draw.ctx )
+	}
+
+
 
 	private _mousedownListener = ( event ): void => {
 		this._onDragStart( event )
@@ -57,6 +83,24 @@ export default class Interaction {
 
 	private _mouseupListener = ( event ): void => {
 		this._onDragStop( event )
+	}
+
+	private _clickListener = ( event ): void => {
+		this._onClick( event )
+	}
+
+	private _onClick( event ): void {
+		const topElementInstance: interfaces.DrawStoreElementInstance = this._getTopElementInstance( event )
+		if ( ! _.isNil( topElementInstance ) ) {
+			this.draw.onGraphClick && this.draw.onGraphClick( event, topElementInstance )
+		}
+	}
+
+	private _onHover( event ) {
+		const topElementInstance: interfaces.DrawStoreElementInstance = this._getTopElementInstance( event )
+		if ( ! _.isNil( topElementInstance ) ) {
+			this.draw.onGraphHover && this.draw.onGraphHover( event, topElementInstance )
+		}
 	}
 
 	private _onDragStart( event ): void {
@@ -93,7 +137,7 @@ export default class Interaction {
 			// ****** select  ******/
 		}
 
-		this._draw.render()
+		this.draw.render()
 	}
 
 	private _onDragging( event ): void {
@@ -105,7 +149,7 @@ export default class Interaction {
 		this._shouldDragAllSelected && this._draggingSelectedElementInstances( event )
 		// ****** drag selected elements instances  ******/
 
-		this._draw.render()
+		this.draw.render()
 	}
 
 	private _onDragStop( event ): void {
@@ -125,19 +169,14 @@ export default class Interaction {
 		this._shouldDragAllSelected = false
 		// ****** drag selected elements instances  ******/
 
-		this._draw.render()
+		this.draw.render()
 	}
 
-	private _onHover( event ) {
-		const topElementInstance: interfaces.DrawStoreElementInstance = this._getTopElementInstance( event )
-		if ( ! _.isNil( topElementInstance ) ) {
 
-		}
-	}
 
 	private _getTopElementInstance( event ): interfaces.DrawStoreElementInstance {
 		const self = this
-		const elementInstancesContainPoint = this._getElementInstancesContainPoint( event.x, event.y )
+		const elementInstancesContainPoint = this._getElementInstancesContainPoint( event.x - this.draw.canvasLeft, event.y  - this.draw.canvasTop )
 
 		if ( elementInstancesContainPoint.length > 0 ) {
 			return elementInstancesContainPoint[ elementInstancesContainPoint.length - 1 ]
@@ -151,7 +190,7 @@ export default class Interaction {
 			return elementInstance.containPoint && elementInstance.containPoint( x, y )
 		}
 
-		return this._draw.__storeActiveElementsInstances__.filter( isContainPoint )
+		return this.draw.__storeActiveElementsInstances__.filter( isContainPoint )
 	}
 
 	private _isPointOnAnyElementInstance( event ): boolean {
@@ -177,25 +216,6 @@ export default class Interaction {
 
 
 	// ****** selection ******
-	public enableSelect(): void {
-		this._draw.canvas.removeEventListener( 'mousedown', this._mousedownListener )
-		this._draw.canvas.addEventListener( 'mousedown', this._mousedownListener )
-
-		this._draw.canvas.removeEventListener( 'mousemove', this._mousemoveListener )
-		this._draw.canvas.addEventListener( 'mousemove', this._mousemoveListener )
-
-		this._draw.canvas.removeEventListener( 'mouseup', this._mouseupListener )
-		this._draw.canvas.addEventListener( 'mouseup', this._mouseupListener )
-	}
-
-	public disableSelect(): void {
-		this._mousedownListener = null
-		this._draw.canvas.removeEventListener( 'mousedown', this._mousedownListener )
-		this._draw.canvas.removeEventListener( 'mousemove', this._mousemoveListener )
-		this._draw.canvas.removeEventListener( 'mouseup', this._mouseupListener )
-	}
-
-
 	private _unselectElementInstance( elementInstance: interfaces.DrawStoreElementInstance ): void {
 		elementInstance[ 'isSelected' ] = false
 	}
@@ -226,28 +246,24 @@ export default class Interaction {
 
 	// ****** drag selected elements instances  ******/
 	private _startDragSelectedElementInstances( event ) {
+		const self = this
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.deltaDragStartPointToLeftSideX = event.x - elementInstance.left
-			elementInstance.deltaDragStartPointToTopSideY = event.y - elementInstance.top
-
-			// console.log( {
-			// 	deltaDragStartPointToLeftSideX: elementInstance.deltaDragStartPointToLeftSideX,
-			// 	'event.x': event.x,
-			// 	'elementInstance.left': elementInstance.left,
-			// } )
+			elementInstance.deltaDragStartPointToLeftSideX = event.x - self.draw.canvasLeft  - elementInstance.left
+			elementInstance.deltaDragStartPointToTopSideY = event.y  - self.draw.canvasTop - elementInstance.top
 		}
 	}
 	private _draggingSelectedElementInstances( event ) {
+		const self = this
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
 			if ( ! _.isNil( elementInstance.deltaDragStartPointToLeftSideX ) ) {
-				elementInstance.left = event.x - elementInstance.deltaDragStartPointToLeftSideX
+				elementInstance.left = event.x - self.draw.canvasLeft - elementInstance.deltaDragStartPointToLeftSideX
 			}
 			if ( ! _.isNil( elementInstance.deltaDragStartPointToTopSideY ) ) {
-				elementInstance.top = event.y - elementInstance.deltaDragStartPointToTopSideY
+				elementInstance.top = event.y  - self.draw.canvasTop - elementInstance.deltaDragStartPointToTopSideY
 			}
 		}
 	}

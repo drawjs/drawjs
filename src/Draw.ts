@@ -39,6 +39,9 @@ export default class Draw {
 
 	public cellTypeClassMap: any = cellTypeClassMap
 
+	public onGraphClick: Function
+	public onGraphHover: Function
+
 	get storeActivePanelId(): string {
 		return (
 			! _.isNil( this.store.activePanelId ) ?
@@ -104,12 +107,21 @@ export default class Draw {
 		return store
 	}
 
-	get __storeActiveElementsInstances__(): Cell[] {
+	get __storeActiveElementsInstances__(): interfaces.DrawStoreElementInstance[] {
 		function get__instance__( element ) {
 			return element.__instance__
 		}
 		return this.storeActiveElements.map( get__instance__ )
 	}
+
+	get canvasLeft(): number {
+		return this.canvas.getBoundingClientRect().left
+	}
+	get canvasTop(): number {
+		return this.canvas.getBoundingClientRect().top
+	}
+
+
 
 	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas
@@ -248,7 +260,7 @@ export default class Draw {
 	}
 
 	private bindEvents() {
-		this.interaction.enableSelect()
+		this.interaction.initialize()
 	}
 
 	private clearEntireCanvas() {

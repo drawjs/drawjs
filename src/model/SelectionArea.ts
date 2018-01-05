@@ -25,7 +25,7 @@ export default class SelectionArea extends Geometry {
 			left,
 		} )
 
-		this._draw = draw
+		this.draw = draw
 	}
 
 	public isRectInSelectionArea( { left, top, width, height } ): boolean {
@@ -52,24 +52,24 @@ export default class SelectionArea extends Geometry {
 
 	public startDraw( event ): void {
 		this.startPoint = {
-			x: event.x,
-			y: event.y,
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop,
 		}
-		this._draw.render()
+		this.draw.render()
 	}
 
 	public drawing( event ): void {
 		this.endPoint = {
-			x: event.x,
-			y: event.y,
+			x: event.x  - this.draw.canvasLeft,
+			y: event.y  - this.draw.canvasTop,
 		}
-		this._draw.render()
+		this.draw.render()
 	}
 
 	public stopDraw( event ): void {
 		this.startPoint = null
 		this.endPoint = null
-		this._draw.render()
+		this.draw.render()
 	}
 
 

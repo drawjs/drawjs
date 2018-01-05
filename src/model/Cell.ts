@@ -4,7 +4,7 @@ import Draw from '../Draw'
 
 export default class Cell {
 	private id: string = generateUniqueId()
-	public _draw: Draw
+	public draw: Draw
 	public _isInstance: boolean = true
 	public type:string
 	constructor() {

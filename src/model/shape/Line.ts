@@ -1,3 +1,5 @@
+import * as _ from 'lodash'
+
 import Graph from 'model/Graph'
 import * as cellTypeList from 'store/constant_cellTypeList'
 import * as interfaces from 'interface/index'
@@ -5,6 +7,20 @@ import * as interfaces from 'interface/index'
 
 export default class Line extends Graph{
 	public points: interfaces.Point[] = []
+
+	get renderPath(): Path2D {
+		const self = this
+		const path = new Path2D()
+
+		this.points.map( connectLine )
+
+		function connectLine( point: interfaces.Point , pointIndex ) {
+			pointIndex === 0 && path.moveTo( point.x, point.y )
+			pointIndex !== 0 && path.lineTo( point.x, point.y  )
+		}
+
+		return path
+	}
 
 	constructor(
 		{
@@ -37,22 +53,18 @@ export default class Line extends Graph{
 		super.render( ctx )
 
 		ctx.save()
-		ctx.rotate((Math.PI / 180) * this.angle)
-		ctx.beginPath()
-
-		this.points.map( connectLine )
-
+		// ctx.rotate((Math.PI / 180) * this.angle)
+		ctx.lineWidth = 10
 		ctx.strokeStyle = this.fill
-		ctx.stroke()
+		ctx.stroke( this.renderPath )
+
 		ctx.restore()
 
-		function connectLine( point: interfaces.Point , pointIndex ) {
-			pointIndex === 0 && ctx.moveTo( point.x, point.y )
-			pointIndex !== 0 && ctx.lineTo( point.x, point.y  )
-		}
+
 	}
 
 	public containPoint( x: number, y: number ) {
-		return
+		// console.log( this.draw.ctx.isPointInStroke( this.renderPath, x, y ) )
+		// return this.draw.ctx.isPointInStroke( this.renderPath, x, y )
 	}
 }

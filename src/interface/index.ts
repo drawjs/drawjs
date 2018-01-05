@@ -17,7 +17,7 @@ export interface DrawStorePanelWithoutInstance {
 }
 
 export interface DrawStoreElementWithoutInstance {
-	_draw?: any,
+	draw?: any,
 	id: string,
 	type: string,
 	top: number,
