@@ -1,3 +1,6 @@
+export const defaultPathExandingValue = 20
+
+
 export function getDefaultDrawExportFileName(): string {
 	return `drawData-${ getCurrentTimeString() }`
 }

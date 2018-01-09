@@ -4,24 +4,24 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-		// {
-		// 	"type": "chrome",
-		// 	"request": "launch",
-		// 	"name": "Launch Chrome ",
-		// 	"port": 9222,
-		// 	"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
-		// 	"pathMapping": {
-		// 		"/": "${workspaceFolder}"
-		// 	},
-		// }
-
 		{
-            "name": "Attach",
-            "type": "chrome",
-            "request": "attach",
-            "port": 9222,
+			"type": "chrome",
+			"request": "launch",
+			"name": "Launch Chrome ",
+			"port": 9222,
 			"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
-            "webRoot": "${workspaceFolder}"
-        }
+			"pathMapping": {
+				"/": "${workspaceFolder}"
+			},
+		}
+
+		// {
+        //     "name": "Attach",
+        //     "type": "chrome",
+        //     "request": "attach",
+        //     "port": 9222,
+		// 	"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
+        //     "webRoot": "${workspaceFolder}"
+        // }
     ]
 }

@@ -1,5 +1,6 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
 
+
 // ******* import *******
 const uploadButton = document.getElementById( 'uploadButton' )
 
@@ -62,18 +63,15 @@ const rect3 = new draw.Rect( {
 
 
 const line1 = new draw.Line( {
-	points: [
-		{
-			x: 150,
-			y: 150,
-		},
-		{
-			x: 360,
-			y: 360
-		},
-	],
+	pointStart: {
+		x: 280,
+		y: 300,
+	},
+	pointEnd: {
+		x: 270,
+		y: 390
+	},
 	fill: 'blue',
-	angle: 0,
 } )
 
 draw.addElement( rect1 )
