@@ -215,6 +215,7 @@ export default class Interaction {
 	}
 
 
+
 	// ****** selection ******
 	private _unselectElementInstance( elementInstance: interfaces.DrawStoreElementInstance ): void {
 		elementInstance[ 'isSelected' ] = false
@@ -237,12 +238,13 @@ export default class Interaction {
 		}
 	}
 
-
 	private _selectAllElementInstancesSelectedBySelectionArea(): void {
 		this._unselectAllSelectedElementInstances()
 		this.elementInstancesSelectedBySelectionArea.map( this._selectElementInstance )
 	}
 	// ****** selection ******
+
+
 
 	// ****** drag selected elements instances  ******/
 	private _startDragSelectedElementInstances( event ) {

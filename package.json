@@ -6,7 +6,8 @@
     "typescript": "^2.6.2"
   },
   "scripts": {
-    "start": "webpack --watch",
+    "start": "npm run server | npm run dev",
+    "dev": "webpack --watch",
     "server": "node server.js",
     "test": "jasmine"
   },

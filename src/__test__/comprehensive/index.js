@@ -64,17 +64,17 @@ const rect3 = new draw.Rect( {
 
 const line1 = new draw.Line( {
 	pointStart: {
-		x: 280,
-		y: 300,
+		x: 200,
+		y: 200,
 	},
 	pointEnd: {
-		x: 270,
-		y: 390
+		x: 200 + 25,
+		y: 200
 	},
 	fill: 'blue',
 } )
 
-draw.addElement( rect1 )
+// draw.addElement( rect1 )
 // draw.addElement( rect2 )
 // draw.addElement( rect3 )
 

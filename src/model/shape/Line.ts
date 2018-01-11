@@ -2,24 +2,64 @@ import * as _ from "lodash"
 
 import Graph from "model/Graph"
 import * as cellTypeList from "store/constant_cellTypeList"
-import * as interfaces from "interface/index"
+import * as i from "interface/index"
 import { defaultPathExandingValue } from "store/index"
 
 export default class Line extends Graph {
-	public pointStart: interfaces.Point
-	public pointEnd: interfaces.Point
+	public pointStart: i.Point
+	public pointEnd: i.Point
+	public lineWidth: number
+	private _left: number
+	private _top: number
+	private _width: number
+	private _height: number
 
+	set left( value ) {
+		return
+		this._left = value
+
+		try {
+			this.leftPoint.x = value
+			this.rightPoint.x = value + this.width
+		} catch ( e ) {}
+	}
+	set top( value ) {
+		return
+		this._top = value
+
+		try {
+			this.leftPoint.y = value
+			this.rightPoint.y = value + this.height
+		} catch ( e ) {}
+	}
+	set width( value ) {
+		this._width = value
+	}
+	set height( value ) {
+		this._height = value
+	}
+	get left(): number {
+		return this._left
+	}
+	get top(): number {
+		return this._top
+	}
+	get width(): number {
+		return this.length * Math.cos( this.relativeAngle )
+	}
+	get height(): number {
+		return this.length * Math.sin( this.relativeAngle )
+	}
 	get relativeAngle(): number {
-		const deltaX = this.pointEnd.x - this.pointStart.x
-		const deltaY = this.pointEnd.y - this.pointStart.y
+		const deltaX = Math.abs( this.pointEnd.x - this.pointStart.x )
+		const deltaY = Math.abs( this.pointEnd.y - this.pointStart.y )
 
 		const isXZero = deltaX === 0
-		const relativeAngle = isXZero
-			? Math.PI / 2
-			: Math.atan( Math.atan2( deltaY, deltaX ) )
+		const relativeAngle = isXZero ?
+			Math.PI / 2 :
+			Math.atan( Math.abs( deltaY / deltaX ) )
 		return relativeAngle
 	}
-
 	get length(): number {
 		const length = Math.sqrt(
 			Math.pow( this.pointEnd.x - this.pointStart.x, 2 ) +
@@ -27,15 +67,18 @@ export default class Line extends Graph {
 		)
 		return length
 	}
-
 	get isXEndBiggerThantStart(): boolean {
-		return this.pointEnd.x - this.pointStart.x >= 0
+		return this.pointEnd.x - this.pointStart.x > 0
 	}
-
-	// get isXEndSmallerThantStart(): boolean {
-	// 	return this.pointEnd.x - this.pointStart.x < 0
-	// }
-
+	get isYRightSmallerThanLeft(): boolean {
+		return this.rightPoint.y < this.leftPoint.y
+	}
+	get leftPoint(): i.Point {
+		return this.isXEndBiggerThantStart ? this.pointStart : this.pointEnd
+	}
+	get rightPoint(): i.Point {
+		return this.isXEndBiggerThantStart ? this.pointEnd : this.pointStart
+	}
 	get renderPath(): Path2D {
 		const path = new Path2D()
 
@@ -44,57 +87,91 @@ export default class Line extends Graph {
 
 		return path
 	}
-
-	get renderRangePath(): Path2D {
+	get pathStoke(): Path2D {
 		const path = new Path2D()
-		const leftPoint =
-			this.pointStart.x < this.pointEnd.x
-				? this.pointStart
-				: this.pointEnd
-		const rightPoint =
-			this.pointStart.x >= this.pointEnd.x
-				? this.pointStart
-				: this.pointEnd
 		const w = defaultPathExandingValue
 		const l = this.length
 		const alpha = this.relativeAngle
-		const sqrt2 = Math.sqrt( 2 )
+		const isAlphaBiggerThanPIDivide4 = alpha > Math.PI / 4
+		const SQURT2W = Math.sqrt( 2 ) * w
 
-		const keyTopXLength = Math.abs( sqrt2 * w * Math.cos( alpha + 45 ) )
-		const keyTopYLength = Math.abs( sqrt2 * w * Math.sin( alpha + 45 ) )
-		const keyBottomXLength = Math.abs( sqrt2 * w * Math.sin( 45 - alpha ) )
-		const keyBottomYLength = Math.abs( sqrt2 * w * Math.cos( 45 - alpha ) )
+		let point1: i.Point
+		let point2: i.Point
+		let point3: i.Point
+		let point4: i.Point
 
-		let x: number
-		let y: number
+		if ( this.isYRightSmallerThanLeft ) {
+			/**
+			 * top left
+			 */
+			point1 = {
+				x: this.leftPoint.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.leftPoint.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
+			}
 
-		const pointLeftTop = {
-			x: leftPoint.x - keyTopXLength,
-			y: leftPoint.y - keyTopYLength
+			/**
+			 * top right
+			 */
+			point2 = {
+				x: this.rightPoint.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.rightPoint.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
+			}
+
+			/**
+			 * bottom right
+			 */
+			point3 = {
+				x: this.rightPoint.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.rightPoint.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
+			}
+
+			/**
+			 * bottom left
+			 */
+			point4 = {
+				x: this.leftPoint.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.leftPoint.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
+			}
 		}
 
-		const pointLeftBottom = {
-			x: leftPoint.x - keyTopXLength,
-			y: leftPoint.y + keyTopYLength
+		if ( !this.isYRightSmallerThanLeft ) {
+			/**
+			 * top left
+			 */
+			point1 = {
+				x: this.leftPoint.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.leftPoint.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
+			}
+
+			/**
+			 * top right
+			 */
+			point2 = {
+				x: this.rightPoint.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.rightPoint.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
+			}
+
+			/**
+			 * bottom right
+			 */
+			point3 = {
+				x: this.rightPoint.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.rightPoint.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
+			}
+
+			/**
+			 * bottom left
+			 */
+			point4 = {
+				x: this.leftPoint.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.leftPoint.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
+			}
 		}
 
-		const pointRightTop = {
-			x: rightPoint.x + keyBottomXLength,
-			y: rightPoint.y - keyBottomYLength
+		if ( !this.isYRightSmallerThanLeft ) {
 		}
 
-		const pointRightBottom = {
-			x: rightPoint.x + keyBottomXLength,
-			y: rightPoint.y + keyBottomYLength
-		}
-
-		const points = [
-			pointLeftTop,
-			pointRightTop,
-			pointRightBottom,
-			pointLeftBottom,
-			pointLeftTop,
-		]
+		const points = [ point1, point2, point3, point4, point1 ]
 
 		points.map( connectLine( path ) )
 
@@ -105,24 +182,31 @@ export default class Line extends Graph {
 		pointStart,
 		pointEnd,
 		fill = "black",
+		lineWidth = 1,
 		draggable = true,
 		isSelected = false
 	}: {
-		pointStart: interfaces.Point
-		pointEnd: interfaces.Point
-		fill: string
+		pointStart: i.Point
+		pointEnd: i.Point
+		fill?: string
+		lineWidth?: number
 		draggable: boolean
 		isSelected: boolean
 	} ) {
 		super( {
 			fill,
 			draggable,
-			isSelected
+			isSelected,
+			left: 0,
+			top : 0
 		} )
 
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
+
+		// this.left = this.leftPoint.x
+		// this.top = this.leftPoint.y
 	}
 
 	public render( ctx: CanvasRenderingContext2D ) {
@@ -134,20 +218,22 @@ export default class Line extends Graph {
 		ctx.strokeStyle = this.fill
 		ctx.stroke( this.renderPath )
 
-		ctx.strokeStyle = "red"
-		ctx.stroke( this.renderRangePath )
+		// ctx.fillStyle = "rgba(43, 228, 430, 0.3)"
+		// ctx.fill( this.pathStoke )
+		ctx.strokeStyle = "rgba(43, 228, 430, 0.3)"
+		ctx.stroke( this.pathStoke )
 
 		ctx.restore()
 	}
 
 	public containPoint( x: number, y: number ) {
-		// console.log('line', this.draw.ctx.isPointInStroke( this.renderPath, x, y ) )
-		// return this.draw.ctx.isPointInStroke( this.renderPath, x, y )
+		const isContain = this.draw.ctx.isPointInPath( this.pathStoke, x, y )
+		return isContain
 	}
 }
 
 function connectLine( path: Path2D ) {
-	return ( point: interfaces.Point, pointIndex ) => {
+	return ( point: i.Point, pointIndex ) => {
 		pointIndex === 0 && path.moveTo( point.x, point.y )
 		pointIndex !== 0 && path.lineTo( point.x, point.y )
 	}

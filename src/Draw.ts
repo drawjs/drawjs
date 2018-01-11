@@ -207,7 +207,7 @@ export default class Draw {
 					isSelected: boolean,
 				} = elementWithoutInstance
 
-				const completeElement = {
+				const wholeElement = {
 					id: ! _.isNil( id ) ? id : this.generateUniqueId(),
 					__instance__: getInstanceByElementWithoutInstance( elementWithoutInstance, this ),
 					type,
@@ -223,10 +223,10 @@ export default class Draw {
 				}
 
 				if ( _.isNil( panelId ) ) {
-					this.storeActiveElements.push( completeElement )
+					this.storeActiveElements.push( wholeElement )
 				}
 				if (! _.isNil( panelId ) ) {
-					this.getStoreElementsByPanelId( panelId ).push( completeElement )
+					this.getStoreElementsByPanelId( panelId ).push( wholeElement )
 				}
 			},
 
