@@ -219,33 +219,29 @@ export default class Line extends Graph {
 
 
 	// ******* Drag ******
-	public updatePrevDraggingPoint( event ) {
+	private _updatePrevDraggingPoint( event ) {
 		this._prevDraggingPoint = {
 			x: event.x,
 			y: event.y,
 		}
 	}
-
-	public updateDrag( event ) {
+	private _updateDrag( event ) {
 		this.pointStart.x = this.pointStart.x + event.x - this._prevDraggingPoint.x
 		this.pointStart.y = this.pointStart.y + event.y - this._prevDraggingPoint.y
 
 		this.pointEnd.x = this.pointEnd.x + event.x - this._prevDraggingPoint.x
 		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y
 
-		this.updatePrevDraggingPoint( event )
+		this._updatePrevDraggingPoint( event )
 	}
-
-	public startDrag( event ): void {
-		this.updatePrevDraggingPoint( event )
+	private _startDrag( event ): void {
+		this._updatePrevDraggingPoint( event )
 	}
-
-	public dragging( event ): void {
-		this.updateDrag( event )
+	private _dragging( event ): void {
+		this._updateDrag( event )
 	}
-
-	public stopDrag( event ): void {
-		this.updateDrag( event )
+	private _stopDrag( event ): void {
+		this._updateDrag( event )
 	}
 	// ******* Drag ******
 }

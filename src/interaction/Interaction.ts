@@ -252,7 +252,7 @@ export default class Interaction {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.startDrag && elementInstance.startDrag( event )
+			elementInstance._startDrag && elementInstance._startDrag( event )
 			// elementInstance.deltaDragStartPointToLeftSideX = event.x - self.draw.canvasLeft  - elementInstance.left
 			// elementInstance.deltaDragStartPointToTopSideY = event.y  - self.draw.canvasTop - elementInstance.top
 		}
@@ -262,7 +262,7 @@ export default class Interaction {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.dragging && elementInstance.dragging( event )
+			elementInstance._dragging && elementInstance._dragging( event )
 
 			// if ( ! _.isNil( elementInstance.deltaDragStartPointToLeftSideX ) ) {
 			// 	elementInstance.left = event.x - self.draw.canvasLeft - elementInstance.deltaDragStartPointToLeftSideX
@@ -276,7 +276,7 @@ export default class Interaction {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.stopDrag && elementInstance.stopDrag( event )
+			elementInstance._stopDrag && elementInstance._stopDrag( event )
 			// elementInstance.deltaDragStartPointToLeftSideX = null
 			// elementInstance.deltaDragStartPointToTopSideY = null
 		}

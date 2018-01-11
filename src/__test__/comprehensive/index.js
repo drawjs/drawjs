@@ -74,7 +74,7 @@ const line1 = new draw.Line( {
 	fill: 'blue',
 } )
 
-// draw.addElement( rect1 )
+draw.addElement( rect1 )
 // draw.addElement( rect2 )
 // draw.addElement( rect3 )
 
