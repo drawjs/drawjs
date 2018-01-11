@@ -6,8 +6,6 @@ import * as i from "interface/index"
 
 
 export default class Rect extends Graph{
-	private _prevDraggingPoint: i.Point
-
 	get renderPath(): Path2D {
 		const path = new Path2D()
 		path.rect(this.left, this.top, this.width, this.height)
@@ -78,26 +76,11 @@ export default class Rect extends Graph{
 
 
 	// ******* Drag ******
-	private _updatePrevDraggingPoint( event ) {
-		this._prevDraggingPoint = {
-			x: event.x,
-			y: event.y,
-		}
-	}
-	private _updateDrag( event ) {
+	public _updateDrag( event ) {
 		this.left = this.left + event.x - this._prevDraggingPoint.x
 		this.top = this.top + event.y - this._prevDraggingPoint.y
 
 		this._updatePrevDraggingPoint( event )
-	}
-	private _startDrag( event ): void {
-		this._updatePrevDraggingPoint( event )
-	}
-	private _dragging( event ): void {
-		this._updateDrag( event )
-	}
-	private _stopDrag( event ): void {
-		this._updateDrag( event )
 	}
 	// ******* Drag ******
 }

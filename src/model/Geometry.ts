@@ -23,8 +23,10 @@ export default abstract class Geometry extends Cell {
 	public onDragging: Function
 	public onDragStop: Function
 	// ****** drag  ******/
-	constructor(
-		{
+	constructor( props ) {
+		super()
+
+		const {
 			top = 0,
 			left = 0,
 			width = 100,
@@ -40,9 +42,20 @@ export default abstract class Geometry extends Cell {
 			fill?: string,
 			angle?: number,
 			draggable?: boolean,
-		}
-	) {
-		super()
+		} = props
+
+		const self = this
+
+		// _.mapValues( props, setValue )
+
+		// function setValue( value, key ): void {
+		// 	if ( ! _.isNil( self[ key ] ) ) {
+		// 		self[ key ] = value
+		// 	}
+		// }
+
+
+
 		this.top = top
 		this.left = left
 		this.fill = fill

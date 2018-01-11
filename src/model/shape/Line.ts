@@ -10,34 +10,26 @@ export default class Line extends Graph {
 	public pointEnd: i.Point
 	public lineWidth: number
 
-	/**
-	 * Drag
-	 */
-	private _prevDraggingPoint: i.Point
-
-	set left( value ) {
-		try {
-			const cachedWidth = this.length * Math.cos( this.relativeAngle )
-
-			this.leftPoint.x = value
-			this.rightPoint.x = value + cachedWidth
-
-		} catch ( e ) {}
-	}
-	set top( value ) {
-
-		try {
-			const cachedHeight = this.height
-			this.leftPoint.y = value
-			this.rightPoint.y = value + cachedHeight
-		} catch ( e ) {}
-	}
+	set left( value ) {}
+	set top( value ) {}
+	set width( value ) {}
+	set height( value ) {}
 	get left(): number {
-		return this.leftPoint.x
+		return this.pointLeft.x
 	}
 	get top(): number {
-		return
+		return Math.min(
+			this.pointStart.y,
+			this.pointEnd.y,
+		)
 	}
+	get width(): number {
+		return this.length * Math.cos( this.relativeAngle )
+	}
+	get height(): number {
+		return this.length * Math.sin( this.relativeAngle )
+	}
+
 	get relativeAngle(): number {
 		const deltaX = Math.abs( this.pointEnd.x - this.pointStart.x )
 		const deltaY = Math.abs( this.pointEnd.y - this.pointStart.y )
@@ -59,12 +51,12 @@ export default class Line extends Graph {
 		return this.pointEnd.x - this.pointStart.x > 0
 	}
 	get isYRightSmallerThanLeft(): boolean {
-		return this.rightPoint.y < this.leftPoint.y
+		return this.pointRight.y < this.pointLeft.y
 	}
-	get leftPoint(): i.Point {
+	get pointLeft(): i.Point {
 		return this.isXEndBiggerThantStart ? this.pointStart : this.pointEnd
 	}
-	get rightPoint(): i.Point {
+	get pointRight(): i.Point {
 		return this.isXEndBiggerThantStart ? this.pointEnd : this.pointStart
 	}
 	get renderPath(): Path2D {
@@ -93,32 +85,32 @@ export default class Line extends Graph {
 			 * top left
 			 */
 			point1 = {
-				x: this.leftPoint.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
-				y: this.leftPoint.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
+				x: this.pointLeft.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.pointLeft.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
 			}
 
 			/**
 			 * top right
 			 */
 			point2 = {
-				x: this.rightPoint.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
-				y: this.rightPoint.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
+				x: this.pointRight.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.pointRight.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
 			}
 
 			/**
 			 * bottom right
 			 */
 			point3 = {
-				x: this.rightPoint.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
-				y: this.rightPoint.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
+				x: this.pointRight.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.pointRight.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
 			}
 
 			/**
 			 * bottom left
 			 */
 			point4 = {
-				x: this.leftPoint.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
-				y: this.leftPoint.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
+				x: this.pointLeft.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.pointLeft.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
 			}
 		}
 
@@ -127,32 +119,32 @@ export default class Line extends Graph {
 			 * top left
 			 */
 			point1 = {
-				x: this.leftPoint.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
-				y: this.leftPoint.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
+				x: this.pointLeft.x + w * ( Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.pointLeft.y + w * ( -Math.cos( alpha ) - Math.sin( alpha ) )
 			}
 
 			/**
 			 * top right
 			 */
 			point2 = {
-				x: this.rightPoint.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
-				y: this.rightPoint.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
+				x: this.pointRight.x + w * ( Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.pointRight.y + w * ( -Math.cos( alpha ) + Math.sin( alpha ) )
 			}
 
 			/**
 			 * bottom right
 			 */
 			point3 = {
-				x: this.rightPoint.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
-				y: this.rightPoint.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
+				x: this.pointRight.x + w * ( -Math.sin( alpha ) + Math.cos( alpha ) ),
+				y: this.pointRight.y + w * ( Math.cos( alpha ) + Math.sin( alpha ) )
 			}
 
 			/**
 			 * bottom left
 			 */
 			point4 = {
-				x: this.leftPoint.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
-				y: this.leftPoint.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
+				x: this.pointLeft.x + w * ( -Math.sin( alpha ) - Math.cos( alpha ) ),
+				y: this.pointLeft.y + w * ( Math.cos( alpha ) - Math.sin( alpha ) )
 			}
 		}
 
@@ -190,9 +182,6 @@ export default class Line extends Graph {
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
-
-		this.left = this.leftPoint.x
-		this.top = this.leftPoint.y
 	}
 
 	public render( ctx: CanvasRenderingContext2D ) {
@@ -219,13 +208,7 @@ export default class Line extends Graph {
 
 
 	// ******* Drag ******
-	private _updatePrevDraggingPoint( event ) {
-		this._prevDraggingPoint = {
-			x: event.x,
-			y: event.y,
-		}
-	}
-	private _updateDrag( event ) {
+	public _updateDrag( event ) {
 		this.pointStart.x = this.pointStart.x + event.x - this._prevDraggingPoint.x
 		this.pointStart.y = this.pointStart.y + event.y - this._prevDraggingPoint.y
 
@@ -233,15 +216,6 @@ export default class Line extends Graph {
 		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y
 
 		this._updatePrevDraggingPoint( event )
-	}
-	private _startDrag( event ): void {
-		this._updatePrevDraggingPoint( event )
-	}
-	private _dragging( event ): void {
-		this._updateDrag( event )
-	}
-	private _stopDrag( event ): void {
-		this._updateDrag( event )
 	}
 	// ******* Drag ******
 }
