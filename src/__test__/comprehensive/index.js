@@ -35,12 +35,12 @@ function callback( text ) {
 
 // ******* export *******
 const rect1 = new draw.Rect( {
-	top: 100,
-	left: 100,
+	top: 200,
+	left: 200,
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 0,
+	angle: 10,
 } )
 
 const rect2 = new draw.Rect( {

@@ -13,7 +13,7 @@ export default class Cell {
 	/**
 	 * drag
 	 */
-	private _prevDraggingPoint: i.Point
+	public _prevDraggingPoint: i.Point
 
 	constructor() {
 

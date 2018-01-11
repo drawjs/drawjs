@@ -1,39 +1,35 @@
-import * as _ from 'lodash'
+import * as _ from "lodash"
 
-import Graph from 'model/Graph'
-import * as cellTypeList from 'store/constant_cellTypeList'
+import Graph from "model/Graph"
+import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 
-
-export default class Rect extends Graph{
+export default class Rect extends Graph {
 	get renderPath(): Path2D {
 		const path = new Path2D()
-		path.rect(this.left, this.top, this.width, this.height)
+		path.rect( - this.width / 2, - this.height / 2, this.width, this.height )
 		return path
 	}
 
-	constructor(
-		{
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			draggable = false,
-			isSelected,
-		}:
-		{
-			top: number,
-			left: number,
-			width: number,
-			height: number,
-			fill: string,
-			angle: number,
-			draggable: boolean,
-			isSelected: boolean,
-		}
-	) {
+	constructor( {
+		top,
+		left,
+		width,
+		height,
+		fill,
+		angle,
+		draggable = false,
+		isSelected
+	}: {
+		top: number
+		left: number
+		width: number
+		height: number
+		fill: string
+		angle: number
+		draggable: boolean
+		isSelected: boolean
+	} ) {
 		super( {
 			top,
 			left,
@@ -42,7 +38,7 @@ export default class Rect extends Graph{
 			fill,
 			angle,
 			draggable,
-			isSelected,
+			isSelected
 		} )
 		this.type = cellTypeList.RECT
 		this.draggable = true
@@ -52,12 +48,15 @@ export default class Rect extends Graph{
 		super.render( ctx )
 
 		ctx.save()
+		ctx.translate(
+			this.left + this.width / 2,
+			this.top + this.height / 2,
+		)
 		ctx.fillStyle = this.fill
-		// ctx.rotate((Math.PI / 180) * this.angle)
+		ctx.rotate( this.angle * Math.PI / 180  )
 		ctx.fill( this.renderPath )
 
 		ctx.restore()
-
 
 		function cloneDeepWithCustomizer( value ): void {
 			const type = typeof value
@@ -73,7 +72,6 @@ export default class Rect extends Graph{
 		// 	y <= this.top + this.height
 		// )
 	}
-
 
 	// ******* Drag ******
 	public _updateDrag( event ) {

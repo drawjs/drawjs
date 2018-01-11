@@ -40,11 +40,15 @@ export default abstract class Graph extends Geometry {
 
 	private _renderSelection( ctx: CanvasRenderingContext2D ) {
 		ctx.save()
+		ctx.translate(
+			this.left + this.width / 2,
+			this.top + this.height / 2,
+		)
 		ctx.lineWidth = 1
 		ctx.setLineDash( [ 5, 5 ] )
 		ctx.rotate((Math.PI / 180) * this.angle)
 		ctx.strokeStyle = 'grey'
-		ctx.strokeRect(this.left, this.top, this.width, this.height)
+		ctx.strokeRect( - this.width / 2, - this.height / 2, this.width, this.height )
 		ctx.restore()
 	}
 
