@@ -1,4 +1,4 @@
-export const defaultPathExandingValue = 20
+export const defaultPathExandingValue = 5
 
 
 export function getDefaultDrawExportFileName(): string {

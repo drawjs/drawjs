@@ -9,46 +9,34 @@ export default class Line extends Graph {
 	public pointStart: i.Point
 	public pointEnd: i.Point
 	public lineWidth: number
-	private _left: number
-	private _top: number
-	private _width: number
-	private _height: number
+
+	/**
+	 * Drag
+	 */
+	private _prevDraggingPoint: i.Point
 
 	set left( value ) {
-		return
-		this._left = value
-
 		try {
+			const cachedWidth = this.length * Math.cos( this.relativeAngle )
+
 			this.leftPoint.x = value
-			this.rightPoint.x = value + this.width
+			this.rightPoint.x = value + cachedWidth
+
 		} catch ( e ) {}
 	}
 	set top( value ) {
-		return
-		this._top = value
 
 		try {
+			const cachedHeight = this.height
 			this.leftPoint.y = value
-			this.rightPoint.y = value + this.height
+			this.rightPoint.y = value + cachedHeight
 		} catch ( e ) {}
 	}
-	set width( value ) {
-		this._width = value
-	}
-	set height( value ) {
-		this._height = value
-	}
 	get left(): number {
-		return this._left
+		return this.leftPoint.x
 	}
 	get top(): number {
-		return this._top
-	}
-	get width(): number {
-		return this.length * Math.cos( this.relativeAngle )
-	}
-	get height(): number {
-		return this.length * Math.sin( this.relativeAngle )
+		return
 	}
 	get relativeAngle(): number {
 		const deltaX = Math.abs( this.pointEnd.x - this.pointStart.x )
@@ -196,17 +184,15 @@ export default class Line extends Graph {
 		super( {
 			fill,
 			draggable,
-			isSelected,
-			left: 0,
-			top : 0
+			isSelected
 		} )
 
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
 
-		// this.left = this.leftPoint.x
-		// this.top = this.leftPoint.y
+		this.left = this.leftPoint.x
+		this.top = this.leftPoint.y
 	}
 
 	public render( ctx: CanvasRenderingContext2D ) {
@@ -218,10 +204,10 @@ export default class Line extends Graph {
 		ctx.strokeStyle = this.fill
 		ctx.stroke( this.renderPath )
 
-		// ctx.fillStyle = "rgba(43, 228, 430, 0.3)"
-		// ctx.fill( this.pathStoke )
-		ctx.strokeStyle = "rgba(43, 228, 430, 0.3)"
-		ctx.stroke( this.pathStoke )
+		ctx.fillStyle = "rgba(43, 228, 430, 0.3)"
+		ctx.fill( this.pathStoke )
+		// ctx.strokeStyle = "rgba(43, 228, 430, 0.3)"
+		// ctx.stroke( this.pathStoke )
 
 		ctx.restore()
 	}
@@ -230,6 +216,38 @@ export default class Line extends Graph {
 		const isContain = this.draw.ctx.isPointInPath( this.pathStoke, x, y )
 		return isContain
 	}
+
+
+	// ******* Drag ******
+	public updatePrevDraggingPoint( event ) {
+		this._prevDraggingPoint = {
+			x: event.x,
+			y: event.y,
+		}
+	}
+
+	public updateDrag( event ) {
+		this.pointStart.x = this.pointStart.x + event.x - this._prevDraggingPoint.x
+		this.pointStart.y = this.pointStart.y + event.y - this._prevDraggingPoint.y
+
+		this.pointEnd.x = this.pointEnd.x + event.x - this._prevDraggingPoint.x
+		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y
+
+		this.updatePrevDraggingPoint( event )
+	}
+
+	public startDrag( event ): void {
+		this.updatePrevDraggingPoint( event )
+	}
+
+	public dragging( event ): void {
+		this.updateDrag( event )
+	}
+
+	public stopDrag( event ): void {
+		this.updateDrag( event )
+	}
+	// ******* Drag ******
 }
 
 function connectLine( path: Path2D ) {

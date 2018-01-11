@@ -2,8 +2,12 @@ import * as _ from 'lodash'
 
 import Graph from 'model/Graph'
 import * as cellTypeList from 'store/constant_cellTypeList'
+import * as i from "interface/index"
+
 
 export default class Rect extends Graph{
+	private _prevDraggingPoint: i.Point
+
 	get renderPath(): Path2D {
 		const path = new Path2D()
 		path.rect(this.left, this.top, this.width, this.height)
@@ -71,4 +75,6 @@ export default class Rect extends Graph{
 		// 	y <= this.top + this.height
 		// )
 	}
+
+
 }

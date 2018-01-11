@@ -252,8 +252,9 @@ export default class Interaction {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.deltaDragStartPointToLeftSideX = event.x - self.draw.canvasLeft  - elementInstance.left
-			elementInstance.deltaDragStartPointToTopSideY = event.y  - self.draw.canvasTop - elementInstance.top
+			elementInstance.startDrag && elementInstance.startDrag( event )
+			// elementInstance.deltaDragStartPointToLeftSideX = event.x - self.draw.canvasLeft  - elementInstance.left
+			// elementInstance.deltaDragStartPointToTopSideY = event.y  - self.draw.canvasTop - elementInstance.top
 		}
 	}
 	private _draggingSelectedElementInstances( event ) {
@@ -261,20 +262,23 @@ export default class Interaction {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			if ( ! _.isNil( elementInstance.deltaDragStartPointToLeftSideX ) ) {
-				elementInstance.left = event.x - self.draw.canvasLeft - elementInstance.deltaDragStartPointToLeftSideX
-			}
-			if ( ! _.isNil( elementInstance.deltaDragStartPointToTopSideY ) ) {
-				elementInstance.top = event.y  - self.draw.canvasTop - elementInstance.deltaDragStartPointToTopSideY
-			}
+			elementInstance.dragging && elementInstance.dragging( event )
+
+			// if ( ! _.isNil( elementInstance.deltaDragStartPointToLeftSideX ) ) {
+			// 	elementInstance.left = event.x - self.draw.canvasLeft - elementInstance.deltaDragStartPointToLeftSideX
+			// }
+			// if ( ! _.isNil( elementInstance.deltaDragStartPointToTopSideY ) ) {
+			// 	elementInstance.top = event.y  - self.draw.canvasTop - elementInstance.deltaDragStartPointToTopSideY
+			// }
 		}
 	}
 	private _stopDragSelectedElementInstances( event ) {
 		this.__storeSelectedActiveElementsInstances__.map( resolve )
 
 		function resolve( elementInstance ) {
-			elementInstance.deltaDragStartPointToLeftSideX = null
-			elementInstance.deltaDragStartPointToTopSideY = null
+			elementInstance.stopDrag && elementInstance.stopDrag( event )
+			// elementInstance.deltaDragStartPointToLeftSideX = null
+			// elementInstance.deltaDragStartPointToTopSideY = null
 		}
 	}
 	// ****** drag selected elements instances  ******/

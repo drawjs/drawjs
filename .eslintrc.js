@@ -43,6 +43,8 @@ module.exports = {
 				align: "colon"
 			}
 		],
+		"space-in-parens": ["warn", "always"],
+		"space-infix-ops": ["warn", { int32Hint: false }],
 		keyword: {
 			before: true,
 			after: true

@@ -69,7 +69,7 @@ const line1 = new draw.Line( {
 	},
 	pointEnd: {
 		x: 200 + 25,
-		y: 200
+		y: 200 + 43.30127018922195
 	},
 	fill: 'blue',
 } )
