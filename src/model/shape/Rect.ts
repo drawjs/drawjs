@@ -7,8 +7,16 @@ import * as i from "interface/index"
 export default class Rect extends Graph {
 	get renderPath(): Path2D {
 		const path = new Path2D()
-		path.rect( - this.width / 2, - this.height / 2, this.width, this.height )
+		path.rect( -this.width / 2, -this.height / 2, this.width, this.height )
 		return path
+	}
+
+	get originX(): number {
+		return this.left + this.width / 2
+	}
+
+	get originY(): number {
+		return this.top + this.height / 2
 	}
 
 	constructor( {
@@ -48,12 +56,9 @@ export default class Rect extends Graph {
 		super.render( ctx )
 
 		ctx.save()
-		ctx.translate(
-			this.left + this.width / 2,
-			this.top + this.height / 2,
-		)
+		ctx.translate( this.originX, this.originY )
 		ctx.fillStyle = this.fill
-		ctx.rotate( this.angle * Math.PI / 180  )
+		ctx.rotate( this.angle * this.DEGREE_TO_RADIAN )
 		ctx.fill( this.renderPath )
 
 		ctx.restore()
@@ -64,13 +69,36 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ) {
-		return this.draw.ctx.isPointInPath( this.renderPath, x, y )
-		// return (
-		// 	x >= this.left &&
-		// 	x <= this.left + this.width &&
-		// 	y >= this.top &&
-		// 	y <= this.top + this.height
-		// )
+		const relativePoint = this.getTransformedPoint( { x, y } )
+		return this.draw.ctx.isPointInPath( this.renderPath, relativePoint.x, relativePoint.y )
+	}
+
+	/**
+	 * Get the point
+	 * which was tansformed or rotated reversely and
+	 * was related to context origin of coordinate,
+	 * when relevant context was rotated or transformed,
+	 * to match original path
+	 */
+	public getTransformedPoint( {
+		x,
+		y
+	}: {
+		x: number
+		y: number
+	} ) {
+		let resPoint: i.Point = {
+			x: x - this.originX,
+			y: y - this.originY
+		}
+
+		resPoint = this.rotatePoint( resPoint, -this.angle )
+
+		const res = {
+			x: resPoint.x,
+			y: resPoint.y
+		}
+		return res
 	}
 
 	// ******* Drag ******

@@ -10,6 +10,10 @@ export default class Cell {
 	public _isInstance: boolean = true
 	public type:string
 
+	public DEGREE_TO_RADIAN: number = Math.PI / 180
+	public RADIAN_TO_DEGREE: number = 180 / Math.PI
+
+
 	/**
 	 * drag
 	 */
@@ -46,4 +50,27 @@ export default class Cell {
 		this._updateDrag( event )
 	}
 	// ******* Drag ******
+
+	// ******* Transform ******
+	public rotatePoint( point: i.Point, angle: number, centerPoint: i.Point = { x: 0, y: 0 }) {
+		if ( angle === 0 ) {
+			return point
+		}
+
+		let resPoint: i.Point = _.cloneDeep( point )
+		const radianAngle = angle * this.DEGREE_TO_RADIAN
+
+		const relativePoint = {
+			x: resPoint.x - centerPoint.x,
+			y: resPoint.y - centerPoint.y,
+		}
+
+		resPoint = {
+			x: relativePoint.x * Math.cos( radianAngle ) - relativePoint.y * Math.sin( radianAngle ),
+            y: relativePoint.x * Math.sin( radianAngle ) + relativePoint.y * Math.cos( radianAngle )
+		}
+
+		return resPoint
+	}
+	// ******* Transform ******
 }

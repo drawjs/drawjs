@@ -40,7 +40,7 @@ const rect1 = new draw.Rect( {
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 10,
+	angle: 60,
 } )
 
 const rect2 = new draw.Rect( {
