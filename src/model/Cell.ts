@@ -58,7 +58,7 @@ export default class Cell {
 		}
 
 		let resPoint: i.Point = _.cloneDeep( point )
-		const radianAngle = angle * this.DEGREE_TO_RADIAN
+		const alpha = angle * this.DEGREE_TO_RADIAN
 
 		const relativePoint = {
 			x: resPoint.x - centerPoint.x,
@@ -66,8 +66,8 @@ export default class Cell {
 		}
 
 		resPoint = {
-			x: relativePoint.x * Math.cos( radianAngle ) - relativePoint.y * Math.sin( radianAngle ),
-            y: relativePoint.x * Math.sin( radianAngle ) + relativePoint.y * Math.cos( radianAngle )
+			x: relativePoint.x * Math.cos( alpha ) - relativePoint.y * Math.sin( alpha ),
+            y: relativePoint.x * Math.sin( alpha ) + relativePoint.y * Math.cos( alpha )
 		}
 
 		return resPoint
