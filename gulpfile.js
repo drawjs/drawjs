@@ -9,10 +9,10 @@ const sourcemaps = require( 'gulp-sourcemaps' )
 const distPathStr = 'dist'
 const distPath = PATH.resolve( __dirname, 'dist' )
 const srcOtherFilesGlobs = [
-	'src/**/*.json',
-	'src/**/*.html',
+	// 'src/**/*.json',
+	// 'src/**/*.html',
 ]
-const watchingSrcGlob = 'src/**/*'
+const watchingSrcGlob = 'src/**/*/__test__/**/*'
 const serverPath = distPath
 const shouldRebuildDist = true
 
@@ -90,7 +90,7 @@ watcher.on( 'change', main )
 
 gulp.task( "default", () => {
 	main()
-	server()
+	// server()
 } )
 
 

@@ -3,6 +3,7 @@ import * as _ from "lodash"
 import Geometry from "../Geometry"
 import Cell from "../Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
+import { getPointAngleToOrigin } from 'util/index'
 
 export default class RotatingIcon extends Cell {
 	public instance: any
@@ -89,17 +90,31 @@ export default class RotatingIcon extends Cell {
 		const deltaX = event.x - this._prevDraggingPoint.x
 		const deltaY = event.y - this._prevDraggingPoint.y
 
+		const instanceCenterX = this.instance.left + this.instance.width / 2
+		const instanceCenterY = this.instance.top + this.instance.height / 2
+
+		angle = getPointAngleToOrigin( {
+			x: event.x - this.draw.canvasLeft - instanceCenterX,
+			y: event.y - this.draw.canvasTop  - instanceCenterY,
+		} )
+
+		console.log( {
+			x: event.x - this.draw.canvasLeft - instanceCenterX,
+			y: instanceCenterY - this.draw.canvasTop  - event.y,
+		} )
+
 		this._updatePrevDraggingPoint( event )
 
-		const r = this.instanceCenterToThisCenter
+		console.log( angle * this.RADIAN_TO_DEGREE )
 
-		angle = 2 * Math.asin(
-			Math.sqrt( Math.pow( deltaX, 2 ) + Math.pow( deltaY, 2 ) )  / r
-		)
+		// const r = this.instanceCenterToThisCenter
 
-		this.instance.angle = this.instance.angle + angle * this.RADIAN_TO_DEGREE
+		// angle = 2 * Math.asin(
+		// 	Math.sqrt( Math.pow( deltaX, 2 ) + Math.pow( deltaY, 2 ) )  / r
+		// )
 
-		console.log( this.instance.angle )
+		this.instance.angle = angle * this.RADIAN_TO_DEGREE
+
 		this.draw.render()
 	}
 	// ******* Drag ******
