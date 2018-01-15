@@ -3,42 +3,12 @@ import { generateUniqueId } from 'util/index'
 import Geometry from 'model/Geometry'
 
 export default abstract class Graph extends Geometry {
-	constructor(
-		{
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			draggable,
-			isSelected=false,
-		}: {
-			top?: number,
-			left?: number,
-			width?: number,
-			height?: number,
-			fill?: string,
-			angle?: number,
-			draggable?: boolean,
-			isSelected?: boolean,
-		}
-	) {
-		super( {
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			draggable,
-		} )
-
-
-		this.isSelected = isSelected
+	constructor( props ) {
+		super( props )
 	}
 
-	private _renderSelection( ctx: CanvasRenderingContext2D ) {
+	private _renderSelection( ) {
+		const ctx = this.draw.ctx
 		ctx.save()
 		ctx.translate(
 			this.left + this.width / 2,
@@ -52,11 +22,10 @@ export default abstract class Graph extends Geometry {
 		ctx.restore()
 	}
 
-	public render( ctx: CanvasRenderingContext2D ) {
-		super.render( ctx )
+	public render() {
+		const ctx = this.draw.ctx
+		super.render()
 
-		this.isSelected && this._renderSelection( ctx )
+		this.isSelected && this._renderSelection()
 	}
-
-	public abstract containPoint( x: number, y: number ): void
 }

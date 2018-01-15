@@ -8,7 +8,7 @@ module.exports = {
 		// 'cell': './src/model/cell.ts'
 
 		// generate source map for __test__
-		// '__test__/exportData/index.js': './src/__test__/exportData/index.js',
+		'__test__/comprehensive/index.js': './src/__test__/comprehensive/index.js',
 		// '__test__/importData/index.js': './src/__test__/importData/index.js',
 	},
 	output: {
@@ -49,7 +49,11 @@ module.exports = {
 			{
 				from: './src/__test__',
 				to: '__test__'
-			}
+			},
+			{
+				from: './src/asset',
+				to: 'asset'
+			},
 		] )
 	]
 

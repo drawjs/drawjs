@@ -13,7 +13,6 @@ export default abstract class Geometry extends Cell {
 	public angle: number
 
 	public draggable: boolean
-	public isSelected: boolean
 
 
 	// ****** drag  ******/
@@ -24,7 +23,7 @@ export default abstract class Geometry extends Cell {
 	public onDragStop: Function
 	// ****** drag  ******/
 	constructor( props ) {
-		super()
+		super( props )
 
 		const {
 			top = 0,
@@ -67,8 +66,8 @@ export default abstract class Geometry extends Cell {
 
 
 
-	public render( ctx: CanvasRenderingContext2D ) {
-		super.render( ctx )
+	public render() {
+		super.render()
 	}
 
 	public abstract containPoint( x: number, y: number ): void

@@ -1,10 +1,13 @@
 import * as _ from "lodash"
 
 import Graph from "model/Graph"
+import RotatingIcon from '../tool/RotatingIcon'
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 
 export default class Rect extends Graph {
+	public _rotatingIcon: RotatingIcon
+
 	get renderPath(): Path2D {
 		const path = new Path2D()
 		path.rect( -this.width / 2, -this.height / 2, this.width, this.height )
@@ -19,41 +22,21 @@ export default class Rect extends Graph {
 		return this.top + this.height / 2
 	}
 
-	constructor( {
-		top,
-		left,
-		width,
-		height,
-		fill,
-		angle,
-		draggable = false,
-		isSelected
-	}: {
-		top: number
-		left: number
-		width: number
-		height: number
-		fill: string
-		angle: number
-		draggable: boolean
-		isSelected: boolean
-	} ) {
-		super( {
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			draggable,
-			isSelected
-		} )
+	constructor( props ) {
+		super( props )
+
 		this.type = cellTypeList.RECT
 		this.draggable = true
+
+		this._rotatingIcon = new RotatingIcon( {
+			instance: this,
+			draw: this.draw
+		} )
 	}
 
-	public render( ctx: CanvasRenderingContext2D ) {
-		super.render( ctx )
+	public render() {
+		const ctx = this.draw.ctx
+		super.render()
 
 		ctx.save()
 		ctx.translate( this.originX, this.originY )
@@ -61,16 +44,27 @@ export default class Rect extends Graph {
 		ctx.rotate( this.angle * this.DEGREE_TO_RADIAN )
 		ctx.fill( this.renderPath )
 
+		ctx.translate( 0, 0 )
 		ctx.restore()
+
+		this._rotatingIcon.renderByInstance( {
+			_centerX: this.originX,
+			_centerY: this.top - 7.5 - 7.5,
+			_size: 15,
+			angle: this.angle
+		} )
 
 		function cloneDeepWithCustomizer( value ): void {
 			const type = typeof value
 		}
 	}
 
-	public containPoint( x, y ) {
+	public containPoint( x, y ): boolean {
+		let res = false
 		const relativePoint = this.getTransformedPoint( { x, y } )
-		return this.draw.ctx.isPointInPath( this.renderPath, relativePoint.x, relativePoint.y )
+		res = this.draw.ctx.isPointInPath( this.renderPath, relativePoint.x, relativePoint.y )
+		return res
+
 	}
 
 	/**
@@ -107,6 +101,8 @@ export default class Rect extends Graph {
 		this.top = this.top + event.y - this._prevDraggingPoint.y
 
 		this._updatePrevDraggingPoint( event )
+
+		this.draw.render()
 	}
 	// ******* Drag ******
 }

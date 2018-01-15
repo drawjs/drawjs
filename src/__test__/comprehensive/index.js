@@ -1,6 +1,5 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
 
-
 // ******* import *******
 const uploadButton = document.getElementById( 'uploadButton' )
 
@@ -34,51 +33,36 @@ function callback( text ) {
 
 
 // ******* export *******
-const rect1 = new draw.Rect( {
+draw.addElement( 'rect', {
 	top: 200,
 	left: 200,
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 60,
-} )
-
-const rect2 = new draw.Rect( {
-	top: 150,
-	left: 150,
-	fill: 'blue',
-	width: 100,
-	height: 100,
 	angle: 0,
 } )
 
-const rect3 = new draw.Rect( {
-	top: 200,
-	left: 200,
-	fill: 'purple',
+draw.addElement( 'rect', {
+	top: 300,
+	left: 300,
+	fill: 'red',
 	width: 100,
 	height: 100,
 	angle: 0,
 } )
 
 
-const line1 = new draw.Line( {
-	pointStart: {
-		x: 200,
-		y: 200,
-	},
-	pointEnd: {
-		x: 200 + 25,
-		y: 200 + 43.30127018922195
-	},
-	fill: 'blue',
-} )
-
-draw.addElement( rect1 )
-// draw.addElement( rect2 )
-// draw.addElement( rect3 )
-
-draw.addElement( line1 )
+// draw.addElement( {
+// 	pointStart: {
+// 		x: 200,
+// 		y: 200,
+// 	},
+// 	pointEnd: {
+// 		x: 200 + 25,
+// 		y: 200 + 43.30127018922195
+// 	},
+// 	fill: 'blue',
+// } )
 
 draw.render()
 

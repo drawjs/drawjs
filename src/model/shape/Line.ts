@@ -158,34 +158,22 @@ export default class Line extends Graph {
 		return path
 	}
 
-	constructor( {
-		pointStart,
-		pointEnd,
-		fill = "black",
-		lineWidth = 1,
-		draggable = true,
-		isSelected = false
-	}: {
-		pointStart: i.Point
-		pointEnd: i.Point
-		fill?: string
-		lineWidth?: number
-		draggable: boolean
-		isSelected: boolean
-	} ) {
-		super( {
-			fill,
-			draggable,
-			isSelected
-		} )
+	constructor( props ) {
+		super( props )
+
+		const {
+			pointStart,
+			pointEnd
+		} = props
 
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
 	}
 
-	public render( ctx: CanvasRenderingContext2D ) {
-		super.render( ctx )
+	public render() {
+		const ctx = this.draw.ctx
+		super.render()
 
 		ctx.save()
 		// ctx.rotate((Math.PI / 180) * this.relativeAngle)
