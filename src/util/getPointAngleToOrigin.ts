@@ -1,4 +1,4 @@
-export default function getPointAngleToOrigin( point ) {
+export default function getPointAngleToOrigin( point ): number {
 	const { x, y } = point
 	const absoluteAngle = Math.atan( Math.abs( y / x ) )
 
@@ -14,11 +14,11 @@ export default function getPointAngleToOrigin( point ) {
 
 	// third coordinate
 	if ( x < 0 && y < 0 ) {
-		return 3 * Math.PI / 2 - absoluteAngle
+		return Math.PI + absoluteAngle
 	}
 
 	// fourth coordinate
-	if ( x > 0 && y < 0 ) {
-		return 2 * Math.PI - absoluteAngle
+	if ( x >= 0 && y < 0 ) {
+		return - absoluteAngle
 	}
 }

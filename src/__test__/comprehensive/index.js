@@ -39,7 +39,7 @@ draw.addElement( 'rect', {
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 100000,
+	angle: 45,
 } )
 
 // draw.addElement( 'rect', {

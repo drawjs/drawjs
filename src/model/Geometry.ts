@@ -10,7 +10,6 @@ export default abstract class Geometry extends Cell {
 	public width: number
 	public height: number
 	public fill: string
-	public angle: number
 
 	public draggable: boolean
 

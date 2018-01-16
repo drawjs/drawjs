@@ -8,6 +8,7 @@ export default abstract class Cell {
 	public draw: Draw
 	public _isInstance: boolean = true
 	public type: string
+	public angle: number
 
 	public DEGREE_TO_RADIAN: number = Math.PI / 180
 	public RADIAN_TO_DEGREE: number = 180 / Math.PI
@@ -22,6 +23,11 @@ export default abstract class Cell {
 	 * interaction - selection
 	 */
 	public isSelected: boolean = false
+
+	get radianAngle(): number {
+		const res = this.angle * this.DEGREE_TO_RADIAN
+		return res
+	}
 
 	constructor( props ) {
 		const { draw } = props

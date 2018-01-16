@@ -47,12 +47,7 @@ export default class Rect extends Graph {
 		ctx.translate( 0, 0 )
 		ctx.restore()
 
-		this._rotatingIcon.renderByInstance( {
-			_centerX: this.originX,
-			_centerY: this.top - 7.5 - 7.5,
-			_size: 15,
-			angle: this.angle
-		} )
+		this._rotatingIcon.renderByInstance()
 
 		function cloneDeepWithCustomizer( value ): void {
 			const type = typeof value
