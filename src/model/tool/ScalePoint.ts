@@ -48,8 +48,37 @@ export default class ScalePoint extends Point {
 		ctx.restore()
 	}
 
-	public setRotatedPoint( point: i.Point ) {
-		const rotatedPoint = getRotatedPoint( point, this.instance.angle )
+	public containPoint(x, y) {
+		let res = false
+		const transformedPoint = this.getTransformedPoint({ x, y })
+		res = this.draw.ctx.isPointInPath(this.path, transformedPoint.x, transformedPoint.y)
+
+		return res
+	}
+
+	public getTransformedPoint(
+		{
+			x,
+			y
+		}
+			:
+			{
+				x: number,
+				y: number
+			}
+	) {
+		let res: i.Point = {
+			x: x - this.x - this.instanceCenterX,
+			y: y - this.y - this.instanceCenterY
+		}
+
+		res = getRotatedPoint( res, -this.instance.angle )
+
+		return res
+	}
+
+	public setRotatedPoint(point: i.Point) {
+		const rotatedPoint = getRotatedPoint(point, this.instance.angle)
 
 		this.x = rotatedPoint.x
 		this.y = rotatedPoint.y
@@ -62,15 +91,13 @@ export class ScalePointTopLeft extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: - this.instanceWidth / 2,
 			y: - this.instanceHeight / 2
-		} )
+		})
 
 		this.render()
 	}
-
-	public
 }
 
 export class ScalePointTop extends ScalePoint {
@@ -79,10 +106,10 @@ export class ScalePointTop extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: 0,
 			y: - this.instanceHeight / 2,
-		} )
+		})
 		this.render()
 	}
 }
@@ -93,10 +120,10 @@ export class ScalePointTopRight extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: this.instanceWidth / 2,
 			y: - this.instanceHeight / 2,
-		} )
+		})
 		this.render()
 	}
 }
@@ -107,11 +134,33 @@ export class ScalePointLeft extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: - this.instanceWidth / 2,
 			y: 0,
-		} )
+		})
 		this.render()
+	}
+
+	public _updateDrag( event ) {
+		const eventCanvasPoint = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y  - this.draw.canvasTop
+		}
+		const prevDraggingCanvasPoint = {
+			x: this._prevDraggingPoint.x - this.draw.canvasLeft,
+			y: this._prevDraggingPoint.y  - this.draw.canvasTop
+		}
+		const transformedEventPoint = this.getTransformedPoint( eventCanvasPoint )
+		const transformedEventPrevDraggingPoint = this.getTransformedPoint( prevDraggingCanvasPoint )
+
+		console.log( transformedEventPrevDraggingPoint )
+
+		const deltaX = transformedEventPoint.x - transformedEventPrevDraggingPoint.x
+		this.instance.width = this.instance.width - deltaX
+		this.instance.left = this.instance.left + deltaX
+
+		this._updatePrevDraggingPoint(event)
+		this.draw.render()
 	}
 }
 
@@ -121,10 +170,10 @@ export class ScalePointRight extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: this.instanceWidth / 2,
 			y: 0,
-		} )
+		})
 		this.render()
 	}
 }
@@ -135,10 +184,10 @@ export class ScalePointBottomLeft extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: - this.instanceWidth / 2,
 			y: this.instanceHeight / 2,
-		} )
+		})
 		this.render()
 	}
 }
@@ -149,10 +198,10 @@ export class ScalePointBottom extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: 0,
 			y: this.instanceHeight / 2,
-		} )
+		})
 		this.render()
 	}
 }
@@ -163,10 +212,10 @@ export class ScalePointBottomRight extends ScalePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint( {
+		this.setRotatedPoint({
 			x: this.instanceWidth / 2,
 			y: this.instanceHeight / 2,
-		} )
+		})
 		this.render()
 	}
 }
