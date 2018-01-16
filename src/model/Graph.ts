@@ -14,10 +14,10 @@ export default abstract class Graph extends Geometry {
 			this.left + this.width / 2,
 			this.top + this.height / 2,
 		)
-		ctx.lineWidth = 1
+		ctx.lineWidth = 2
 		ctx.setLineDash( [ 5, 5 ] )
 		ctx.rotate((Math.PI / 180) * this.angle)
-		ctx.strokeStyle = 'grey'
+		ctx.strokeStyle = 'black'
 		ctx.strokeRect( - this.width / 2, - this.height / 2, this.width, this.height )
 		ctx.restore()
 	}

@@ -1,12 +1,12 @@
 import * as _ from "lodash"
 
 import Graph from "model/Graph"
-import RotatingIcon from '../tool/RotatingIcon'
+import RotationIcon from '../tool/RotationIcon'
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 
 export default class Rect extends Graph {
-	public _rotatingIcon: RotatingIcon
+	public _rotationIcon: RotationIcon
 
 	get renderPath(): Path2D {
 		const path = new Path2D()
@@ -28,7 +28,7 @@ export default class Rect extends Graph {
 		this.type = cellTypeList.RECT
 		this.draggable = true
 
-		this._rotatingIcon = new RotatingIcon( {
+		this._rotationIcon = new RotationIcon( {
 			instance: this,
 			draw: this.draw
 		} )
@@ -47,7 +47,13 @@ export default class Rect extends Graph {
 		ctx.translate( 0, 0 )
 		ctx.restore()
 
-		this._rotatingIcon.renderByInstance()
+		/**
+		 * render rotation icon
+		 */
+		if ( this.isRotating || this.isSelected ) {
+			this._rotationIcon.renderByInstance()
+		}
+
 
 		function cloneDeepWithCustomizer( value ): void {
 			const type = typeof value

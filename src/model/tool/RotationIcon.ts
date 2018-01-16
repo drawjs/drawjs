@@ -5,12 +5,12 @@ import Cell from "../Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
 import { getPointAngleToOrigin } from 'util/index'
 import * as i from "interface/index"
+import { coupleRotatingCell, coupleSelectCell } from "../../mixin/index"
 
 
-export default class RotatingIcon extends Cell {
+export default class RotationIcon extends Cell {
 	public instance: any
 	public _size: number = 15
-	public _type: string = ROTATE_ICON
 
 	public _iconImage: HTMLImageElement = new Image()
 	get path(): Path2D {
@@ -40,12 +40,14 @@ export default class RotatingIcon extends Cell {
 		return this.instance.originY
 	}
 
-	constructor( props ) {
-		super( props )
+	constructor(props) {
+		super(props)
 
 		const { instance } = props
 
 		this.instance = instance
+
+		this.type = ROTATE_ICON
 
 		this._iconImage.src = "../../asset/svg/rotate-icon.svg"
 
@@ -58,8 +60,8 @@ export default class RotatingIcon extends Cell {
 		// console.log( this.renderCenterX, this.renderCenterY )
 
 		this.draw.ctx.save()
-		this.draw.ctx.translate( this.instanceCenterX, this.instanceCenterY )
-		this.draw.ctx.rotate( this.instance.angle * this.DEGREE_TO_RADIAN )
+		this.draw.ctx.translate(this.instanceCenterX, this.instanceCenterY)
+		this.draw.ctx.rotate(this.instance.angle * this.DEGREE_TO_RADIAN)
 		this.draw.ctx.drawImage(
 			this._iconImage,
 			- this._size / 2,
@@ -67,16 +69,20 @@ export default class RotatingIcon extends Cell {
 			this._size,
 			this._size
 		)
-		this.draw.ctx.translate( 0, 0 )
+		this.draw.ctx.translate(0, 0)
 		this.draw.ctx.restore()
 	}
 
-	containPoint( x, y ): boolean {
-		let transformedPoint = this.getTransformedPoint( { x, y } )
+	containPoint(x, y): boolean {
+		let res = false
 
-		// console.log( transformedPoint )
+		// if ( ! this.instance.isSelected || ! this.instance.isRotating ) {
+		// 	return res
+		// }
 
-		let res = this.draw.ctx.isPointInPath( this.path, transformedPoint.x, transformedPoint.y )
+		let transformedPoint = this.getTransformedPoint({ x, y })
+
+		res = this.draw.ctx.isPointInPath(this.path, transformedPoint.x, transformedPoint.y)
 
 		return res
 	}
@@ -88,19 +94,19 @@ export default class RotatingIcon extends Cell {
 	 * when relevant context was rotated or transformed,
 	 * to match original path
 	 */
-	public getTransformedPoint( {
+	public getTransformedPoint({
 		x,
 		y
 	}: {
-		x: number
-		y: number
-	} ) {
+			x: number
+			y: number
+		}) {
 		let resPoint: i.Point = {
 			x: x - this.instance.originX,
 			y: y - this.instance.originY
 		}
 
-		resPoint = this.rotatePoint( resPoint, -this.instance.angle )
+		resPoint = this.rotatePoint(resPoint, -this.instance.angle)
 
 		const res = {
 			x: resPoint.x,
@@ -110,22 +116,40 @@ export default class RotatingIcon extends Cell {
 	}
 
 	// ******* Drag ******
-	public _updateDrag( event ) {
+	public handleStartDrag(event) {
+		if ( this.instance.isSelected ) {
+			coupleRotatingCell(this.instance, true)
+			coupleSelectCell(this.instance, false)
+		}
+	}
+	public _updateDrag(event) {
+		if ( ! this.instance.isRotating ) {
+			return
+		}
+
 		let radianAngle = 0
 		let deltaAngle = 0
 		const deltaX = event.x - this._prevDraggingPoint.x
 		const deltaY = event.y - this._prevDraggingPoint.y
 
-		radianAngle = getPointAngleToOrigin( {
+		radianAngle = getPointAngleToOrigin({
 			x: event.x - this.draw.canvasLeft - this.instanceCenterX,
-			y: event.y - this.draw.canvasTop  - this.instanceCenterY,
-		} ) + Math.PI / 2
+			y: event.y - this.draw.canvasTop - this.instanceCenterY,
+		}) + Math.PI / 2
 
-		this._updatePrevDraggingPoint( event )
+		this._updatePrevDraggingPoint(event)
 
 		this.instance.angle = radianAngle * this.RADIAN_TO_DEGREE
 
 		this.draw.render()
+	}
+	public handleStopDrag(event) {
+		if ( this.instance.isRotating ) {
+			coupleRotatingCell(this.instance, false)
+			coupleSelectCell(this.instance, true)
+			this.draw.render()
+		}
+
 	}
 	// ******* Drag ******
 }

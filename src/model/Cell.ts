@@ -24,6 +24,12 @@ export default abstract class Cell {
 	 */
 	public isSelected: boolean = false
 
+	/**
+	 * interaction - rotation
+	 */
+	public isRotating: boolean = false
+
+
 	get radianAngle(): number {
 		const res = this.angle * this.DEGREE_TO_RADIAN
 		return res
