@@ -1,10 +1,10 @@
 import * as _ from "lodash"
 
-import Geometry from "./Geometry"
+import Geometry from "model/Geometry"
 import * as interfaces from "interface/index"
-import Cell from "./Cell"
+import Cell from "model/Cell"
 import { coupleSelectCell, coupleEnableCellDrag } from "mixin/index"
-import selectionExcludingCellTypes from "../store/selectionExcludingCellTypes";
+import selectionExcludingCellTypes from "store/selectionExcludingCellTypes";
 
 export default class SelectionArea extends Geometry {
 	public startPoint: interfaces.Point

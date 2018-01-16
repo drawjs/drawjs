@@ -4,9 +4,20 @@ import Graph from "model/Graph"
 import RotationIcon from '../tool/RotationIcon'
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
+import ScalePoint, { ScalePointTop, ScalePointTopLeft, ScalePointTopRight, ScalePointLeft, ScalePointRight, ScalePointBottom, ScalePointBottomLeft, ScalePointBottomRight } from "../tool/ScalePoint";
+import { getRotatedPoint } from 'util/index'
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
+
+	public _scalePointTop: ScalePointTop
+	public _scalePointTopLeft: ScalePointTopLeft
+	public _scalePointTopRight: ScalePointTopRight
+	public _scalePointLeft: ScalePointLeft
+	public _scalePointRight: ScalePointRight
+	public _scalePointBottom: ScalePointBottom
+	public _scalePointBottomLeft: ScalePointBottomLeft
+	public _scalePointBottomRight: ScalePointBottomRight
 
 	get renderPath(): Path2D {
 		const path = new Path2D()
@@ -22,15 +33,73 @@ export default class Rect extends Graph {
 		return this.top + this.height / 2
 	}
 
+	get scalePoints(): any[] {
+		return [
+			this._scalePointTop,
+			this._scalePointTopLeft,
+			this._scalePointTopRight,
+			this._scalePointLeft,
+			this._scalePointRight,
+			this._scalePointBottomLeft,
+			this._scalePointBottom,
+			this._scalePointBottomRight,
+		]
+	}
+
 	constructor( props ) {
 		super( props )
 
 		this.type = cellTypeList.RECT
 		this.draggable = true
 
+
 		this._rotationIcon = new RotationIcon( {
 			instance: this,
 			draw: this.draw
+		} )
+
+		this._initializeScalePoints()
+	}
+
+	public _initializeScalePoints() {
+		this._scalePointTop = new ScalePointTop( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointTopLeft = new ScalePointTopLeft( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointTopRight = new ScalePointTopRight( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointLeft = new ScalePointLeft( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointRight = new ScalePointRight( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointBottom = new ScalePointBottom( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointBottomLeft = new ScalePointBottomLeft( {
+			instance: this,
+			draw: this.draw,
+		} )
+
+		this._scalePointBottomRight = new ScalePointBottomRight( {
+			instance: this,
+			draw: this.draw,
 		} )
 	}
 
@@ -54,9 +123,12 @@ export default class Rect extends Graph {
 			this._rotationIcon.renderByInstance()
 		}
 
-
-		function cloneDeepWithCustomizer( value ): void {
-			const type = typeof value
+		/**
+		 * render scale points
+		 */
+		this.scalePoints.map( renderScalePoint )
+		function renderScalePoint( scalePoint ) {
+			return scalePoint.renderByInstance()
 		}
 	}
 
@@ -87,7 +159,7 @@ export default class Rect extends Graph {
 			y: y - this.originY
 		}
 
-		resPoint = this.rotatePoint( resPoint, -this.angle )
+		resPoint = getRotatedPoint( resPoint, -this.angle )
 
 		const res = {
 			x: resPoint.x,

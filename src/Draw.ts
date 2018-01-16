@@ -24,7 +24,7 @@ import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/cellTypeClassMap"
 import { generateUniqueId } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
-import SelectionArea from "./model/SelectionArea";
+import { SelectionArea } from "./model/tool/index";
 
 
 const ajv = new Ajv()

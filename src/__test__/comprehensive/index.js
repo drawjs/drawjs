@@ -39,16 +39,13 @@ draw.addElement( 'rect', {
 	fill: 'red',
 	width: 100,
 	height: 100,
-	angle: 45,
+	angle: 0,
 } )
 
-// draw.addElement( 'rect', {
-// 	top: 300,
-// 	left: 300,
-// 	fill: 'red',
-// 	width: 100,
-// 	height: 100,
-// 	angle: 0,
+// draw.addElement( 'point', {
+// 	x: 300,
+// 	y: 300,
+// 	color: 'blue',
 // } )
 
 

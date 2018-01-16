@@ -1,6 +1,9 @@
 export const defaultPathExandingValue = 5
 
 
+export const defaultPointRadius = 5
+
+
 export function getDefaultDrawExportFileName(): string {
 	return `drawData-${ getCurrentTimeString() }`
 }

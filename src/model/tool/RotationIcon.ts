@@ -6,7 +6,7 @@ import { ROTATE_ICON } from "store/constant_cellTypeList"
 import { getPointAngleToOrigin } from 'util/index'
 import * as i from "interface/index"
 import { coupleRotatingCell, coupleSelectCell } from "../../mixin/index"
-
+import { getRotatedPoint } from 'util/index'
 
 export default class RotationIcon extends Cell {
 	public instance: any
@@ -33,11 +33,11 @@ export default class RotationIcon extends Cell {
 	}
 
 	get instanceCenterX(): number {
-		return this.instance.originX
+		return this.instance.left + this.instance.width / 2
 	}
 
 	get instanceCenterY(): number {
-		return this.instance.originY
+		return this.instance.top + this.instance.height / 2
 	}
 
 	constructor(props) {
@@ -106,7 +106,7 @@ export default class RotationIcon extends Cell {
 			y: y - this.instance.originY
 		}
 
-		resPoint = this.rotatePoint(resPoint, -this.instance.angle)
+		resPoint = getRotatedPoint(resPoint, -this.instance.angle)
 
 		const res = {
 			x: resPoint.x,
