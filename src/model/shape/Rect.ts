@@ -4,20 +4,20 @@ import Graph from "model/Graph"
 import RotationIcon from '../tool/RotationIcon'
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
-import ScalePoint, { ScalePointTop, ScalePointTopLeft, ScalePointTopRight, ScalePointLeft, ScalePointRight, ScalePointBottom, ScalePointBottomLeft, ScalePointBottomRight } from "../tool/ScalePoint";
+import SizePoint, { SizePointTop, SizePointTopLeft, SizePointTopRight, SizePointLeft, SizePointRight, SizePointBottom, SizePointBottomLeft, SizePointBottomRight } from "../tool/SizePoint";
 import { getRotatedPoint } from 'util/index'
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
 
-	public _scalePointTop: ScalePointTop
-	public _scalePointTopLeft: ScalePointTopLeft
-	public _scalePointTopRight: ScalePointTopRight
-	public _scalePointLeft: ScalePointLeft
-	public _scalePointRight: ScalePointRight
-	public _scalePointBottom: ScalePointBottom
-	public _scalePointBottomLeft: ScalePointBottomLeft
-	public _scalePointBottomRight: ScalePointBottomRight
+	public _sizePointTop: SizePointTop
+	public _sizePointTopLeft: SizePointTopLeft
+	public _sizePointTopRight: SizePointTopRight
+	public _sizePointLeft: SizePointLeft
+	public _sizePointRight: SizePointRight
+	public _sizePointBottom: SizePointBottom
+	public _sizePointBottomLeft: SizePointBottomLeft
+	public _sizePointBottomRight: SizePointBottomRight
 
 	get renderPath(): Path2D {
 		const path = new Path2D()
@@ -33,16 +33,16 @@ export default class Rect extends Graph {
 		return this.top + this.height / 2
 	}
 
-	get scalePoints(): any[] {
+	get sizePoints(): any[] {
 		return [
-			this._scalePointTop,
-			this._scalePointTopLeft,
-			this._scalePointTopRight,
-			this._scalePointLeft,
-			this._scalePointRight,
-			this._scalePointBottomLeft,
-			this._scalePointBottom,
-			this._scalePointBottomRight,
+			this._sizePointTop,
+			this._sizePointTopLeft,
+			this._sizePointTopRight,
+			this._sizePointLeft,
+			this._sizePointRight,
+			this._sizePointBottomLeft,
+			this._sizePointBottom,
+			this._sizePointBottomRight,
 		]
 	}
 
@@ -58,46 +58,46 @@ export default class Rect extends Graph {
 			draw: this.draw
 		} )
 
-		this._initializeScalePoints()
+		this._initializeSizePoints()
 	}
 
-	public _initializeScalePoints() {
-		this._scalePointTop = new ScalePointTop( {
+	public _initializeSizePoints() {
+		this._sizePointTop = new SizePointTop( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointTopLeft = new ScalePointTopLeft( {
+		this._sizePointTopLeft = new SizePointTopLeft( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointTopRight = new ScalePointTopRight( {
+		this._sizePointTopRight = new SizePointTopRight( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointLeft = new ScalePointLeft( {
+		this._sizePointLeft = new SizePointLeft( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointRight = new ScalePointRight( {
+		this._sizePointRight = new SizePointRight( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointBottom = new ScalePointBottom( {
+		this._sizePointBottom = new SizePointBottom( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointBottomLeft = new ScalePointBottomLeft( {
+		this._sizePointBottomLeft = new SizePointBottomLeft( {
 			instance: this,
 			draw: this.draw,
 		} )
 
-		this._scalePointBottomRight = new ScalePointBottomRight( {
+		this._sizePointBottomRight = new SizePointBottomRight( {
 			instance: this,
 			draw: this.draw,
 		} )
@@ -124,11 +124,11 @@ export default class Rect extends Graph {
 		}
 
 		/**
-		 * render scale points
+		 * render size points
 		 */
-		this.scalePoints.map( renderScalePoint )
-		function renderScalePoint( scalePoint ) {
-			return scalePoint.renderByInstance()
+		this.sizePoints.map( renderSizePoint )
+		function renderSizePoint( sizePoint ) {
+			return sizePoint.renderByInstance()
 		}
 	}
 

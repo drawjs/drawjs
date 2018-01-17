@@ -1,4 +1,4 @@
-import { SCALE_POINT } from "../../store/constant_cellTypeList";
+import { SIZE_POINT } from "../../store/constant_cellTypeList";
 import Cell from "../Cell";
 import Point from "model/shape/Point";
 import * as _ from "lodash";
@@ -6,7 +6,7 @@ import { getRotatedPoint } from 'util/index'
 import * as i from "interface/index"
 
 
-export default class ScalePoint extends Point {
+export default class SizePoint extends Point {
 	public instance: any
 
 	get instanceWidth(): number {
@@ -28,7 +28,7 @@ export default class ScalePoint extends Point {
 	constructor(props) {
 		super(props)
 
-		this.type = SCALE_POINT
+		this.type = SIZE_POINT
 		this.color = 'blue'
 
 		this.instance = props.instance
@@ -85,7 +85,7 @@ export default class ScalePoint extends Point {
 	}
 }
 
-export class ScalePointTopLeft extends ScalePoint {
+export class SizePointTopLeft extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -100,7 +100,7 @@ export class ScalePointTopLeft extends ScalePoint {
 	}
 }
 
-export class ScalePointTop extends ScalePoint {
+export class SizePointTop extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -114,7 +114,7 @@ export class ScalePointTop extends ScalePoint {
 	}
 }
 
-export class ScalePointTopRight extends ScalePoint {
+export class SizePointTopRight extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -128,7 +128,7 @@ export class ScalePointTopRight extends ScalePoint {
 	}
 }
 
-export class ScalePointLeft extends ScalePoint {
+export class SizePointLeft extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -164,7 +164,7 @@ export class ScalePointLeft extends ScalePoint {
 	}
 }
 
-export class ScalePointRight extends ScalePoint {
+export class SizePointRight extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -178,7 +178,7 @@ export class ScalePointRight extends ScalePoint {
 	}
 }
 
-export class ScalePointBottomLeft extends ScalePoint {
+export class SizePointBottomLeft extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -192,7 +192,7 @@ export class ScalePointBottomLeft extends ScalePoint {
 	}
 }
 
-export class ScalePointBottom extends ScalePoint {
+export class SizePointBottom extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
@@ -206,7 +206,7 @@ export class ScalePointBottom extends ScalePoint {
 	}
 }
 
-export class ScalePointBottomRight extends ScalePoint {
+export class SizePointBottomRight extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
