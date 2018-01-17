@@ -23,10 +23,12 @@ export default function(
 	resPoint = {
 		x:
 			relativePoint.x * Math.cos( alpha ) -
-			relativePoint.y * Math.sin( alpha ),
+			relativePoint.y * Math.sin( alpha ) +
+			centerPoint.x,
 		y:
 			relativePoint.x * Math.sin( alpha ) +
-			relativePoint.y * Math.cos( alpha )
+			relativePoint.y * Math.cos( alpha ) +
+			centerPoint.y
 	}
 
 	return resPoint

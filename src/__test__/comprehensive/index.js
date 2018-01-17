@@ -37,9 +37,9 @@ draw.addElement( 'rect', {
 	top: 200,
 	left: 200,
 	fill: 'red',
-	width: 100,
+	width: 200,
 	height: 100,
-	angle: 45,
+	angle: 60,
 } )
 
 // draw.addElement( 'point', {
