@@ -126,7 +126,9 @@ export default class Rect extends Graph {
 		/**
 		 * render size points
 		 */
-		this.sizePoints.map( renderSizePoint )
+		if ( this.isSizing || this.isSelected ) {
+			this.sizePoints.map( renderSizePoint )
+		}
 		function renderSizePoint( sizePoint ) {
 			return sizePoint.renderByInstance()
 		}

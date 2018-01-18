@@ -4,12 +4,14 @@ import Point from "model/shape/Point";
 import * as _ from "lodash";
 import { getRotatedPoint } from 'util/index'
 import * as i from "interface/index"
-import Size from 'mixin/size'
+import Size from 'mixin/Size'
+import { coupleSizingCell, coupleSelectCell } from "../../mixin/index";
 
 
 export default abstract class SizePoint extends Point {
 	public instance: any
 	public Size: Size
+	public isHidden: boolean = false
 
 	abstract size( newPoint: i.Point ): void
 
@@ -97,6 +99,10 @@ export default abstract class SizePoint extends Point {
 	}
 
 	public render() {
+		if ( this.isHidden ) {
+			return
+		}
+
 		const ctx = this.draw.ctx
 
 		ctx.save()
@@ -147,7 +153,45 @@ export default abstract class SizePoint extends Point {
 		this.y = rotatedPoint.y
 	}
 
+	public _hideOtherSizePointsExceptCurrent() {
+		const self = this
+		this.instance.sizePoints
+		.filter( notCurrent )
+		.map( hide )
+
+		this.draw.render()
+
+		function notCurrent( sizePoint ) {
+			const res = sizePoint !== self
+			return res
+		}
+		function hide( sizePoint ) {
+			sizePoint.isHidden = true
+		}
+	}
+
+	public _showAllSizePoints() {
+		this.instance.sizePoints.map( show )
+
+		this.draw.render()
+
+		function show( sizePoint ) {
+			sizePoint.isHidden = false
+		}
+	}
+
+	public handleStartDrag( event ) {
+		coupleSizingCell( this.instance, true )
+		coupleSelectCell( this.instance, false )
+	}
+
 	public _updateDrag(event) {
+		if ( ! this.instance.isSizing ) {
+			return
+		}
+
+		this._hideOtherSizePointsExceptCurrent()
+
 		const newPoint: i.Point = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y  - this.draw.canvasTop
@@ -156,6 +200,17 @@ export default abstract class SizePoint extends Point {
 
 		this._updatePrevDraggingPoint(event)
 		this.draw.render()
+	}
+
+	public handleStopDrag( event ) {
+		if ( this.instance.isSizing ) {
+			this._showAllSizePoints()
+
+			coupleSizingCell( this.instance, false )
+			coupleSelectCell( this.instance, true )
+
+			this.draw.render()
+		}
 	}
 }
 

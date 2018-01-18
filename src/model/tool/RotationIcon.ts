@@ -50,15 +50,9 @@ export default class RotationIcon extends Cell {
 		this.type = ROTATE_ICON
 
 		this._iconImage.src = "../../asset/svg/rotate-icon.svg"
-
-		// this._iconImage.addEventListener( 'mousedown', this._clickListener )
-		// this._instance
 	}
 
 	public renderByInstance() {
-
-		// console.log( this.renderCenterX, this.renderCenterY )
-
 		this.draw.ctx.save()
 		this.draw.ctx.translate(this.instanceCenterX, this.instanceCenterY)
 		this.draw.ctx.rotate(this.instance.angle * this.DEGREE_TO_RADIAN)

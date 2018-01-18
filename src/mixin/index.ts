@@ -3,3 +3,4 @@ export { default as updateStoreElementsByTheirInstances } from './updateStoreEle
 export { default as coupleSelectCell } from './coupleSelectCell'
 export { default as coupleEnableCellDrag } from './coupleEnableCellDrag'
 export { default as coupleRotatingCell } from './coupleRotatingCell'
+export { default as coupleSizingCell } from './coupleSizingCell'

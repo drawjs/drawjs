@@ -29,6 +29,11 @@ export default abstract class Cell {
 	 */
 	public isRotating: boolean = false
 
+	/**
+	 * interaction - size
+	 */
+	public isSizing: boolean = false
+
 
 	get radianAngle(): number {
 		const res = this.angle * this.DEGREE_TO_RADIAN
