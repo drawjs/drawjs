@@ -37,54 +37,6 @@ export default abstract class SizePoint extends Point {
 	get instanceCenterY(): number {
 		return this.instance.top + this.instance.height / 2
 	}
-	get instanceLeftCenterPoint(): i.Point {
-		return {
-			x: - this.instanceWidth / 2,
-			y: 0
-		}
-	}
-	get instanceRightCenterPoint(): i.Point {
-		return {
-			x: this.instanceWidth / 2,
-			y: 0
-		}
-	}
-	get instanceTopCenterPoint(): i.Point {
-		return {
-			x: 0,
-			y: - this.instanceHeight / 2
-		}
-	}
-	get instanceBottomCenterPoint(): i.Point {
-		return {
-			x: 0,
-			y: this.instanceHeight / 2
-		}
-	}
-	get instanceLeftTopPoint(): i.Point {
-		return {
-			x: - this.instanceWidth / 2,
-			y: - this.instanceHeight / 2
-		}
-	}
-	get instanceRightTopPoint(): i.Point {
-		return {
-			x: this.instanceWidth / 2,
-			y: - this.instanceHeight / 2
-		}
-	}
-	get instanceLeftBottomPoint(): i.Point {
-		return {
-			x: - this.instanceWidth / 2,
-			y: this.instanceHeight / 2
-		}
-	}
-	get instanceRightBottomPoint(): i.Point {
-		return {
-			x: this.instanceWidth / 2,
-			y: this.instanceHeight / 2
-		}
-	}
 
 
 	constructor(props) {
@@ -135,22 +87,11 @@ export default abstract class SizePoint extends Point {
 		return res
 	}
 
-	public getTransformedPointForSize(point: i.Point, centerPoint?: i.Point) {
-		let res: i.Point = {
-			x: point.x - this.instanceCenterX,
-			y: point.y - this.instanceCenterY
-		}
+	public setRotatedSizePoint(point: i.Point) {
+		const rotatedSizePoint = getRotatedPoint(point, this.instance.angle)
 
-		res = getRotatedPoint(res, -this.instance.angle, centerPoint)
-
-		return res
-	}
-
-	public setRotatedPoint(point: i.Point) {
-		const rotatedPoint = getRotatedPoint(point, this.instance.angle)
-
-		this.x = rotatedPoint.x
-		this.y = rotatedPoint.y
+		this.x = rotatedSizePoint.x
+		this.y = rotatedSizePoint.y
 	}
 
 	public _hideOtherSizePointsExceptCurrent() {
@@ -196,6 +137,7 @@ export default abstract class SizePoint extends Point {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y  - this.draw.canvasTop
 		}
+
 		this.size( newPoint )
 
 		this._updatePrevDraggingPoint(event)
@@ -221,7 +163,7 @@ export class SizePointLeft extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: - this.instanceWidth / 2,
 			y: 0,
 		})
@@ -239,7 +181,7 @@ export class SizePointRight extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: this.instanceWidth / 2,
 			y: 0,
 		})
@@ -257,7 +199,7 @@ export class SizePointTop extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: 0,
 			y: - this.instanceHeight / 2,
 		})
@@ -275,7 +217,7 @@ export class SizePointBottom extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: 0,
 			y: this.instanceHeight / 2,
 		})
@@ -293,7 +235,7 @@ export class SizePointTopLeft extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: - this.instanceWidth / 2,
 			y: - this.instanceHeight / 2
 		})
@@ -313,7 +255,7 @@ export class SizePointTopRight extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: this.instanceWidth / 2,
 			y: - this.instanceHeight / 2,
 		})
@@ -332,7 +274,7 @@ export class SizePointBottomLeft extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: - this.instanceWidth / 2,
 			y: this.instanceHeight / 2,
 		})
@@ -351,7 +293,7 @@ export class SizePointBottomRight extends SizePoint {
 	}
 
 	public renderByInstance() {
-		this.setRotatedPoint({
+		this.setRotatedSizePoint({
 			x: this.instanceWidth / 2,
 			y: this.instanceHeight / 2,
 		})
@@ -361,5 +303,37 @@ export class SizePointBottomRight extends SizePoint {
 	public size( newPoint ) {
 		this.Size.sizeBottomSide( newPoint )
 		this.Size.sizeRightSide( newPoint )
+	}
+}
+
+export class SizePointLineSide extends SizePoint {
+	public relatedPoint: i.Point
+
+	constructor(props) {
+		super(props)
+
+		this.relatedPoint = props.relatedPoint
+	}
+
+	/**
+	 * overide
+	 */
+	public _hideOtherSizePointsExceptCurrent() {}
+
+	/**
+	 * overide
+	 */
+	public _showAllSizePoints() {}
+
+	public renderByInstance() {
+		this.x = this.relatedPoint.x - this.instanceCenterX
+		this.y = this.relatedPoint.y - this.instanceCenterY
+
+		this.render()
+	}
+
+	public size( newPoint ) {
+		this.relatedPoint.x = newPoint.x
+		this.relatedPoint.y = newPoint.y
 	}
 }

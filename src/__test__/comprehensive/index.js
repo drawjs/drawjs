@@ -49,17 +49,17 @@ draw.addElement( 'rect', {
 // } )
 
 
-// draw.addElement( {
-// 	pointStart: {
-// 		x: 200,
-// 		y: 200,
-// 	},
-// 	pointEnd: {
-// 		x: 200 + 25,
-// 		y: 200 + 43.30127018922195
-// 	},
-// 	fill: 'blue',
-// } )
+draw.addElement( 'line', {
+	pointStart: {
+		x: 200,
+		y: 200,
+	},
+	pointEnd: {
+		x: 200 + 25,
+		y: 200 + 43.30127018922195
+	},
+	fill: 'blue',
+} )
 
 draw.render()
 

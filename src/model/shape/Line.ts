@@ -4,11 +4,15 @@ import Graph from "model/Graph"
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 import { defaultPathExandingValue } from "store/index"
+import SizePoint, { SizePointLineSide } from "../tool/SizePoint";
 
 export default class Line extends Graph {
 	public pointStart: i.Point
 	public pointEnd: i.Point
 	public lineWidth: number
+
+	public _sizePointA: SizePointLineSide
+	public _sizePointB: SizePointLineSide
 
 	set left( value ) {}
 	set top( value ) {}
@@ -59,7 +63,13 @@ export default class Line extends Graph {
 	get pointRight(): i.Point {
 		return this.isXEndBiggerThantStart ? this.pointEnd : this.pointStart
 	}
-	get renderPath(): Path2D {
+	get sizePoints(): SizePointLineSide[] {
+		return [
+			this._sizePointA,
+			this._sizePointB
+		]
+	}
+	get path(): Path2D {
 		const path = new Path2D()
 
 		path.moveTo( this.pointStart.x, this.pointStart.y )
@@ -67,7 +77,7 @@ export default class Line extends Graph {
 
 		return path
 	}
-	get pathStoke(): Path2D {
+	get pathStoked(): Path2D {
 		const path = new Path2D()
 		const w = defaultPathExandingValue
 		const l = this.length
@@ -169,6 +179,18 @@ export default class Line extends Graph {
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
+
+		this._sizePointA = new SizePointLineSide( {
+			instance: this,
+			draw: this.draw,
+			relatedPoint: pointStart
+		} )
+
+		this._sizePointB = new SizePointLineSide( {
+			instance: this,
+			draw: this.draw,
+			relatedPoint: pointEnd
+		} )
 	}
 
 	public render() {
@@ -179,18 +201,28 @@ export default class Line extends Graph {
 		// ctx.rotate((Math.PI / 180) * this.relativeAngle)
 		ctx.lineWidth = 1
 		ctx.strokeStyle = this.fill
-		ctx.stroke( this.renderPath )
+		ctx.stroke( this.path )
 
 		ctx.fillStyle = "rgba(43, 228, 430, 0.3)"
-		ctx.fill( this.pathStoke )
+		ctx.fill( this.pathStoked )
 		// ctx.strokeStyle = "rgba(43, 228, 430, 0.3)"
-		// ctx.stroke( this.pathStoke )
+		// ctx.stroke( this.pathStoked )
 
 		ctx.restore()
+
+		/**
+		 * render size points
+		 */
+		if ( this.isSizing || this.isSelected ) {
+			this.sizePoints.map( renderSizePoint )
+		}
+		function renderSizePoint( sizePoint ) {
+			return sizePoint.renderByInstance()
+		}
 	}
 
 	public containPoint( x: number, y: number ) {
-		const isContain = this.draw.ctx.isPointInPath( this.pathStoke, x, y )
+		const isContain = this.draw.ctx.isPointInPath( this.pathStoked, x, y )
 		return isContain
 	}
 
@@ -204,6 +236,8 @@ export default class Line extends Graph {
 		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y
 
 		this._updatePrevDraggingPoint( event )
+
+		this.draw.render()
 	}
 	// ******* Drag ******
 }
