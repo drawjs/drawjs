@@ -6,6 +6,7 @@ import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 import SizePoint, { SizePointTop, SizePointTopLeft, SizePointTopRight, SizePointLeft, SizePointRight, SizePointBottom, SizePointBottomLeft, SizePointBottomRight } from "../tool/SizePoint";
 import { getRotatedPoint } from 'util/index'
+import * as constant from 'store/constant'
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
@@ -110,7 +111,7 @@ export default class Rect extends Graph {
 		ctx.save()
 		ctx.translate( this.originX, this.originY )
 		ctx.fillStyle = this.fill
-		ctx.rotate( this.angle * this.DEGREE_TO_RADIAN )
+		ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
 		ctx.fill( this.renderPath )
 
 		ctx.translate( 0, 0 )

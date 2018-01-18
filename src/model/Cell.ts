@@ -2,6 +2,7 @@ import * as _ from "lodash"
 import { generateUniqueId } from "util/index"
 import Draw from "../Draw"
 import * as i from "interface/index"
+import * as constant from 'store/constant'
 
 export default abstract class Cell {
 	public id: string = generateUniqueId()
@@ -9,9 +10,6 @@ export default abstract class Cell {
 	public _isInstance: boolean = true
 	public type: string
 	public angle: number
-
-	public DEGREE_TO_RADIAN: number = Math.PI / 180
-	public RADIAN_TO_DEGREE: number = 180 / Math.PI
 
 	/**
 	 * interaction - drag
@@ -36,7 +34,7 @@ export default abstract class Cell {
 
 
 	get radianAngle(): number {
-		const res = this.angle * this.DEGREE_TO_RADIAN
+		const res = this.angle * constant.DEGREE_TO_RADIAN
 		return res
 	}
 
@@ -147,7 +145,7 @@ export default abstract class Cell {
 		}
 
 		let resPoint: i.Point = _.cloneDeep( point )
-		const alpha = angle * this.DEGREE_TO_RADIAN
+		const alpha = angle * constant.DEGREE_TO_RADIAN
 
 		const relativePoint = {
 			x: resPoint.x - centerPoint.x,

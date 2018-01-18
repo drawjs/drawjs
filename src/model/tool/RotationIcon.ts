@@ -7,6 +7,8 @@ import { getPointAngleToOrigin } from 'util/index'
 import * as i from "interface/index"
 import { coupleRotatingCell, coupleSelectCell } from "../../mixin/index"
 import { getRotatedPoint } from 'util/index'
+import * as constant from 'store/constant'
+
 
 export default class RotationIcon extends Cell {
 	public instance: any
@@ -55,7 +57,7 @@ export default class RotationIcon extends Cell {
 	public renderByInstance() {
 		this.draw.ctx.save()
 		this.draw.ctx.translate(this.instanceCenterX, this.instanceCenterY)
-		this.draw.ctx.rotate(this.instance.angle * this.DEGREE_TO_RADIAN)
+		this.draw.ctx.rotate(this.instance.angle * constant.DEGREE_TO_RADIAN)
 		this.draw.ctx.drawImage(
 			this._iconImage,
 			- this._size / 2,
@@ -133,7 +135,7 @@ export default class RotationIcon extends Cell {
 
 		this._updatePrevDraggingPoint(event)
 
-		this.instance.angle = radianAngle * this.RADIAN_TO_DEGREE
+		this.instance.angle = radianAngle * constant.RADIAN_TO_DEGREE
 
 		this.draw.render()
 	}
