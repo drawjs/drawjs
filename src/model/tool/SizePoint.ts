@@ -4,10 +4,12 @@ import Point from "model/shape/Point";
 import * as _ from "lodash";
 import { getRotatedPoint } from 'util/index'
 import * as i from "interface/index"
+import Size from 'mixin/size'
 
 
 export default class SizePoint extends Point {
 	public instance: any
+	public Size: Size
 
 	get instanceWidth(): number {
 		return this.instance.width
@@ -19,8 +21,8 @@ export default class SizePoint extends Point {
 
 	get instanceDiagonal(): number {
 		return Math.sqrt(
-			Math.pow( this.instanceWidth, 2 ) +
-			Math.pow( this.instanceHeight, 2 )
+			Math.pow(this.instanceWidth, 2) +
+			Math.pow(this.instanceHeight, 2)
 		)
 	}
 
@@ -31,39 +33,52 @@ export default class SizePoint extends Point {
 	get instanceCenterY(): number {
 		return this.instance.top + this.instance.height / 2
 	}
-
-	// get rotatedInstanceTopLeftPoint(): i.Point {
-	// 	return {
-	// 		// x: this.instance.instanceDiagonal / 2 * Math.cos(this.radianAngle - Math.PI / 2 ),
-	// 		// y: this.instance.instanceDiagonal / 2 * Math.sin(this.radianAngle - Math.PI / 2 )
-	// 	}
-	// }
-
-	get rotatedInstanceTopCenterPoint(): i.Point {
+	get instanceLeftCenterPoint(): i.Point {
 		return {
-			x: this.instance.height / 2 * Math.sin( this.instance.radianAngle ),
-			y: - this.instance.height / 2 * Math.cos( this.instance.radianAngle )
+			x: - this.instanceWidth / 2,
+			y: 0
 		}
 	}
-
-	get rotatedInstanceBottomCenterPoint(): i.Point {
+	get instanceRightCenterPoint(): i.Point {
 		return {
-			x: - this.instance.height / 2 * Math.sin( this.instance.radianAngle ),
-			y: this.instance.height / 2 * Math.cos( this.instance.radianAngle )
+			x: this.instanceWidth / 2,
+			y: 0
 		}
 	}
-
-	get rotatedInstanceLeftCenterPoint(): i.Point {
+	get instanceTopCenterPoint(): i.Point {
 		return {
-			x: - this.instance.width / 2 * Math.cos( this.instance.radianAngle ),
-			y: - this.instance.width / 2 * Math.sin( this.instance.radianAngle )
+			x: 0,
+			y: - this.instanceHeight / 2
 		}
 	}
-
-	get rotatedInstanceRightCenterPoint(): i.Point {
+	get instanceBottomCenterPoint(): i.Point {
 		return {
-			x: this.instance.width / 2 * Math.cos( this.instance.radianAngle ),
-			y: this.instance.width / 2 * Math.sin( this.instance.radianAngle )
+			x: 0,
+			y: this.instanceHeight / 2
+		}
+	}
+	get instanceLeftTopPoint(): i.Point {
+		return {
+			x: - this.instanceWidth / 2,
+			y: - this.instanceHeight / 2
+		}
+	}
+	get instanceRightTopPoint(): i.Point {
+		return {
+			x: this.instanceWidth / 2,
+			y: - this.instanceHeight / 2
+		}
+	}
+	get instanceLeftBottomPoint(): i.Point {
+		return {
+			x: - this.instanceWidth / 2,
+			y: this.instanceHeight / 2
+		}
+	}
+	get instanceRightBottomPoint(): i.Point {
+		return {
+			x: this.instanceWidth / 2,
+			y: this.instanceHeight / 2
 		}
 	}
 
@@ -74,6 +89,8 @@ export default class SizePoint extends Point {
 		this.color = 'blue'
 
 		this.instance = props.instance
+
+		this.Size = new Size({ instance: this.instance })
 	}
 
 	public render() {
@@ -128,138 +145,6 @@ export default class SizePoint extends Point {
 	}
 }
 
-export class SizePointTopLeft extends SizePoint {
-	constructor(props) {
-		super(props)
-	}
-
-	public renderByInstance() {
-		this.setRotatedPoint({
-			x: - this.instanceWidth / 2,
-			y: - this.instanceHeight / 2
-		})
-
-		this.render()
-	}
-
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let oldPoint: i.Point
-		let transformedNewPoint: i.Point
-		let transformedOldPoint: i.Point
-		let transformedNewPoint_base_InstanceRightCenter: i.Point
-		let transformedOldPoint_base_InstanceRightCenter: i.Point
-		let newCenterPoint: i.Point
-		let deltaWidth: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-		oldPoint = {
-			x: this.rotatedInstanceRightCenterPoint.x + this.instanceCenterX,
-			y: this.rotatedInstanceRightCenterPoint.y + this.instanceCenterY
-		}
-
-		transformedNewPoint_base_InstanceRightCenter = this.getTransformedPointForSize(newPoint, this.rotatedInstanceRightCenterPoint)
-		transformedOldPoint_base_InstanceRightCenter = this.getTransformedPointForSize(oldPoint, this.rotatedInstanceRightCenterPoint)
-
-		deltaWidth = transformedNewPoint_base_InstanceRightCenter.x - transformedOldPoint_base_InstanceRightCenter.x
-		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
-
-		newCenterPoint = {
-			x: deltaWidth / 2 * Math.cos(this.instance.radianAngle),
-			y: deltaWidth / 2 * Math.sin(this.instance.radianAngle),
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint, newCenterPoint)
-		transformedOldPoint = this.getTransformedPointForSize(oldPoint)
-
-		deltaX = transformedNewPoint.x - transformedOldPoint.x - deltaWidth
-
-		this.instance.width = this.instance.width + deltaWidth
-		this.instance.left = this.instance.left + deltaX
-		this.instance.top = this.instance.top + deltaY
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
-	}
-}
-
-export class SizePointTop extends SizePoint {
-	constructor(props) {
-		super(props)
-	}
-
-	public renderByInstance() {
-		this.setRotatedPoint({
-			x: 0,
-			y: - this.instanceHeight / 2,
-		})
-		this.render()
-	}
-
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let oldPoint: i.Point
-		let transformedNewPoint: i.Point
-		let transformedOldPoint: i.Point
-		let transformedNewPoint_base_InstanceBottomCenter: i.Point
-		let transformedOldPoint_base_InstanceBottomCenter: i.Point
-		let newCenterPoint: i.Point
-		let deltaHeight: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-		oldPoint = {
-			x: this.rotatedInstanceTopCenterPoint.x + this.instanceCenterX,
-			y: this.rotatedInstanceTopCenterPoint.y + this.instanceCenterY
-		}
-
-		transformedNewPoint_base_InstanceBottomCenter = this.getTransformedPointForSize(newPoint, this.rotatedInstanceBottomCenterPoint)
-		transformedOldPoint_base_InstanceBottomCenter = this.getTransformedPointForSize(oldPoint, this.rotatedInstanceBottomCenterPoint)
-
-		deltaHeight = transformedNewPoint_base_InstanceBottomCenter.y - transformedOldPoint_base_InstanceBottomCenter.y
-		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
-
-		newCenterPoint = {
-			x: - deltaHeight / 2 * Math.sin(this.instance.radianAngle),
-			y: deltaHeight / 2 * Math.cos(this.instance.radianAngle),
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint, newCenterPoint)
-		transformedOldPoint = this.getTransformedPointForSize(oldPoint)
-
-		deltaY = transformedNewPoint.y - transformedOldPoint.y
-
-		this.instance.height = this.instance.height - deltaHeight
-		this.instance.top = this.instance.top + deltaY
-		this.instance.left = this.instance.left - deltaX
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
-	}
-}
-
-export class SizePointTopRight extends SizePoint {
-	constructor(props) {
-		super(props)
-	}
-
-	public renderByInstance() {
-		this.setRotatedPoint({
-			x: this.instanceWidth / 2,
-			y: - this.instanceHeight / 2,
-		})
-		this.render()
-	}
-}
 
 export class SizePointLeft extends SizePoint {
 	constructor(props) {
@@ -275,12 +160,19 @@ export class SizePointLeft extends SizePoint {
 	}
 
 	public _updateDrag(event) {
+
+		this.Size.sizeLeftSide({
+			x: event.x,
+			y: event.y,
+		})
+
+		this._updatePrevDraggingPoint(event)
+		this.draw.render()
+
+		return
+
 		let newPoint: i.Point
-		let oldPoint: i.Point
 		let transformedNewPoint: i.Point
-		let transformedOldPoint: i.Point
-		let transformedNewPoint_base_InstanceRightCenter: i.Point
-		let transformedOldPoint_base_InstanceRightCenter: i.Point
 		let newCenterPoint: i.Point
 		let deltaWidth: number
 		let deltaX: number
@@ -290,26 +182,12 @@ export class SizePointLeft extends SizePoint {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}
-		oldPoint = {
-			x: this.rotatedInstanceLeftCenterPoint.x + this.instanceCenterX,
-			y: this.rotatedInstanceLeftCenterPoint.y + this.instanceCenterY
-		}
 
-		transformedNewPoint_base_InstanceRightCenter = this.getTransformedPointForSize(newPoint, this.rotatedInstanceRightCenterPoint)
-		transformedOldPoint_base_InstanceRightCenter = this.getTransformedPointForSize(oldPoint, this.rotatedInstanceRightCenterPoint)
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
 
-		deltaWidth = transformedNewPoint_base_InstanceRightCenter.x - transformedOldPoint_base_InstanceRightCenter.x
+		deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
 		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
-
-		newCenterPoint = {
-			x: deltaWidth / 2 * Math.cos(this.instance.radianAngle),
-			y: deltaWidth / 2 * Math.sin(this.instance.radianAngle),
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint, newCenterPoint)
-		transformedOldPoint = this.getTransformedPointForSize(oldPoint)
-
-		deltaX = transformedNewPoint.x - transformedOldPoint.x
+		deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
 
 		this.instance.width = this.instance.width - deltaWidth
 		this.instance.left = this.instance.left + deltaX
@@ -335,11 +213,7 @@ export class SizePointRight extends SizePoint {
 
 	public _updateDrag(event) {
 		let newPoint: i.Point
-		let oldPoint: i.Point
 		let transformedNewPoint: i.Point
-		let transformedOldPoint: i.Point
-		let transformedNewPoint_base_InstanceRightCenter: i.Point
-		let transformedOldPoint_base_InstanceRightCenter: i.Point
 		let newCenterPoint: i.Point
 		let deltaWidth: number
 		let deltaX: number
@@ -349,28 +223,14 @@ export class SizePointRight extends SizePoint {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}
-		oldPoint = {
-			x: this.rotatedInstanceRightCenterPoint.x + this.instanceCenterX,
-			y: this.rotatedInstanceRightCenterPoint.y + this.instanceCenterY
-		}
 
-		transformedNewPoint_base_InstanceRightCenter = this.getTransformedPointForSize(newPoint, this.rotatedInstanceRightCenterPoint)
-		transformedOldPoint_base_InstanceRightCenter = this.getTransformedPointForSize(oldPoint, this.rotatedInstanceRightCenterPoint)
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
 
-		deltaWidth = transformedNewPoint_base_InstanceRightCenter.x - transformedOldPoint_base_InstanceRightCenter.x
-		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
+		deltaWidth = - (transformedNewPoint.x - this.instanceRightTopPoint.x)
+		deltaY = - deltaWidth / 2 * Math.sin(this.instance.radianAngle)
+		deltaX = deltaWidth * (1 - Math.cos(this.instance.radianAngle)) / 2
 
-		newCenterPoint = {
-			x: deltaWidth / 2 * Math.cos(this.instance.radianAngle),
-			y: deltaWidth / 2 * Math.sin(this.instance.radianAngle),
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint, newCenterPoint)
-		transformedOldPoint = this.getTransformedPointForSize(oldPoint)
-
-		deltaX = transformedNewPoint.x - transformedOldPoint.x - deltaWidth
-
-		this.instance.width = this.instance.width + deltaWidth
+		this.instance.width = this.instance.width - deltaWidth
 		this.instance.left = this.instance.left + deltaX
 		this.instance.top = this.instance.top + deltaY
 
@@ -379,17 +239,44 @@ export class SizePointRight extends SizePoint {
 	}
 }
 
-export class SizePointBottomLeft extends SizePoint {
+export class SizePointTop extends SizePoint {
 	constructor(props) {
 		super(props)
 	}
 
 	public renderByInstance() {
 		this.setRotatedPoint({
-			x: - this.instanceWidth / 2,
-			y: this.instanceHeight / 2,
+			x: 0,
+			y: - this.instanceHeight / 2,
 		})
 		this.render()
+	}
+
+	public _updateDrag(event) {
+		let newPoint: i.Point
+		let transformedNewPoint: i.Point
+		let newCenterPoint: i.Point
+		let deltaHeight: number
+		let deltaX: number
+		let deltaY: number
+
+		newPoint = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop
+		}
+
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
+
+		deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
+		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
+		deltaY = deltaHeight * (1 + Math.cos(this.instance.radianAngle)) / 2
+
+		this.instance.height = this.instance.height - deltaHeight
+		this.instance.top = this.instance.top + deltaY
+		this.instance.left = this.instance.left - deltaX
+
+		this._updatePrevDraggingPoint(event)
+		this.draw.render()
 	}
 }
 
@@ -408,11 +295,7 @@ export class SizePointBottom extends SizePoint {
 
 	public _updateDrag(event) {
 		let newPoint: i.Point
-		let oldPoint: i.Point
 		let transformedNewPoint: i.Point
-		let transformedOldPoint: i.Point
-		let transformedNewPoint_base_InstanceTopCenter: i.Point
-		let transformedOldPoint_base_InstanceTopCenter: i.Point
 		let newCenterPoint: i.Point
 		let deltaHeight: number
 		let deltaX: number
@@ -422,33 +305,106 @@ export class SizePointBottom extends SizePoint {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}
-		oldPoint = {
-			x: this.rotatedInstanceBottomCenterPoint.x + this.instanceCenterX,
-			y: this.rotatedInstanceBottomCenterPoint.y + this.instanceCenterY
-		}
 
-		transformedNewPoint_base_InstanceTopCenter = this.getTransformedPointForSize(newPoint, this.rotatedInstanceTopCenterPoint)
-		transformedOldPoint_base_InstanceTopCenter = this.getTransformedPointForSize(oldPoint, this.rotatedInstanceTopCenterPoint)
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
 
-		deltaHeight = transformedNewPoint_base_InstanceTopCenter.y - transformedOldPoint_base_InstanceTopCenter.y
-		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
+		deltaHeight = - (transformedNewPoint.y - this.instanceBottomCenterPoint.y)
+		deltaX = - (deltaHeight / 2 * Math.sin(this.instance.radianAngle))
+		deltaY = deltaHeight * (1 - Math.cos(this.instance.radianAngle)) / 2
 
-		newCenterPoint = {
-			x: - deltaHeight / 2 * Math.sin(this.instance.radianAngle),
-			y: deltaHeight / 2 * Math.cos(this.instance.radianAngle),
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint, newCenterPoint)
-		transformedOldPoint = this.getTransformedPointForSize(oldPoint)
-
-		deltaY = transformedNewPoint.y  - transformedOldPoint.y - deltaHeight
-
-		this.instance.height = this.instance.height + deltaHeight
+		this.instance.height = this.instance.height - deltaHeight
 		this.instance.top = this.instance.top + deltaY
 		this.instance.left = this.instance.left - deltaX
 
 		this._updatePrevDraggingPoint(event)
 		this.draw.render()
+	}
+}
+
+export class SizePointTopLeft extends SizePoint {
+	constructor(props) {
+		super(props)
+	}
+
+	public renderByInstance() {
+		this.setRotatedPoint({
+			x: - this.instanceWidth / 2,
+			y: - this.instanceHeight / 2
+		})
+
+		this.render()
+	}
+
+	public _updateDrag(event) {
+		let newPoint: i.Point
+		let transformedNewPoint: i.Point
+		let newCenterPoint: i.Point
+		let deltaWidth: number
+		let deltaHeight: number
+		let deltaX: number
+		let deltaY: number
+
+		newPoint = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop
+		}
+
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
+
+		deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
+		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
+		deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
+
+		this.instance.width = this.instance.width - deltaWidth
+		this.instance.left = this.instance.left + deltaX
+		this.instance.top = this.instance.top + deltaY
+
+
+		newPoint = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop
+		}
+
+		transformedNewPoint = this.getTransformedPointForSize(newPoint)
+
+		deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
+		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
+		deltaY = deltaHeight * (1 + Math.cos(this.instance.radianAngle)) / 2
+
+		this.instance.height = this.instance.height - deltaHeight
+		this.instance.top = this.instance.top + deltaY
+		this.instance.left = this.instance.left - deltaX
+
+		this._updatePrevDraggingPoint(event)
+		this.draw.render()
+	}
+}
+
+export class SizePointTopRight extends SizePoint {
+	constructor(props) {
+		super(props)
+	}
+
+	public renderByInstance() {
+		this.setRotatedPoint({
+			x: this.instanceWidth / 2,
+			y: - this.instanceHeight / 2,
+		})
+		this.render()
+	}
+}
+
+export class SizePointBottomLeft extends SizePoint {
+	constructor(props) {
+		super(props)
+	}
+
+	public renderByInstance() {
+		this.setRotatedPoint({
+			x: - this.instanceWidth / 2,
+			y: this.instanceHeight / 2,
+		})
+		this.render()
 	}
 }
 
