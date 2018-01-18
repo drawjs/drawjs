@@ -3,9 +3,11 @@ import * as i from "interface/index"
 import { getRotatedPoint } from 'util/index'
 
 
-enum Horizon {
-	LEFT,
-	RIGHT
+enum Direction {
+	LEFT = 'LEFT',
+	RIGHT = 'RIGHT',
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM',
 }
 
 export default class Size {
@@ -100,7 +102,7 @@ export default class Size {
 		return res
 	}
 
-	public _sizeHorizontalSide( newPoint: i.Point, horizon: Horizon ) {
+	public _sizeHorizontalSide(newPoint: i.Point, horizon: Direction) {
 		let transformedNewPoint: i.Point
 		let newCenterPoint: i.Point
 		let deltaWidth: number
@@ -109,21 +111,48 @@ export default class Size {
 
 		transformedNewPoint = this._getTransformedPointForSize(newPoint)
 
-		if (horizon === Horizon.LEFT ) {
+		if (horizon === Direction.LEFT) {
 			deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
 			deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
+			deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
 		}
 
-		if (horizon === Horizon.RIGHT ) {
-			deltaWidth = - ( transformedNewPoint.x - this.instanceLeftCenterPoint.x )
+		if (horizon === Direction.RIGHT) {
+			deltaWidth = - (transformedNewPoint.x - this.instanceRightTopPoint.x)
 			deltaY = - deltaWidth / 2 * Math.sin(this.instance.radianAngle)
+			deltaX = deltaWidth * (1 - Math.cos(this.instance.radianAngle)) / 2
 		}
-
-		deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
 
 		this.instance.width = this.instance.width - deltaWidth
 		this.instance.left = this.instance.left + deltaX
 		this.instance.top = this.instance.top + deltaY
+	}
+
+	public _sizeVerticalSide(newPoint: i.Point, verticality: Direction) {
+		let transformedNewPoint: i.Point
+		let newCenterPoint: i.Point
+		let deltaHeight: number
+		let deltaX: number
+		let deltaY: number
+
+		transformedNewPoint = this._getTransformedPointForSize(newPoint)
+
+		if (verticality === Direction.TOP) {
+			deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
+			deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
+			deltaY = deltaHeight * (1 + Math.cos(this.instance.radianAngle)) / 2
+		}
+
+		if (verticality === Direction.BOTTOM) {
+			deltaHeight = - (transformedNewPoint.y - this.instanceBottomCenterPoint.y)
+			deltaX = - (deltaHeight / 2 * Math.sin(this.instance.radianAngle))
+			deltaY = deltaHeight * (1 - Math.cos(this.instance.radianAngle)) / 2
+		}
+
+
+		this.instance.height = this.instance.height - deltaHeight
+		this.instance.top = this.instance.top + deltaY
+		this.instance.left = this.instance.left - deltaX
 	}
 
 	/**
@@ -132,7 +161,7 @@ export default class Size {
 	 * @param newPoint
 	 */
 	public sizeLeftSide(newPoint: i.Point) {
-		this._sizeHorizontalSide( newPoint, Horizon.LEFT )
+		this._sizeHorizontalSide(newPoint, Direction.LEFT)
 	}
 
 	/**
@@ -141,7 +170,25 @@ export default class Size {
 	 * @param newPoint
 	 */
 	public sizeRightSide(newPoint: i.Point) {
-		this._sizeHorizontalSide( newPoint, Horizon.RIGHT )
+		this._sizeHorizontalSide(newPoint, Direction.RIGHT)
+	}
+
+	/**
+	 * Size top side by given new point
+	 * ( such as mouse event point dragging )
+	 * @param newPoint
+	 */
+	public sizeTopSide(newPoint: i.Point) {
+		this._sizeVerticalSide(newPoint, Direction.TOP)
+	}
+
+	/**
+	 * Size bottom side by given new point
+	 * ( such as mouse event point dragging )
+	 * @param newPoint
+	 */
+	public sizeBottomSide(newPoint: i.Point) {
+		this._sizeVerticalSide(newPoint, Direction.BOTTOM)
 	}
 }
 

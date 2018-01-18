@@ -7,9 +7,11 @@ import * as i from "interface/index"
 import Size from 'mixin/size'
 
 
-export default class SizePoint extends Point {
+export default abstract class SizePoint extends Point {
 	public instance: any
 	public Size: Size
+
+	abstract size( newPoint: i.Point ): void
 
 	get instanceWidth(): number {
 		return this.instance.width
@@ -82,6 +84,7 @@ export default class SizePoint extends Point {
 		}
 	}
 
+
 	constructor(props) {
 		super(props)
 
@@ -143,6 +146,17 @@ export default class SizePoint extends Point {
 		this.x = rotatedPoint.x
 		this.y = rotatedPoint.y
 	}
+
+	public _updateDrag(event) {
+		const newPoint: i.Point = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y  - this.draw.canvasTop
+		}
+		this.size( newPoint )
+
+		this._updatePrevDraggingPoint(event)
+		this.draw.render()
+	}
 }
 
 
@@ -159,42 +173,8 @@ export class SizePointLeft extends SizePoint {
 		this.render()
 	}
 
-	public _updateDrag(event) {
-
-		this.Size.sizeLeftSide({
-			x: event.x,
-			y: event.y,
-		})
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
-
-		return
-
-		let newPoint: i.Point
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
-		let deltaWidth: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
-		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
-		deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.width = this.instance.width - deltaWidth
-		this.instance.left = this.instance.left + deltaX
-		this.instance.top = this.instance.top + deltaY
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
+	public size( newPoint ) {
+		this.Size.sizeLeftSide( newPoint )
 	}
 }
 
@@ -211,31 +191,8 @@ export class SizePointRight extends SizePoint {
 		this.render()
 	}
 
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
-		let deltaWidth: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaWidth = - (transformedNewPoint.x - this.instanceRightTopPoint.x)
-		deltaY = - deltaWidth / 2 * Math.sin(this.instance.radianAngle)
-		deltaX = deltaWidth * (1 - Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.width = this.instance.width - deltaWidth
-		this.instance.left = this.instance.left + deltaX
-		this.instance.top = this.instance.top + deltaY
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
+	public size( newPoint ) {
+		this.Size.sizeRightSide( newPoint )
 	}
 }
 
@@ -252,31 +209,8 @@ export class SizePointTop extends SizePoint {
 		this.render()
 	}
 
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
-		let deltaHeight: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
-		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
-		deltaY = deltaHeight * (1 + Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.height = this.instance.height - deltaHeight
-		this.instance.top = this.instance.top + deltaY
-		this.instance.left = this.instance.left - deltaX
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
+	public size( newPoint ) {
+		this.Size.sizeTopSide( newPoint )
 	}
 }
 
@@ -293,31 +227,8 @@ export class SizePointBottom extends SizePoint {
 		this.render()
 	}
 
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
-		let deltaHeight: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaHeight = - (transformedNewPoint.y - this.instanceBottomCenterPoint.y)
-		deltaX = - (deltaHeight / 2 * Math.sin(this.instance.radianAngle))
-		deltaY = deltaHeight * (1 - Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.height = this.instance.height - deltaHeight
-		this.instance.top = this.instance.top + deltaY
-		this.instance.left = this.instance.left - deltaX
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
+	public size( newPoint ) {
+		this.Size.sizeBottomSide( newPoint )
 	}
 }
 
@@ -335,48 +246,9 @@ export class SizePointTopLeft extends SizePoint {
 		this.render()
 	}
 
-	public _updateDrag(event) {
-		let newPoint: i.Point
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
-		let deltaWidth: number
-		let deltaHeight: number
-		let deltaX: number
-		let deltaY: number
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
-		deltaY = deltaWidth / 2 * Math.sin(this.instance.radianAngle)
-		deltaX = deltaWidth * (1 + Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.width = this.instance.width - deltaWidth
-		this.instance.left = this.instance.left + deltaX
-		this.instance.top = this.instance.top + deltaY
-
-
-		newPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
-
-		transformedNewPoint = this.getTransformedPointForSize(newPoint)
-
-		deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
-		deltaX = deltaHeight / 2 * Math.sin(this.instance.radianAngle)
-		deltaY = deltaHeight * (1 + Math.cos(this.instance.radianAngle)) / 2
-
-		this.instance.height = this.instance.height - deltaHeight
-		this.instance.top = this.instance.top + deltaY
-		this.instance.left = this.instance.left - deltaX
-
-		this._updatePrevDraggingPoint(event)
-		this.draw.render()
+	public size( newPoint ) {
+		this.Size.sizeTopSide( newPoint )
+		this.Size.sizeLeftSide( newPoint )
 	}
 }
 
@@ -392,6 +264,11 @@ export class SizePointTopRight extends SizePoint {
 		})
 		this.render()
 	}
+
+	public size( newPoint ) {
+		this.Size.sizeTopSide( newPoint )
+		this.Size.sizeRightSide( newPoint )
+	}
 }
 
 export class SizePointBottomLeft extends SizePoint {
@@ -406,6 +283,11 @@ export class SizePointBottomLeft extends SizePoint {
 		})
 		this.render()
 	}
+
+	public size( newPoint ) {
+		this.Size.sizeBottomSide( newPoint )
+		this.Size.sizeLeftSide( newPoint )
+	}
 }
 
 export class SizePointBottomRight extends SizePoint {
@@ -419,5 +301,10 @@ export class SizePointBottomRight extends SizePoint {
 			y: this.instanceHeight / 2,
 		})
 		this.render()
+	}
+
+	public size( newPoint ) {
+		this.Size.sizeBottomSide( newPoint )
+		this.Size.sizeRightSide( newPoint )
 	}
 }
