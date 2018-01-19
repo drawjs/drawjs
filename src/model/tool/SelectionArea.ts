@@ -3,8 +3,9 @@ import * as _ from "lodash"
 import Geometry from "model/Geometry"
 import * as interfaces from "interface/index"
 import Cell from "model/Cell"
-import { coupleSelectCell, coupleEnableCellDrag } from "mixin/index"
+import { coupleSelectCell, coupleEnableCellDrag, coupleIsMouseDownToPan } from "mixin/index"
 import selectionExcludingCellTypes from "store/selectionExcludingCellTypes";
+
 
 export default class SelectionArea extends Geometry {
 	public startPoint: interfaces.Point
@@ -59,6 +60,9 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public _mousedownListener = event => {
+		if ( coupleIsMouseDownToPan( this.draw.zoomPan, event ) ) {
+			return
+		}
 
 		if (this._isPointOnEmptyArea(event)) {
 			this._unselectCells()

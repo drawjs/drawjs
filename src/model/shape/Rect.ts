@@ -20,7 +20,7 @@ export default class Rect extends Graph {
 	public _sizePointBottomLeft: SizePointBottomLeft
 	public _sizePointBottomRight: SizePointBottomRight
 
-	get renderPath(): Path2D {
+	get path(): Path2D {
 		const path = new Path2D()
 		path.rect( -this.width / 2, -this.height / 2, this.width, this.height )
 		return path
@@ -109,14 +109,18 @@ export default class Rect extends Graph {
 		super.render()
 
 		ctx.save()
-		ctx.translate( this.originX, this.originY )
+		this.draw.zoomPan.setTransformCenterPoint( {
+			x: this.originX,
+			y: this.originY
+		} )
 		ctx.fillStyle = this.fill
 		ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
-		ctx.fill( this.renderPath )
+		ctx.fill( this.path )
 
 		ctx.translate( 0, 0 )
 		ctx.restore()
 
+		return
 		/**
 		 * render rotation icon
 		 */
@@ -136,45 +140,41 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ): boolean {
+		const self = this
 		let res = false
-		const relativePoint = this.getTransformedPoint( { x, y } )
-		res = this.draw.ctx.isPointInPath( this.renderPath, relativePoint.x, relativePoint.y )
-		return res
+		let relativePoint = getTransformedPointForContainPoint( { x, y } )
 
-	}
+		res = this.draw.ctx.isPointInPath( this.path, relativePoint.x, relativePoint.y )
 
-	/**
-	 * Get the point
-	 * which was tansformed or rotated reversely and
-	 * was related to context origin of coordinate,
-	 * when relevant context was rotated or transformed,
-	 * to match original path
-	 */
-	public getTransformedPoint( {
-		x,
-		y
-	}: {
-		x: number
-		y: number
-	} ) {
-		let resPoint: i.Point = {
-			x: x - this.originX,
-			y: y - this.originY
+		/**
+	 	 * Get the point
+	 	 * which was tansformed or rotated reversely and
+	 	 * was related to context origin of coordinate,
+	 	 * when relevant context was rotated or transformed,
+	 	 * to match original path
+	 	 */
+		function getTransformedPointForContainPoint( point ) {
+			let res: i.Point = self.draw.zoomPan.transformPointReversely( point )
+
+			res = {
+				x: res.x - self.originX,
+				y: res.y - self.originY
+			}
+
+			res = getRotatedPoint( res, -self.angle )
+
+			return res
 		}
 
-		resPoint = getRotatedPoint( resPoint, -this.angle )
-
-		const res = {
-			x: resPoint.x,
-			y: resPoint.y
-		}
 		return res
 	}
+
 
 	// ******* Drag ******
 	public _updateDrag( event ) {
-		this.left = this.left + event.x - this._prevDraggingPoint.x
-		this.top = this.top + event.y - this._prevDraggingPoint.y
+		const zoom = this.draw.zoomPan.zoom
+		this.left = this.left + event.x / zoom - this._prevDraggingPoint.x / zoom
+		this.top = this.top + event.y / zoom - this._prevDraggingPoint.y / zoom
 
 		this._updatePrevDraggingPoint( event )
 

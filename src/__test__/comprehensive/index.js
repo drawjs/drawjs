@@ -34,12 +34,12 @@ function callback( text ) {
 
 // ******* export *******
 draw.addElement( 'rect', {
-	top: 200,
-	left: 200,
+	top: 100,
+	left: 100,
 	fill: 'red',
 	width: 100,
-	height: 200,
-	angle: 10,
+	height: 100,
+	angle: 0,
 } )
 
 // draw.addElement( 'point', {
@@ -68,3 +68,14 @@ document.getElementById( 'exportBtn' ).addEventListener( 'click', function () {
 } )
 
 // ******* export *******
+
+
+// // ******* zoom and pan *******
+// document.getElementById( 'zoomInButton' ).addEventListener( 'click', draw.zoomPan._zoomIn.bind( draw.zoomPan ) )
+// document.getElementById( 'zoomOutButton' ).addEventListener( 'click', draw.zoomPan._zoomOut.bind( draw.zoomPan ) )
+
+// document.getElementById( 'panTop' ).addEventListener( 'click', draw.zoomPan._panTop.bind( draw.zoomPan ) )
+// document.getElementById( 'panBottom' ).addEventListener( 'click', draw.zoomPan._panBottom.bind( draw.zoomPan ) )
+// document.getElementById( 'panLeft' ).addEventListener( 'click', draw.zoomPan._panLeft.bind( draw.zoomPan ) )
+// document.getElementById( 'panRight' ).addEventListener( 'click', draw.zoomPan._panRight.bind( draw.zoomPan ) )
+// // ******* zoom and pan *******
