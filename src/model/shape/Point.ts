@@ -1,5 +1,5 @@
-import { Cell } from "../index"
-import { defaultPointRadius } from "../../store/index"
+import { Cell } from "model/index"
+import { defaultPointRadius } from "store/index"
 import * as i from "interface/index"
 import * as _ from "lodash"
 

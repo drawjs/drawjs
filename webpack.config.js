@@ -36,6 +36,7 @@ module.exports = {
 			interaction: path.resolve( __dirname, './src/interaction' ),
 			schema: path.resolve( __dirname, './src/schema' ),
 			mixin: path.resolve( __dirname, './src/mixin' ),
+			shared: path.resolve( __dirname, './src/shared' ),
 		},
 		extensions: [
 			'.tsx',

@@ -1,4 +1,4 @@
-import Cell from "../model/Cell"
+import Cell from "model/Cell"
 
 /**
  * Select cell or not

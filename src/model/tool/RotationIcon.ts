@@ -1,14 +1,15 @@
 import * as _ from "lodash"
 
-import Geometry from "../Geometry"
-import Cell from "../Cell"
+import Geometry from "model/Geometry"
+import Cell from "model/Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
-import { getPointAngleToOrigin } from 'util/index'
+import { getPointAngleToOrigin } from "util/index"
 import * as i from "interface/index"
-import { coupleRotatingCell, coupleSelectCell } from "../../mixin/index"
-import { getRotatedPoint } from 'util/index'
-import * as constant from 'store/constant'
-
+import { coupleRotatingCell, coupleSelectCell } from "mixin/index"
+import { getRotatedPoint } from "util/index"
+import * as constant from "store/constant"
+import { Point } from "interface/index"
+import { getTransformedPointForContainPoint } from "shared/index"
 
 export default class RotationIcon extends Cell {
 	public instance: any
@@ -18,8 +19,8 @@ export default class RotationIcon extends Cell {
 	get path(): Path2D {
 		const path = new Path2D()
 		path.rect(
-			- this._size / 2,
-			- this.length - this._size,
+			-this._size / 2,
+			-this.length - this._size,
 			this._size,
 			this._size
 		)
@@ -34,16 +35,16 @@ export default class RotationIcon extends Cell {
 		return res
 	}
 
-	get instanceCenterX(): number {
-		return this.instance.left + this.instance.width / 2
+	get originX(): number {
+		return this.instance.originX
 	}
 
-	get instanceCenterY(): number {
-		return this.instance.top + this.instance.height / 2
+	get originY(): number {
+		return this.instance.originY
 	}
 
-	constructor(props) {
-		super(props)
+	constructor( props ) {
+		super( props )
 
 		const { instance } = props
 
@@ -56,70 +57,46 @@ export default class RotationIcon extends Cell {
 
 	public renderByInstance() {
 		this.draw.ctx.save()
-		this.draw.ctx.translate(this.instanceCenterX, this.instanceCenterY)
-		this.draw.ctx.rotate(this.instance.angle * constant.DEGREE_TO_RADIAN)
+		this.draw.zoomPan.setTransformCenterPoint( {
+			x: this.originX,
+			y: this.originY
+		} )
+		this.draw.ctx.rotate( this.instance.angle * constant.DEGREE_TO_RADIAN )
 		this.draw.ctx.drawImage(
 			this._iconImage,
-			- this._size / 2,
+			-this._size / 2,
 			-this.length - this._size,
 			this._size,
 			this._size
 		)
-		this.draw.ctx.translate(0, 0)
+		this.draw.ctx.translate( 0, 0 )
 		this.draw.ctx.restore()
 	}
 
-	containPoint(x, y): boolean {
-		let res = false
+	containPoint( x, y ): boolean {
+		const transformedPoint: Point = getTransformedPointForContainPoint(
+			{ x, y },
+			this
+		)
 
-		// if ( ! this.instance.isSelected || ! this.instance.isRotating ) {
-		// 	return res
-		// }
+		const isContain = this.draw.ctx.isPointInPath(
+			this.path,
+			transformedPoint.x,
+			transformedPoint.y
+		)
 
-		let transformedPoint = this.getTransformedPoint({ x, y })
-
-		res = this.draw.ctx.isPointInPath(this.path, transformedPoint.x, transformedPoint.y)
-
-		return res
-	}
-
-	/**
-	 * Get the point
-	 * which was tansformed or rotated reversely and
-	 * was related to context origin of coordinate,
-	 * when relevant context was rotated or transformed,
-	 * to match original path
-	 */
-	public getTransformedPoint({
-		x,
-		y
-	}: {
-			x: number
-			y: number
-		}) {
-		let resPoint: i.Point = {
-			x: x - this.instance.originX,
-			y: y - this.instance.originY
-		}
-
-		resPoint = getRotatedPoint(resPoint, -this.instance.angle)
-
-		const res = {
-			x: resPoint.x,
-			y: resPoint.y
-		}
-		return res
+		return isContain
 	}
 
 	// ******* Drag ******
-	public handleStartDrag(event) {
+	public handleStartDrag( event ) {
 		if ( this.instance.isSelected ) {
-			coupleRotatingCell(this.instance, true)
-			coupleSelectCell(this.instance, false)
+			coupleRotatingCell( this.instance, true )
+			coupleSelectCell( this.instance, false )
 		}
 	}
-	public _updateDrag(event) {
-		if ( ! this.instance.isRotating ) {
+	public _updateDrag( event ) {
+		if ( !this.instance.isRotating ) {
 			return
 		}
 
@@ -128,24 +105,25 @@ export default class RotationIcon extends Cell {
 		const deltaX = event.x - this._prevDraggingPoint.x
 		const deltaY = event.y - this._prevDraggingPoint.y
 
-		radianAngle = getPointAngleToOrigin({
-			x: event.x - this.draw.canvasLeft - this.instanceCenterX,
-			y: event.y - this.draw.canvasTop - this.instanceCenterY,
-		}) + Math.PI / 2
+		radianAngle =
+			getPointAngleToOrigin( {
+				x: event.x - this.draw.canvasLeft - this.originX,
+				y: event.y - this.draw.canvasTop - this.originY
+			} ) +
+			Math.PI / 2
 
-		this._updatePrevDraggingPoint(event)
+		this._updatePrevDraggingPoint( event )
 
 		this.instance.angle = radianAngle * constant.RADIAN_TO_DEGREE
 
 		this.draw.render()
 	}
-	public handleStopDrag(event) {
+	public handleStopDrag( event ) {
 		if ( this.instance.isRotating ) {
-			coupleRotatingCell(this.instance, false)
-			coupleSelectCell(this.instance, true)
+			coupleRotatingCell( this.instance, false )
+			coupleSelectCell( this.instance, true )
 			this.draw.render()
 		}
-
 	}
 	// ******* Drag ******
 }

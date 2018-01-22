@@ -4,7 +4,9 @@ import Graph from "model/Graph"
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 import { defaultPathExandingValue } from "store/index"
-import SizePoint, { SizePointLineSide } from "../tool/SizePoint";
+import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
+import { Point } from "interface/index"
+import { getTransformedPointForContainPoint } from "shared/index"
 
 export default class Line extends Graph {
 	public pointStart: i.Point
@@ -22,16 +24,20 @@ export default class Line extends Graph {
 		return this.pointLeft.x
 	}
 	get top(): number {
-		return Math.min(
-			this.pointStart.y,
-			this.pointEnd.y,
-		)
+		return Math.min( this.pointStart.y, this.pointEnd.y )
 	}
 	get width(): number {
 		return this.length * Math.cos( this.relativeAngle )
 	}
 	get height(): number {
 		return this.length * Math.sin( this.relativeAngle )
+	}
+	get originX(): number {
+		return this.left + this.width / 2
+	}
+
+	get originY(): number {
+		return this.top + this.height / 2
 	}
 
 	get relativeAngle(): number {
@@ -64,20 +70,24 @@ export default class Line extends Graph {
 		return this.isXEndBiggerThantStart ? this.pointEnd : this.pointStart
 	}
 	get sizePoints(): SizePointLineSide[] {
-		return [
-			this._sizePointA,
-			this._sizePointB
-		]
+		return [ this._sizePointA, this._sizePointB ]
 	}
 	get path(): Path2D {
 		const path = new Path2D()
 
-		path.moveTo( this.pointStart.x, this.pointStart.y )
-		path.lineTo( this.pointEnd.x, this.pointEnd.y )
+		path.moveTo(
+			this.pointStart.x - this.originX,
+			this.pointStart.y - this.originY
+		)
+		path.lineTo(
+			this.pointEnd.x - this.originX,
+			this.pointEnd.y - this.originY
+		)
 
 		return path
 	}
 	get pathStoked(): Path2D {
+		const self = this
 		const path = new Path2D()
 		const w = defaultPathExandingValue
 		const l = this.length
@@ -161,34 +171,40 @@ export default class Line extends Graph {
 		if ( !this.isYRightSmallerThanLeft ) {
 		}
 
-		const points = [ point1, point2, point3, point4, point1 ]
+		let points = [ point1, point2, point3, point4, point1 ]
+
+		points = points.map( updatePosition )
 
 		points.map( connectLine( path ) )
 
 		return path
+
+		function updatePosition( point: Point ) {
+			return {
+				x: point.x - self.originX,
+				y: point.y - self.originY
+			}
+		}
 	}
 
 	constructor( props ) {
 		super( props )
 
-		const {
-			pointStart,
-			pointEnd
-		} = props
+		const { pointStart, pointEnd } = props
 
 		this.type = cellTypeList.LINE
 		this.pointStart = pointStart
 		this.pointEnd = pointEnd
 
 		this._sizePointA = new SizePointLineSide( {
-			instance: this,
-			draw: this.draw,
+			instance    : this,
+			draw        : this.draw,
 			relatedPoint: pointStart
 		} )
 
 		this._sizePointB = new SizePointLineSide( {
-			instance: this,
-			draw: this.draw,
+			instance    : this,
+			draw        : this.draw,
 			relatedPoint: pointEnd
 		} )
 	}
@@ -198,15 +214,16 @@ export default class Line extends Graph {
 		super.render()
 
 		ctx.save()
-		// ctx.rotate((Math.PI / 180) * this.relativeAngle)
+		this.draw.zoomPan.setTransformCenterPoint( {
+			x: this.originX,
+			y: this.originY
+		} )
 		ctx.lineWidth = 1
 		ctx.strokeStyle = this.fill
 		ctx.stroke( this.path )
 
 		ctx.fillStyle = "rgba(43, 228, 430, 0.3)"
 		ctx.fill( this.pathStoked )
-		// ctx.strokeStyle = "rgba(43, 228, 430, 0.3)"
-		// ctx.stroke( this.pathStoked )
 
 		ctx.restore()
 
@@ -222,15 +239,27 @@ export default class Line extends Graph {
 	}
 
 	public containPoint( x: number, y: number ) {
-		const isContain = this.draw.ctx.isPointInPath( this.pathStoked, x, y )
+		const transformedPoint = getTransformedPointForContainPoint(
+			{
+				x,
+				y
+			},
+			this
+		)
+		const isContain = this.draw.ctx.isPointInPath(
+			this.pathStoked,
+			transformedPoint.x,
+			transformedPoint.y
+		)
 		return isContain
 	}
 
-
 	// ******* Drag ******
 	public _updateDrag( event ) {
-		this.pointStart.x = this.pointStart.x + event.x - this._prevDraggingPoint.x
-		this.pointStart.y = this.pointStart.y + event.y - this._prevDraggingPoint.y
+		this.pointStart.x =
+			this.pointStart.x + event.x - this._prevDraggingPoint.x
+		this.pointStart.y =
+			this.pointStart.y + event.y - this._prevDraggingPoint.y
 
 		this.pointEnd.x = this.pointEnd.x + event.x - this._prevDraggingPoint.x
 		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y

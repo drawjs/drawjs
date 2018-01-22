@@ -1,5 +1,5 @@
 import * as i from "interface/index"
-import Draw from "../Draw"
+import Draw from "Draw"
 import { isMouseMiddleClick } from 'util/index'
 
 

@@ -1,9 +1,12 @@
-export default function renderGrid( canvas: HTMLCanvasElement ) {
+import { Point } from 'interface/index';
+
+
+export default function renderGrid( canvas: HTMLCanvasElement, zoom: number, panPoint: Point ) {
 	const ctx = canvas.getContext( '2d' )
 	const width = canvas.width
 	const height = canvas.height
-	const spaceSmall = 10
-	const spaceBig = 50
+	const spaceSmall = 10 * zoom
+	const spaceBig = 50 * zoom
 
 	renderGridBySpace( spaceSmall, () => {
 		ctx.setLineDash( [ 2, 1 ] )
@@ -26,7 +29,7 @@ export default function renderGrid( canvas: HTMLCanvasElement ) {
 			path.lineTo( x, height )
 
 			const y = i * space
-			path.moveTo( 0, y )
+			path.moveTo( 0, y)
 			path.lineTo( width, y )
 		}
 

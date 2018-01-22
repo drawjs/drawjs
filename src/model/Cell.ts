@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import { generateUniqueId } from "util/index"
-import Draw from "../Draw"
+import Draw from "Draw"
 import * as i from "interface/index"
 import * as constant from 'store/constant'
 import coupleIsMouseDownToPan from 'mixin/coupleIsMouseDownToPan'

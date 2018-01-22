@@ -1,6 +1,7 @@
 import * as _ from "lodash"
 import * as i from "interface/index"
 import { getRotatedPoint } from 'util/index'
+import { getTransformedPointForContainPoint } from 'shared/index';
 
 
 enum Direction {
@@ -31,12 +32,12 @@ export default class Size {
 		)
 	}
 
-	get instanceCenterX(): number {
-		return this.instance.left + this.instance.width / 2
+	get instanceOriginX(): number {
+		return this.instance.originX
 	}
 
-	get instanceCenterY(): number {
-		return this.instance.top + this.instance.height / 2
+	get instanceOriginY(): number {
+		return this.instance.originY
 	}
 	get instanceLeftCenterPoint(): i.Point {
 		return {
@@ -91,17 +92,6 @@ export default class Size {
 		this.instance = props.instance
 	}
 
-	public _getTransformedPointForSize( point: i.Point, centerPoint?: i.Point ) {
-		let res: i.Point = {
-			x: point.x - this.instanceCenterX,
-			y: point.y - this.instanceCenterY
-		}
-
-		res = getRotatedPoint( res, -this.instance.angle, centerPoint )
-
-		return res
-	}
-
 	public _sizeHorizontalSide( newPoint: i.Point, horizon: Direction ) {
 		let transformedNewPoint: i.Point
 		let newCenterPoint: i.Point
@@ -109,7 +99,7 @@ export default class Size {
 		let deltaX: number
 		let deltaY: number
 
-		transformedNewPoint = this._getTransformedPointForSize( newPoint )
+		transformedNewPoint = getTransformedPointForContainPoint( newPoint, this.instance )
 
 		if ( horizon === Direction.LEFT ) {
 			deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
@@ -135,7 +125,7 @@ export default class Size {
 		let deltaX: number
 		let deltaY: number
 
-		transformedNewPoint = this._getTransformedPointForSize( newPoint )
+		transformedNewPoint = getTransformedPointForContainPoint( newPoint, this.instance )
 
 		if ( verticality === Direction.TOP ) {
 			deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y

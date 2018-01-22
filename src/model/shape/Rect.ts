@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 
 import Graph from "model/Graph"
-import RotationIcon from "../tool/RotationIcon"
+import RotationIcon from "model/tool/RotationIcon"
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
 import SizePoint, {
@@ -13,9 +13,10 @@ import SizePoint, {
 	SizePointBottom,
 	SizePointBottomLeft,
 	SizePointBottomRight
-} from "../tool/SizePoint"
+} from "model/tool/SizePoint"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
+import { getTransformedPointForContainPoint } from "shared/index";
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
@@ -147,37 +148,14 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ): boolean {
-		const self = this
-		let res = false
-		let relativePoint = getTransformedPointForContainPoint( { x, y } )
+		const relativePoint = getTransformedPointForContainPoint( { x, y }, this )
 
-		res = this.draw.ctx.isPointInPath(
+		const isContain = this.draw.ctx.isPointInPath(
 			this.path,
 			relativePoint.x,
 			relativePoint.y
 		)
-
-		/**
-		 * Get the point
-		 * which was tansformed or rotated reversely and
-		 * was related to context origin of coordinate,
-		 * when relevant context was rotated or transformed,
-		 * to match original path
-		 */
-		function getTransformedPointForContainPoint( point ) {
-			let res: i.Point = self.draw.zoomPan.transformPointReversely( point )
-
-			res = {
-				x: res.x - self.originX,
-				y: res.y - self.originY
-			}
-
-			res = getRotatedPoint( res, -self.angle )
-
-			return res
-		}
-
-		return res
+		return isContain
 	}
 
 	// ******* Drag ******
