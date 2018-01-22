@@ -4,7 +4,7 @@ import cellTypeClassMap from 'store/cellTypeClassMap'
 import { Cell } from 'model/index'
 
 
-export default function ( elementWithoutInstance: interfaces.DrawStoreElementWithoutInstance, draw: any): interfaces.DrawStoreElementInstance {
+export default function ( elementWithoutInstance: interfaces.DrawStoreElementWithoutInstance, draw: any ): interfaces.DrawStoreElementInstance {
 	const isInstanceElementWithoutInstance = isInstance( elementWithoutInstance )
 	if ( isInstanceElementWithoutInstance ) {
 		addDrawInstanceToInstance( elementWithoutInstance )

@@ -1,12 +1,21 @@
 import * as _ from "lodash"
 
 import Graph from "model/Graph"
-import RotationIcon from '../tool/RotationIcon'
+import RotationIcon from "../tool/RotationIcon"
 import * as cellTypeList from "store/constant_cellTypeList"
 import * as i from "interface/index"
-import SizePoint, { SizePointTop, SizePointTopLeft, SizePointTopRight, SizePointLeft, SizePointRight, SizePointBottom, SizePointBottomLeft, SizePointBottomRight } from "../tool/SizePoint";
-import { getRotatedPoint } from 'util/index'
-import * as constant from 'store/constant'
+import SizePoint, {
+	SizePointTop,
+	SizePointTopLeft,
+	SizePointTopRight,
+	SizePointLeft,
+	SizePointRight,
+	SizePointBottom,
+	SizePointBottomLeft,
+	SizePointBottomRight
+} from "../tool/SizePoint"
+import { getRotatedPoint } from "util/index"
+import * as constant from "store/constant"
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
@@ -43,7 +52,7 @@ export default class Rect extends Graph {
 			this._sizePointRight,
 			this._sizePointBottomLeft,
 			this._sizePointBottom,
-			this._sizePointBottomRight,
+			this._sizePointBottomRight
 		]
 	}
 
@@ -53,10 +62,9 @@ export default class Rect extends Graph {
 		this.type = cellTypeList.RECT
 		this.draggable = true
 
-
 		this._rotationIcon = new RotationIcon( {
 			instance: this,
-			draw: this.draw
+			draw    : this.draw
 		} )
 
 		this._initializeSizePoints()
@@ -65,42 +73,42 @@ export default class Rect extends Graph {
 	public _initializeSizePoints() {
 		this._sizePointTop = new SizePointTop( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointTopLeft = new SizePointTopLeft( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointTopRight = new SizePointTopRight( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointLeft = new SizePointLeft( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointRight = new SizePointRight( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointBottom = new SizePointBottom( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointBottomLeft = new SizePointBottomLeft( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 
 		this._sizePointBottomRight = new SizePointBottomRight( {
 			instance: this,
-			draw: this.draw,
+			draw    : this.draw
 		} )
 	}
 
@@ -120,7 +128,6 @@ export default class Rect extends Graph {
 		ctx.translate( 0, 0 )
 		ctx.restore()
 
-		return
 		/**
 		 * render rotation icon
 		 */
@@ -144,15 +151,19 @@ export default class Rect extends Graph {
 		let res = false
 		let relativePoint = getTransformedPointForContainPoint( { x, y } )
 
-		res = this.draw.ctx.isPointInPath( this.path, relativePoint.x, relativePoint.y )
+		res = this.draw.ctx.isPointInPath(
+			this.path,
+			relativePoint.x,
+			relativePoint.y
+		)
 
 		/**
-	 	 * Get the point
-	 	 * which was tansformed or rotated reversely and
-	 	 * was related to context origin of coordinate,
-	 	 * when relevant context was rotated or transformed,
-	 	 * to match original path
-	 	 */
+		 * Get the point
+		 * which was tansformed or rotated reversely and
+		 * was related to context origin of coordinate,
+		 * when relevant context was rotated or transformed,
+		 * to match original path
+		 */
 		function getTransformedPointForContainPoint( point ) {
 			let res: i.Point = self.draw.zoomPan.transformPointReversely( point )
 
@@ -169,11 +180,11 @@ export default class Rect extends Graph {
 		return res
 	}
 
-
 	// ******* Drag ******
 	public _updateDrag( event ) {
 		const zoom = this.draw.zoomPan.zoom
-		this.left = this.left + event.x / zoom - this._prevDraggingPoint.x / zoom
+		this.left =
+			this.left + event.x / zoom - this._prevDraggingPoint.x / zoom
 		this.top = this.top + event.y / zoom - this._prevDraggingPoint.y / zoom
 
 		this._updatePrevDraggingPoint( event )

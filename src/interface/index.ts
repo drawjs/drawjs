@@ -1,42 +1,38 @@
-import { Cell } from 'model/index'
-
+import { Cell } from "model/index"
 
 /**
  * sync to schema>SchemaDrawStoreWithoutInstance
  */
 export interface DrawStoreWithoutInstance {
-	activePanelId: string,
+	activePanelId: string
 	panels: DrawStorePanelWithoutInstance[]
 }
 
-
 export interface DrawStorePanelWithoutInstance {
-	id: string,
-	name: string,
+	id: string
+	name: string
 	elements: DrawStoreElementWithoutInstance[]
 }
 
 export interface DrawStoreElementWithoutInstance {
-	draw?: any,
-	id: string,
-	type: string,
-	top: number,
-	left: number,
-	width: number,
-	height: number,
-	fill: string,
-	angle: number,
-	points: Point[],
-	draggable: boolean,
-	isSelected: boolean,
+	draw?: any
+	id: string
+	type: string
+	top: number
+	left: number
+	width: number
+	height: number
+	fill: string
+	angle: number
+	points: Point[]
+	draggable: boolean
+	isSelected: boolean
 }
 
-export interface DrawStoreElementInstance extends DrawStoreElementWithoutInstance {
+export interface DrawStoreElementInstance
+	extends DrawStoreElementWithoutInstance {}
 
-}
-
-
-export interface DrawStore extends DrawStoreWithoutInstance  {
+export interface DrawStore extends DrawStoreWithoutInstance {
 	panels: DrawStorePanel[]
 }
 
@@ -48,8 +44,9 @@ export interface DrawStoreElement extends DrawStoreElementWithoutInstance {
 	__instance__: DrawStoreElementInstance
 }
 
-
 export interface Point {
-	x: number,
-	y: number,
+	x: number
+	y: number
 }
+
+

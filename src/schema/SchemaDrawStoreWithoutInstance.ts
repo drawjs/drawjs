@@ -1,12 +1,12 @@
-export default ({
+export default ( {
 	properties: {
 		activePanelId: {
 			type: 'string',
 		},
 		panels: {
-			type: 'array',
+			type : 'array',
 			items: {
-				type: 'object',
+				type      : 'object',
 				properties: {
 					id: {
 						type: 'string'
@@ -15,9 +15,9 @@ export default ({
 						type: 'string'
 					},
 					elements: {
-						type: 'array',
+						type : 'array',
 						items: {
-							type: 'object',
+							type      : 'object',
 							properties: {
 								id: {
 									type: 'string'
@@ -65,4 +65,4 @@ export default ({
 			}
 		}
 	}
-})
+} )

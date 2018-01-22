@@ -14,7 +14,7 @@ export default class Selection {
 			} )
 			ctx.lineWidth = 2
 			ctx.setLineDash( [ 5, 5 ] )
-			ctx.rotate((Math.PI / 180) * instance.angle)
+			ctx.rotate( ( Math.PI / 180 ) * instance.angle )
 			ctx.strokeStyle = 'black'
 			ctx.strokeRect( - instance.width / 2, - instance.height / 2, instance.width, instance.height )
 			ctx.restore()

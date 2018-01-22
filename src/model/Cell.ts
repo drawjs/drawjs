@@ -39,12 +39,12 @@ export default abstract class Cell {
 		return res
 	}
 
-	constructor(props) {
+	constructor( props ) {
 		const { draw } = props
 
 		this.draw = draw
 
-		this.draw.cellList.push(this)
+		this.draw.cellList.push( this )
 
 		this.bindEvents()
 	}
@@ -54,19 +54,19 @@ export default abstract class Cell {
 			"mousedown",
 			this._mousedownListener
 		)
-		this.draw.canvas.addEventListener("mousedown", this._mousedownListener)
+		this.draw.canvas.addEventListener( "mousedown", this._mousedownListener )
 
 		this.draw.canvas.removeEventListener(
 			"mousemove",
 			this._mousemoveListener
 		)
-		this.draw.canvas.addEventListener("mousemove", this._mousemoveListener)
+		this.draw.canvas.addEventListener( "mousemove", this._mousemoveListener )
 
-		this.draw.canvas.removeEventListener("mouseup", this._mouseupListener)
-		this.draw.canvas.addEventListener("mouseup", this._mouseupListener)
+		this.draw.canvas.removeEventListener( "mouseup", this._mouseupListener )
+		this.draw.canvas.addEventListener( "mouseup", this._mouseupListener )
 
-		this.draw.canvas.removeEventListener("click", this._clickListener)
-		this.draw.canvas.addEventListener("click", this._clickListener)
+		this.draw.canvas.removeEventListener( "click", this._clickListener )
+		this.draw.canvas.addEventListener( "click", this._clickListener )
 	}
 
 	public _mousedownListener = event => {
@@ -74,68 +74,68 @@ export default abstract class Cell {
 			return
 		}
 
-		const mostTopCell = this.draw._getMostTopCell(event)
+		const mostTopCell = this.draw._getMostTopCell( event )
 
-		if (mostTopCell === this) {
-			this._startDrag(event)
+		if ( mostTopCell === this ) {
+			this._startDrag( event )
 		}
 	}
 
 	public _mousemoveListener = event => {
-		this._isDragging && this._dragging(event)
+		this._isDragging && this._dragging( event )
 	}
 
 	public _mouseupListener = event => {
-		this._stopDrag(event)
+		this._stopDrag( event )
 	}
 
 	public _clickListener = event => {
-		const mostTopCell = this.draw._getMostTopCell(event)
+		const mostTopCell = this.draw._getMostTopCell( event )
 
-		if (mostTopCell === this) {
-			this.handleClick(event)
+		if ( mostTopCell === this ) {
+			this.handleClick( event )
 		}
 	}
 
-	private set(field: string, value: any) {
-		this[field] = value
+	private set( field: string, value: any ) {
+		this[ field ] = value
 	}
 
 	public render() { }
 
 	// ******* Interaction ******
 	// ******* # General ******
-	public handleClick(event) {
+	public handleClick( event ) {
 
 	}
 	// ******* # General ******
 	// ******* # Drag ******
-	public abstract containPoint(x: number, y: number): void
+	public abstract containPoint( x: number, y: number ): void
 
-	public _updatePrevDraggingPoint(event) {
+	public _updatePrevDraggingPoint( event ) {
 		this._prevDraggingPoint = {
 			x: event.x,
 			y: event.y
 		}
 	}
-	public _updateDrag(event) { }
-	public _startDrag(event): void {
+	public _updateDrag( event ) { }
+	public _startDrag( event ): void {
 		this._isDragging = true
-		this._updatePrevDraggingPoint(event)
-		this.handleStartDrag && this.handleStartDrag(event)
+		this._updatePrevDraggingPoint( event )
+		this.handleStartDrag && this.handleStartDrag( event )
 	}
-	public _dragging(event): void {
-		this._updateDrag(event)
-		this._updatePrevDraggingPoint(event)
+	public _dragging( event ): void {
+		this._updateDrag( event )
+		this._updatePrevDraggingPoint( event )
 		// this.handleDragging && this.handleDragging( event )
 	}
-	public _stopDrag(event): void {
+	public _stopDrag( event ): void {
 		this._isDragging = false
-		this.handleStopDrag && this.handleStopDrag(event)
+		this.handleStopDrag && this.handleStopDrag( event )
 	}
-	public handleStartDrag(event) { }
-	public handleDragging(event) { }
-	public handleStopDrag(event) { }
+	public handleStartDrag( event ) { }
+	public handleDragging( event ) { }
+	public handleStopDrag( event ) { }
 	// ******* # Drag ******
 	// ******* Interaction ******
 
@@ -146,11 +146,11 @@ export default abstract class Cell {
 		angle: number,
 		centerPoint: i.Point = { x: 0, y: 0 }
 	) {
-		if (angle === 0) {
+		if ( angle === 0 ) {
 			return point
 		}
 
-		let resPoint: i.Point = _.cloneDeep(point)
+		let resPoint: i.Point = _.cloneDeep( point )
 		const alpha = angle * constant.DEGREE_TO_RADIAN
 
 		const relativePoint = {
@@ -160,11 +160,11 @@ export default abstract class Cell {
 
 		resPoint = {
 			x:
-				relativePoint.x * Math.cos(alpha) -
-				relativePoint.y * Math.sin(alpha),
+				relativePoint.x * Math.cos( alpha ) -
+				relativePoint.y * Math.sin( alpha ),
 			y:
-				relativePoint.x * Math.sin(alpha) +
-				relativePoint.y * Math.cos(alpha)
+				relativePoint.x * Math.sin( alpha ) +
+				relativePoint.y * Math.cos( alpha )
 		}
 
 		return resPoint

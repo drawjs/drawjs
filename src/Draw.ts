@@ -11,14 +11,14 @@ import {
 	DRAW_PANEL_ID_PREFIX
 } from "store/constant"
 import * as a from "store/constant_action"
-import { ROTATE_ICON } from 'store/constant_cellTypeList'
-import drawRenderExcludingCellTypes from 'store/drawRenderExcludingCellTypes'
+import { ROTATE_ICON } from "store/constant_cellTypeList"
+import drawRenderExcludingCellTypes from "store/drawRenderExcludingCellTypes"
 import {
 	getInstanceByElementWithoutInstance,
 	updateStoreElementsByTheirInstances
 } from "mixin/index"
-import ZoomPan from 'mixin/ZoomPan'
-import EventKeyboard from 'mixin/EventKeyboard'
+import ZoomPan from "mixin/ZoomPan"
+import EventKeyboard from "mixin/EventKeyboard"
 
 import * as interfaces from "interface/index"
 import * as download from "lib/download.js"
@@ -26,9 +26,9 @@ import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/cellTypeClassMap"
 import { generateUniqueId, renderGrid } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
-import { SelectionArea } from "./model/tool/index";
+import { SelectionArea } from "model/tool/index"
 import * as i from "interface/index"
-
+import CanvasRenderingContext2D from "interface/CanvasRenderingContext2D"
 
 const ajv = new Ajv()
 
@@ -38,8 +38,8 @@ export default class Draw {
 
 		panels: [
 			{
-				id: this.generateUniqueId(),
-				name: DRAW_STORE_PANEL_DEFAULT_NAME,
+				id      : this.generateUniqueId(),
+				name    : DRAW_STORE_PANEL_DEFAULT_NAME,
 				elements: []
 			}
 		]
@@ -57,7 +57,6 @@ export default class Draw {
 	 */
 	public zoomPan: ZoomPan
 
-
 	public cellTypeClassMap: any = cellTypeClassMap
 	public _selectionAreaInstance: SelectionArea
 
@@ -71,32 +70,32 @@ export default class Draw {
 	public onGraphHover: Function
 
 	get storeActivePanelId(): string {
-		return !_.isNil(this.store.activePanelId) ?
+		return !_.isNil( this.store.activePanelId ) ?
 			this.store.activePanelId :
-			this.store.panels.length > 0 ? this.store.panels[0].id : null
+			this.store.panels.length > 0 ? this.store.panels[ 0 ].id : null
 	}
 
 	get storeActiveElements(): interfaces.DrawStoreElement[] {
-		return this.getStoreElementsByPanelId(this.storeActivePanelId)
+		return this.getStoreElementsByPanelId( this.storeActivePanelId )
 	}
 
 	get storeElementsIds(): string[] {
 		let ids: string[]
 		let cachedElements: interfaces.DrawStoreElement[] = []
 
-		if (_.isNil(this.store) || _.isNil(this.store.panels)) {
+		if ( _.isNil( this.store ) || _.isNil( this.store.panels ) ) {
 			return []
 		}
 
-		this.store.panels.map(pushElementsToCachedElement)
+		this.store.panels.map( pushElementsToCachedElement )
 
-		ids = cachedElements.map(getId)
+		ids = cachedElements.map( getId )
 
-		function pushElementsToCachedElement(panel: interfaces.DrawStorePanel) {
-			cachedElements = [...cachedElements, ...panel.elements]
+		function pushElementsToCachedElement( panel: interfaces.DrawStorePanel ) {
+			cachedElements = [ ...cachedElements, ...panel.elements ]
 		}
 
-		function getId(element: interfaces.DrawStoreElement): string {
+		function getId( element: interfaces.DrawStoreElement ): string {
 			return element.id
 		}
 
@@ -108,17 +107,17 @@ export default class Draw {
 	}
 
 	get __storeIgnoreInstance__(): interfaces.DrawStore {
-		let store: interfaces.DrawStore = _.cloneDeep(this.store)
+		let store: interfaces.DrawStore = _.cloneDeep( this.store )
 
-		store.panels.map(mapPanelElements)
+		store.panels.map( mapPanelElements )
 
-		function mapPanelElements(panel, panelIndex) {
-			panel.elements.map(getDelete__Instance__(panelIndex))
+		function mapPanelElements( panel, panelIndex ) {
+			panel.elements.map( getDelete__Instance__( panelIndex ) )
 		}
 
-		function getDelete__Instance__(panelIndex) {
-			return (element, elementIndex) => {
-				delete store.panels[panelIndex].elements[elementIndex]
+		function getDelete__Instance__( panelIndex ) {
+			return ( element, elementIndex ) => {
+				delete store.panels[ panelIndex ].elements[ elementIndex ]
 					.__instance__
 			}
 		}
@@ -127,10 +126,10 @@ export default class Draw {
 	}
 
 	get __storeActiveElementsInstances__(): interfaces.DrawStoreElementInstance[] {
-		function get__instance__(element) {
+		function get__instance__( element ) {
 			return element.__instance__
 		}
-		return this.storeActiveElements.map(get__instance__)
+		return this.storeActiveElements.map( get__instance__ )
 	}
 
 	get canvasLeft(): number {
@@ -140,9 +139,9 @@ export default class Draw {
 		return this.canvas.getBoundingClientRect().top
 	}
 
-	constructor(canvas: HTMLCanvasElement) {
+	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas
-		this.ctx = canvas.getContext("2d")
+		this.ctx = <CanvasRenderingContext2D>canvas.getContext( "2d" )
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
 
@@ -151,13 +150,13 @@ export default class Draw {
 
 	/****** initialization and render ******/
 	private initialize() {
-		this.dispatch(a.MODIFY_ACTIVE_PANEL_ID, this.storeActivePanelId)
+		this.dispatch( a.MODIFY_ACTIVE_PANEL_ID, this.storeActivePanelId )
 
 		this._initializeSelectionArea()
 	}
 
 	private _initializeSelectionArea(): void {
-		this._selectionAreaInstance = new SelectionArea({ draw: this })
+		this._selectionAreaInstance = new SelectionArea( { draw: this } )
 	}
 
 	public render() {
@@ -165,28 +164,25 @@ export default class Draw {
 
 		this.clearEntireCanvas()
 
-		// renderGrid( this.canvas, this.ctx )
+		renderGrid( this.canvas )
 
-		function renderElement(cell) {
-			isInclude(cell.type) && cell.render()
+		function renderElement( cell ) {
+			isInclude( cell.type ) && cell.render()
 		}
 
-		function isInclude(type: String): boolean {
-			return !_.includes(drawRenderExcludingCellTypes, type)
+		function isInclude( type: String ): boolean {
+			return !_.includes( drawRenderExcludingCellTypes, type )
 		}
 
-		this.cellList.map(renderElement)
-
-
-
+		this.cellList.map( renderElement )
 	}
 
 	/****** initialization and render ******/
 
 	/****** store ******/
-	private getStoreElementsByPanelId(id: string) {
-		const foundPanel = _.find(this.store.panels, { id })
-		return !_.isNil(foundPanel) ? foundPanel.elements : []
+	private getStoreElementsByPanelId( id: string ) {
+		const foundPanel = _.find( this.store.panels, { id } )
+		return !_.isNil( foundPanel ) ? foundPanel.elements : []
 	}
 
 	private dispatch(
@@ -197,29 +193,29 @@ export default class Draw {
 	) {
 		let actionMethod: Function
 		const actionMethods = {
-			[a.ADD_PANEL]: (name: string): void => {
-				this.storePanels.push({
-					id: this.generateUniqueId(),
+			[ a.ADD_PANEL ]: ( name: string ): void => {
+				this.storePanels.push( {
+					id      : this.generateUniqueId(),
 					name,
 					elements: []
-				})
+				} )
 			},
 
-			[a.ADD_ELEMENT]: (
+			[ a.ADD_ELEMENT ]: (
 				elementType: string,
 				setting: any,
 				panelId?: string
 			): void => {
-				const ElementClass = cellTypeClassMap[elementType]
+				const ElementClass = cellTypeClassMap[ elementType ]
 
-				if (_.isNil(ElementClass)) {
-					console.log(`Do not exist type: ${elementType}`)
+				if ( _.isNil( ElementClass ) ) {
+					console.log( `Do not exist type: ${elementType}` )
 					return
 				}
-				const instance = new ElementClass({
+				const instance = new ElementClass( {
 					draw: this,
 					...setting
-				})
+				} )
 
 				const {
 					id,
@@ -234,21 +230,21 @@ export default class Draw {
 					draggable,
 					isSelected
 				}: {
-						id: string
-						type: string
-						top: number
-						left: number
-						width: number
-						height: number
-						fill: string
-						angle: number
-						points: interfaces.Point[]
-						draggable: boolean
-						isSelected: boolean
-					} = setting
+					id: string
+					type: string
+					top: number
+					left: number
+					width: number
+					height: number
+					fill: string
+					angle: number
+					points: interfaces.Point[]
+					draggable: boolean
+					isSelected: boolean
+				} = setting
 
 				const wholeElement = {
-					id: !_.isNil(id) ? id : this.generateUniqueId(),
+					id          : !_.isNil( id ) ? id : this.generateUniqueId(),
 					__instance__: instance,
 					type,
 					top,
@@ -262,36 +258,41 @@ export default class Draw {
 					isSelected
 				}
 
-				if (_.isNil(panelId)) {
-					this.storeActiveElements.push(wholeElement)
+				if ( _.isNil( panelId ) ) {
+					this.storeActiveElements.push( wholeElement )
 				}
 
-				if (!_.isNil(panelId)) {
-					this.getStoreElementsByPanelId(panelId).push(wholeElement)
+				if ( !_.isNil( panelId ) ) {
+					this.getStoreElementsByPanelId( panelId ).push( wholeElement )
 				}
 			},
 
-			[a.MODIFY_ACTIVE_PANEL_ID]: (panelId: string): void => {
+			[ a.MODIFY_ACTIVE_PANEL_ID ]: ( panelId: string ): void => {
 				this.store.activePanelId = panelId
 			},
 
-			[a.MODIFY_STORE]: (store: interfaces.DrawStore): void => {
+			[ a.MODIFY_STORE ]: ( store: interfaces.DrawStore ): void => {
 				this.store = store
 			}
 		}
-		actionMethod = actionMethods[actionName] || (() => { })
-		return actionMethod(param1, param2)
+		actionMethod = actionMethods[ actionName ] || ( () => {} )
+		return actionMethod( param1, param2 )
 	}
 	/****** store ******/
 
 	/****** interaction ******/
-	public _getMostTopCell(event): Cell {
+	public _getMostTopCell( event ): Cell {
 		const self = this
 		let resCell = null
-		this.cellList.map(getProperCell)
+		this.cellList.map( getProperCell )
 
-		function getProperCell(Cell) {
-			if (Cell.containPoint(event.x - self.canvasLeft, event.y - self.canvasTop)) {
+		function getProperCell( Cell ) {
+			if (
+				Cell.containPoint(
+					event.x - self.canvasLeft,
+					event.y - self.canvasTop
+				)
+			) {
 				resCell = Cell
 			}
 		}
@@ -300,22 +301,21 @@ export default class Draw {
 	}
 	/****** interaction ******/
 
-
-	public addElement(type: string, setting: any, panelId?: string) {
-		this.dispatch(a.ADD_ELEMENT, type, setting, panelId)
+	public addElement( type: string, setting: any, panelId?: string ) {
+		this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
 	}
 
-	private attachDrawToElement(element) {
+	private attachDrawToElement( element ) {
 		// element[ DRAW_INSTANCE_NAME ] = this
 	}
 
 	private clearEntireCanvas() {
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+		this.ctx.clearRect( 0, 0, this.canvas.width, this.canvas.height )
 	}
 
-	private importData(dataString) {
+	private importData( dataString ) {
 		const self = this
-		if (checkDataString(dataString)) {
+		if ( checkDataString( dataString ) ) {
 			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse(
 				dataString
 			)
@@ -323,14 +323,14 @@ export default class Draw {
 				storeWithoutInstance
 			)
 
-			this.dispatch(a.MODIFY_STORE, storeWithoutInstanceCleanElements)
+			this.dispatch( a.MODIFY_STORE, storeWithoutInstanceCleanElements )
 
-			addStoreElementsAndInstances(storeWithoutInstance)
+			addStoreElementsAndInstances( storeWithoutInstance )
 
 			this.render()
 		}
 
-		function checkDataString(dataString: string) {
+		function checkDataString( dataString: string ) {
 			try {
 				const importedData: interfaces.DrawStoreWithoutInstance = JSON.parse(
 					dataString
@@ -340,8 +340,8 @@ export default class Draw {
 					importedData
 				)
 				return isValid
-			} catch (e) {
-				console.log(e)
+			} catch ( e ) {
+				console.log( e )
 				return false
 			}
 		}
@@ -349,27 +349,25 @@ export default class Draw {
 		function addStoreElementsAndInstances(
 			storeCleanElements: interfaces.DrawStoreWithoutInstance
 		) {
-			const store = _.cloneDeep(storeCleanElements)
-			if (store && store.panels) {
-				store.panels.map(resolveElements)
+			const store = _.cloneDeep( storeCleanElements )
+			if ( store && store.panels ) {
+				store.panels.map( resolveElements )
 			}
 
-			function resolveElements({
+			function resolveElements( {
 				elements,
 				id: panelId
 			}: {
-					elements: interfaces.DrawStoreElementWithoutInstance[]
-					id: string
-				}) {
-				elements.map(addElementToDraw(panelId))
+				elements: interfaces.DrawStoreElementWithoutInstance[]
+				id: string
+			} ) {
+				elements.map( addElementToDraw( panelId ) )
 			}
 
-			function addElementToDraw(panelId: string) {
-				return (
-					props
-				) => {
+			function addElementToDraw( panelId: string ) {
+				return props => {
 					const { type } = props
-					self.addElement(type, props, panelId)
+					self.addElement( type, props, panelId )
 				}
 			}
 		}
@@ -377,34 +375,34 @@ export default class Draw {
 		function cleanStoreElements(
 			storeWithoutInstance: interfaces.DrawStoreWithoutInstance
 		): interfaces.DrawStoreWithoutInstance {
-			const store = _.cloneDeep(storeWithoutInstance)
-			store.panels.map(cleanElements)
+			const store = _.cloneDeep( storeWithoutInstance )
+			store.panels.map( cleanElements )
 
-			function cleanElements(value, panelIndex: number) {
-				store.panels[panelIndex]["elements"] = []
+			function cleanElements( value, panelIndex: number ) {
+				store.panels[ panelIndex ][ "elements" ] = []
 			}
 
 			return store
 		}
 	}
 
-	private exportData(fileName: string = getDefaultDrawExportFileName()) {
+	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
 		const storeUpdatedElements = updateStoreElementsByTheirInstances(
 			this.store
 		)
-		this.dispatch(a.MODIFY_STORE, storeUpdatedElements)
-		const dataString: string = JSON.stringify(this.__storeIgnoreInstance__)
-		download(dataString, `${fileName}.json`)
+		this.dispatch( a.MODIFY_STORE, storeUpdatedElements )
+		const dataString: string = JSON.stringify( this.__storeIgnoreInstance__ )
+		download( dataString, `${fileName}.json` )
 	}
 
 	private generateUniqueId() {
 		const self = this
 		let id: string = generateUniqueId()
-		id = checkAndUpdateIdIfNeeded(id)
+		id = checkAndUpdateIdIfNeeded( id )
 
-		function checkAndUpdateIdIfNeeded(id: string) {
-			return _.includes(self.storeElementsIds, id) ?
-				checkAndUpdateIdIfNeeded(generateUniqueId()) :
+		function checkAndUpdateIdIfNeeded( id: string ) {
+			return _.includes( self.storeElementsIds, id ) ?
+				checkAndUpdateIdIfNeeded( generateUniqueId() ) :
 				id
 		}
 		return id

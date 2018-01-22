@@ -23,7 +23,7 @@ export default function ( drawStore:interfaces.DrawStore ): interfaces.DrawStore
 	}
 	function setField( panelIndex, elementIndex ) {
 		return field => {
-			store.panels[ panelIndex ][ 'elements' ][ elementIndex ][ field ] = store.panels[ panelIndex ][ 'elements' ][ elementIndex ]['__instance__'][ field ]
+			store.panels[ panelIndex ][ 'elements' ][ elementIndex ][ field ] = store.panels[ panelIndex ][ 'elements' ][ elementIndex ][ '__instance__' ][ field ]
 		}
 	}
 	return store

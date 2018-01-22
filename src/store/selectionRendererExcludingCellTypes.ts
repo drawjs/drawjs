@@ -1,4 +1,4 @@
-import { LINE } from "store/constant_cellTypeList";
+import { LINE } from "store/constant_cellTypeList"
 
 export default [
 	LINE
