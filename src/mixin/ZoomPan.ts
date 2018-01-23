@@ -20,9 +20,9 @@ export default class ZoomPan {
 
 	public isZoomBasedOnCenter: boolean = false
 
-	// public _prevZoom = this.zoom
-	// public _prevDeltaXForZoomPan: number = 0
-	// public _prevDeltaYForZoomPan: number = 0
+	public _prevZoom = this.zoom
+	public _prevDeltaXForZoomPan: number = 0
+	public _prevDeltaYForZoomPan: number = 0
 
 	/**
 	 * pan
@@ -33,25 +33,33 @@ export default class ZoomPan {
 	public _mouseEvent: any
 
 	get originalZoomCenterPoint(): Point {
-		let res: Point
+		const self = this
+		let originalPoint: Point
 		if ( this.isZoomBasedOnCenter || _.isNil( this._mouseEvent ) ) {
-			res = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
+			originalPoint = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
 		}
 		if ( this.isZoomBasedOnCenter === false && ! _.isNil( this._mouseEvent ) ) {
-			res = {
-				x: 100,
-				y: 100,
-			}
-			// res = point
+			// originalPoint = {
+			// 	x: 100,
+			// 	y: 100,
+			// }
+			originalPoint = getOriginalPointByTransformedPoint()
+			log( originalPoint )
+			// originalPoint = point
 			// log( this._mouseEvent.x, this.draw.canvasLeft )
 		}
-		return res
+		return originalPoint
 
-		function getOriginalPointByTransformedPoint() {
+		function getOriginalPointByTransformedPoint(): Point {
 			const transformedPoint = {
-				x: this._mouseEvent.x - this.draw.canvasLeft,
-				y: this._mouseEvent.y - this.draw.canvasTop
+				x: self._mouseEvent.x - self.draw.canvasLeft,
+				y: self._mouseEvent.y - self.draw.canvasTop
 			}
+			const originalPoint = {
+				x: ( transformedPoint.x - self._prevDeltaXForZoomPan ) / self._prevZoom,
+				y: ( transformedPoint.x - self._prevDeltaYForZoomPan ) / self._prevZoom
+			}
+			return originalPoint
 		}
 	}
 	get transitionalZoomCenterPoint(): Point {
@@ -250,11 +258,13 @@ export default class ZoomPan {
 	}
 
 	public _zoomIn() {
+		this._updateThePrevious()
 		this.zoom = this.zoom + this._deltaZoom
 		this.draw.render()
 	}
 
 	public _zoomOut() {
+		this._updateThePrevious()
 		this.zoom = this.zoom - this._deltaZoom
 		this.draw.render()
 	}
@@ -284,5 +294,14 @@ export default class ZoomPan {
 			isMouseMiddleClick( event ) ||
 			this.draw.eventKeyboard.isSpacePressing()
 		)
+	}
+
+	/**
+	 * Update previous zoom, deltaXForZoomPan and deltaYForZoomPan
+	 */
+	public _updateThePrevious() {
+		this._prevZoom = this.zoom
+		this._prevDeltaXForZoomPan = this.deltaXForZoomPan
+		this._prevDeltaYForZoomPan = this.deltaYForZoomPan
 	}
 }
