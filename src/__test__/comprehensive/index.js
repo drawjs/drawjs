@@ -42,24 +42,30 @@ function callback( text ) {
 // 	angle : 0,
 // } )
 
+draw.addElement( 'point', {
+	x: 100,
+	y: 100,
+	color: 'blue',
+} )
+
 // draw.addElement( 'point', {
 // 	x: 300,
-// 	y: 300,
+// 	y: 200,
 // 	color: 'blue',
 // } )
 
 
-draw.addElement( 'line', {
-	pointStart: {
-		x: 0,
-		y: 0,
-	},
-	pointEnd: {
-		x: 100,
-		y: 100
-	},
-	fill: 'blue',
-} )
+// draw.addElement( 'line', {
+// 	pointStart: {
+// 		x: 0,
+// 		y: 0,
+// 	},
+// 	pointEnd: {
+// 		x: 100,
+// 		y: 100
+// 	},
+// 	fill: 'blue',
+// } )
 
 // draw.zoomPan.zoom = 2
 

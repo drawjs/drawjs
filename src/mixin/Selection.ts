@@ -8,7 +8,7 @@ export default class Selection {
 		if ( ! _.includes( selectionRendererExcludingCellTypes, instance.type ) ) {
 			const ctx = instance.draw.ctx
 			ctx.save()
-			instance.draw.zoomPan.setTransformCenterPoint( {
+			instance.draw.zoomPan.transformCenterPointForContext( {
 				x: instance.left + instance.width / 2,
 				y: instance.top + instance.height / 2
 			} )

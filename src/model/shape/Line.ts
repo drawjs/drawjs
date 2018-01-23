@@ -221,7 +221,7 @@ export default class Line extends Graph {
 		super.render()
 
 		ctx.save()
-		this.draw.zoomPan.setTransformCenterPoint( {
+		this.draw.zoomPan.transformCenterPointForContext( {
 			x: this.originX,
 			y: this.originY
 		} )

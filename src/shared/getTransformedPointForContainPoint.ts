@@ -21,14 +21,14 @@ export default function getTransformedPointForContainPoint(
 		y: res.y - instance.originY
 	}
 
-	if ( isInstanceHasAngle ) {
+	if ( existAngle() ) {
 		const angle: number = getAngle()
 		res = getRotatedPoint( res,  angle)
 	}
 
 	return res
 
-	function isInstanceHasAngle() {
+	function existAngle() {
 		const angle: number = getAngle()
 		const res = !_.isNil( angle )
 		return res
@@ -43,13 +43,15 @@ export default function getTransformedPointForContainPoint(
 	}
 
 	function getAngle(): number {
-		let angle: number
+		let angle: number = null
 		const isTool = isSizePoint() || isRotateIcon()
 		if ( isTool ) {
 			angle = -instance.instance.angle
 		}
 		if ( ! isTool ) {
-			angle = -instance.angle
+			if ( !_.isNil( instance.angle ) ) {
+				angle = -instance.angle
+			}
 		}
 		return angle
 	}

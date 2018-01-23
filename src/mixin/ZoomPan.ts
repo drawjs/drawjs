@@ -1,22 +1,28 @@
 import * as i from "interface/index"
 import Draw from "Draw"
-import { isMouseMiddleClick } from 'util/index'
-
+import { isMouseMiddleClick, log } from "util/index"
+import { Point } from "interface/index"
+import * as _ from "lodash"
 
 export default class ZoomPan {
 	public draw: Draw
 	public panPoint: i.Point = {
 		x: 0,
-		y: 0,
+		y: 0
 	}
 
-
-	private _deltaZoom = 0.3
+	private _deltaZoom = 0.5
 
 	/**
 	 * zoom rate
 	 */
 	public zoom: number = 1
+
+	public isZoomBasedOnCenter: boolean = false
+
+	// public _prevZoom = this.zoom
+	// public _prevDeltaXForZoomPan: number = 0
+	// public _prevDeltaYForZoomPan: number = 0
 
 	/**
 	 * pan
@@ -24,32 +30,73 @@ export default class ZoomPan {
 	public _isPanning: boolean = false
 	public _prevPointPanned: i.Point
 
-	get canvasCenterPoint(): i.Point {
+	public _mouseEvent: any
+
+	get originalZoomCenterPoint(): Point {
+		let res: Point
+		if ( this.isZoomBasedOnCenter || _.isNil( this._mouseEvent ) ) {
+			res = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
+		}
+		if ( this.isZoomBasedOnCenter === false && ! _.isNil( this._mouseEvent ) ) {
+			res = {
+				x: 100,
+				y: 100,
+			}
+			// res = point
+			// log( this._mouseEvent.x, this.draw.canvasLeft )
+		}
+		return res
+
+		function getOriginalPointByTransformedPoint() {
+			const transformedPoint = {
+				x: this._mouseEvent.x - this.draw.canvasLeft,
+				y: this._mouseEvent.y - this.draw.canvasTop
+			}
+		}
+	}
+	get transitionalZoomCenterPoint(): Point {
 		const res = {
-			x: this.draw.canvas.width / 2 * this.zoom,
-			y: this.draw.canvas.height / 2 * this.zoom,
+			x: this.originalZoomCenterPoint.x * this.zoom,
+			y: this.originalZoomCenterPoint.y * this.zoom,
 		}
 		return res
 	}
-	get canvasNotZoomedCenterPoint(): i.Point {
+	get canvasNotZoomedPannedCenterPoint(): i.Point {
 		const res = {
 			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2,
+			y: this.draw.canvas.height / 2
 		}
 		return res
 	}
+	/**
+	 * Transitional canvas view
+	 */
 	get canvasViewCenterPoint(): i.Point {
 		const res = {
-			x: this.canvasCenterPoint.x,
-			y: this.canvasCenterPoint.y,
+			x: this.canvasNotZoomedPannedCenterPoint.x * this.zoom,
+			y: this.canvasNotZoomedPannedCenterPoint.y * this.zoom,
 		}
 		return res
 	}
 	get deltaXForZoomPan(): number {
-		return - ( this.canvasViewCenterPoint.x - this.canvasNotZoomedCenterPoint.x ) + this.panPoint.x
+		const res = -( this.transitionalZoomCenterPoint.x - this.originalZoomCenterPoint.x )
+		return res
 	}
 	get deltaYForZoomPan(): number {
-		return - ( this.canvasViewCenterPoint.y - this.canvasNotZoomedCenterPoint.y ) + this.panPoint.y
+		const res = -( this.transitionalZoomCenterPoint.y - this.originalZoomCenterPoint.y )
+		return res
+	}
+	get tmp_deltaXForZoomPan(): number {
+		const res = -(
+			this.canvasViewCenterPoint.x - this.canvasNotZoomedPannedCenterPoint.x
+		) + this.panPoint.x
+		return res
+	}
+	get tmp_deltaYForZoomPan(): number {
+		const res = -(
+			this.canvasViewCenterPoint.y - this.canvasNotZoomedPannedCenterPoint.y
+		) + this.panPoint.y
+		return res
 	}
 
 	constructor( props ) {
@@ -59,15 +106,27 @@ export default class ZoomPan {
 	}
 
 	/**
-	 * transform center point
+	 *  transform center point for context
 	 */
-	public setTransformCenterPoint( point ) {
+	public transformCenterPointForContext( point ) {
 		const transformedPoint: i.Point = this.transformPoint( point )
-		this.draw.ctx.setTransform( this.zoom, 0, 0, this.zoom, transformedPoint.x, transformedPoint.y )
+		this.draw.ctx.setTransform(
+			this.zoom,
+			0,
+			0,
+			this.zoom,
+			transformedPoint.x,
+			transformedPoint.y
+		)
 	}
 
 	/**
-	 * transform point
+	 * Transform point
+	 * Key method:
+	 * 1. Suppose that we zoomed the whole canvas based on (0, 0) firstly,
+	 * that is, we zoomed the point based on (0, 0)
+	 * 2. Then, suppose that we moved the whole canvas to somewhere where canvas's center point
+	 * coincided on the zoom(wheel) point of canvas before we zoomed it.
 	 */
 	public transformPoint( point ): i.Point {
 		const res = {
@@ -85,17 +144,31 @@ export default class ZoomPan {
 	}
 
 	public bindEvents() {
-		this.draw.canvas.addEventListener( 'mousewheel', this._mousewheelListener.bind( this ) )
-		this.draw.canvas.addEventListener( 'mousedown', this._mousedownListener.bind( this ) )
+		this.draw.canvas.addEventListener(
+			"mousewheel",
+			this._mousewheelListener.bind( this )
+		)
+		this.draw.canvas.addEventListener(
+			"mousedown",
+			this._mousedownListener.bind( this )
+		)
 		// this.draw.canvas.addEventListener('mousemove', this._mousemoveListener.bind(this))
-		document.addEventListener( 'mousemove', this._mousemoveListener.bind( this ) )
-		this.draw.canvas.addEventListener( 'mouseup', this._mouseupListener.bind( this ) )
-
+		document.addEventListener(
+			"mousemove",
+			this._mousemoveListener.bind( this )
+		)
+		this.draw.canvas.addEventListener(
+			"mouseup",
+			this._mouseupListener.bind( this )
+		)
 	}
 
 	public _mousewheelListener( event ) {
+		event.preventDefault();
 
-		const { deltaX, deltaY }: { deltaX: number, deltaY: number } = event
+		this._mouseEvent = event
+
+		const { deltaX, deltaY }: { deltaX: number; deltaY: number } = event
 
 		if ( isDecreasing() && this.draw.eventKeyboard.isAltPressing() ) {
 			this._zoomIn()
@@ -116,13 +189,25 @@ export default class ZoomPan {
 	}
 
 	public _mousedownListener( event ) {
-		if ( isMouseMiddleClick( event ) || this.draw.eventKeyboard.isSpacePressing() ) {
+		if (
+			isMouseMiddleClick( event ) ||
+			this.draw.eventKeyboard.isSpacePressing()
+		) {
 			this._startPan( event )
 		}
 	}
 
 	public _mousemoveListener( event ) {
 		this._isPanning && this._panning( event )
+	}
+
+	public _mouseupListener( event ) {
+		this._isPanning = false
+
+		this._prevPointPanned = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop
+		}
 	}
 
 	public _updatePrevPointPanned( event ) {
@@ -133,8 +218,14 @@ export default class ZoomPan {
 	}
 
 	public _updatePan( event ) {
-		const deltaX = - ( this._prevPointPanned.x - ( event.x - this.draw.canvasLeft ) )
-		const deltaY = - ( this._prevPointPanned.y - ( event.y - this.draw.canvasTop ) )
+		const deltaX = -(
+			this._prevPointPanned.x -
+			( event.x - this.draw.canvasLeft )
+		)
+		const deltaY = -(
+			this._prevPointPanned.y -
+			( event.y - this.draw.canvasTop )
+		)
 
 		this.panPoint = {
 			x: this.panPoint.x + deltaX,
@@ -156,15 +247,6 @@ export default class ZoomPan {
 
 	public _stopPan( event ) {
 		this._isPanning = false
-	}
-
-	public _mouseupListener( event ) {
-		this._isPanning = false
-
-		this._prevPointPanned = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
 	}
 
 	public _zoomIn() {
@@ -198,6 +280,9 @@ export default class ZoomPan {
 	}
 
 	public isMouseDownToPan( event ): boolean {
-		return isMouseMiddleClick( event ) || this.draw.eventKeyboard.isSpacePressing()
+		return (
+			isMouseMiddleClick( event ) ||
+			this.draw.eventKeyboard.isSpacePressing()
+		)
 	}
 }

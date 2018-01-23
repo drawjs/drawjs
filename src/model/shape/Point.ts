@@ -2,6 +2,7 @@ import { Cell } from "model/index"
 import { defaultPointRadius } from "store/index"
 import * as i from "interface/index"
 import * as _ from "lodash"
+import { getTransformedPointForContainPoint } from 'shared/index';
 
 
 export default class Point extends Cell {
@@ -15,6 +16,14 @@ export default class Point extends Cell {
 		const path = new Path2D()
 		path.arc( 0, 0, defaultPointRadius, 0, 2 * Math.PI )
 		return path
+	}
+
+	get originX(): number {
+		return this.x
+	}
+
+	get originY(): number {
+		return this.y
 	}
 
 	constructor( props ) {
@@ -31,7 +40,12 @@ export default class Point extends Cell {
 		const ctx = this.draw.ctx
 
 		ctx.save()
-		ctx.translate( this.x, this.y )
+
+		this.draw.zoomPan.transformCenterPointForContext( {
+			x: this.originX,
+			y: this.originY
+		} )
+
 		ctx.fillStyle = this.color
 		ctx.strokeStyle = this.strokeColor
 		ctx.fill( this.path )
@@ -40,21 +54,31 @@ export default class Point extends Cell {
 	}
 
 	public containPoint( x, y ) {
-		let res = false
-		const transformedPoint = this.getTransformedPoint( { x, y } )
-		res = this.draw.ctx.isPointInPath(
+		const transformedPoint = getTransformedPointForContainPoint( { x, y }, this )
+		const isContain = this.draw.ctx.isPointInPath(
 			this.path,
 			transformedPoint.x,
 			transformedPoint.y
 		)
-		return res
+		return isContain
 	}
 
-	public getTransformedPoint( { x, y }: { x: number; y: number } ) {
-		const res: i.Point = {
-			x: x - this.x,
-			y: y - this.y
+	// ******* Drag ******
+	public _updateDrag( event ) {
+		const zoom = this.draw.zoomPan.zoom
+
+		let newPoint: i.Point = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop
 		}
-		return res
+
+		newPoint = this.draw.zoomPan.transformPointReversely( newPoint )
+
+		this.x = newPoint.x
+		this.y = newPoint.y
+
+		this._updatePrevDraggingPoint( event )
+		this.draw.render()
 	}
+	// ******* Drag ******
 }

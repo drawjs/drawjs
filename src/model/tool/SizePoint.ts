@@ -65,7 +65,7 @@ export default abstract class SizePoint extends Point {
 
 		ctx.save()
 
-		this.draw.zoomPan.setTransformCenterPoint( {
+		this.draw.zoomPan.transformCenterPointForContext( {
 			x: this.originX,
 			y: this.originY
 		} )

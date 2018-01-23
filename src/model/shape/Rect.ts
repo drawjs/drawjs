@@ -118,7 +118,7 @@ export default class Rect extends Graph {
 		super.render()
 
 		ctx.save()
-		this.draw.zoomPan.setTransformCenterPoint( {
+		this.draw.zoomPan.transformCenterPointForContext( {
 			x: this.originX,
 			y: this.originY
 		} )
@@ -148,12 +148,12 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ): boolean {
-		const relativePoint = getTransformedPointForContainPoint( { x, y }, this )
+		const transformedPoint = getTransformedPointForContainPoint( { x, y }, this )
 
 		const isContain = this.draw.ctx.isPointInPath(
 			this.path,
-			relativePoint.x,
-			relativePoint.y
+			transformedPoint.x,
+			transformedPoint.y
 		)
 		return isContain
 	}
