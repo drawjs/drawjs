@@ -185,6 +185,13 @@ export default class Line extends Graph {
 				y: point.y - self.originY
 			}
 		}
+
+		function connectLine( path: Path2D ) {
+			return ( point: i.Point, pointIndex ) => {
+				pointIndex === 0 && path.moveTo( point.x, point.y )
+				pointIndex !== 0 && path.lineTo( point.x, point.y )
+			}
+		}
 	}
 
 	constructor( props ) {
@@ -256,24 +263,18 @@ export default class Line extends Graph {
 
 	// ******* Drag ******
 	public _updateDrag( event ) {
+		const zoom = this.draw.zoomPan.zoom
 		this.pointStart.x =
-			this.pointStart.x + event.x - this._prevDraggingPoint.x
+			this.pointStart.x + ( event.x - this._prevDraggingPoint.x ) / zoom
 		this.pointStart.y =
-			this.pointStart.y + event.y - this._prevDraggingPoint.y
+			this.pointStart.y + ( event.y - this._prevDraggingPoint.y ) / zoom
 
-		this.pointEnd.x = this.pointEnd.x + event.x - this._prevDraggingPoint.x
-		this.pointEnd.y = this.pointEnd.y + event.y - this._prevDraggingPoint.y
+		this.pointEnd.x = this.pointEnd.x + ( event.x - this._prevDraggingPoint.x ) / zoom
+		this.pointEnd.y = this.pointEnd.y + ( event.y - this._prevDraggingPoint.y ) / zoom
 
 		this._updatePrevDraggingPoint( event )
 
 		this.draw.render()
 	}
 	// ******* Drag ******
-}
-
-function connectLine( path: Path2D ) {
-	return ( point: i.Point, pointIndex ) => {
-		pointIndex === 0 && path.moveTo( point.x, point.y )
-		pointIndex !== 0 && path.lineTo( point.x, point.y )
-	}
 }

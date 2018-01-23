@@ -29,7 +29,8 @@ export default function getTransformedPointForContainPoint(
 	return res
 
 	function isInstanceHasAngle() {
-		const res = !_.isNil( instance.angle )
+		const angle: number = getAngle()
+		const res = !_.isNil( angle )
 		return res
 	}
 
@@ -43,11 +44,11 @@ export default function getTransformedPointForContainPoint(
 
 	function getAngle(): number {
 		let angle: number
-		const isSpecial = isSizePoint() || isRotateIcon()
-		if ( isSpecial ) {
+		const isTool = isSizePoint() || isRotateIcon()
+		if ( isTool ) {
 			angle = -instance.instance.angle
 		}
-		if ( ! isSpecial ) {
+		if ( ! isTool ) {
 			angle = -instance.angle
 		}
 		return angle

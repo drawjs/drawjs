@@ -33,14 +33,14 @@ function callback( text ) {
 
 
 // ******* export *******
-draw.addElement( 'rect', {
-	top   : 100,
-	left  : 100,
-	fill  : 'red',
-	width : 100,
-	height: 100,
-	angle : 0,
-} )
+// draw.addElement( 'rect', {
+// 	top   : 100,
+// 	left  : 100,
+// 	fill  : 'red',
+// 	width : 100,
+// 	height: 100,
+// 	angle : 0,
+// } )
 
 // draw.addElement( 'point', {
 // 	x: 300,
@@ -51,15 +51,17 @@ draw.addElement( 'rect', {
 
 draw.addElement( 'line', {
 	pointStart: {
-		x: 200,
-		y: 200,
+		x: 0,
+		y: 0,
 	},
 	pointEnd: {
-		x: 200 + 25,
-		y: 200 + 43.30127018922195
+		x: 100,
+		y: 100
 	},
 	fill: 'blue',
 } )
+
+// draw.zoomPan.zoom = 2
 
 draw.render()
 

@@ -2,7 +2,7 @@ import { SIZE_POINT } from "store/constant_cellTypeList"
 import Cell from "model/Cell"
 import Point from "model/shape/Point"
 import * as _ from "lodash"
-import { getRotatedPoint } from "util/index"
+import { getRotatedPoint, log } from "util/index"
 import * as i from "interface/index"
 import Size from "mixin/Size"
 import { coupleSizingCell, coupleSelectCell } from "mixin/index"
@@ -64,10 +64,7 @@ export default abstract class SizePoint extends Point {
 		const ctx = this.draw.ctx
 
 		ctx.save()
-		// ctx.translate(
-		// 	this.x + this.instanceOriginX,
-		// 	this.y + this.instanceOriginY
-		// )
+
 		this.draw.zoomPan.setTransformCenterPoint( {
 			x: this.originX,
 			y: this.originY
@@ -97,17 +94,6 @@ export default abstract class SizePoint extends Point {
 
 		return isContain
 	}
-
-	// public getTransformedPointForContainPoint(point: i.Point) {
-	// 	let res: i.Point = {
-	// 		x: point.x - this.x - this.instanceOriginX,
-	// 		y: point.y - this.y - this.instanceOriginY
-	// 	}
-
-	// 	res = getRotatedPoint(res, -this.instance.angle)
-
-	// 	return res
-	// }
 
 	public setRotatedSizePoint( point: i.Point ) {
 		const rotatedSizePoint = getRotatedPoint( point, this.instance.angle )
@@ -352,7 +338,9 @@ export class SizePointLineSide extends SizePoint {
 	}
 
 	public size( newPoint ) {
-		this.relatedPoint.x = newPoint.x
-		this.relatedPoint.y = newPoint.y
+		const transformedPoint = this.draw.zoomPan.transformPointReversely( newPoint )
+
+		this.relatedPoint.x = transformedPoint.x
+		this.relatedPoint.y = transformedPoint.y
 	}
 }

@@ -27,7 +27,6 @@ export default function renderGrid( draw: Draw ) {
 
 		ctx.save()
 		ctx.translate( 0, 0 )
-		log( 123 )
 
 		for ( let i = 0; i < width; i++ ) {
 			const x = i * zoomedSpace
