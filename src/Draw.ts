@@ -164,7 +164,7 @@ export default class Draw {
 
 		this.clearEntireCanvas()
 
-		renderGrid( this.canvas, this.zoomPan.zoom, this.zoomPan.panPoint )
+		renderGrid( this )
 
 		function renderElement( cell ) {
 			isInclude( cell.type ) && cell.render()
