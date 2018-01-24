@@ -15,7 +15,7 @@ export default function renderGrid( draw: Draw ) {
 		ctx.strokeStyle = '#ddd'
 	} )
 	renderGridBySpace( spaceBig, () => {
-		ctx.strokeStyle = '#ddd'
+		ctx.strokeStyle = '#aaa'
 	} )
 
 
