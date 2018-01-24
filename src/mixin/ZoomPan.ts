@@ -6,6 +6,9 @@ import * as _ from "lodash"
 
 export default class ZoomPan {
 	public draw: Draw
+	/**
+	 * Original point for pan
+	 */
 	public panPoint: i.Point = {
 		x: 0,
 		y: 0
@@ -23,13 +26,12 @@ export default class ZoomPan {
 	public _prevOriginalZCT: Point = null
 	public _prevTransformedZCT: Point = null
 	public _prevZoom = this.zoom
-
-
 	/**
 	 * pan
 	 */
 	public _isPanning: boolean = false
-	public _prevPointPanned: i.Point
+	public _tmpPointForPan: i.Point
+	public _prevPanPoint: i.Point
 
 	public _mouseEvent: any
 
@@ -82,8 +84,6 @@ export default class ZoomPan {
 				originalPoint = self.focusZCT
 			}
 
-			log( originalPoint.x, originalPoint.y )
-
 			return originalPoint
 		}
 	}
@@ -111,21 +111,29 @@ export default class ZoomPan {
 		}
 		return res
 	}
-	get deltaXForZoomPan(): number {
+	get deltaXForZoom(): number {
 		const res = this.focusZCT.x - this.originalZCT.x * this.zoom
 		return res
 	}
-	get deltaYForZoomPan(): number {
+	get deltaYForZoom(): number {
 		const res = this.focusZCT.y - this.originalZCT.y * this.zoom
 		return res
 	}
-	get tmp_deltaXForZoomPan(): number {
+	get deltaXForPan(): number {
+		const res: number = this.panPoint.x * this.zoom
+		return res
+	}
+	get deltaYForPan(): number {
+		const res: number = this.panPoint.y * this.zoom
+		return res
+	}
+	get tmp_deltaXForZoom(): number {
 		const res = -(
 			this.canvasViewCenterPoint.x - this.canvasNotZoomedPannedCenterPoint.x
 		) + this.panPoint.x
 		return res
 	}
-	get tmp_deltaYForZoomPan(): number {
+	get tmp_deltaYForZoom(): number {
 		const res = -(
 			this.canvasViewCenterPoint.y - this.canvasNotZoomedPannedCenterPoint.y
 		) + this.panPoint.y
@@ -163,15 +171,15 @@ export default class ZoomPan {
 	 */
 	public transformPoint( point ): i.Point {
 		const res = {
-			x: point.x * this.zoom + this.deltaXForZoomPan,
-			y: point.y * this.zoom + this.deltaYForZoomPan
+			x: point.x * this.zoom + this.deltaXForZoom + this.deltaXForPan,
+			y: point.y * this.zoom + this.deltaYForZoom + this.deltaYForPan
 		}
 		return res
 	}
 	public transformPointReversely( point ): i.Point {
 		const res = {
-			x: ( point.x - this.deltaXForZoomPan ) / this.zoom,
-			y: ( point.y - this.deltaYForZoomPan ) / this.zoom
+			x: ( point.x - this.deltaXForZoom - this.deltaXForPan ) / this.zoom,
+			y: ( point.y - this.deltaYForZoom - this.deltaYForPan ) / this.zoom
 		}
 		return res
 	}
@@ -237,14 +245,11 @@ export default class ZoomPan {
 	public _mouseupListener( event ) {
 		this._isPanning = false
 
-		this._prevPointPanned = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
-		}
+		this._updateTmpPointForPan( event )
 	}
 
-	public _updatePrevPointPanned( event ) {
-		this._prevPointPanned = {
+	public _updateTmpPointForPan( event ) {
+		this._tmpPointForPan = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}
@@ -253,31 +258,32 @@ export default class ZoomPan {
 	public _updatePan( event ) {
 		this._updateThePrevious()
 
-		const deltaX = -(
-			this._prevPointPanned.x -
-			( event.x - this.draw.canvasLeft )
-		)
-		const deltaY = -(
-			this._prevPointPanned.y -
-			( event.y - this.draw.canvasTop )
-		)
+		const focusPoint: Point = {
+			x: event.x - this.draw.canvasLeft ,
+			y: event.y - this.draw.canvasTop
+		}
+
+		const deltaX = focusPoint.x - this._tmpPointForPan.x
+		const deltaY = focusPoint.y - this._tmpPointForPan.y
 
 		this.panPoint = {
-			x: this.panPoint.x + deltaX,
-			y: this.panPoint.y + deltaY
+			x: this.panPoint.x + deltaX / this.zoom,
+			y: this.panPoint.y + deltaY / this.zoom
 		}
+
+		log( this.panPoint.x )
 
 		this.draw.render()
 	}
 
 	public _startPan( event ) {
 		this._isPanning = true
-		this._updatePrevPointPanned( event )
+		this._updateTmpPointForPan( event )
 	}
 
 	public _panning( event ) {
 		this._updatePan( event )
-		this._updatePrevPointPanned( event )
+		this._updateTmpPointForPan( event )
 	}
 
 	public _stopPan( event ) {
@@ -330,5 +336,6 @@ export default class ZoomPan {
 		this._prevZoom = this.zoom
 		this._prevOriginalZCT = this.originalZCT
 		this._prevTransformedZCT = this.transformedZCT
+		this._prevPanPoint = this.panPoint
 	}
 }

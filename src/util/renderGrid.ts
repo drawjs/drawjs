@@ -55,12 +55,12 @@ export default function renderGrid( draw: Draw ) {
 	}
 
 	function getSpaceDeltaX( zoomedSpace ) {
-		const res = ( zoomedSpace + draw.zoomPan.deltaXForZoomPan ) % zoomedSpace
+		const res = ( zoomedSpace + draw.zoomPan.deltaXForZoom + draw.zoomPan.deltaXForPan ) % zoomedSpace
 		return res
 	}
 
 	function getSpaceDeltaY( zoomedSpace ) {
-		const res = ( zoomedSpace + draw.zoomPan.deltaYForZoomPan ) % zoomedSpace
+		const res = ( zoomedSpace + draw.zoomPan.deltaYForZoom + draw.zoomPan.deltaYForPan ) % zoomedSpace
 		return res
 	}
 
