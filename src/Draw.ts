@@ -15,7 +15,9 @@ import { ROTATE_ICON } from "store/constant_cellTypeList"
 import drawRenderExcludingCellTypes from "store/drawRenderExcludingCellTypes"
 import {
 	getInstanceByElementWithoutInstance,
-	updateStoreElementsByTheirInstances
+	updateStoreElementsByTheirInstances,
+	coupleUpdateZoomPanZoom,
+	coupleUpdateDeltaPointForTransformedCenterPointForContext
 } from "mixin/index"
 import ZoomPan from "mixin/ZoomPan"
 import EventKeyboard from "mixin/EventKeyboard"
@@ -24,11 +26,14 @@ import * as interfaces from "interface/index"
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/cellTypeClassMap"
-import { generateUniqueId, renderGrid } from "util/index"
+import { generateUniqueId, renderGrid, log } from 'util/index';
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
 import { SelectionArea } from "model/tool/index"
 import * as i from "interface/index"
 import CanvasRenderingContext2D from "interface/CanvasRenderingContext2D"
+import MiniMap from './model/tool/MiniMap';
+import { Point } from "interface/index";
+
 
 const ajv = new Ajv()
 
@@ -59,6 +64,12 @@ export default class Draw {
 
 	public cellTypeClassMap: any = cellTypeClassMap
 	public _selectionAreaInstance: SelectionArea
+
+
+	/**
+	 * Mini map
+	 */
+	public miniMap: MiniMap
 
 	/**
 	 * Cells collection for sorting visual level,
@@ -144,6 +155,7 @@ export default class Draw {
 		this.ctx = <CanvasRenderingContext2D>canvas.getContext( "2d" )
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
+		this.miniMap = new MiniMap( { draw: this } )
 
 		this.initialize()
 	}
@@ -166,6 +178,10 @@ export default class Draw {
 
 		renderGrid( this )
 
+		this.cellList.map( renderElement )
+
+		renderMiniMap()
+
 		function renderElement( cell ) {
 			isInclude( cell.type ) && cell.render()
 		}
@@ -174,7 +190,34 @@ export default class Draw {
 			return !_.includes( drawRenderExcludingCellTypes, type )
 		}
 
-		this.cellList.map( renderElement )
+		function renderMiniMap() {
+			self.miniMap.render()
+
+			/**
+			 * Cache zoom, deltaPointForTransformedCenterPointForContext in zoomPan for recovering it later
+			 */
+			const cachedZoom: number = self.zoomPan.zoom
+			const cachedDeltaPointForTransformedCenterPointForContext: Point = _.cloneDeep( self.zoomPan.deltaPointForTransformedCenterPointForContext )
+
+			/**
+			 * Update zoom, deltaPointForTransformedCenterPointForContext of zoomPan
+			 */
+			coupleUpdateZoomPanZoom( self.zoomPan, cachedZoom * 0.3 )
+			coupleUpdateDeltaPointForTransformedCenterPointForContext( self.zoomPan, {
+				x: self.miniMap.left,
+				y: self.miniMap.top,
+			} )
+			/**
+			 * Render cells, grids again in mini map
+			 */
+			self.cellList.map( renderElement )
+
+			/**
+			 * Recover zoom, deltaPointForTransformedCenterPointForContext of zoomPan
+			 */
+			coupleUpdateZoomPanZoom( self.zoomPan, cachedZoom )
+			coupleUpdateDeltaPointForTransformedCenterPointForContext( self.zoomPan, cachedDeltaPointForTransformedCenterPointForContext )
+		}
 	}
 
 	/****** initialization and render ******/

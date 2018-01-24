@@ -36,6 +36,15 @@ export default class ZoomPan {
 	public _mouseEvent: any
 
 	/**
+	 * Set delta point for transformed point in `transformCenterPointForContext`,
+	 * for example, set this to render cells in mini map
+	 */
+	public deltaPointForTransformedCenterPointForContext: Point = {
+		x: 0,
+		y: 0
+	}
+
+	/**
 	 * Focus zoom center point
 	 */
 	get focusZCT(): Point {
@@ -154,7 +163,12 @@ export default class ZoomPan {
 	 *  transform center point for context
 	 */
 	public transformCenterPointForContext( point ) {
-		const transformedPoint: i.Point = this.transformPoint( point )
+		let transformedPoint: i.Point = this.transformPoint( point )
+		transformedPoint = {
+			x: transformedPoint.x + this.deltaPointForTransformedCenterPointForContext.x,
+			y: transformedPoint.y + this.deltaPointForTransformedCenterPointForContext.y,
+		}
+		// log( )
 		this.draw.ctx.setTransform(
 			this.zoom,
 			0,

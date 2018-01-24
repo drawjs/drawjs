@@ -251,10 +251,6 @@ export default class SelectionArea extends Geometry {
 		const ctx = this.draw.ctx
 		if ( !_.isNil( this.startPoint ) && !_.isNil( this.endPoint ) ) {
 			ctx.save()
-			// this.draw.zoomPan.transformCenterPointForContext( {
-			// 	x: this.originX,
-			// 	y: this.originY
-			// } )
 
 			ctx.translate( this.originX, this.originY )
 
