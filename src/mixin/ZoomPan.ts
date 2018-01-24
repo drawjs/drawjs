@@ -21,7 +21,7 @@ export default class ZoomPan {
 	 */
 	public zoom: number = 1
 
-	public isZoomBasedOnCenter: boolean = false
+	public isZoomBasedOnCenter: boolean = true
 
 	public _prevOriginalZCT: Point = null
 	public _prevTransformedZCT: Point = null
@@ -40,6 +40,10 @@ export default class ZoomPan {
 	 */
 	get focusZCT(): Point {
 		let focusZCT: Point
+		if ( this.isZoomBasedOnCenter ) {
+			focusZCT = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
+			return focusZCT
+		}
 		if ( ! _.isNil( this._mouseEvent ) ) {
 			focusZCT = {
 				x: this._mouseEvent.x - this.draw.canvasLeft,
@@ -65,7 +69,7 @@ export default class ZoomPan {
 		if ( this.isZoomBasedOnCenter || _.isNil( this._mouseEvent ) ) {
 			originalPoint = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
 		}
-		if ( this.isZoomBasedOnCenter === false && ! _.isNil( this._mouseEvent ) ) {
+		if ( ! this.isZoomBasedOnCenter && ! _.isNil( this._mouseEvent ) ) {
 			originalPoint = getOriginalPointByTransformedPoint()
 		}
 		return originalPoint
