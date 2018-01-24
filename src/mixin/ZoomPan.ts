@@ -21,7 +21,7 @@ export default class ZoomPan {
 	 */
 	public zoom: number = 1
 
-	public isZoomBasedOnCenter: boolean = true
+	public isZoomBasedOnCenter: boolean = false
 
 	public _prevOriginalZCT: Point = null
 	public _prevTransformedZCT: Point = null
@@ -274,8 +274,6 @@ export default class ZoomPan {
 			x: this.panPoint.x + deltaX / this.zoom,
 			y: this.panPoint.y + deltaY / this.zoom
 		}
-
-		log( this.panPoint.x )
 
 		this.draw.render()
 	}
