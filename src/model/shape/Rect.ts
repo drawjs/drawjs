@@ -122,6 +122,10 @@ export default class Rect extends Graph {
 			x: this.originX,
 			y: this.originY
 		} )
+		this.draw.miniMap.isRendering && this.draw.miniMap.transformCenterPointForContext( {
+			x: this.originX,
+			y: this.originY
+		} )
 		ctx.fillStyle = this.fill
 		ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
 		ctx.fill( this.path )

@@ -12,12 +12,10 @@ import {
 } from "store/constant"
 import * as a from "store/constant_action"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
-import drawRenderExcludingCellTypes from "store/drawRenderExcludingCellTypes"
 import {
 	getInstanceByElementWithoutInstance,
 	updateStoreElementsByTheirInstances,
 	coupleUpdateZoomPanZoom,
-	coupleUpdateDeltaPointForTransformedCenterPointForContext
 } from "mixin/index"
 import ZoomPan from "mixin/ZoomPan"
 import EventKeyboard from "mixin/EventKeyboard"
@@ -33,6 +31,7 @@ import * as i from "interface/index"
 import CanvasRenderingContext2D from "interface/CanvasRenderingContext2D"
 import MiniMap from './model/tool/MiniMap';
 import { Point } from "interface/index";
+import renderElement from "./shared/renderElement";
 
 
 const ajv = new Ajv()
@@ -176,48 +175,11 @@ export default class Draw {
 
 		this.clearEntireCanvas()
 
-		renderGrid( this )
+		renderGrid( this, this.canvas.width, this.canvas.height )
 
 		this.cellList.map( renderElement )
 
-		renderMiniMap()
-
-		function renderElement( cell ) {
-			isInclude( cell.type ) && cell.render()
-		}
-
-		function isInclude( type: String ): boolean {
-			return !_.includes( drawRenderExcludingCellTypes, type )
-		}
-
-		function renderMiniMap() {
-			self.miniMap.render()
-
-			/**
-			 * Cache zoom, deltaPointForTransformedCenterPointForContext in zoomPan for recovering it later
-			 */
-			const cachedZoom: number = self.zoomPan.zoom
-			const cachedDeltaPointForTransformedCenterPointForContext: Point = _.cloneDeep( self.zoomPan.deltaPointForTransformedCenterPointForContext )
-
-			/**
-			 * Update zoom, deltaPointForTransformedCenterPointForContext of zoomPan
-			 */
-			coupleUpdateZoomPanZoom( self.zoomPan, cachedZoom * 0.3 )
-			coupleUpdateDeltaPointForTransformedCenterPointForContext( self.zoomPan, {
-				x: self.miniMap.left,
-				y: self.miniMap.top,
-			} )
-			/**
-			 * Render cells, grids again in mini map
-			 */
-			self.cellList.map( renderElement )
-
-			/**
-			 * Recover zoom, deltaPointForTransformedCenterPointForContext of zoomPan
-			 */
-			coupleUpdateZoomPanZoom( self.zoomPan, cachedZoom )
-			coupleUpdateDeltaPointForTransformedCenterPointForContext( self.zoomPan, cachedDeltaPointForTransformedCenterPointForContext )
-		}
+		this.miniMap.render()
 	}
 
 	/****** initialization and render ******/

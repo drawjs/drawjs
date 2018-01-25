@@ -14,7 +14,7 @@ export default class ZoomPan {
 		y: 0
 	}
 
-	private _deltaZoom = 0.3
+	private _deltaZoom = 0.1
 
 	/**
 	 * zoom rate
@@ -39,7 +39,7 @@ export default class ZoomPan {
 	 * Set delta point for transformed point in `transformCenterPointForContext`,
 	 * for example, set this to render cells in mini map
 	 */
-	public deltaPointForTransformedCenterPointForContext: Point = {
+	public deltaPointForMiniMap: Point = {
 		x: 0,
 		y: 0
 	}
@@ -65,6 +65,8 @@ export default class ZoomPan {
 				y: this.canvasNotZoomedPannedCenterPoint.y * this.zoom
 			}
 		}
+
+		focusZCT
 
 		return focusZCT
 	}
@@ -164,11 +166,10 @@ export default class ZoomPan {
 	 */
 	public transformCenterPointForContext( point ) {
 		let transformedPoint: i.Point = this.transformPoint( point )
-		transformedPoint = {
-			x: transformedPoint.x + this.deltaPointForTransformedCenterPointForContext.x,
-			y: transformedPoint.y + this.deltaPointForTransformedCenterPointForContext.y,
-		}
-		// log( )
+		// transformedPoint = {
+		// 	x: transformedPoint.x + this.deltaPointForMiniMap.x,
+		// 	y: transformedPoint.y + this.deltaPointForMiniMap.y,
+		// }
 		this.draw.ctx.setTransform(
 			this.zoom,
 			0,
@@ -189,15 +190,15 @@ export default class ZoomPan {
 	 */
 	public transformPoint( point ): i.Point {
 		const res = {
-			x: point.x * this.zoom + this.deltaXForZoom + this.deltaXForPan,
-			y: point.y * this.zoom + this.deltaYForZoom + this.deltaYForPan
+			x: point.x * this.zoom + this.deltaXForZoom + this.deltaXForPan + this.deltaPointForMiniMap.x,
+			y: point.y * this.zoom + this.deltaYForZoom + this.deltaYForPan + this.deltaPointForMiniMap.y
 		}
 		return res
 	}
 	public transformPointReversely( point ): i.Point {
 		const res = {
-			x: ( point.x - this.deltaXForZoom - this.deltaXForPan ) / this.zoom,
-			y: ( point.y - this.deltaYForZoom - this.deltaYForPan ) / this.zoom
+			x: ( point.x - this.deltaXForZoom - this.deltaXForPan - this.deltaPointForMiniMap.x ) / this.zoom,
+			y: ( point.y - this.deltaYForZoom - this.deltaYForPan - this.deltaPointForMiniMap.y ) / this.zoom
 		}
 		return res
 	}

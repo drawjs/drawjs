@@ -34,38 +34,38 @@ function callback( text ) {
 
 // ******* export *******
 draw.addElement( 'rect', {
-	left  : 300,
-	top   : 100,
+	left  : 350,
+	top   : 250,
 	fill  : 'red',
 	width : 100,
 	height: 100,
 	angle : 0,
 } )
 
-draw.addElement( 'point', {
-	x: 150,
-	y: 150,
-	color: 'blue',
-} )
+// draw.addElement( 'point', {
+// 	x: 150,
+// 	y: 150,
+// 	color: 'blue',
+// } )
 
 // draw.addElement( 'point', {
-// 	x: 300,
-// 	y: 200,
+// 	x: 400,
+// 	y: 300,
 // 	color: 'blue',
 // } )
 
 
-draw.addElement( 'line', {
-	pointStart: {
-		x: 300,
-		y: 300,
-	},
-	pointEnd: {
-		x: 350,
-		y: 350
-	},
-	fill: 'blue',
-} )
+// draw.addElement( 'line', {
+// 	pointStart: {
+// 		x: 300,
+// 		y: 300,
+// 	},
+// 	pointEnd: {
+// 		x: 350,
+// 		y: 350
+// 	},
+// 	fill: 'blue',
+// } )
 
 // draw.zoomPan.zoom = 2
 
