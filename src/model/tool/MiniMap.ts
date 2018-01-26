@@ -1,10 +1,12 @@
 import Draw from "../../Draw"
-import { coupleUpdateZoomPanZoom, coupleUpdateDeltaPointForMiniMap } from "mixin/index"
-import { renderElement, renderGridMiniMap } from 'shared/index';
-import { Point } from 'interface/index'
+import {
+	coupleUpdateZoomPanZoom,
+	coupleUpdateDeltaPointForMiniMap
+} from "mixin/index"
+import { renderElement, renderGridMiniMap } from "shared/index"
+import { Point, Rect } from "interface/index"
 import * as _ from "lodash"
-import { log } from 'util/index';
-
+import { log } from "util/index"
 
 export default class MiniMap {
 	public draw: Draw
@@ -14,6 +16,7 @@ export default class MiniMap {
 	public top: number
 	public sizeRate: number = 0.3
 	public isRendering: boolean = false
+	public imageData: any = null
 
 	get originX(): number {
 		return this.left + this.width / 2
@@ -27,7 +30,7 @@ export default class MiniMap {
 		path.rect( -this.width / 2, -this.height / 2, this.width, this.height )
 		return path
 	}
-	get zoomBoxPath(): Path2D {
+	get viewBoxPath(): Path2D {
 		let zoom: number = this.draw.zoomPan.zoom
 		zoom = zoom < 1 ? 1 : zoom
 
@@ -45,6 +48,98 @@ export default class MiniMap {
 		return res
 	}
 
+	get elementsBounds(): Rect {
+		let minLeft: number = 0
+		let maxRight: number = 0
+		let minTop: number = 0
+		let maxBottom: number = 0
+		let res: Rect
+
+		this.draw.cellList.map( get )
+
+		function get( cell ) {
+			minLeft = getCellMin( '__left',  minLeft)
+			maxRight = getCellMax( '__right',  maxRight)
+			minTop = getCellMin( '__top',  minTop)
+			maxBottom = getCellMax( '__bottom',  maxBottom)
+
+			function getCellMin( key, refer ): number {
+				return getCellComparedResult( key, refer, isSmailler )
+			}
+			function getCellMax( key, refer ): number {
+				return getCellComparedResult( key, refer, isBigger )
+			}
+
+			function getCellComparedResult( key, refer, compare ): number {
+				const value = cell[ key ]
+				let res = refer
+				if ( ! _.isNil( value ) ) {
+					if ( compare( value, refer ) ) {
+						res = value
+					}
+				}
+				return res
+			}
+
+			function isBigger( a, b ) {
+				return a > b
+			}
+			function isSmailler( a, b ) {
+				return a < b
+			}
+
+		}
+
+		res = {
+			left  : minLeft,
+			top   : minTop,
+			width : maxRight - minLeft,
+			height: maxBottom - minTop
+		}
+		return res
+	}
+
+	get scopeRect(): Rect {
+		const zoom = this.canvasScopeZoom
+		const center: Point = {
+			x: this.draw.canvas.width / 2,
+			y: this.draw.canvas.height / 2,
+		}
+		const res = {
+			left: center.x - this.draw.canvas.width / 2 * zoom,
+			top: center.x - this.draw.canvas.height / 2 * zoom,
+			width: this.draw.canvas.width * zoom,
+			height: this.draw.canvas.height * zoom,
+		}
+		return res
+	}
+
+	get canvasScopeZoom(): number {
+		let maxZoom: number = 1
+
+		const b = this.elementsBounds
+		const center: Point = {
+			x: this.draw.canvas.width / 2,
+			y: this.draw.canvas.height / 2,
+		}
+
+		const leftZoom = Math.abs( ( center.x - b.left ) / center.x )
+		const rightZoom = Math.abs( ( b.left + b.width - center.x ) / center.x )
+		const topZoom = Math.abs( ( center.y - b.top ) / center.y )
+		const bottomZoom = Math.abs( ( b.top + b.height - center.y ) / center.y )
+
+		const max = Math.max( leftZoom, rightZoom, topZoom, bottomZoom )
+
+		maxZoom = max > maxZoom ? max: maxZoom
+		return maxZoom
+	}
+
+	get transformRate(): number {
+		const res = this.sizeRate / this.canvasScopeZoom
+		return 0.1
+	}
+
+
 	constructor( props ) {
 		this.draw = props.draw
 
@@ -59,27 +154,29 @@ export default class MiniMap {
 		 * Transform point from original position to mini map
 		 */
 		let transformedPoint: Point = {
-			x: point.x * this.sizeRate,
-			y: point.y * this.sizeRate + this.top
+			x: point.x * this.transformRate,
+			y: point.y * this.transformRate + this.top
 		}
 
+		log( this.transformRate )
+
 		this.draw.ctx.setTransform(
-			this.sizeRate,
+			this.transformRate,
 			0,
 			0,
-			this.sizeRate,
+			this.transformRate,
 			transformedPoint.x,
 			transformedPoint.y
 		)
 	}
 
-	render() {
+	renderMain() {
 		this.isRendering = true
 
 		const self = this
 
 		_renderContainer()
-		// _renderZoomBox()
+		// _renderviewBox()
 
 		_renderGrid()
 		_renderCanvasMain()
@@ -100,7 +197,7 @@ export default class MiniMap {
 			ctx.restore()
 		}
 
-		function _renderZoomBox() {
+		function _renderviewBox() {
 			const ctx = self.draw.ctx
 			ctx.save()
 
@@ -108,7 +205,7 @@ export default class MiniMap {
 
 			ctx.lineWidth = 1
 			ctx.strokeStyle = "red"
-			ctx.stroke( self.zoomBoxPath )
+			ctx.stroke( self.viewBoxPath )
 
 			ctx.restore()
 		}
@@ -123,15 +220,35 @@ export default class MiniMap {
 				y: self.top
 			}
 			renderGridMiniMap( {
-				canvas: self.draw.canvas,
-				width: self.width,
-				height: self.height,
+				canvas                  : self.draw.canvas,
+				width                   : self.width,
+				height                  : self.height,
 				origin,
-				zoom: self.sizeRate,
-				strokeStyleForSmallSpace: 'rgba( 0, 0, 0, 0.05)',
-				strokeStyleForBigSpace: 'rgba( 0, 0, 0, 0.2 )',
+				zoom                    : self.sizeRate,
+				strokeStyleForSmallSpace: "rgba( 0, 0, 0, 0.05)",
+				strokeStyleForBigSpace  : "rgba( 0, 0, 0, 0.2 )"
 			} )
 		}
 	}
 
+	/**
+	 * Render
+	 * Caveat: Have to get image data at the begginning of rendering process of draw
+	 */
+	render() {
+		this.draw.ctx.putImageData( this.imageData, this.left, this.top )
+	}
+
+	/**
+	 * Get mini map's image data at the begginning of rendering process of draw
+	 */
+	renderMainToGetImageData() {
+		this.renderMain()
+		this.imageData = this.draw.ctx.getImageData(
+			this.left,
+			this.top,
+			this.width,
+			this.height
+		)
+	}
 }

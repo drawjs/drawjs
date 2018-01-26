@@ -19,7 +19,9 @@ export default class ZoomPan {
 	/**
 	 * zoom rate
 	 */
-	public zoom: number = 1
+	public _zoom: number = 1
+	public MAX_ZOOM = 32
+	public MIN_ZOOM = 0.19
 
 	public isZoomBasedOnCenter: boolean = false
 
@@ -35,6 +37,7 @@ export default class ZoomPan {
 
 	public _mouseEvent: any
 
+
 	/**
 	 * Set delta point for transformed point in `transformCenterPointForContext`,
 	 * for example, set this to render cells in mini map
@@ -44,6 +47,22 @@ export default class ZoomPan {
 		y: 0
 	}
 
+
+	set zoom( value: number ) {
+		if ( value > this.MAX_ZOOM ) {
+			this._zoom = this.MAX_ZOOM
+		}
+		if ( value < this.MIN_ZOOM ) {
+			this._zoom = this.MIN_ZOOM
+		}
+		if ( value >= this.MIN_ZOOM && value <= this.MAX_ZOOM ) {
+			this._zoom = value
+		}
+	}
+
+	get zoom(): number {
+		return this._zoom
+	}
 	/**
 	 * Focus zoom center point
 	 */

@@ -44,6 +44,38 @@ export default abstract class Cell {
 		return res
 	}
 
+	get __left(): number {
+		const potentialValue = this[ 'left' ]
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+	get __top(): number {
+		const potentialValue = this[ 'top' ]
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+	get __width(): number {
+		const potentialValue = this[ 'width' ]
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+	get __height(): number {
+		const potentialValue = this[ 'width' ]
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+	get __right(): number {
+		const potentialValue = this.__left + this.__width
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+	get __bottom(): number {
+		const potentialValue = this.__top + this.__height
+		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		return res
+	}
+
+
 	constructor( props ) {
 		const { draw } = props
 

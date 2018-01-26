@@ -50,7 +50,6 @@ export default class Draw {
 		]
 	}
 	public canvas: HTMLCanvasElement
-	public ctx: CanvasRenderingContext2D
 
 	/**
 	 * event
@@ -149,10 +148,14 @@ export default class Draw {
 	get canvasTop(): number {
 		return this.canvas.getBoundingClientRect().top
 	}
+	get ctx():CanvasRenderingContext2D {
+		const res = <CanvasRenderingContext2D>this.canvas.getContext( "2d" )
+		return res
+	}
 
 	constructor( canvas: HTMLCanvasElement ) {
 		this.canvas = canvas
-		this.ctx = <CanvasRenderingContext2D>canvas.getContext( "2d" )
+
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
 		this.miniMap = new MiniMap( { draw: this } )
@@ -173,6 +176,9 @@ export default class Draw {
 
 	public render() {
 		const self = this
+
+		this.clearEntireCanvas()
+		this.miniMap.renderMainToGetImageData()
 
 		this.clearEntireCanvas()
 

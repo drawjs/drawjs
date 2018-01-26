@@ -49,4 +49,9 @@ export interface Point {
 	y: number
 }
 
-
+export interface Rect {
+	left: number,
+	top: number,
+	width: number,
+	height: number,
+}
