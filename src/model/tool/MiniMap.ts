@@ -1,9 +1,9 @@
 import Draw from "../../Draw"
 import { coupleUpdateZoomPanZoom, coupleUpdateDeltaPointForMiniMap } from "mixin/index"
-import { renderElement } from "shared/index"
+import { renderElement, renderGridMiniMap } from 'shared/index';
 import { Point } from 'interface/index'
 import * as _ from "lodash"
-import { renderGrid, log } from 'util/index';
+import { log } from 'util/index';
 
 
 export default class MiniMap {
@@ -55,18 +55,19 @@ export default class MiniMap {
 	}
 
 	transformCenterPointForContext( point: Point ) {
-		let transformedPoint: Point = this.draw.zoomPan.transformPoint( point )
-
-		transformedPoint = {
-			x: transformedPoint.x,
-			y: transformedPoint.y
+		/**
+		 * Transform point from original position to mini map
+		 */
+		let transformedPoint: Point = {
+			x: point.x * this.sizeRate,
+			y: point.y * this.sizeRate + this.top
 		}
 
 		this.draw.ctx.setTransform(
-			this.draw.zoomPan.zoom * this.sizeRate,
+			this.sizeRate,
 			0,
 			0,
-			this.draw.zoomPan.zoom * this.sizeRate,
+			this.sizeRate,
 			transformedPoint.x,
 			transformedPoint.y
 		)
@@ -77,12 +78,10 @@ export default class MiniMap {
 
 		const self = this
 
-		log( 'render' )
-
 		_renderContainer()
 		// _renderZoomBox()
 
-		// _renderGrid()
+		_renderGrid()
 		_renderCanvasMain()
 
 		this.isRendering = false
@@ -115,30 +114,7 @@ export default class MiniMap {
 		}
 
 		function _renderCanvasMain() {
-			/**
-			 * Cache zoom, deltaPointForTransformedCenterPointForContext in zoomPan for recovering it later
-			 */
-			// const cachedZoom: number = self.draw.zoomPan.zoom
-			// const cachedDeltaPointForTransformedCenterPointForContext: Point = _.cloneDeep( self.draw.zoomPan.deltaPointForMiniMap )
-
-			// /**
-			//  * Update zoom, deltaPointForTransformedCenterPointForContext of zoomPan
-			//  */
-			// coupleUpdateZoomPanZoom( self.draw.zoomPan, self.sizeRate )
-			// coupleUpdateDeltaPointForMiniMap( self.draw.zoomPan, {
-			// 	x: self.left,
-			// 	y: self.top,
-			// } )
-			/**
-			 * Render cells, grids again in mini map
-			 */
 			self.draw.cellList.map( renderElement )
-
-			/**
-			 * Recover zoom, deltaPointForTransformedCenterPointForContext of zoomPan
-			 */
-			// coupleUpdateZoomPanZoom( self.draw.zoomPan, cachedZoom )
-			// coupleUpdateDeltaPointForMiniMap( self.draw.zoomPan, cachedDeltaPointForTransformedCenterPointForContext )
 		}
 
 		function _renderGrid() {
@@ -146,7 +122,15 @@ export default class MiniMap {
 				x: 0,
 				y: self.top
 			}
-			renderGrid( self.draw, self.width, self.height, origin, self.sizeRate )
+			renderGridMiniMap( {
+				canvas: self.draw.canvas,
+				width: self.width,
+				height: self.height,
+				origin,
+				zoom: self.sizeRate,
+				strokeStyleForSmallSpace: 'rgba( 0, 0, 0, 0.05)',
+				strokeStyleForBigSpace: 'rgba( 0, 0, 0, 0.2 )',
+			} )
 		}
 	}
 

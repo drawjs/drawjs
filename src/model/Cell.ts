@@ -34,6 +34,11 @@ export default abstract class Cell {
 	public isSizing: boolean = false
 
 
+	/**
+	 * Mini map
+	 */
+	public isVisiableInMiniMap = true
+
 	get radianAngle(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
 		return res

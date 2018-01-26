@@ -7,6 +7,7 @@ import { defaultPathExandingValue } from "store/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { Point } from "interface/index"
 import { getTransformedPointForContainPoint } from "shared/index"
+import { transformCenterPointForContext } from 'mixin/index';
 
 export default class Line extends Graph {
 	public pointStart: i.Point
@@ -221,10 +222,10 @@ export default class Line extends Graph {
 		super.render()
 
 		ctx.save()
-		this.draw.zoomPan.transformCenterPointForContext( {
+		transformCenterPointForContext( this.draw, {
 			x: this.originX,
 			y: this.originY
-		} )
+		}, this )
 		ctx.lineWidth = 1
 		ctx.strokeStyle = this.fill
 		ctx.stroke( this.path )

@@ -1,29 +1,48 @@
 import { Point } from "interface/index"
-import log from "./log"
+import log from "util/log"
 import Draw from "../Draw"
 
-export default function renderGrid(
-	draw: Draw,
-	width: number,
-	height: number,
-	origin: Point = { x: 0, y: 0 },
-	gridZoom: number = 1
+export default function renderGrid( {
+	canvas,
+	width,
+	height,
+	origin = { x: 0, y: 0 },
+	zoom = 1,
+	deltaXForZoom = 0,
+	deltaYForZoom = 0,
+	deltaXForPan = 0,
+	deltaYForPan = 0,
+	strokeStyleForSmallSpace = '#ddd',
+	strokeStyleForBigSpace = '#aaa'
+}:{
+	canvas: HTMLCanvasElement
+	width: number
+	height: number
+	origin?: Point
+	zoom?: number,
+	deltaXForZoom?: number,
+	deltaYForZoom?: number,
+	deltaXForPan?: number,
+	deltaYForPan?: number,
+	strokeStyleForSmallSpace?: string,
+	strokeStyleForBigSpace?: string,
+	}
 ) {
-	const ctx = draw.canvas.getContext( "2d" )
-	const spaceSmall = 10 * gridZoom
-	const spaceBig = 50 * gridZoom
+	const ctx = canvas.getContext( "2d" )
+	const spaceSmall = 10
+	const spaceBig = 50
 
 	renderGridBySpace( spaceSmall, () => {
 		ctx.setLineDash( [ 2, 1 ] )
-		ctx.strokeStyle = "#ddd"
+		ctx.strokeStyle = strokeStyleForSmallSpace
 	} )
 	renderGridBySpace( spaceBig, () => {
-		ctx.strokeStyle = "#aaa"
+		ctx.strokeStyle = strokeStyleForBigSpace
 	} )
 
 	function renderGridBySpace( space: number, beforeStrokeFn?: Function ) {
 		let path = new Path2D()
-		const zoomedSpace = space * draw.zoomPan.zoom
+		const zoomedSpace = space * zoom
 		const spaceDeltaX = getSpaceDeltaX( zoomedSpace )
 		const spaceDeltaY = getSpaceDeltaY( zoomedSpace )
 
@@ -55,19 +74,11 @@ export default function renderGrid(
 		ctx.restore()
 	}
 
-	function originX() {
-		return 0
-	}
-
-	function originY() {
-		return 0
-	}
-
 	function getSpaceDeltaX( zoomedSpace ) {
 		const res =
 			( zoomedSpace +
-				draw.zoomPan.deltaXForZoom * gridZoom +
-				draw.zoomPan.deltaXForPan * gridZoom ) %
+				deltaXForZoom +
+				deltaXForPan ) %
 			zoomedSpace
 		return res
 	}
@@ -75,8 +86,8 @@ export default function renderGrid(
 	function getSpaceDeltaY( zoomedSpace ) {
 		const res =
 			( zoomedSpace +
-				draw.zoomPan.deltaYForZoom * gridZoom +
-				draw.zoomPan.deltaYForPan * gridZoom ) %
+				deltaYForZoom +
+				deltaYForPan ) %
 			zoomedSpace
 		return res
 	}

@@ -48,13 +48,6 @@ draw.addElement( 'rect', {
 // 	color: 'blue',
 // } )
 
-// draw.addElement( 'point', {
-// 	x: 400,
-// 	y: 300,
-// 	color: 'blue',
-// } )
-
-
 // draw.addElement( 'line', {
 // 	pointStart: {
 // 		x: 300,

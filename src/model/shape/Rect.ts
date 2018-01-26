@@ -16,7 +16,8 @@ import SizePoint, {
 } from "model/tool/SizePoint"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
-import { getTransformedPointForContainPoint } from "shared/index";
+import { getTransformedPointForContainPoint } from "shared/index"
+import { transformCenterPointForContext } from "mixin/index";
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
@@ -118,14 +119,10 @@ export default class Rect extends Graph {
 		super.render()
 
 		ctx.save()
-		this.draw.zoomPan.transformCenterPointForContext( {
+		transformCenterPointForContext( this.draw, {
 			x: this.originX,
 			y: this.originY
-		} )
-		this.draw.miniMap.isRendering && this.draw.miniMap.transformCenterPointForContext( {
-			x: this.originX,
-			y: this.originY
-		} )
+		}, this )
 		ctx.fillStyle = this.fill
 		ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
 		ctx.fill( this.path )
@@ -152,7 +149,10 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ): boolean {
-		const transformedPoint = getTransformedPointForContainPoint( { x, y }, this )
+		const transformedPoint = getTransformedPointForContainPoint(
+			{ x, y },
+			this
+		)
 
 		const isContain = this.draw.ctx.isPointInPath(
 			this.path,

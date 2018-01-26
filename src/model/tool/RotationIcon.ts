@@ -5,7 +5,7 @@ import Cell from "model/Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
 import { getPointAngleToOrigin } from "util/index"
 import * as i from "interface/index"
-import { coupleRotatingCell, coupleSelectCell } from "mixin/index"
+import { coupleRotatingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
 import { Point } from "interface/index"
@@ -53,14 +53,16 @@ export default class RotationIcon extends Cell {
 		this.type = ROTATE_ICON
 
 		this._iconImage.src = "../../asset/svg/rotate-icon.svg"
+
+		this.isVisiableInMiniMap = false
 	}
 
 	public renderByInstance() {
 		this.draw.ctx.save()
-		this.draw.zoomPan.transformCenterPointForContext( {
+		transformCenterPointForContext( this.draw, {
 			x: this.originX,
 			y: this.originY
-		} )
+		}, this )
 		this.draw.ctx.rotate( this.instance.angle * constant.DEGREE_TO_RADIAN )
 		this.draw.ctx.drawImage(
 			this._iconImage,

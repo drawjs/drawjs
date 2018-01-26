@@ -2,8 +2,8 @@ import { Cell } from "model/index"
 import { defaultPointRadius } from "store/index"
 import * as i from "interface/index"
 import * as _ from "lodash"
-import { getTransformedPointForContainPoint } from 'shared/index';
-
+import { getTransformedPointForContainPoint } from "shared/index"
+import { transformCenterPointForContext } from "mixin/index"
 
 export default class Point extends Cell {
 	public color: string = "black"
@@ -41,10 +41,14 @@ export default class Point extends Cell {
 
 		ctx.save()
 
-		this.draw.zoomPan.transformCenterPointForContext( {
-			x: this.originX,
-			y: this.originY
-		} )
+		transformCenterPointForContext(
+			this.draw,
+			{
+				x: this.originX,
+				y: this.originY
+			},
+			this
+		)
 
 		ctx.fillStyle = this.color
 		ctx.strokeStyle = this.strokeColor
@@ -54,7 +58,10 @@ export default class Point extends Cell {
 	}
 
 	public containPoint( x, y ) {
-		const transformedPoint = getTransformedPointForContainPoint( { x, y }, this )
+		const transformedPoint = getTransformedPointForContainPoint(
+			{ x, y },
+			this
+		)
 		const isContain = this.draw.ctx.isPointInPath(
 			this.path,
 			transformedPoint.x,

@@ -5,7 +5,7 @@ import * as _ from "lodash"
 import { getRotatedPoint, log } from "util/index"
 import * as i from "interface/index"
 import Size from "mixin/Size"
-import { coupleSizingCell, coupleSelectCell } from "mixin/index"
+import { coupleSizingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
 import { getTransformedPointForContainPoint } from "shared/index"
 
 export default abstract class SizePoint extends Point {
@@ -54,6 +54,8 @@ export default abstract class SizePoint extends Point {
 		this.instance = props.instance
 
 		this.Size = new Size( { instance: this.instance } )
+
+		this.isVisiableInMiniMap = false
 	}
 
 	public render() {
@@ -65,10 +67,10 @@ export default abstract class SizePoint extends Point {
 
 		ctx.save()
 
-		this.draw.zoomPan.transformCenterPointForContext( {
+		transformCenterPointForContext( this.draw, {
 			x: this.originX,
 			y: this.originY
-		} )
+		}, this )
 		ctx.fillStyle = this.color
 		ctx.strokeStyle = this.strokeColor
 
