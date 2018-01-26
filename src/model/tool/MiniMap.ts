@@ -1,7 +1,6 @@
 import Draw from "../../Draw"
 import {
 	coupleUpdateZoomPanZoom,
-	coupleUpdateDeltaPointForMiniMap
 } from "mixin/index"
 import { renderElement, renderGridMiniMap } from "shared/index"
 import { Point, Rect } from "interface/index"
@@ -25,24 +24,24 @@ export default class MiniMap {
 	get originY(): number {
 		return this.top + this.height / 2
 	}
+
 	get path(): Path2D {
 		const path = new Path2D()
 		path.rect( -this.width / 2, -this.height / 2, this.width, this.height )
 		return path
 	}
-	get viewBoxPath(): Path2D {
-		let zoom: number = this.draw.zoomPan.zoom
-		// zoom = zoom < 1 ? 1 : zoom
 
+	get viewBoxPath(): Path2D {
 		const path = new Path2D()
 		path.rect(
-			-this.width / zoom / 2,
-			-this.height / zoom / 2,
-			this.width / zoom,
-			this.height / zoom
+			-this.width / 2,
+			-this.height / 2,
+			this.width,
+			this.height
 		)
 		return path
 	}
+
 	get miniZoom(): number {
 		const res = this.draw.zoomPan.zoom * 0.3
 		return res
@@ -163,7 +162,7 @@ export default class MiniMap {
 		this.top = this.draw.canvas.height - this.height
 	}
 
-	transformCenterPointForContext( point: Point ) {
+	public transformCenterPointForContext( point: Point ) {
 		/**
 		 * Transform point from original position to mini map
 		 */
@@ -182,7 +181,24 @@ export default class MiniMap {
 		)
 	}
 
-	renderMain() {
+	public transformViewBoxCenterPoint( point: Point ) {
+		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
+		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely( this.draw.canvasCenterPoint )
+
+		const deltaX = currentOriginalCanvasCenterPoint.x - staticBasicOriginalCanvasCenterPoint.x
+		const deltaY = currentOriginalCanvasCenterPoint.y - staticBasicOriginalCanvasCenterPoint.y
+
+		// log( deltaX )
+		// log( this.canvasScopeZoom )
+
+		const res = {
+			x: point.x + deltaX * this.transformRate,
+			y: point.y + deltaY * this.transformRate
+		}
+		return res
+	}
+
+	public renderMain() {
 		this.isRendering = true
 
 		const self = this
@@ -211,9 +227,24 @@ export default class MiniMap {
 
 		function _renderViewBox() {
 			const ctx = self.draw.ctx
+			let zoom: number = self.draw.zoomPan.zoom * self.canvasScopeZoom
+
 			ctx.save()
 
-			ctx.translate( self.originX, self.originY )
+			const transformedPoint = self.transformViewBoxCenterPoint( {
+				x: self.originX,
+				y: self.originY
+			} )
+
+			ctx.setTransform(
+				1 / zoom,
+				0,
+				0,
+				1 / zoom,
+				transformedPoint.x,
+				transformedPoint.y
+			)
+
 
 			ctx.lineWidth = 1
 			ctx.strokeStyle = "red"
@@ -249,14 +280,14 @@ export default class MiniMap {
 	 * Render
 	 * Caveat: Have to get image data at the begginning of rendering process of draw
 	 */
-	render() {
+	public render() {
 		this.draw.ctx.putImageData( this.imageData, this.left, this.top )
 	}
 
 	/**
 	 * Get mini map's image data at the begginning of rendering process of draw
 	 */
-	renderMainToGetImageData() {
+	public renderMainToGetImageData() {
 		this.renderMain()
 		this.imageData = this.draw.ctx.getImageData(
 			this.left,

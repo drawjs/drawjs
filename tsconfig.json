@@ -3,7 +3,8 @@
 		"src/**/*"
 	],
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"src/__tmp__"
 	],
 	"compilerOptions": {
 		"module": "es6",

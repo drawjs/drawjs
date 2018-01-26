@@ -15,7 +15,7 @@ import { ROTATE_ICON } from "store/constant_cellTypeList"
 import {
 	getInstanceByElementWithoutInstance,
 	updateStoreElementsByTheirInstances,
-	coupleUpdateZoomPanZoom,
+	coupleUpdateZoomPanZoom
 } from "mixin/index"
 import ZoomPan from "mixin/ZoomPan"
 import EventKeyboard from "mixin/EventKeyboard"
@@ -24,16 +24,15 @@ import * as interfaces from "interface/index"
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/cellTypeClassMap"
-import { generateUniqueId, log } from 'util/index';
+import { generateUniqueId, log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
 import { SelectionArea } from "model/tool/index"
 import * as i from "interface/index"
 import CanvasRenderingContext2D from "interface/CanvasRenderingContext2D"
-import MiniMap from './model/tool/MiniMap';
-import { Point } from "interface/index";
-import renderElement from "./shared/renderElement";
-import { renderGridCanvas } from 'shared/index';
-
+import MiniMap from "./model/tool/MiniMap"
+import { Point } from "interface/index"
+import renderElement from "./shared/renderElement"
+import { renderGridCanvas } from "shared/index"
 
 const ajv = new Ajv()
 
@@ -63,7 +62,6 @@ export default class Draw {
 
 	public cellTypeClassMap: any = cellTypeClassMap
 	public _selectionAreaInstance: SelectionArea
-
 
 	/**
 	 * Mini map
@@ -148,7 +146,14 @@ export default class Draw {
 	get canvasTop(): number {
 		return this.canvas.getBoundingClientRect().top
 	}
-	get ctx():CanvasRenderingContext2D {
+	get canvasCenterPoint(): Point {
+		const res = {
+			x: this.canvas.width / 2,
+			y: this.canvas.height / 2
+		}
+		return res
+	}
+	get ctx(): CanvasRenderingContext2D {
 		const res = <CanvasRenderingContext2D>this.canvas.getContext( "2d" )
 		return res
 	}
@@ -183,14 +188,14 @@ export default class Draw {
 		this.clearEntireCanvas()
 
 		renderGridCanvas( {
-			canvas: this.canvas,
-			width: this.canvas.width,
-			height: this.canvas.height,
-			zoom: this.zoomPan.zoom,
+			canvas       : this.canvas,
+			width        : this.canvas.width,
+			height       : this.canvas.height,
+			zoom         : this.zoomPan.zoom,
 			deltaXForZoom: this.zoomPan.deltaXForZoom,
 			deltaYForZoom: this.zoomPan.deltaYForZoom,
-			deltaXForPan: this.zoomPan.deltaXForPan,
-			deltaYForPan: this.zoomPan.deltaYForPan,
+			deltaXForPan : this.zoomPan.deltaXForPan,
+			deltaYForPan : this.zoomPan.deltaYForPan
 		} )
 
 		this.cellList.map( renderElement )
