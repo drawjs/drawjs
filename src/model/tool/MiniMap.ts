@@ -32,7 +32,7 @@ export default class MiniMap {
 	}
 	get viewBoxPath(): Path2D {
 		let zoom: number = this.draw.zoomPan.zoom
-		zoom = zoom < 1 ? 1 : zoom
+		// zoom = zoom < 1 ? 1 : zoom
 
 		const path = new Path2D()
 		path.rect(
@@ -58,10 +58,10 @@ export default class MiniMap {
 		this.draw.cellList.map( get )
 
 		function get( cell ) {
-			minLeft = getCellMin( '__left',  minLeft)
-			maxRight = getCellMax( '__right',  maxRight)
-			minTop = getCellMin( '__top',  minTop)
-			maxBottom = getCellMax( '__bottom',  maxBottom)
+			minLeft = getCellMin( "__left", minLeft )
+			maxRight = getCellMax( "__right", maxRight )
+			minTop = getCellMin( "__top", minTop )
+			maxBottom = getCellMax( "__bottom", maxBottom )
 
 			function getCellMin( key, refer ): number {
 				return getCellComparedResult( key, refer, isSmailler )
@@ -73,7 +73,7 @@ export default class MiniMap {
 			function getCellComparedResult( key, refer, compare ): number {
 				const value = cell[ key ]
 				let res = refer
-				if ( ! _.isNil( value ) ) {
+				if ( !_.isNil( value ) ) {
 					if ( compare( value, refer ) ) {
 						res = value
 					}
@@ -87,7 +87,6 @@ export default class MiniMap {
 			function isSmailler( a, b ) {
 				return a < b
 			}
-
 		}
 
 		res = {
@@ -103,13 +102,13 @@ export default class MiniMap {
 		const zoom = this.canvasScopeZoom
 		const center: Point = {
 			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2,
+			y: this.draw.canvas.height / 2
 		}
 		const res = {
-			left: center.x - this.draw.canvas.width / 2 * zoom,
-			top: center.x - this.draw.canvas.height / 2 * zoom,
-			width: this.draw.canvas.width * zoom,
-			height: this.draw.canvas.height * zoom,
+			left  : center.x - this.draw.canvas.width / 2 * zoom,
+			top   : center.x - this.draw.canvas.height / 2 * zoom,
+			width : this.draw.canvas.width * zoom,
+			height: this.draw.canvas.height * zoom
 		}
 		return res
 	}
@@ -120,7 +119,7 @@ export default class MiniMap {
 		const b = this.elementsBounds
 		const center: Point = {
 			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2,
+			y: this.draw.canvas.height / 2
 		}
 
 		const leftZoom = Math.abs( ( center.x - b.left ) / center.x )
@@ -130,15 +129,30 @@ export default class MiniMap {
 
 		const max = Math.max( leftZoom, rightZoom, topZoom, bottomZoom )
 
-		maxZoom = max > maxZoom ? max: maxZoom
+		maxZoom = max > maxZoom ? max : maxZoom
 		return maxZoom
 	}
 
 	get transformRate(): number {
 		const res = this.sizeRate / this.canvasScopeZoom
-		return 0.1
+		return res
 	}
 
+	get deltaXForAutoZoom(): number {
+		const res =
+			( this.sizeRate * this.draw.canvas.width -
+				this.transformRate * this.draw.canvas.width ) /
+			2
+		return res
+	}
+
+	get deltaYForAutoZoom(): number {
+		const res =
+			( this.sizeRate * this.draw.canvas.height -
+				this.transformRate * this.draw.canvas.height ) /
+			2
+		return res
+	}
 
 	constructor( props ) {
 		this.draw = props.draw
@@ -154,11 +168,9 @@ export default class MiniMap {
 		 * Transform point from original position to mini map
 		 */
 		let transformedPoint: Point = {
-			x: point.x * this.transformRate,
-			y: point.y * this.transformRate + this.top
+			x: point.x * this.transformRate + this.deltaXForAutoZoom,
+			y: point.y * this.transformRate + this.top + this.deltaYForAutoZoom
 		}
-
-		log( this.transformRate )
 
 		this.draw.ctx.setTransform(
 			this.transformRate,
@@ -176,7 +188,7 @@ export default class MiniMap {
 		const self = this
 
 		_renderContainer()
-		// _renderviewBox()
+		_renderViewBox()
 
 		_renderGrid()
 		_renderCanvasMain()
@@ -197,7 +209,7 @@ export default class MiniMap {
 			ctx.restore()
 		}
 
-		function _renderviewBox() {
+		function _renderViewBox() {
 			const ctx = self.draw.ctx
 			ctx.save()
 
@@ -224,7 +236,9 @@ export default class MiniMap {
 				width                   : self.width,
 				height                  : self.height,
 				origin,
-				zoom                    : self.sizeRate,
+				zoom                    : self.transformRate,
+				deltaXForZoom           : self.deltaXForAutoZoom,
+				deltaYForZoom           : self.deltaYForAutoZoom,
 				strokeStyleForSmallSpace: "rgba( 0, 0, 0, 0.05)",
 				strokeStyleForBigSpace  : "rgba( 0, 0, 0, 0.2 )"
 			} )

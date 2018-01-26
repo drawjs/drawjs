@@ -43,8 +43,14 @@ draw.addElement( 'rect', {
 } )
 
 // draw.addElement( 'point', {
-// 	x: 150,
-// 	y: 150,
+// 	x: 400,
+// 	y: 300,
+// 	color: 'blue',
+// } )
+
+// draw.addElement( 'point', {
+// 	x: 400,
+// 	y: -50,
 // 	color: 'blue',
 // } )
 

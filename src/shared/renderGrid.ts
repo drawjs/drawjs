@@ -2,7 +2,7 @@ import { Point } from "interface/index"
 import log from "util/log"
 import Draw from "../Draw"
 
-export default function renderGrid( {
+export default function( {
 	canvas,
 	width,
 	height,
@@ -12,22 +12,21 @@ export default function renderGrid( {
 	deltaYForZoom = 0,
 	deltaXForPan = 0,
 	deltaYForPan = 0,
-	strokeStyleForSmallSpace = '#ddd',
-	strokeStyleForBigSpace = '#aaa'
-}:{
+	strokeStyleForSmallSpace = "#ddd",
+	strokeStyleForBigSpace = "#aaa"
+}: {
 	canvas: HTMLCanvasElement
 	width: number
 	height: number
 	origin?: Point
-	zoom?: number,
-	deltaXForZoom?: number,
-	deltaYForZoom?: number,
-	deltaXForPan?: number,
-	deltaYForPan?: number,
-	strokeStyleForSmallSpace?: string,
-	strokeStyleForBigSpace?: string,
-	}
-) {
+	zoom?: number
+	deltaXForZoom?: number
+	deltaYForZoom?: number
+	deltaXForPan?: number
+	deltaYForPan?: number
+	strokeStyleForSmallSpace?: string
+	strokeStyleForBigSpace?: string
+} ) {
 	const ctx = canvas.getContext( "2d" )
 	const spaceSmall = 10
 	const spaceBig = 50
@@ -75,20 +74,12 @@ export default function renderGrid( {
 	}
 
 	function getSpaceDeltaX( zoomedSpace ) {
-		const res =
-			( zoomedSpace +
-				deltaXForZoom +
-				deltaXForPan ) %
-			zoomedSpace
+		const res = ( zoomedSpace + deltaXForZoom + deltaXForPan ) % zoomedSpace
 		return res
 	}
 
 	function getSpaceDeltaY( zoomedSpace ) {
-		const res =
-			( zoomedSpace +
-				deltaYForZoom +
-				deltaYForPan ) %
-			zoomedSpace
+		const res = ( zoomedSpace + deltaYForZoom + deltaYForPan ) % zoomedSpace
 		return res
 	}
 }
