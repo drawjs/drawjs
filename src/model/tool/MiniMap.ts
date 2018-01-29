@@ -11,8 +11,8 @@ import * as _ from "lodash"
 import { log, isNotNil } from "util/index"
 import Cell from "model/Cell"
 import { MINI_MAP } from "store/constant_cellTypeList"
-import excludingTypesForMiniMapElementsBounds from "../../store/excludingTypesForMiniMapElementsBounds";
-import { coupleZoomPanSetPanPoint } from 'mixin/coupleZoomPanSet';
+import excludingTypesForMiniMapElementsBounds from "../../store/excludingTypesForMiniMapElementsBounds"
+import { coupleZoomPanSetPanPoint } from "mixin/coupleZoomPanSet"
 
 export default class MiniMap extends Cell {
 	public draw: Draw
@@ -89,7 +89,10 @@ export default class MiniMap extends Cell {
 		}
 
 		function isInclude( { type } ): boolean {
-			const res: boolean = ! _.includes( excludingTypesForMiniMapElementsBounds, type )
+			const res: boolean = !_.includes(
+				excludingTypesForMiniMapElementsBounds,
+				type
+			)
 			return res
 		}
 
@@ -169,7 +172,7 @@ export default class MiniMap extends Cell {
 		this.left = 0
 		this.top = this.draw.canvas.height - this.height
 		this.viewBox = new ViewBox( {
-			draw: this.draw,
+			draw   : this.draw,
 			miniMap: this
 		} )
 	}
@@ -266,13 +269,52 @@ export default class MiniMap extends Cell {
 		)
 	}
 
-
 	public containPoint( x, y ) {
-		const res = isInstancePathContainPointTransformed( x, y, this )
-		return res
+		const self = this
+
+		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
+		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
+			this.draw.canvasCenterPoint
+		)
+
+		const deltaX =
+			currentOriginalCanvasCenterPoint.x -
+			staticBasicOriginalCanvasCenterPoint.x
+		const deltaY =
+			currentOriginalCanvasCenterPoint.y -
+			staticBasicOriginalCanvasCenterPoint.y
+
+		const transformedPoint = getTransformedPointForContainPoint()
+
+		const isContain = this.draw.ctx.isPointInPath(
+			this.path,
+			transformedPoint.x,
+			transformedPoint.y
+		)
+
+		return isContain
+
+		function getTransformedPointForContainPoint(): Point {
+			const originPoint: Point = {
+				x: x - deltaX * self.transformRate,
+				y: y - deltaY * self.transformRate
+			}
+			const viewBoxOriginPoint: Point = {
+				x: self.originX,
+				y: self.originY
+			}
+			const res: Point = {
+				x:
+					( originPoint.x - viewBoxOriginPoint.x ) *
+					self.canvasScopeZoom,
+				y:
+					( originPoint.y - viewBoxOriginPoint.y ) *
+					self.canvasScopeZoom
+			}
+			return res
+		}
 	}
 }
-
 
 class ViewBox extends Cell {
 	public miniMap: MiniMap
@@ -285,7 +327,12 @@ class ViewBox extends Cell {
 
 	get path(): Path2D {
 		const path = new Path2D()
-		path.rect( -this.miniMap.width / 2, -this.miniMap.height / 2, this.miniMap.width, this.miniMap.height )
+		path.rect(
+			-this.miniMap.width / 2,
+			-this.miniMap.height / 2,
+			this.miniMap.width,
+			this.miniMap.height
+		)
 		return path
 	}
 
@@ -299,32 +346,31 @@ class ViewBox extends Cell {
 		return res
 	}
 
-
 	public renderByMiniMap() {
 		const ctx = this.draw.ctx
-			let zoom: number = this.draw.zoomPan.zoom * this.miniMap.canvasScopeZoom
+		let zoom: number = this.draw.zoomPan.zoom * this.miniMap.canvasScopeZoom
 
-			ctx.save()
+		ctx.save()
 
-			const transformedPoint = this.transformCenterPoint( {
-				x: this.originX,
-				y: this.originY
-			} )
+		const transformedPoint = this.transformCenterPoint( {
+			x: this.originX,
+			y: this.originY
+		} )
 
-			ctx.setTransform(
-				1 / zoom,
-				0,
-				0,
-				1 / zoom,
-				transformedPoint.x,
-				transformedPoint.y
-			)
+		ctx.setTransform(
+			1 / zoom,
+			0,
+			0,
+			1 / zoom,
+			transformedPoint.x,
+			transformedPoint.y
+		)
 
-			ctx.lineWidth = 1
-			ctx.strokeStyle = "red"
-			ctx.stroke( this.path )
+		ctx.lineWidth = 1
+		ctx.strokeStyle = "red"
+		ctx.stroke( this.path )
 
-			ctx.restore()
+		ctx.restore()
 	}
 
 	public containPoint( x, y ) {
@@ -355,15 +401,21 @@ class ViewBox extends Cell {
 		function getTransformedPointForContainPoint(): Point {
 			const originPoint: Point = {
 				x: x - deltaX * self.miniMap.transformRate,
-				y: y - deltaY * self.miniMap.transformRate,
+				y: y - deltaY * self.miniMap.transformRate
 			}
 			const viewBoxOriginPoint: Point = {
 				x: self.originX,
 				y: self.originY
 			}
 			const res: Point = {
-				x: ( originPoint.x - viewBoxOriginPoint.x ) * self.draw.zoomPan.zoom,
-				y: ( originPoint.y - viewBoxOriginPoint.y ) * self.draw.zoomPan.zoom,
+				x:
+					( originPoint.x - viewBoxOriginPoint.x ) *
+					self.draw.zoomPan.zoom *
+					self.miniMap.canvasScopeZoom,
+				y:
+					( originPoint.y - viewBoxOriginPoint.y ) *
+					self.draw.zoomPan.zoom *
+					self.miniMap.canvasScopeZoom
 			}
 			return res
 		}
@@ -390,31 +442,44 @@ class ViewBox extends Cell {
 		return res
 	}
 
-
 	// ******* Pan view box { ******
 	public _updateDrag( event ) {
-		const deltaX = ( this._prevDraggingPoint.x - event.x ) / this.draw.zoomPan.zoom / this.miniMap.transformRate
-		const deltaY = ( this._prevDraggingPoint.y - event.y ) / this.draw.zoomPan.zoom / this.miniMap.transformRate
+		const deltaX =
+			( this._prevDraggingPoint.x -
+				this.draw.canvasLeft -
+				( event.x - this.draw.canvasLeft ) ) /
+			this.miniMap.sizeRate /
+			this.draw.zoomPan.zoom /
+			this.miniMap.canvasScopeZoom
+
+		const deltaY =
+			( this._prevDraggingPoint.y -
+				this.draw.canvasTop -
+				( event.y - this.draw.canvasTop ) ) /
+			this.draw.zoomPan.zoom /
+			this.miniMap.canvasScopeZoom
 
 		const panPointNew: Point = {
 			x: this.draw.zoomPan.panPoint.x + deltaX,
 			y: this.draw.zoomPan.panPoint.y + deltaY
 		}
 
-		coupleZoomPanSetPanPoint( this.draw.zoomPan, panPointNew  )
+		coupleZoomPanSetPanPoint( this.draw.zoomPan, panPointNew )
 		this.draw.render()
 	}
 
 	public handleMouseMove( event ) {
-		if ( this.containPoint(
+		if ( this._isDragging || this.containPoint(
 			event.x - this.draw.canvasLeft,
 			event.y - this.draw.canvasTop
 		) ) {
 			this.draw.canvas.style.cursor = "-webkit-grab"
-		} else {
-			this.draw.canvas.style.cursor = "default"
+			return
 		}
-
+		if ( ! this._isDragging ) {
+			this.draw.canvas.style.cursor = "default"
+			return
+		}
 	}
 	// ******* Pan view box } ******
 }

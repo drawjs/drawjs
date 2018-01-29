@@ -23,7 +23,7 @@ export default class ZoomPan {
 	public MAX_ZOOM = 32
 	public MIN_ZOOM = 0.19
 
-	public isZoomBasedOnCenter: boolean = false
+	public isZoomBasedOnCenter: boolean = true
 
 	public _prevOriginalZCT: Point = null
 	public _prevTransformedZCT: Point = null
