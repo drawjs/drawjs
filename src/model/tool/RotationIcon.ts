@@ -17,6 +17,7 @@ export default class RotationIcon extends Cell {
 	public _size: number = 15
 
 	public _iconImage: HTMLImageElement = new Image()
+
 	get path(): Path2D {
 		const path = new Path2D()
 		path.rect(
@@ -96,6 +97,7 @@ export default class RotationIcon extends Cell {
 			coupleSelectCell( this.instance, false )
 		}
 	}
+
 	public _updateDrag( event ) {
 		if ( !this.instance.isRotating ) {
 			return
@@ -106,10 +108,12 @@ export default class RotationIcon extends Cell {
 		const deltaX = event.x - this._prevDraggingPoint.x
 		const deltaY = event.y - this._prevDraggingPoint.y
 
+		const { zoom, panPoint } = this.draw.zoomPan
+
 		radianAngle =
 			getPointAngleToOrigin( {
-				x: event.x - this.draw.canvasLeft - this.originX,
-				y: event.y - this.draw.canvasTop - this.originY
+				x: event.x - this.draw.canvasLeft - this.originX - panPoint.x * zoom,
+				y: event.y - this.draw.canvasTop - this.originY - panPoint.y * zoom
 			} ) +
 			Math.PI / 2
 
