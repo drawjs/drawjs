@@ -50,7 +50,7 @@ draw.addElement( 'rect', {
 
 draw.addElement( 'point', {
 	x: 400,
-	y: -50,
+	y: -100,
 	color: 'blue',
 } )
 

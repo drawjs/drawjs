@@ -353,7 +353,7 @@ class ViewBox extends Cell {
 
 		ctx.save()
 
-		const transformedPoint = this.transformCenterPoint( {
+		const transformedPoint = this.transformPoint( {
 			x: this.originX,
 			y: this.originY
 		} )
@@ -422,7 +422,7 @@ class ViewBox extends Cell {
 		}
 	}
 
-	public transformCenterPoint( point: Point ) {
+	transformPoint( point: Point ) {
 		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
 		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
 			this.draw.canvasCenterPoint
@@ -443,26 +443,27 @@ class ViewBox extends Cell {
 		return res
 	}
 
+
 	// ******* Pan view box { ******
 	public _updateDrag( event ) {
-		const deltaX =
-			( this._prevDraggingPoint.x -
-				this.draw.canvasLeft -
-				( event.x - this.draw.canvasLeft ) ) /
-			this.miniMap.sizeRate /
-			this.draw.zoomPan.zoom /
-			this.miniMap.canvasScopeZoom
+		// previous event point
+		const pep: Point = {
+			x: this._prevDraggingPoint.x - this.draw.canvasLeft,
+			y: this._prevDraggingPoint.y - this.draw.canvasTop,
+		}
+		// curernt event point
+		const cep: Point = {
+			x: event.x - this.draw.canvasLeft,
+			y: event.y - this.draw.canvasTop,
+		}
 
-		const deltaY =
-			( this._prevDraggingPoint.y -
-				this.draw.canvasTop -
-				( event.y - this.draw.canvasTop ) ) /
-			this.draw.zoomPan.zoom /
-			this.miniMap.canvasScopeZoom
+		const deltaX = ( pep.x - cep.x ) / this.miniMap.sizeRate * this.miniMap.canvasScopeZoom
+
+		const deltaY = ( pep.y - cep.y ) /  this.miniMap.sizeRate * this.miniMap.canvasScopeZoom
 
 		const panPointNew: Point = {
 			x: this.draw.zoomPan.panPoint.x + deltaX,
-			y: this.draw.zoomPan.panPoint.y + deltaY
+			y: this.draw.zoomPan.panPoint.y + deltaY,
 		}
 
 		coupleZoomPanSetPanPoint( this.draw.zoomPan, panPointNew )
