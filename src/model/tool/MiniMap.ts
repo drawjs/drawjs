@@ -102,6 +102,7 @@ export default class MiniMap extends Cell {
 			width : maxRight - minLeft,
 			height: maxBottom - minTop
 		}
+
 		return res
 	}
 

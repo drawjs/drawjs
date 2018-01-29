@@ -9,6 +9,7 @@ import { coupleSizingCell, coupleSelectCell, transformCenterPointForContext } fr
 import { getTransformedPointForContainPoint } from "shared/index"
 
 export default abstract class SizePoint extends Point {
+	public type: string = SIZE_POINT
 	public instance: any
 	public Size: Size
 	public isHidden: boolean = false
@@ -48,7 +49,6 @@ export default abstract class SizePoint extends Point {
 	constructor( props ) {
 		super( props )
 
-		this.type = SIZE_POINT
 		this.color = "blue"
 
 		this.instance = props.instance

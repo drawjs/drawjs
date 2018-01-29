@@ -4,8 +4,11 @@ import * as i from "interface/index"
 import * as _ from "lodash"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index"
+import { POINT } from 'store/constant_cellTypeList';
+import { log } from 'util/index';
 
 export default class Point extends Cell {
+	public type: string = POINT
 	public color: string = "black"
 	public strokeColor: string
 	public x: number
@@ -23,6 +26,14 @@ export default class Point extends Cell {
 	}
 
 	get originY(): number {
+		return this.y
+	}
+
+	get left(): number {
+		return this.x
+	}
+
+	get top(): number {
 		return this.y
 	}
 
