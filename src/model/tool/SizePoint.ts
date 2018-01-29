@@ -58,45 +58,6 @@ export default abstract class SizePoint extends Point {
 		this.isVisiableInMiniMap = false
 	}
 
-	public render() {
-		if ( this.isHidden ) {
-			return
-		}
-
-		const ctx = this.draw.ctx
-
-		ctx.save()
-
-		transformCenterPointForContext( this.draw, {
-			x: this.originX,
-			y: this.originY
-		}, this )
-		ctx.fillStyle = this.color
-		ctx.strokeStyle = this.strokeColor
-
-		ctx.fill( this.path )
-		!_.isNil( this.strokeColor ) && ctx.stroke( this.path )
-
-		ctx.restore()
-	}
-
-	public containPoint( x, y ) {
-		const transformedPoint = getTransformedPointForContainPoint(
-			{
-				x,
-				y
-			},
-			this
-		)
-		const isContain = this.draw.ctx.isPointInPath(
-			this.path,
-			transformedPoint.x ,
-			transformedPoint.y
-		)
-
-		return isContain
-	}
-
 	public setRotatedSizePoint( point: i.Point ) {
 		const rotatedSizePoint = getRotatedPoint( point, this.instance.angle )
 

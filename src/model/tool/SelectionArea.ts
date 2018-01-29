@@ -137,7 +137,6 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public startSelect( event ): void {
-		const zoom = this.draw.zoomPan.zoom
 		this.startPoint = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
@@ -146,7 +145,6 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public selecting( event ): void {
-		const zoom = this.draw.zoomPan.zoom
 		this.endPoint = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop

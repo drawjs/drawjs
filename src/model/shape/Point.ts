@@ -2,7 +2,7 @@ import { Cell } from "model/index"
 import { defaultPointRadius } from "store/index"
 import * as i from "interface/index"
 import * as _ from "lodash"
-import { getTransformedPointForContainPoint } from "shared/index"
+import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index"
 
 export default class Point extends Cell {
@@ -58,16 +58,8 @@ export default class Point extends Cell {
 	}
 
 	public containPoint( x, y ) {
-		const transformedPoint = getTransformedPointForContainPoint(
-			{ x, y },
-			this
-		)
-		const isContain = this.draw.ctx.isPointInPath(
-			this.path,
-			transformedPoint.x,
-			transformedPoint.y
-		)
-		return isContain
+		const res = isInstancePathContainPointTransformed( x, y, this )
+		return res
 	}
 
 	// ******* Drag ******

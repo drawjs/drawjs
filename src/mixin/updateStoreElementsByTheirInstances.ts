@@ -1,6 +1,7 @@
 import * as _ from 'lodash'
 import * as interfaces from 'interface/index'
 import storeElementFields from 'store/storeElementFields'
+import { isNotNil } from 'util/index';
 
 
 export default function ( drawStore:interfaces.DrawStore ): interfaces.DrawStore {
@@ -14,7 +15,7 @@ export default function ( drawStore:interfaces.DrawStore ): interfaces.DrawStore
 	function resolveElement( panelIndex ) {
 		return ( element, elementIndex ) => {
 			const { __instance__ } = element
-			if ( ! _.isNil( __instance__ ) ) {
+			if ( isNotNil( __instance__ ) ) {
 				const instanceFields = Object.keys( __instance__ )
 				const intersectionFields = _.intersection( instanceFields, storeElementFields )
 				intersectionFields.map( setField( panelIndex, elementIndex ) )

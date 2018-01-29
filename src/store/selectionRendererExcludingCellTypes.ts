@@ -1,5 +1,6 @@
-import { LINE } from "store/constant_cellTypeList"
+import { LINE, MINI_MAP } from "store/constant_cellTypeList"
 
 export default [
-	LINE
+	LINE,
+	MINI_MAP,
 ]

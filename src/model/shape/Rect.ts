@@ -16,7 +16,7 @@ import SizePoint, {
 } from "model/tool/SizePoint"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
-import { getTransformedPointForContainPoint } from "shared/index"
+import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index";
 
 export default class Rect extends Graph {
@@ -149,17 +149,8 @@ export default class Rect extends Graph {
 	}
 
 	public containPoint( x, y ): boolean {
-		const transformedPoint = getTransformedPointForContainPoint(
-			{ x, y },
-			this
-		)
-
-		const isContain = this.draw.ctx.isPointInPath(
-			this.path,
-			transformedPoint.x,
-			transformedPoint.y
-		)
-		return isContain
+		const res = isInstancePathContainPointTransformed( x, y, this )
+		return res
 	}
 
 	// ******* Drag ******

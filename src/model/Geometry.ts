@@ -44,16 +44,6 @@ export default abstract class Geometry extends Cell {
 
 		const self = this
 
-		// _.mapValues( props, setValue )
-
-		// function setValue( value, key ): void {
-		// 	if ( ! _.isNil( self[ key ] ) ) {
-		// 		self[ key ] = value
-		// 	}
-		// }
-
-
-
 		this.top = top
 		this.left = left
 		this.fill = fill

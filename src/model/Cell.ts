@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import { generateUniqueId } from "util/index"
+import { generateUniqueId, isNotNil } from 'util/index';
 import Draw from "Draw"
 import * as i from "interface/index"
 import * as constant from 'store/constant'
@@ -46,32 +46,32 @@ export default abstract class Cell {
 
 	get __left(): number {
 		const potentialValue = this[ 'left' ]
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 	get __top(): number {
 		const potentialValue = this[ 'top' ]
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 	get __width(): number {
 		const potentialValue = this[ 'width' ]
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 	get __height(): number {
-		const potentialValue = this[ 'width' ]
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const potentialValue = this[ 'height' ]
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 	get __right(): number {
 		const potentialValue = this.__left + this.__width
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 	get __bottom(): number {
 		const potentialValue = this.__top + this.__height
-		const res = ! _.isNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ?  potentialValue : 0
 		return res
 	}
 
@@ -120,6 +120,7 @@ export default abstract class Cell {
 
 	public _mousemoveListener = event => {
 		this._isDragging && this._dragging( event )
+		this.handleMouseMove && this.handleMouseMove( event )
 	}
 
 	public _mouseupListener = event => {
@@ -142,9 +143,8 @@ export default abstract class Cell {
 
 	// ******* Interaction ******
 	// ******* # General ******
-	public handleClick( event ) {
-
-	}
+	public handleClick( event ) {}
+	public handleMouseMove( event ) {}
 	// ******* # General ******
 	// ******* # Drag ******
 	public abstract containPoint( x: number, y: number ): void
@@ -164,7 +164,7 @@ export default abstract class Cell {
 	public _dragging( event ): void {
 		this._updateDrag( event )
 		this._updatePrevDraggingPoint( event )
-		// this.handleDragging && this.handleDragging( event )
+		this.handleDragging && this.handleDragging( event )
 	}
 	public _stopDrag( event ): void {
 		this._isDragging = false

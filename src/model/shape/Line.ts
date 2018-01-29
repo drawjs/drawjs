@@ -6,7 +6,7 @@ import * as i from "interface/index"
 import { defaultPathExandingValue } from "store/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { Point } from "interface/index"
-import { getTransformedPointForContainPoint } from "shared/index"
+import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
 import { transformCenterPointForContext } from 'mixin/index';
 
 export default class Line extends Graph {
@@ -247,19 +247,8 @@ export default class Line extends Graph {
 	}
 
 	public containPoint( x: number, y: number ) {
-		const transformedPoint = getTransformedPointForContainPoint(
-			{
-				x,
-				y
-			},
-			this
-		)
-		const isContain = this.draw.ctx.isPointInPath(
-			this.pathStoked,
-			transformedPoint.x,
-			transformedPoint.y
-		)
-		return isContain
+		const res = isInstancePathContainPointTransformed( x, y, this, this.pathStoked )
+		return res
 	}
 
 	// ******* Drag ******
