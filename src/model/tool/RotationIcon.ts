@@ -12,6 +12,7 @@ import { Point } from "interface/index"
 import { getTransformedPointForContainPoint } from "shared/index"
 
 export default class RotationIcon extends Cell {
+	public type = ROTATE_ICON
 	public instance: any
 	public _size: number = 15
 
@@ -49,8 +50,6 @@ export default class RotationIcon extends Cell {
 		const { instance } = props
 
 		this.instance = instance
-
-		this.type = ROTATE_ICON
 
 		this._iconImage.src = "../../asset/svg/rotate-icon.svg"
 

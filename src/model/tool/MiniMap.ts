@@ -88,11 +88,12 @@ export default class MiniMap extends Cell {
 			}
 		}
 
-		function isInclude( { type } ): boolean {
-			const res: boolean = !_.includes(
+		function isInclude( cell ): boolean {
+			const res: boolean = ! _.includes(
 				excludingTypesForMiniMapElementsBounds,
-				type
+				cell.type
 			)
+			res && log( cell.type,  res )
 			return res
 		}
 
@@ -103,6 +104,7 @@ export default class MiniMap extends Cell {
 			height: maxBottom - minTop
 		}
 
+		// log( res )
 		return res
 	}
 

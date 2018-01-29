@@ -1,5 +1,4 @@
 import { ROTATE_ICON, SIZE_POINT } from "store/constant_cellTypeList"
-export default function(): string[] {
-	const res: string[] = [ ROTATE_ICON, SIZE_POINT, ]
-	return res
-}
+import { MINI_MAP } from './constant_cellTypeList';
+
+export default  [ ROTATE_ICON, SIZE_POINT, MINI_MAP,  ]
