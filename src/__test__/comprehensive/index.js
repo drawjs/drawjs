@@ -48,11 +48,11 @@ draw.addElement( 'rect', {
 // 	color: 'blue',
 // } )
 
-draw.addElement( 'point', {
-	x: 400,
-	y: -100,
-	color: 'blue',
-} )
+// draw.addElement( 'point', {
+// 	x: 400,
+// 	y: -100,
+// 	color: 'blue',
+// } )
 
 // draw.addElement( 'line', {
 // 	pointStart: {
@@ -67,6 +67,17 @@ draw.addElement( 'point', {
 // } )
 
 // draw.zoomPan.zoom = 2
+
+// draw.addElement( 'rect-image', {
+// 	left  : 350,
+// 	top   : 250,
+// 	fill  : 'red',
+// 	width : 100,
+// 	height: 100,
+// 	angle : 0,
+// 	src: '../../asset/tmp.png'
+// } )
+
 
 draw.render()
 

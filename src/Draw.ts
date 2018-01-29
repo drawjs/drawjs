@@ -235,7 +235,7 @@ export default class Draw {
 				const ElementClass = cellTypeClassMap[ elementType ]
 
 				if ( _.isNil( ElementClass ) ) {
-					console.log( `Not exist type: ${elementType}` )
+					console.log( `Type not found: "${elementType}"` )
 					return
 				}
 				const instance = new ElementClass( {
