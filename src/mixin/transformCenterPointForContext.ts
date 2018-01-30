@@ -1,9 +1,15 @@
 import { Point } from "interface/index"
 import Draw from "../Draw"
 
-export default function( draw: Draw, point: Point, instance: any ) {
+
+/**
+ * | Two ways:
+ * |____ 1. General transformation for rendering elements on main canvas
+ * |____ 2. Use transformation in mini map for rendering elements on mini map
+ */
+export default function( draw: Draw, point: Point, instance: any, keepRatio: boolean = false ) {
 	if ( ! shouldTransformToMiniMap() ) {
-		draw.zoomPan.transformCenterPointForContext( point )
+		draw.zoomPan.transformCenterPointForContext( point, keepRatio )
 	}
 	if ( shouldTransformToMiniMap() ) {
 		draw.miniMap.transformCenterPointForContext( point )

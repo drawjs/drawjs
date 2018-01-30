@@ -17,7 +17,7 @@ export default class ZoomPan {
 	private _deltaZoom = 0.1
 
 	/**
-	 * zoom rate
+	 * zoom ratio
 	 */
 	public _zoom: number = 1
 	public MAX_ZOOM = 32
@@ -170,13 +170,14 @@ export default class ZoomPan {
 	/**
 	 *  transform center point for context
 	 */
-	public transformCenterPointForContext( point ) {
+	public transformCenterPointForContext( point, keepRatio: boolean = false ) {
 		const transformedPoint: i.Point = this.transformPoint( point )
+		const zoom = ! keepRatio ? this.zoom : 1
 		this.draw.ctx.setTransform(
-			this.zoom,
+			zoom,
 			0,
 			0,
-			this.zoom,
+			zoom,
 			transformedPoint.x,
 			transformedPoint.y
 		)

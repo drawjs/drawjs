@@ -3,9 +3,13 @@ import * as _ from "lodash"
 import Geometry from "model/Geometry"
 import Cell from "model/Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
-import { getPointAngleToOrigin } from "util/index"
+import { getPointAngleToOrigin, log } from "util/index"
 import * as i from "interface/index"
-import { coupleRotatingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
+import {
+	coupleRotatingCell,
+	coupleSelectCell,
+	transformCenterPointForContext
+} from "mixin/index"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
 import { Point } from "interface/index"
@@ -16,24 +20,36 @@ export default class RotationIcon extends Cell {
 	public instance: any
 	public _size: number = 15
 
+	/**
+	 * Space between icon and instance's top border
+	 */
+	public _deltaSpace: number = 20
+
 	public _iconImage: HTMLImageElement = new Image()
 
 	get path(): Path2D {
 		const path = new Path2D()
-		path.rect(
-			-this._size / 2,
-			-this.length - this._size,
-			this._size,
-			this._size
-		)
+
+		path.rect( -this._size / 2, -this.basicDistance, this._size, this._size )
 		return path
 	}
 
 	/**
-	 * the length between instance center and the center of this
+	 * Distance between instance's center point and the center point of this
 	 */
-	get length(): number {
-		const res = this.instance.height / 2 + this._size / 2
+	get zoomedDistance(): number {
+		const res =
+			this.instance.height / 2 * this.draw.zoomPan.zoom +
+			this._deltaSpace +
+			this._size / 2
+		return res
+	}
+
+	/**
+	 * Basic distance between instance's center point and the center point of this when zoom ratio equals 1
+	 */
+	get basicDistance(): number {
+		const res = this.instance.height / 2 + this._deltaSpace + this._size / 2
 		return res
 	}
 
@@ -58,36 +74,70 @@ export default class RotationIcon extends Cell {
 	}
 
 	public renderByInstance() {
-		this.draw.ctx.save()
-		transformCenterPointForContext( this.draw, {
-			x: this.originX,
-			y: this.originY
-		}, this )
-		this.draw.ctx.rotate( this.instance.angle * constant.DEGREE_TO_RADIAN )
-		this.draw.ctx.drawImage(
+		const self = this
+		const ctx = this.draw.ctx
+		ctx.save()
+
+		transformCenterPointForContext(
+			this.draw,
+			{
+				x: this.originX,
+				y: this.originY
+			},
+			this,
+			true
+		)
+		ctx.rotate( this.instance.angle * constant.DEGREE_TO_RADIAN )
+
+		ctx.drawImage(
 			this._iconImage,
 			-this._size / 2,
-			-this.length - this._size,
+			-this.zoomedDistance,
 			this._size,
 			this._size
 		)
-		this.draw.ctx.translate( 0, 0 )
-		this.draw.ctx.restore()
+		ctx.translate( 0, 0 )
+		ctx.restore()
 	}
 
 	containPoint( x, y ): boolean {
-		const transformedPoint: Point = getTransformedPointForContainPoint(
-			{ x, y },
+		const self = this
+		const transformedReverselyPoint: Point = getTransformedPointForContainPoint(
+			{
+				x,
+				y,
+			},
 			this
 		)
 
-		const isContain = this.draw.ctx.isPointInPath(
-			this.path,
-			transformedPoint.x,
-			transformedPoint.y
-		)
+
+
+		const deltaY = getDeltaY()
+
+
+		log( deltaY )
+
+		const isContain = this.draw.ctx.isPointInPath( this.path, transformedReverselyPoint.x, transformedReverselyPoint.y - deltaY )
 
 		return isContain
+
+		function getDeltaY(): number {
+			let res: number = 0
+			const transformedCenterPoint = self.draw.zoomPan.transformPoint( {
+				x: self.originX,
+				y: self.originY
+			} )
+
+			const transformedReverselyPoint: Point = getTransformedPointForContainPoint(
+				{
+					x: transformedCenterPoint.x,
+					y: transformedCenterPoint.y - self.zoomedDistance
+				},
+				self
+			)
+			res = self.basicDistance - Math.abs( transformedReverselyPoint.y )
+			return res
+		}
 	}
 
 	// ******* Drag ******
@@ -112,8 +162,16 @@ export default class RotationIcon extends Cell {
 
 		radianAngle =
 			getPointAngleToOrigin( {
-				x: event.x - this.draw.canvasLeft - this.originX - panPoint.x * zoom,
-				y: event.y - this.draw.canvasTop - this.originY - panPoint.y * zoom
+				x:
+					event.x -
+					this.draw.canvasLeft -
+					this.originX -
+					panPoint.x * zoom,
+				y:
+					event.y -
+					this.draw.canvasTop -
+					this.originY -
+					panPoint.y * zoom
 			} ) +
 			Math.PI / 2
 

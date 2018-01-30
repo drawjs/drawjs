@@ -58,6 +58,34 @@ export default abstract class SizePoint extends Point {
 		this.isVisiableInMiniMap = false
 	}
 
+	/**
+	 * Override
+	 */
+	public render() {
+		const ctx = this.draw.ctx
+
+		ctx.save()
+
+		/**
+		 * Keep ratio
+		 */
+		transformCenterPointForContext(
+			this.draw,
+			{
+				x: this.originX,
+				y: this.originY
+			},
+			this,
+			true
+		)
+
+		ctx.fillStyle = this.color
+		ctx.strokeStyle = this.strokeColor
+		ctx.fill( this.path )
+		!_.isNil( this.strokeColor ) && ctx.stroke( this.path )
+		ctx.restore()
+	}
+
 	public setRotatedSizePoint( point: i.Point ) {
 		const rotatedSizePoint = getRotatedPoint( point, this.instance.angle )
 
@@ -122,6 +150,18 @@ export default abstract class SizePoint extends Point {
 
 			this.draw.render()
 		}
+	}
+
+	public containPoint( x, y ) {
+		// const res = isInstancePathContainPointTransformed( x, y, this )
+
+		// const isContain = this.draw.ctx.isPointInPath(
+		// 	this.path,
+		// 	x,
+		// 	y
+		// )
+
+		return false
 	}
 }
 
@@ -284,12 +324,12 @@ export class SizePointLineSide extends SizePoint {
 	}
 
 	/**
-	 * overide
+	 * override
 	 */
 	public _hideOtherSizePointsExceptCurrent() {}
 
 	/**
-	 * overide
+	 * override
 	 */
 	public _showAllSizePoints() {}
 

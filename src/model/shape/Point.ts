@@ -69,8 +69,15 @@ export default class Point extends Cell {
 	}
 
 	public containPoint( x, y ) {
-		const res = isInstancePathContainPointTransformed( x, y, this )
-		return res
+		// const res = isInstancePathContainPointTransformed( x, y, this )
+
+		const isContain = this.draw.ctx.isPointInPath(
+			this.path,
+			x,
+			y
+		)
+
+		return isContain
 	}
 
 	// ******* Drag ******

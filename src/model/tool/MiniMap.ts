@@ -93,7 +93,6 @@ export default class MiniMap extends Cell {
 				excludingTypesForMiniMapElementsBounds,
 				cell.type
 			)
-			res && log( cell.type,  res )
 			return res
 		}
 
@@ -104,7 +103,6 @@ export default class MiniMap extends Cell {
 			height: maxBottom - minTop
 		}
 
-		// log( res )
 		return res
 	}
 
@@ -146,7 +144,7 @@ export default class MiniMap extends Cell {
 		return maxZoom
 	}
 
-	get transformRate(): number {
+	get transformRatio(): number {
 		const res = this.sizeRate / this.canvasScopeZoom
 		return res
 	}
@@ -154,7 +152,7 @@ export default class MiniMap extends Cell {
 	get deltaXForAutoZoom(): number {
 		const res =
 			( this.sizeRate * this.draw.canvas.width -
-				this.transformRate * this.draw.canvas.width ) /
+				this.transformRatio * this.draw.canvas.width ) /
 			2
 		return res
 	}
@@ -162,7 +160,7 @@ export default class MiniMap extends Cell {
 	get deltaYForAutoZoom(): number {
 		const res =
 			( this.sizeRate * this.draw.canvas.height -
-				this.transformRate * this.draw.canvas.height ) /
+				this.transformRatio * this.draw.canvas.height ) /
 			2
 		return res
 	}
@@ -244,7 +242,7 @@ export default class MiniMap extends Cell {
 				width                   : self.width,
 				height                  : self.height,
 				origin,
-				zoom                    : self.transformRate,
+				zoom                    : self.transformRatio,
 				deltaXForZoom           : self.deltaXForAutoZoom,
 				deltaYForZoom           : self.deltaYForAutoZoom,
 				strokeStyleForSmallSpace: "rgba( 0, 0, 0, 0.05)",
@@ -258,15 +256,15 @@ export default class MiniMap extends Cell {
 		 * Transform point from original position to mini map
 		 */
 		let transformedPoint: Point = {
-			x: point.x * this.transformRate + this.deltaXForAutoZoom,
-			y: point.y * this.transformRate + this.top + this.deltaYForAutoZoom
+			x: point.x * this.transformRatio + this.deltaXForAutoZoom,
+			y: point.y * this.transformRatio + this.top + this.deltaYForAutoZoom
 		}
 
 		this.draw.ctx.setTransform(
-			this.transformRate,
+			this.transformRatio,
 			0,
 			0,
-			this.transformRate,
+			this.transformRatio,
 			transformedPoint.x,
 			transformedPoint.y
 		)
@@ -299,8 +297,8 @@ export default class MiniMap extends Cell {
 
 		function getTransformedPointForContainPoint(): Point {
 			const originPoint: Point = {
-				x: x - deltaX * self.transformRate,
-				y: y - deltaY * self.transformRate
+				x: x - deltaX * self.transformRatio,
+				y: y - deltaY * self.transformRatio
 			}
 			const viewBoxOriginPoint: Point = {
 				x: self.originX,
@@ -403,8 +401,8 @@ class ViewBox extends Cell {
 
 		function getTransformedPointForContainPoint(): Point {
 			const originPoint: Point = {
-				x: x - deltaX * self.miniMap.transformRate,
-				y: y - deltaY * self.miniMap.transformRate
+				x: x - deltaX * self.miniMap.transformRatio,
+				y: y - deltaY * self.miniMap.transformRatio
 			}
 			const viewBoxOriginPoint: Point = {
 				x: self.originX,
@@ -438,8 +436,8 @@ class ViewBox extends Cell {
 			staticBasicOriginalCanvasCenterPoint.y
 
 		const res = {
-			x: point.x + deltaX * this.miniMap.transformRate,
-			y: point.y + deltaY * this.miniMap.transformRate
+			x: point.x + deltaX * this.miniMap.transformRatio,
+			y: point.y + deltaY * this.miniMap.transformRatio
 		}
 
 		return res
