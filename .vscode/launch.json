@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Launch Chrome ",
 			"port": 9222,
-			"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
+			"url": "http://localhost:8600/build/__test__/comprehensive/index.html",
 			"pathMapping": {
 				"/": "${workspaceFolder}"
 			},
@@ -20,7 +20,7 @@
         //     "type": "chrome",
         //     "request": "attach",
         //     "port": 9222,
-		// 	"url": "http://localhost:3000/dist/__test__/comprehensive/index.html",
+		// 	"url": "http://localhost:8600/build/__test__/comprehensive/index.html",
         //     "webRoot": "${workspaceFolder}"
         // }
     ]

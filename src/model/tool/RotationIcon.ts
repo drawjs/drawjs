@@ -114,9 +114,6 @@ export default class RotationIcon extends Cell {
 
 		const deltaY = getDeltaY()
 
-
-		log( deltaY )
-
 		const isContain = this.draw.ctx.isPointInPath( this.path, transformedReverselyPoint.x, transformedReverselyPoint.y - deltaY )
 
 		return isContain

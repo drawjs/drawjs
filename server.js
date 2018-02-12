@@ -9,8 +9,9 @@ const serverconfig = {
 		directory: true,
 	},
 	files: [
-		`${serverPath}/dist/**`
+		`${serverPath}/build/**`
 	],
+	port: 8600,
 	open: false,
 }
 

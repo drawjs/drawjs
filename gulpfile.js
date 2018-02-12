@@ -6,8 +6,8 @@ const rimraf = require( "rimraf" )
 const browserSync = require( 'browser-sync' )
 const sourcemaps = require( 'gulp-sourcemaps' )
 
-const distPathStr = 'dist'
-const distPath = PATH.resolve( __dirname, 'dist' )
+const distPathStr = 'build'
+const distPath = PATH.resolve( __dirname, 'build' )
 const srcOtherFilesGlobs = [
 	// 'src/**/*.json',
 	// 'src/**/*.html',

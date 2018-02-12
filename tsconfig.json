@@ -10,7 +10,7 @@
 		"module": "es6",
 		"target": "es5",
 		"allowJs": true,
-		"outDir": "./dist/",
+		"outDir": "./build/",
 		"sourceMap": true,
 		"lib": [
 			"dom",

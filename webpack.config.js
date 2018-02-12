@@ -13,7 +13,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name]',
-		path: path.resolve( __dirname, 'dist' )
+		path: path.resolve( __dirname, 'build' )
 	},
 	devtool: 'source-map',
 	module: {
@@ -45,7 +45,7 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new CleanWebpackPlugin( [ 'dist' ] ),
+		new CleanWebpackPlugin( [ 'build' ] ),
 		new CopyWebpackPlugin( [
 			{
 				from: './src/__test__',
