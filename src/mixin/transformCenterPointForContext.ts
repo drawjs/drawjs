@@ -1,4 +1,3 @@
-import { Point } from "interface/index"
 import Draw from "../Draw"
 
 
@@ -7,7 +6,7 @@ import Draw from "../Draw"
  * |____ 1. General transformation for rendering elements on main canvas
  * |____ 2. Use transformation in mini map for rendering elements on mini map
  */
-export default function( draw: Draw, point: Point, instance: any, keepRatio: boolean = false ) {
+export default function( draw: Draw, point: Point2D, instance: any, keepRatio: boolean = false ) {
 	if ( ! shouldTransformToMiniMap() ) {
 		draw.zoomPan.transformCenterPointForContext( point, keepRatio )
 	}

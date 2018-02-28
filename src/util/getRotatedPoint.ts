@@ -1,18 +1,15 @@
 import * as _ from "lodash"
 
-import * as i from "interface/index"
-
-
 export default function(
-	point: i.Point,
+	point: Point2D,
 	angle: number,
-	centerPoint: i.Point = { x: 0, y: 0 }
+	centerPoint: Point2D = { x: 0, y: 0 }
 ) {
 	if ( angle === 0 ) {
 		return point
 	}
 
-	let resPoint: i.Point = _.cloneDeep( point )
+	let resPoint: Point2D = _.cloneDeep( point )
 	const alpha = angle * Math.PI / 180
 
 	const relativePoint = {

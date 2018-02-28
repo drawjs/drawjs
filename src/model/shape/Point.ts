@@ -1,6 +1,5 @@
 import { Cell } from "model/index"
 import { defaultPointRadius } from "store/index"
-import * as i from "interface/index"
 import * as _ from "lodash"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index"
@@ -84,7 +83,7 @@ export default class Point extends Cell {
 	public _updateDrag( event ) {
 		const zoom = this.draw.zoomPan.zoom
 
-		let newPoint: i.Point = {
+		let newPoint: Point2D = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}

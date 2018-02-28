@@ -3,7 +3,6 @@ import Cell from "model/Cell"
 import Point from "model/shape/Point"
 import * as _ from "lodash"
 import { getRotatedPoint, log } from "util/index"
-import * as i from "interface/index"
 import Size from "mixin/Size"
 import { coupleSizingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
 import { getTransformedPointForContainPoint } from "shared/index"
@@ -14,7 +13,7 @@ export default abstract class SizePoint extends Point {
 	public Size: Size
 	public isHidden: boolean = false
 
-	abstract size( newPoint: i.Point ): void
+	abstract size( newPoint: Point2D ): void
 
 	get instanceWidth(): number {
 		return this.instance.width
@@ -86,7 +85,7 @@ export default abstract class SizePoint extends Point {
 		ctx.restore()
 	}
 
-	public setRotatedSizePoint( point: i.Point ) {
+	public setRotatedSizePoint( point: Point2D ) {
 		const rotatedSizePoint = getRotatedPoint( point, this.instance.angle )
 
 		this.x = rotatedSizePoint.x
@@ -130,7 +129,7 @@ export default abstract class SizePoint extends Point {
 
 		this._hideOtherSizePointsExceptCurrent()
 
-		const newPoint: i.Point = {
+		const newPoint: Point2D = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}
@@ -315,7 +314,7 @@ export class SizePointBottomRight extends SizePoint {
 }
 
 export class SizePointLineSide extends SizePoint {
-	public relatedPoint: i.Point
+	public relatedPoint: Point2D
 
 	constructor( props ) {
 		super( props )

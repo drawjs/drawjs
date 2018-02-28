@@ -1,4 +1,3 @@
-import { Point } from "interface/index"
 import log from "util/log"
 import Draw from "../Draw"
 
@@ -18,7 +17,7 @@ export default function( {
 	canvas: HTMLCanvasElement
 	width: number
 	height: number
-	origin?: Point
+	origin?: Point2D
 	zoom?: number
 	deltaXForZoom?: number
 	deltaYForZoom?: number

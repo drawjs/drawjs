@@ -1,7 +1,5 @@
-import * as i from "interface/index"
 import Draw from "Draw"
 import { isMouseMiddleClick, log } from "util/index"
-import { Point } from "interface/index"
 import * as _ from "lodash"
 
 export default class ZoomPan {
@@ -9,7 +7,7 @@ export default class ZoomPan {
 	/**
 	 * Original point for pan
 	 */
-	public panPoint: i.Point = {
+	public panPoint: Point2D= {
 		x: 0,
 		y: 0
 	}
@@ -25,15 +23,15 @@ export default class ZoomPan {
 
 	public isZoomBasedOnCenter: boolean = true
 
-	public _prevOriginalZCT: Point = null
-	public _prevTransformedZCT: Point = null
+	public _prevOriginalZCT: Point2D = null
+	public _prevTransformedZCT: Point2D = null
 	public _prevZoom = this.zoom
 	/**
 	 * pan
 	 */
 	public _isPanning: boolean = false
-	public _tmpPointForPan: i.Point
-	public _prevPanPoint: i.Point
+	public _tmpPointForPan: Point2D
+	public _prevPanPoint: Point2D
 
 	public _mouseEvent: any
 
@@ -55,8 +53,8 @@ export default class ZoomPan {
 	/**
 	 * Focus zoom center point
 	 */
-	get focusZCT(): Point {
-		let focusZCT: Point
+	get focusZCT(): Point2D {
+		let focusZCT: Point2D
 
 		if ( this.isZoomBasedOnCenter ) {
 			focusZCT = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
@@ -83,9 +81,9 @@ export default class ZoomPan {
 	/**
 	 * Original zoom center point
 	 */
-	get originalZCT(): Point {
+	get originalZCT(): Point2D {
 		const self = this
-		let originalPoint: Point
+		let originalPoint: Point2D
 
 		if ( this.isZoomBasedOnCenter || _.isNil( this._mouseEvent ) ) {
 			originalPoint = _.cloneDeep( this.canvasNotZoomedPannedCenterPoint )
@@ -97,8 +95,8 @@ export default class ZoomPan {
 
 		return originalPoint
 
-		function getOriginalPointByTransformedPoint(): Point {
-			let originalPoint: Point
+		function getOriginalPointByTransformedPoint(): Point2D {
+			let originalPoint: Point2D
 
 			if ( !_.isNil( self._prevOriginalZCT ) ) {
 				originalPoint = {
@@ -123,11 +121,11 @@ export default class ZoomPan {
 	/**
 	 * Transformed zoom center point
 	 */
-	get transformedZCT(): Point {
-		const res: Point = this.focusZCT
+	get transformedZCT(): Point2D {
+		const res: Point2D = this.focusZCT
 		return res
 	}
-	get canvasNotZoomedPannedCenterPoint(): i.Point {
+	get canvasNotZoomedPannedCenterPoint(): Point2D{
 		const res = {
 			x: this.draw.canvas.width / 2,
 			y: this.draw.canvas.height / 2
@@ -137,7 +135,7 @@ export default class ZoomPan {
 	/**
 	 * Transitional canvas view
 	 */
-	get canvasViewCenterPoint(): i.Point {
+	get canvasViewCenterPoint(): Point2D{
 		const res = {
 			x: this.canvasNotZoomedPannedCenterPoint.x * this.zoom,
 			y: this.canvasNotZoomedPannedCenterPoint.y * this.zoom
@@ -171,7 +169,7 @@ export default class ZoomPan {
 	 *  transform center point for context
 	 */
 	public transformCenterPointForContext( point, keepRatio: boolean = false ) {
-		const transformedPoint: i.Point = this.transformPoint( point )
+		const transformedPoint: Point2D= this.transformPoint( point )
 		const zoom = ! keepRatio ? this.zoom : 1
 		this.draw.ctx.setTransform(
 			zoom,
@@ -191,14 +189,14 @@ export default class ZoomPan {
 	 * 2. Then, suppose that we moved the whole canvas to somewhere where canvas's center point
 	 * coincided on the zoom(wheel) point of canvas before we zoomed it.
 	 */
-	public transformPoint( point ): i.Point {
+	public transformPoint( point ): Point2D{
 		const res = {
 			x: point.x * this.zoom + this.deltaXForZoom + this.deltaXForPan,
 			y: point.y * this.zoom + this.deltaYForZoom + this.deltaYForPan
 		}
 		return res
 	}
-	public transformPointReversely( point ): i.Point {
+	public transformPointReversely( point ): Point2D{
 		const res = {
 			x: ( point.x - this.deltaXForZoom - this.deltaXForPan ) / this.zoom,
 			y: ( point.y - this.deltaYForZoom - this.deltaYForPan ) / this.zoom
@@ -280,7 +278,7 @@ export default class ZoomPan {
 	public _updatePan( event ) {
 		this._updateThePrevious()
 
-		const focusPoint: Point = {
+		const focusPoint: Point2D = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop
 		}

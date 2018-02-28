@@ -2,16 +2,14 @@ import * as _ from "lodash"
 
 import Graph from "model/Graph"
 import * as cellTypeList from "store/constant_cellTypeList"
-import * as i from "interface/index"
 import { defaultPathExandingValue } from "store/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
-import { Point } from "interface/index"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
 import { transformCenterPointForContext } from 'mixin/index';
 
 export default class Line extends Graph {
-	public pointStart: i.Point
-	public pointEnd: i.Point
+	public pointStart: Point2D
+	public pointEnd: Point2D
 	public lineWidth: number
 
 	public _sizePointA: SizePointLineSide
@@ -64,10 +62,10 @@ export default class Line extends Graph {
 	get isYRightSmallerThanLeft(): boolean {
 		return this.pointRight.y < this.pointLeft.y
 	}
-	get pointLeft(): i.Point {
+	get pointLeft(): Point2D {
 		return this.isXEndBiggerThantStart ? this.pointStart : this.pointEnd
 	}
-	get pointRight(): i.Point {
+	get pointRight(): Point2D {
 		return this.isXEndBiggerThantStart ? this.pointEnd : this.pointStart
 	}
 	get sizePoints(): SizePointLineSide[] {
@@ -96,10 +94,10 @@ export default class Line extends Graph {
 		const isAlphaBiggerThanPIDivide4 = alpha > Math.PI / 4
 		const SQURT2W = Math.sqrt( 2 ) * w
 
-		let point1: i.Point
-		let point2: i.Point
-		let point3: i.Point
-		let point4: i.Point
+		let point1: Point2D
+		let point2: Point2D
+		let point3: Point2D
+		let point4: Point2D
 
 		if ( this.isYRightSmallerThanLeft ) {
 			/**
@@ -180,7 +178,7 @@ export default class Line extends Graph {
 
 		return path
 
-		function updatePosition( point: Point ) {
+		function updatePosition( point: Point2D ) {
 			return {
 				x: point.x - self.originX,
 				y: point.y - self.originY
@@ -188,7 +186,7 @@ export default class Line extends Graph {
 		}
 
 		function connectLine( path: Path2D ) {
-			return ( point: i.Point, pointIndex ) => {
+			return ( point: Point2D, pointIndex ) => {
 				pointIndex === 0 && path.moveTo( point.x, point.y )
 				pointIndex !== 0 && path.lineTo( point.x, point.y )
 			}

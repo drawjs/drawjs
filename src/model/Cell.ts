@@ -1,7 +1,6 @@
 import * as _ from "lodash"
 import { generateUniqueId, isNotNil } from 'util/index';
 import Draw from "Draw"
-import * as i from "interface/index"
 import * as constant from 'store/constant'
 import coupleIsMouseDownToPan from 'mixin/coupleIsMouseDownToPan'
 
@@ -15,7 +14,7 @@ export default abstract class Cell {
 	/**
 	 * interaction - drag
 	 */
-	public _prevDraggingPoint: i.Point
+	public _prevDraggingPoint: Point2D
 	public _isDragging: boolean = false
 
 	/**
@@ -179,15 +178,15 @@ export default abstract class Cell {
 
 	// ******* Transform ******
 	public rotatePoint(
-		point: i.Point,
+		point: Point2D,
 		angle: number,
-		centerPoint: i.Point = { x: 0, y: 0 }
+		centerPoint: Point2D = { x: 0, y: 0 }
 	) {
 		if ( angle === 0 ) {
 			return point
 		}
 
-		let resPoint: i.Point = _.cloneDeep( point )
+		let resPoint: Point2D = _.cloneDeep( point )
 		const alpha = angle * constant.DEGREE_TO_RADIAN
 
 		const relativePoint = {

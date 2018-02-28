@@ -1,4 +1,3 @@
-import { Point } from "interface/index"
 import { getRotatedPoint } from "util/index"
 import * as _ from "lodash"
 import { SIZE_POINT, ROTATE_ICON } from 'store/constant_cellTypeList';
@@ -13,8 +12,8 @@ import { SIZE_POINT, ROTATE_ICON } from 'store/constant_cellTypeList';
 export default function getTransformedPointForContainPoint(
 	point,
 	instance
-): Point {
-	let res: Point = instance.draw.zoomPan.transformPointReversely( point )
+): Point2D {
+	let res: Point2D = instance.draw.zoomPan.transformPointReversely( point )
 
 	res = {
 		x: res.x - instance.originX,

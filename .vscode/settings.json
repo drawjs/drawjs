@@ -1,31 +1,6 @@
 // 将设置放入此文件中以覆盖默认设置
 {
-	"editor.tabSize": 2,
-	"workbench.statusBar.visible": true,
-	"workbench.activityBar.visible": true,
-	"editor.minimap.enabled": false,
-	// "editor.wordWrap": true,
-	// 配置 glob 模式以排除文件和文件夹。
-	"files.exclude": {
-	  "**/.git": true,
-	  "**/.svn": true,
-	  "**/.hg": true,
-	  "**/CVS": true,
-	  // debug project
-	  // "**/node_modules/_[^i]*": true,
-	  // "**/node_modules/[^i]*": true,
-	  // "**/node_modules/_[^w]*": true,
-	  // "**/node_modules/[^w]*": true,
-	  // "**/node_modules/_[^m]*": true,
-	  // "**/node_modules/_m[^v]*": true,
-	  // "**/node_modules/[^(m|_|.|f)]*": true,
-	  // "**/node_modules/m[^v]*": true,
-	  "**/.DS_Store": true
-	},
-	// "javascript.format.enable": false,
-	"explorer.autoReveal": false,
 	// eslint
-	"eslint.packageManager": "yarn",
 	// "eslint.autoFixOnSave": true,
 	"eslint.validate": [
 	  "javascript",
@@ -35,6 +10,4 @@
 	],
 
 	"prettier.eslintIntegration": true,
-	"window.zoomLevel": 0,
-
   }

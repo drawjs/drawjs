@@ -4,7 +4,7 @@
  * 1. boolean ctx.isPointInPath( path, x, y, [, fillRule] )
  * 2. void ctx.fill( path, [, fillRule] );
  */
-export default interface CanvasRenderingContext2D extends Object, CanvasPathMethods {
+interface CanvasRenderingContext2D extends Object, CanvasPathMethods {
 	readonly canvas: HTMLCanvasElement
 	fillStyle: string | CanvasGradient | CanvasPattern
 	font: string

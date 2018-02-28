@@ -1,14 +1,12 @@
 import * as _ from "lodash"
-import * as i from "interface/index"
-import { getRotatedPoint } from 'util/index'
-import { getTransformedPointForContainPoint } from 'shared/index';
-
+import { getRotatedPoint } from "util/index"
+import { getTransformedPointForContainPoint } from "shared/index"
 
 enum Direction {
-	LEFT = 'LEFT',
-	RIGHT = 'RIGHT',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
+	LEFT = "LEFT",
+	RIGHT = "RIGHT",
+	TOP = "TOP",
+	BOTTOM = "BOTTOM"
 }
 
 export default class Size {
@@ -27,8 +25,7 @@ export default class Size {
 
 	get instanceDiagonal(): number {
 		return Math.sqrt(
-			Math.pow( this.instanceWidth, 2 ) +
-			Math.pow( this.instanceHeight, 2 )
+			Math.pow( this.instanceWidth, 2 ) + Math.pow( this.instanceHeight, 2 )
 		)
 	}
 
@@ -39,49 +36,49 @@ export default class Size {
 	get instanceOriginY(): number {
 		return this.instance.originY
 	}
-	get instanceLeftCenterPoint(): i.Point {
+	get instanceLeftCenterPoint(): Point2D {
 		return {
-			x: - this.instanceWidth / 2,
+			x: -this.instanceWidth / 2,
 			y: 0
 		}
 	}
-	get instanceRightCenterPoint(): i.Point {
+	get instanceRightCenterPoint(): Point2D {
 		return {
 			x: this.instanceWidth / 2,
 			y: 0
 		}
 	}
-	get instanceTopCenterPoint(): i.Point {
+	get instanceTopCenterPoint(): Point2D {
 		return {
 			x: 0,
-			y: - this.instanceHeight / 2
+			y: -this.instanceHeight / 2
 		}
 	}
-	get instanceBottomCenterPoint(): i.Point {
+	get instanceBottomCenterPoint(): Point2D {
 		return {
 			x: 0,
 			y: this.instanceHeight / 2
 		}
 	}
-	get instanceLeftTopPoint(): i.Point {
+	get instanceLeftTopPoint(): Point2D {
 		return {
-			x: - this.instanceWidth / 2,
-			y: - this.instanceHeight / 2
+			x: -this.instanceWidth / 2,
+			y: -this.instanceHeight / 2
 		}
 	}
-	get instanceRightTopPoint(): i.Point {
+	get instanceRightTopPoint(): Point2D {
 		return {
 			x: this.instanceWidth / 2,
-			y: - this.instanceHeight / 2
+			y: -this.instanceHeight / 2
 		}
 	}
-	get instanceLeftBottomPoint(): i.Point {
+	get instanceLeftBottomPoint(): Point2D {
 		return {
-			x: - this.instanceWidth / 2,
+			x: -this.instanceWidth / 2,
 			y: this.instanceHeight / 2
 		}
 	}
-	get instanceRightBottomPoint(): i.Point {
+	get instanceRightBottomPoint(): Point2D {
 		return {
 			x: this.instanceWidth / 2,
 			y: this.instanceHeight / 2
@@ -92,14 +89,17 @@ export default class Size {
 		this.instance = props.instance
 	}
 
-	public _sizeHorizontalSide( newPoint: i.Point, horizon: Direction ) {
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
+	public _sizeHorizontalSide( newPoint: Point2D, horizon: Direction ) {
+		let transformedNewPoint: Point2D
+		let newCenterPoint: Point2D
 		let deltaWidth: number
 		let deltaX: number
 		let deltaY: number
 
-		transformedNewPoint = getTransformedPointForContainPoint( newPoint, this.instance )
+		transformedNewPoint = getTransformedPointForContainPoint(
+			newPoint,
+			this.instance
+		)
 
 		if ( horizon === Direction.LEFT ) {
 			deltaWidth = transformedNewPoint.x - this.instanceLeftCenterPoint.x
@@ -108,8 +108,8 @@ export default class Size {
 		}
 
 		if ( horizon === Direction.RIGHT ) {
-			deltaWidth = - ( transformedNewPoint.x - this.instanceRightTopPoint.x )
-			deltaY = - deltaWidth / 2 * Math.sin( this.instance.radianAngle )
+			deltaWidth = -( transformedNewPoint.x - this.instanceRightTopPoint.x )
+			deltaY = -deltaWidth / 2 * Math.sin( this.instance.radianAngle )
 			deltaX = deltaWidth * ( 1 - Math.cos( this.instance.radianAngle ) ) / 2
 		}
 
@@ -118,14 +118,17 @@ export default class Size {
 		this.instance.top = this.instance.top + deltaY
 	}
 
-	public _sizeVerticalSide( newPoint: i.Point, verticality: Direction ) {
-		let transformedNewPoint: i.Point
-		let newCenterPoint: i.Point
+	public _sizeVerticalSide( newPoint: Point2D, verticality: Direction ) {
+		let transformedNewPoint: Point2D
+		let newCenterPoint: Point2D
 		let deltaHeight: number
 		let deltaX: number
 		let deltaY: number
 
-		transformedNewPoint = getTransformedPointForContainPoint( newPoint, this.instance )
+		transformedNewPoint = getTransformedPointForContainPoint(
+			newPoint,
+			this.instance
+		)
 
 		if ( verticality === Direction.TOP ) {
 			deltaHeight = transformedNewPoint.y - this.instanceTopCenterPoint.y
@@ -134,11 +137,12 @@ export default class Size {
 		}
 
 		if ( verticality === Direction.BOTTOM ) {
-			deltaHeight = - ( transformedNewPoint.y - this.instanceBottomCenterPoint.y )
-			deltaX = - ( deltaHeight / 2 * Math.sin( this.instance.radianAngle ) )
+			deltaHeight = -(
+				transformedNewPoint.y - this.instanceBottomCenterPoint.y
+			)
+			deltaX = -( deltaHeight / 2 * Math.sin( this.instance.radianAngle ) )
 			deltaY = deltaHeight * ( 1 - Math.cos( this.instance.radianAngle ) ) / 2
 		}
-
 
 		this.instance.height = this.instance.height - deltaHeight
 		this.instance.top = this.instance.top + deltaY
@@ -150,7 +154,7 @@ export default class Size {
 	 * ( such as mouse event point dragging )
 	 * @param newPoint
 	 */
-	public sizeLeftSide( newPoint: i.Point ) {
+	public sizeLeftSide( newPoint: Point2D ) {
 		this._sizeHorizontalSide( newPoint, Direction.LEFT )
 	}
 
@@ -159,7 +163,7 @@ export default class Size {
 	 * ( such as mouse event point dragging )
 	 * @param newPoint
 	 */
-	public sizeRightSide( newPoint: i.Point ) {
+	public sizeRightSide( newPoint: Point2D ) {
 		this._sizeHorizontalSide( newPoint, Direction.RIGHT )
 	}
 
@@ -168,7 +172,7 @@ export default class Size {
 	 * ( such as mouse event point dragging )
 	 * @param newPoint
 	 */
-	public sizeTopSide( newPoint: i.Point ) {
+	public sizeTopSide( newPoint: Point2D ) {
 		this._sizeVerticalSide( newPoint, Direction.TOP )
 	}
 
@@ -177,10 +181,7 @@ export default class Size {
 	 * ( such as mouse event point dragging )
 	 * @param newPoint
 	 */
-	public sizeBottomSide( newPoint: i.Point ) {
+	public sizeBottomSide( newPoint: Point2D ) {
 		this._sizeVerticalSide( newPoint, Direction.BOTTOM )
 	}
 }
-
-
-

@@ -4,7 +4,6 @@ import Geometry from "model/Geometry"
 import Cell from "model/Cell"
 import { ROTATE_ICON } from "store/constant_cellTypeList"
 import { getPointAngleToOrigin, log } from "util/index"
-import * as i from "interface/index"
 import {
 	coupleRotatingCell,
 	coupleSelectCell,
@@ -12,7 +11,6 @@ import {
 } from "mixin/index"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant"
-import { Point } from "interface/index"
 import { getTransformedPointForContainPoint } from "shared/index"
 
 export default class RotationIcon extends Cell {
@@ -102,7 +100,7 @@ export default class RotationIcon extends Cell {
 
 	containPoint( x, y ): boolean {
 		const self = this
-		const transformedReverselyPoint: Point = getTransformedPointForContainPoint(
+		const transformedReverselyPoint: Point2D = getTransformedPointForContainPoint(
 			{
 				x,
 				y,
@@ -125,7 +123,7 @@ export default class RotationIcon extends Cell {
 				y: self.originY
 			} )
 
-			const transformedReverselyPoint: Point = getTransformedPointForContainPoint(
+			const transformedReverselyPoint: Point2D = getTransformedPointForContainPoint(
 				{
 					x: transformedCenterPoint.x,
 					y: transformedCenterPoint.y - self.zoomedDistance

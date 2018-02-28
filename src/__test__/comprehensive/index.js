@@ -1,34 +1,34 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
 
-// ******* import *******
-const uploadButton = document.getElementById( 'uploadButton' )
+// // ******* import *******
+// const uploadButton = document.getElementById( 'uploadButton' )
 
-uploadButton.onclick = onFileInputClick
-uploadButton.onchange = onFileInputChange( callback )
+// uploadButton.onclick = onFileInputClick
+// uploadButton.onchange = onFileInputChange( callback )
 
-function onFileInputClick() {
-    this.value = null
-}
+// function onFileInputClick() {
+//     this.value = null
+// }
 
-function onFileInputChange( callback ) {
-    return event => {
-        try {
-            const reader = new FileReader()
-            function onReaderLoad( event ) {
-                callback( event.target.result )
-            }
-            reader.onload = onReaderLoad
-            reader.readAsText( event.target.files[ 0 ] )
-        } catch ( e ) {
+// function onFileInputChange( callback ) {
+//     return event => {
+//         try {
+//             const reader = new FileReader()
+//             function onReaderLoad( event ) {
+//                 callback( event.target.result )
+//             }
+//             reader.onload = onReaderLoad
+//             reader.readAsText( event.target.files[ 0 ] )
+//         } catch ( e ) {
 
-        }
-    }
-}
-function callback( text ) {
-    draw.importData( text )
-}
+//         }
+//     }
+// }
+// function callback( text ) {
+//     draw.importData( text )
+// }
 
-// ******* import *******
+// // ******* import *******
 
 
 

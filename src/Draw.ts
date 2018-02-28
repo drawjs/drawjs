@@ -20,24 +20,20 @@ import {
 import ZoomPan from "mixin/ZoomPan"
 import EventKeyboard from "mixin/EventKeyboard"
 
-import * as interfaces from "interface/index"
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/cellTypeClassMap"
 import { generateUniqueId, log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
 import { SelectionArea } from "model/tool/index"
-import * as i from "interface/index"
-import CanvasRenderingContext2D from "interface/CanvasRenderingContext2D"
 import MiniMap from "./model/tool/MiniMap"
-import { Point } from "interface/index"
 import renderElement from "./shared/renderElement"
 import { renderGridCanvas } from "shared/index"
 
 const ajv = new Ajv()
 
 export default class Draw {
-	public store: interfaces.DrawStore = {
+	public store: DrawStore = {
 		activePanelId: null,
 
 		panels: [
@@ -83,13 +79,13 @@ export default class Draw {
 			this.store.panels.length > 0 ? this.store.panels[ 0 ].id : null
 	}
 
-	get storeActiveElements(): interfaces.DrawStoreElement[] {
+	get storeActiveElements(): DrawStoreElement[] {
 		return this.getStoreElementsByPanelId( this.storeActivePanelId )
 	}
 
 	get storeElementsIds(): string[] {
 		let ids: string[]
-		let cachedElements: interfaces.DrawStoreElement[] = []
+		let cachedElements: DrawStoreElement[] = []
 
 		if ( _.isNil( this.store ) || _.isNil( this.store.panels ) ) {
 			return []
@@ -99,23 +95,23 @@ export default class Draw {
 
 		ids = cachedElements.map( getId )
 
-		function pushElementsToCachedElement( panel: interfaces.DrawStorePanel ) {
+		function pushElementsToCachedElement( panel: DrawStorePanel ) {
 			cachedElements = [ ...cachedElements, ...panel.elements ]
 		}
 
-		function getId( element: interfaces.DrawStoreElement ): string {
+		function getId( element: DrawStoreElement ): string {
 			return element.id
 		}
 
 		return ids
 	}
 
-	get storePanels(): interfaces.DrawStorePanel[] {
+	get storePanels(): DrawStorePanel[] {
 		return this.store.panels
 	}
 
-	get __storeIgnoreInstance__(): interfaces.DrawStore {
-		let store: interfaces.DrawStore = _.cloneDeep( this.store )
+	get __storeIgnoreInstance__(): DrawStore {
+		let store: DrawStore = _.cloneDeep( this.store )
 
 		store.panels.map( mapPanelElements )
 
@@ -133,7 +129,7 @@ export default class Draw {
 		return store
 	}
 
-	get __storeActiveElementsInstances__(): interfaces.DrawStoreElementInstance[] {
+	get __storeActiveElementsInstances__(): DrawStoreElementInstance[] {
 		function get__instance__( element ) {
 			return element.__instance__
 		}
@@ -146,7 +142,7 @@ export default class Draw {
 	get canvasTop(): number {
 		return this.canvas.getBoundingClientRect().top
 	}
-	get canvasCenterPoint(): Point {
+	get canvasCenterPoint(): Point2D {
 		const res = {
 			x: this.canvas.width / 2,
 			y: this.canvas.height / 2
@@ -264,7 +260,7 @@ export default class Draw {
 					height: number
 					fill: string
 					angle: number
-					points: interfaces.Point[]
+					points: Point2D[]
 					draggable: boolean
 					isSelected: boolean
 				} = setting
@@ -297,7 +293,7 @@ export default class Draw {
 				this.store.activePanelId = panelId
 			},
 
-			[ a.MODIFY_STORE ]: ( store: interfaces.DrawStore ): void => {
+			[ a.MODIFY_STORE ]: ( store: DrawStore ): void => {
 				this.store = store
 			}
 		}
@@ -342,7 +338,7 @@ export default class Draw {
 	private importData( dataString ) {
 		const self = this
 		if ( checkDataString( dataString ) ) {
-			const storeWithoutInstance: interfaces.DrawStoreWithoutInstance = JSON.parse(
+			const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
 				dataString
 			)
 			const storeWithoutInstanceCleanElements = cleanStoreElements(
@@ -358,7 +354,7 @@ export default class Draw {
 
 		function checkDataString( dataString: string ) {
 			try {
-				const importedData: interfaces.DrawStoreWithoutInstance = JSON.parse(
+				const importedData: DrawStoreWithoutInstance = JSON.parse(
 					dataString
 				)
 				const isValid = ajv.validate(
@@ -373,7 +369,7 @@ export default class Draw {
 		}
 
 		function addStoreElementsAndInstances(
-			storeCleanElements: interfaces.DrawStoreWithoutInstance
+			storeCleanElements: DrawStoreWithoutInstance
 		) {
 			const store = _.cloneDeep( storeCleanElements )
 			if ( store && store.panels ) {
@@ -384,7 +380,7 @@ export default class Draw {
 				elements,
 				id: panelId
 			}: {
-				elements: interfaces.DrawStoreElementWithoutInstance[]
+				elements: DrawStoreElementWithoutInstance[]
 				id: string
 			} ) {
 				elements.map( addElementToDraw( panelId ) )
@@ -399,8 +395,8 @@ export default class Draw {
 		}
 
 		function cleanStoreElements(
-			storeWithoutInstance: interfaces.DrawStoreWithoutInstance
-		): interfaces.DrawStoreWithoutInstance {
+			storeWithoutInstance: DrawStoreWithoutInstance
+		): DrawStoreWithoutInstance {
 			const store = _.cloneDeep( storeWithoutInstance )
 			store.panels.map( cleanElements )
 

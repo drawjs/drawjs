@@ -1,7 +1,6 @@
 import * as _ from "lodash"
 
 import Geometry from "model/Geometry"
-import * as interfaces from "interface/index"
 import Cell from "model/Cell"
 import {
 	coupleSelectCell,
@@ -12,8 +11,8 @@ import selectionExcludingCellTypes from "store/selectionExcludingCellTypes"
 import { log } from "util/index"
 
 export default class SelectionArea extends Geometry {
-	public startPoint: interfaces.Point
-	public endPoint: interfaces.Point
+	public startPoint: Point2D
+	public endPoint: Point2D
 	public _isSelecting: boolean = false
 
 	constructor( props ) {

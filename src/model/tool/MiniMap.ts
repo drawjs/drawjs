@@ -6,7 +6,6 @@ import {
 	getTransformedPointForContainPoint,
 	isInstancePathContainPointTransformed
 } from "shared/index"
-import { Point, Rect } from "interface/index"
 import * as _ from "lodash"
 import { log, isNotNil } from "util/index"
 import Cell from "model/Cell"
@@ -47,12 +46,12 @@ export default class MiniMap extends Cell {
 		return res
 	}
 
-	get elementsBounds(): Rect {
+	get elementsBounds(): RectBounds {
 		let minLeft: number = 0
 		let maxRight: number = this.draw.canvas.width
 		let minTop: number = 0
 		let maxBottom: number = this.draw.canvas.height
-		let res: Rect
+		let res: RectBounds
 
 		this.draw.cellList.filter( isInclude ).map( get )
 
@@ -106,9 +105,9 @@ export default class MiniMap extends Cell {
 		return res
 	}
 
-	get scopeRect(): Rect {
+	get scopeRect(): RectBounds {
 		const zoom = this.canvasScopeZoom
-		const center: Point = {
+		const center: Point2D = {
 			x: this.draw.canvas.width / 2,
 			y: this.draw.canvas.height / 2
 		}
@@ -128,7 +127,7 @@ export default class MiniMap extends Cell {
 		let maxZoom: number = 1
 
 		const b = this.elementsBounds
-		const center: Point = {
+		const center: Point2D = {
 			x: this.draw.canvas.width / 2,
 			y: this.draw.canvas.height / 2
 		}
@@ -233,7 +232,7 @@ export default class MiniMap extends Cell {
 		}
 
 		function _renderGrid() {
-			const origin: Point = {
+			const origin: Point2D = {
 				x: 0,
 				y: self.top
 			}
@@ -251,11 +250,11 @@ export default class MiniMap extends Cell {
 		}
 	}
 
-	public transformCenterPointForContext( point: Point ) {
+	public transformCenterPointForContext( point: Point2D ) {
 		/**
 		 * Transform point from original position to mini map
 		 */
-		let transformedPoint: Point = {
+		let transformedPoint: Point2D = {
 			x: point.x * this.transformRatio + this.deltaXForAutoZoom,
 			y: point.y * this.transformRatio + this.top + this.deltaYForAutoZoom
 		}
@@ -295,16 +294,16 @@ export default class MiniMap extends Cell {
 
 		return isContain
 
-		function getTransformedPointForContainPoint(): Point {
-			const originPoint: Point = {
+		function getTransformedPointForContainPoint(): Point2D {
+			const originPoint: Point2D = {
 				x: x - deltaX * self.transformRatio,
 				y: y - deltaY * self.transformRatio
 			}
-			const viewBoxOriginPoint: Point = {
+			const viewBoxOriginPoint: Point2D = {
 				x: self.originX,
 				y: self.originY
 			}
-			const res: Point = {
+			const res: Point2D = {
 				x:
 					( originPoint.x - viewBoxOriginPoint.x ) *
 					self.canvasScopeZoom,
@@ -399,16 +398,16 @@ class ViewBox extends Cell {
 
 		return isContain
 
-		function getTransformedPointForContainPoint(): Point {
-			const originPoint: Point = {
+		function getTransformedPointForContainPoint(): Point2D {
+			const originPoint: Point2D = {
 				x: x - deltaX * self.miniMap.transformRatio,
 				y: y - deltaY * self.miniMap.transformRatio
 			}
-			const viewBoxOriginPoint: Point = {
+			const viewBoxOriginPoint: Point2D = {
 				x: self.originX,
 				y: self.originY
 			}
-			const res: Point = {
+			const res: Point2D = {
 				x:
 					( originPoint.x - viewBoxOriginPoint.x ) *
 					self.draw.zoomPan.zoom *
@@ -422,7 +421,7 @@ class ViewBox extends Cell {
 		}
 	}
 
-	transformPoint( point: Point ) {
+	transformPoint( point: Point2D ) {
 		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
 		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
 			this.draw.canvasCenterPoint
@@ -446,13 +445,12 @@ class ViewBox extends Cell {
 
 	// ******* Pan view box { ******
 	public _updateDrag( event ) {
-		// previous event point
-		const pep: Point = {
+		const pep: Point2D = {
 			x: this._prevDraggingPoint.x - this.draw.canvasLeft,
 			y: this._prevDraggingPoint.y - this.draw.canvasTop,
 		}
 		// curernt event point
-		const cep: Point = {
+		const cep: Point2D = {
 			x: event.x - this.draw.canvasLeft,
 			y: event.y - this.draw.canvasTop,
 		}
@@ -461,7 +459,7 @@ class ViewBox extends Cell {
 
 		const deltaY = ( pep.y - cep.y ) /  this.miniMap.sizeRate * this.miniMap.canvasScopeZoom
 
-		const panPointNew: Point = {
+		const panPointNew: Point2D = {
 			x: this.draw.zoomPan.panPoint.x + deltaX,
 			y: this.draw.zoomPan.panPoint.y + deltaY,
 		}
