@@ -1,12 +1,13 @@
 import Graph from "../Graph"
+import pointInPolygon from "util/geometry/pointInPolygon"
 
 export default class Polygon extends Graph {
-	coordinates: Point2D[]
+	points: Point2D[] = []
 
 	get path(): Path2D {
 		let path: Path2D = new Path2D()
 
-		this.coordinates.map( connect )
+		this.points.map( connect )
 
 		return path
 
@@ -22,6 +23,8 @@ export default class Polygon extends Graph {
 
 	constructor( props ) {
 		super( props )
+
+		this.points = props.points
 	}
 
 	render() {
@@ -33,5 +36,9 @@ export default class Polygon extends Graph {
 		ctx.fill( this.path )
 		ctx.restore()
 	}
-	containPoint() {}
+	containPoint( x: number, y: number ) {
+		const res: boolean = this.draw.ctx.isPointInPath( this.path, x, y )
+
+		return pointInPolygon( { x, y }, this.points )
+	}
 }

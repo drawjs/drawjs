@@ -12,13 +12,18 @@ draw.addElement( "polygon", {
 			x: 10,
 			y: 10
 		},
-		randomPoint(),
-		randomPoint(),
-		randomPoint(),
-		randomPoint(),
-		randomPoint(),
-		randomPoint(),
-		randomPoint(),
+		// {
+		// 	x: 300,
+		// 	y: 10
+		// },
+		// {
+		// 	x: 300,
+		// 	y: 300
+		// },
+		// {
+		// 	x: 100,
+		// 	y: 300
+		// },
 		randomPoint(),
 		randomPoint(),
 		randomPoint(),

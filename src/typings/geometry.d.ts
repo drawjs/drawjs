@@ -3,3 +3,5 @@ interface Point2D {
 	y: number
 }
 
+
+type Segment =  [ Point2D, Point2D ]
