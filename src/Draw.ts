@@ -183,24 +183,24 @@ export default class Draw {
 		const self = this
 
 		this.clearEntireCanvas()
-		this.miniMap.renderMainToGetImageData()
+		// this.miniMap.renderMainToGetImageData()
 
 		this.clearEntireCanvas()
 
-		renderGridCanvas( {
-			canvas       : this.canvas,
-			width        : this.canvas.width,
-			height       : this.canvas.height,
-			zoom         : this.zoomPan.zoom,
-			deltaXForZoom: this.zoomPan.deltaXForZoom,
-			deltaYForZoom: this.zoomPan.deltaYForZoom,
-			deltaXForPan : this.zoomPan.deltaXForPan,
-			deltaYForPan : this.zoomPan.deltaYForPan
-		} )
+		// renderGridCanvas( {
+		// 	canvas       : this.canvas,
+		// 	width        : this.canvas.width,
+		// 	height       : this.canvas.height,
+		// 	zoom         : this.zoomPan.zoom,
+		// 	deltaXForZoom: this.zoomPan.deltaXForZoom,
+		// 	deltaYForZoom: this.zoomPan.deltaYForZoom,
+		// 	deltaXForPan : this.zoomPan.deltaXForPan,
+		// 	deltaYForPan : this.zoomPan.deltaYForPan
+		// } )
 
 		this.cellList.map( renderElement )
 
-		this.miniMap.render()
+		// this.miniMap.render()
 	}
 
 	/****** initialization and render ******/

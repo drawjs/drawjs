@@ -119,10 +119,10 @@ export default class Rect extends Graph {
 		super.render()
 
 		ctx.save()
-		transformCenterPointForContext( this.draw, {
-			x: this.originX,
-			y: this.originY
-		}, this )
+		// transformCenterPointForContext( this.draw, {
+		// 	x: this.originX,
+		// 	y: this.originY
+		// }, this )
 		ctx.fillStyle = this.fill
 		ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
 		ctx.fill( this.path )
