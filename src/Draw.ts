@@ -9,9 +9,9 @@ import {
 	DRAW_STORE_PANEL_DEFAULT_NAME,
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
-} from "store/constant"
-import * as a from "store/constant_action"
-import { ROTATE_ICON } from "store/constant_cellTypeList"
+} from "store/constant/index"
+import * as a from "store/constant/action"
+import { ROTATE_ICON } from "store/constant/cellType"
 import {
 	getInstanceByElementWithoutInstance,
 	updateStoreElementsByTheirInstances,
@@ -22,7 +22,7 @@ import EventKeyboard from "mixin/EventKeyboard"
 
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
-import cellTypeClassMap from "store/cellTypeClassMap"
+import cellTypeClassMap from "store/map/cellTypeClassMap"
 import { generateUniqueId, log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
 import { SelectionArea } from "model/tool/index"

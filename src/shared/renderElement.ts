@@ -1,4 +1,4 @@
-import drawRenderExcludingCellTypes from "store/drawRenderExcludingCellTypes"
+import drawRenderExcludingCellTypes from "store/exclude/drawRenderExcludingCellTypes"
 import * as _ from "lodash"
 
 export default function( cell: any ) {

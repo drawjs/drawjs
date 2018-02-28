@@ -3,7 +3,7 @@ import { defaultPointRadius } from "store/index"
 import * as _ from "lodash"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index"
-import { POINT } from 'store/constant_cellTypeList';
+import { POINT } from 'store/constant/cellType';
 import { log } from 'util/index';
 
 export default class Point extends Cell {

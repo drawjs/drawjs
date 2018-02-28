@@ -1,8 +1,7 @@
-import Rect from 'model/shape/Rect';
-import { RECT_IMAGE } from 'store/constant_cellTypeList';
-import { transformCenterPointForContext } from 'mixin/index';
-import { DEGREE_TO_RADIAN } from 'store/constant';
-
+import Rect from "model/shape/Rect"
+import { RECT_IMAGE } from "store/constant/cellType"
+import { transformCenterPointForContext } from "mixin/index"
+import { DEGREE_TO_RADIAN } from "store/constant/index"
 
 export default class RectImage extends Rect {
 	public type: string = RECT_IMAGE
@@ -19,10 +18,14 @@ export default class RectImage extends Rect {
 		const ctx = this.draw.ctx
 
 		ctx.save()
-		transformCenterPointForContext( this.draw, {
-			x: this.originX,
-			y: this.originY
-		}, this )
+		transformCenterPointForContext(
+			this.draw,
+			{
+				x: this.originX,
+				y: this.originY
+			},
+			this
+		)
 		ctx.rotate( this.angle * DEGREE_TO_RADIAN )
 		ctx.drawImage(
 			this.image,

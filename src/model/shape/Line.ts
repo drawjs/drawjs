@@ -1,7 +1,7 @@
 import * as _ from "lodash"
 
 import Graph from "model/Graph"
-import * as cellTypeList from "store/constant_cellTypeList"
+import * as cellTypeList from "store/constant/cellType"
 import { defaultPathExandingValue } from "store/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"

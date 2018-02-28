@@ -7,7 +7,7 @@ import {
 	coupleEnableCellDrag,
 	coupleIsMouseDownToPan
 } from "mixin/index"
-import selectionExcludingCellTypes from "store/selectionExcludingCellTypes"
+import selectionExcludingCellTypes from "store/exclude/selectionExcludingCellTypes"
 import { log } from "util/index"
 
 export default class SelectionArea extends Geometry {

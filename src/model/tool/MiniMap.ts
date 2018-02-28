@@ -9,8 +9,8 @@ import {
 import * as _ from "lodash"
 import { log, isNotNil } from "util/index"
 import Cell from "model/Cell"
-import { MINI_MAP } from "store/constant_cellTypeList"
-import excludingTypesForMiniMapElementsBounds from "../../store/excludingTypesForMiniMapElementsBounds"
+import { MINI_MAP } from "store/constant/cellType"
+import excludingTypesForMiniMapElementsBounds from "store/exclude/excludingTypesForMiniMapElementsBounds"
 import { coupleZoomPanSetPanPoint } from "mixin/coupleZoomPanSet"
 
 export default class MiniMap extends Cell {

@@ -2,7 +2,7 @@ import * as _ from "lodash"
 
 import Graph from "model/Graph"
 import RotationIcon from "model/tool/RotationIcon"
-import * as cellTypeList from "store/constant_cellTypeList"
+import * as cellTypeList from "store/constant/cellType"
 import SizePoint, {
 	SizePointTop,
 	SizePointTopLeft,
@@ -14,7 +14,7 @@ import SizePoint, {
 	SizePointBottomRight
 } from "model/tool/SizePoint"
 import { getRotatedPoint } from "util/index"
-import * as constant from "store/constant"
+import * as constant from "store/constant/index"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index";
 
@@ -120,9 +120,6 @@ export default class Rect extends Graph {
 		ctx.save()
 		ctx.fillStyle = this.fill
 		ctx.fill( this.path )
-
-		// ctx.rotate( this.angle * constant.DEGREE_TO_RADIAN )
-
 		ctx.restore()
 
 		/**

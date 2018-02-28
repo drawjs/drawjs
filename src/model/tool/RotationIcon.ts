@@ -2,7 +2,7 @@ import * as _ from "lodash"
 
 import Geometry from "model/Geometry"
 import Cell from "model/Cell"
-import { ROTATE_ICON } from "store/constant_cellTypeList"
+import { ROTATE_ICON } from "store/constant/cellType"
 import { getPointAngleToOrigin, log } from "util/index"
 import {
 	coupleRotatingCell,
@@ -10,7 +10,7 @@ import {
 	transformCenterPointForContext
 } from "mixin/index"
 import { getRotatedPoint } from "util/index"
-import * as constant from "store/constant"
+import * as constant from "store/constant/index"
 import { getTransformedPointForContainPoint } from "shared/index"
 
 export default class RotationIcon extends Cell {

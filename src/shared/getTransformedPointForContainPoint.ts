@@ -1,6 +1,6 @@
 import { getRotatedPoint } from "util/index"
 import * as _ from "lodash"
-import { SIZE_POINT, ROTATE_ICON } from 'store/constant_cellTypeList';
+import { SIZE_POINT, ROTATE_ICON } from 'store/constant/cellType';
 
 /**
  * Get the point

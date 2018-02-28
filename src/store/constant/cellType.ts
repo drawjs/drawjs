@@ -1,6 +1,7 @@
 /**
  * Shape
  */
+export const POLYGON = 'polygon'
 export const RECT = 'rect'
 export const LINE = 'line'
 export const POINT = 'point'

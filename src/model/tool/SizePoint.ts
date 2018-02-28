@@ -1,4 +1,4 @@
-import { SIZE_POINT } from "store/constant_cellTypeList"
+import { SIZE_POINT } from "store/constant/cellType"
 import Cell from "model/Cell"
 import Point from "model/shape/Point"
 import * as _ from "lodash"

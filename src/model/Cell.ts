@@ -1,8 +1,8 @@
 import * as _ from "lodash"
-import { generateUniqueId, isNotNil } from 'util/index';
+import { generateUniqueId, isNotNil } from "util/index"
 import Draw from "Draw"
-import * as constant from 'store/constant'
-import coupleIsMouseDownToPan from 'mixin/coupleIsMouseDownToPan'
+import * as constant from "store/constant/index"
+import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
 
 export default abstract class Cell {
 	public id: string = generateUniqueId()
@@ -32,7 +32,6 @@ export default abstract class Cell {
 	 */
 	public isSizing: boolean = false
 
-
 	/**
 	 * Mini map
 	 */
@@ -44,36 +43,35 @@ export default abstract class Cell {
 	}
 
 	get __left(): number {
-		const potentialValue = this[ 'left' ]
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const potentialValue = this[ "left" ]
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
 	get __top(): number {
-		const potentialValue = this[ 'top' ]
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const potentialValue = this[ "top" ]
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
 	get __width(): number {
-		const potentialValue = this[ 'width' ]
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const potentialValue = this[ "width" ]
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
 	get __height(): number {
-		const potentialValue = this[ 'height' ]
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const potentialValue = this[ "height" ]
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
 	get __right(): number {
 		const potentialValue = this.__left + this.__width
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
 	get __bottom(): number {
 		const potentialValue = this.__top + this.__height
-		const res = isNotNil( potentialValue ) ?  potentialValue : 0
+		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
-
 
 	constructor( props ) {
 		const { draw } = props
@@ -138,7 +136,7 @@ export default abstract class Cell {
 		this[ field ] = value
 	}
 
-	public render() { }
+	public render() {}
 
 	// ******* Interaction ******
 	// ******* # General ******
@@ -154,7 +152,7 @@ export default abstract class Cell {
 			y: event.y
 		}
 	}
-	public _updateDrag( event ) { }
+	public _updateDrag( event ) {}
 	public _startDrag( event ): void {
 		this._isDragging = true
 		this._updatePrevDraggingPoint( event )
@@ -169,12 +167,11 @@ export default abstract class Cell {
 		this._isDragging = false
 		this.handleStopDrag && this.handleStopDrag( event )
 	}
-	public handleStartDrag( event ) { }
-	public handleDragging( event ) { }
-	public handleStopDrag( event ) { }
+	public handleStartDrag( event ) {}
+	public handleDragging( event ) {}
+	public handleStopDrag( event ) {}
 	// ******* # Drag ******
 	// ******* Interaction ******
-
 
 	// ******* Transform ******
 	public rotatePoint(

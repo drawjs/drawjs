@@ -1,4 +1,4 @@
-import { ROTATE_ICON, SIZE_POINT, MINI_MAP } from "store/constant_cellTypeList"
+import { ROTATE_ICON, SIZE_POINT, MINI_MAP } from "store/constant/cellType"
 
 
 /**

@@ -1,5 +1,5 @@
-import * as cellTypeList from 'store/constant_cellTypeList'
-import cellTypeClassMap from 'store/cellTypeClassMap'
+import * as cellTypeList from 'store/constant/cellType'
+import cellTypeClassMap from 'store/map/cellTypeClassMap'
 import { Cell } from 'model/index'
 
 
