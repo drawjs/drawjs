@@ -8,3 +8,6 @@ export const DRAW_PANEL_ID_PREFIX = 'DRAW-PANEL-'
 
 export const DEGREE_TO_RADIAN: number = Math.PI / 180
 export const RADIAN_TO_DEGREE: number = 180 / Math.PI
+
+
+export const ROTATION_ARROW_SRC = "../../asset/svg/rotate-icon.svg"

@@ -7,7 +7,6 @@ import applyRotationArrow from '../shared/applyRotationArrow';
 import applySelection from '../shared/applySelection';
 
 export default abstract class Graph extends Geometry {
-	isRotating: false
 	rotationArrow: RotationArrow
 	constructor( props ) {
 		super( props )

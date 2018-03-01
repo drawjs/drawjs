@@ -7,23 +7,25 @@ import connectPolygonPoints from "util/canvas/connectPolygonPoints";
 
 export default class Polygon extends Graph {
 
-	points: Point2D[] = []
 	basicPoints: Point2D[] = []
 	// rectContainer: RectContainer
 
+	get pathPoints(): Point2D[] {
+		const rotatedPoints: Point2D[] = rotatePoints( this.basicPoints, this.radianAngle, this.rectContainer.basicCenter )
+		return rotatedPoints
+	}
+
 	get path(): Path2D {
-		const path: Path2D = connectPolygonPoints( this.points )
+		const path: Path2D = connectPolygonPoints( this.pathPoints )
 		return path
 	}
 
 	get rectContainer(): RectContainer {
-		return new RectContainer( this.points, this )
+		return new RectContainer( this.basicPoints, this )
 	}
 
 	constructor( props ) {
 		super( props )
-
-		this.points = props.points
 
 		this.basicPoints = props.points
 		// this.rectContainer = new RectContainer( this.points, this )
@@ -31,23 +33,10 @@ export default class Polygon extends Graph {
 	}
 
 	translate( x: number, y: number ) {
-		this.points = translatePoints( this.points, x, y )
-	}
-	rotate() {
-		const self = this
-
-		// reset()
-
-		this.points = rotatePoints( this.basicPoints, this.radianAngle, this.rectContainer.basicCenter )
-
-		// function reset() {
-		// 	self.points = rotatePoints( self.points, 0, self.rectContainer.basicCenter )
-		// }
+		this.basicPoints = translatePoints( this.basicPoints, x, y )
 	}
 
 	render() {
-		this.rotate()
-
 		const ctx = this.draw.ctx
 		super.render()
 
@@ -55,6 +44,8 @@ export default class Polygon extends Graph {
 		ctx.fillStyle = this.fill
 		ctx.fill( this.path )
 		ctx.restore()
+
+		this.rectContainer.render()
 	}
 
 	contain( x: number, y: number ) {
