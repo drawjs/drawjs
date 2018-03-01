@@ -1,9 +1,11 @@
-import Graph from "../Graph"
+import Graph from "model/Graph"
 import pointInPolygon from "util/geometry/pointInPolygon"
-import RectContainer from "../tool/RectContainer";
-import translatePoints from "../../util/geometry/translatePoints";
+import RectContainer from "model/tool/RectContainer"
+import translatePoints from "util/geometry/translatePoints"
+import rotatePoints from "util/geometry/rotatePoints"
 
 export default class Polygon extends Graph {
+
 	points: Point2D[] = []
 
 	get rectContainer(): RectContainer {
@@ -28,7 +30,7 @@ export default class Polygon extends Graph {
 				path.lineTo( point.x, point.y )
 			}
 			if ( index === length - 1 ) {
-				const firstPoints: Point2D = points[0]
+				const firstPoints: Point2D = points[ 0 ]
 				path.lineTo( firstPoints.x, firstPoints.y )
 			}
 		}
@@ -38,10 +40,21 @@ export default class Polygon extends Graph {
 		super( props )
 
 		this.points = props.points
+
+		this.rotate()
 	}
 
 	translate( x: number, y: number ) {
 		this.points = translatePoints( this.points, x, y )
+	}
+	rotate() {
+		const self = this
+
+		this.points = rotatePoints( this.points, this.radianAngle, this.rectContainer.center )
+
+		function reset() {
+			self.points = rotatePoints( self.points, 0, self.rectContainer.center )
+		}
 	}
 
 	render() {
