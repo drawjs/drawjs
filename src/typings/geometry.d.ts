@@ -5,3 +5,5 @@ interface Point2D {
 
 
 type Segment =  [ Point2D, Point2D ]
+
+
