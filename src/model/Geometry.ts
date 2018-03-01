@@ -59,5 +59,5 @@ export default abstract class Geometry extends Cell {
 		super.render()
 	}
 
-	public abstract containPoint( x: number, y: number ): void
+	public abstract contain( x: number, y: number ): void
 }

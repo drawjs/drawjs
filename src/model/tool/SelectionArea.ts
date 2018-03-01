@@ -262,5 +262,5 @@ export default class SelectionArea extends Geometry {
 		}
 	}
 
-	public containPoint( x, y ) {}
+	public contain( x, y ) {}
 }

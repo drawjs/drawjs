@@ -244,7 +244,7 @@ export default class Line extends Graph {
 		}
 	}
 
-	public containPoint( x: number, y: number ) {
+	public contain( x: number, y: number ) {
 		const res = isInstancePathContainPointTransformed( x, y, this, this.pathStoked )
 		return res
 	}

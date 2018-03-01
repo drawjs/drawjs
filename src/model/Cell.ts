@@ -144,7 +144,7 @@ export default abstract class Cell {
 	public handleMouseMove( event ) {}
 	// ******* # General ******
 	// ******* # Drag ******
-	public abstract containPoint( x: number, y: number ): void
+	public abstract contain( x: number, y: number ): void
 
 	public _updatePrevDraggingPoint( event ) {
 		this._prevDraggingPoint = {

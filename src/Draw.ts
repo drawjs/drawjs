@@ -310,7 +310,7 @@ export default class Draw {
 
 		function getProperCell( Cell ) {
 			if (
-				Cell.containPoint(
+				Cell.contain(
 					event.x - self.canvasLeft,
 					event.y - self.canvasTop
 				)

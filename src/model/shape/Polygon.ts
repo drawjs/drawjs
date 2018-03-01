@@ -3,37 +3,21 @@ import pointInPolygon from "util/geometry/pointInPolygon"
 import RectContainer from "model/tool/RectContainer"
 import translatePoints from "util/geometry/translatePoints"
 import rotatePoints from "util/geometry/rotatePoints"
+import connectPolygonPoints from "util/canvas/connectPolygonPoints";
 
 export default class Polygon extends Graph {
 
 	points: Point2D[] = []
-
-	get rectContainer(): RectContainer {
-		const res: RectContainer = new RectContainer( this.points )
-		return res
-	}
+	basicPoints: Point2D[] = []
+	// rectContainer: RectContainer
 
 	get path(): Path2D {
-		let path: Path2D = new Path2D()
-
-		this.points.map( connect )
-
+		const path: Path2D = connectPolygonPoints( this.points )
 		return path
+	}
 
-		function connect( point: Point2D, index: number, points: Point2D[] ) {
-			const { length }: Point2D[] = points
-
-			if ( index === 0 ) {
-				path.moveTo( point.x, point.y )
-			}
-			if ( index !== 0 ) {
-				path.lineTo( point.x, point.y )
-			}
-			if ( index === length - 1 ) {
-				const firstPoints: Point2D = points[ 0 ]
-				path.lineTo( firstPoints.x, firstPoints.y )
-			}
-		}
+	get rectContainer(): RectContainer {
+		return new RectContainer( this.points, this )
 	}
 
 	constructor( props ) {
@@ -41,7 +25,9 @@ export default class Polygon extends Graph {
 
 		this.points = props.points
 
-		this.rotate()
+		this.basicPoints = props.points
+		// this.rectContainer = new RectContainer( this.points, this )
+
 	}
 
 	translate( x: number, y: number ) {
@@ -50,14 +36,18 @@ export default class Polygon extends Graph {
 	rotate() {
 		const self = this
 
-		this.points = rotatePoints( this.points, this.radianAngle, this.rectContainer.center )
+		// reset()
 
-		function reset() {
-			self.points = rotatePoints( self.points, 0, self.rectContainer.center )
-		}
+		this.points = rotatePoints( this.basicPoints, this.radianAngle, this.rectContainer.basicCenter )
+
+		// function reset() {
+		// 	self.points = rotatePoints( self.points, 0, self.rectContainer.basicCenter )
+		// }
 	}
 
 	render() {
+		this.rotate()
+
 		const ctx = this.draw.ctx
 		super.render()
 
@@ -67,10 +57,10 @@ export default class Polygon extends Graph {
 		ctx.restore()
 	}
 
-	containPoint( x: number, y: number ) {
+	contain( x: number, y: number ) {
 		const res: boolean = this.draw.ctx.isPointInPath( this.path, x, y )
 
-		return pointInPolygon( { x, y }, this.points )
+		return res
 	}
 
 	// ******* Drag ******

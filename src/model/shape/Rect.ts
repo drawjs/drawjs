@@ -140,7 +140,7 @@ export default class Rect extends Graph {
 		}
 	}
 
-	public containPoint( x, y ): boolean {
+	public contain( x, y ): boolean {
 		const res = this.draw.ctx.isPointInPath( this.path, x, y )
 		return res
 	}

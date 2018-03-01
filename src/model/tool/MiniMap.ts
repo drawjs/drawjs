@@ -269,7 +269,7 @@ export default class MiniMap extends Cell {
 		)
 	}
 
-	public containPoint( x, y ) {
+	public contain( x, y ) {
 		const self = this
 
 		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
@@ -373,7 +373,7 @@ class ViewBox extends Cell {
 		ctx.restore()
 	}
 
-	public containPoint( x, y ) {
+	public contain( x, y ) {
 		const self = this
 
 		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
@@ -469,7 +469,7 @@ class ViewBox extends Cell {
 	}
 
 	public handleMouseMove( event ) {
-		if ( this._isDragging || this.containPoint(
+		if ( this._isDragging || this.contain(
 			event.x - this.draw.canvasLeft,
 			event.y - this.draw.canvasTop
 		) ) {

@@ -5,15 +5,15 @@ const basicOrigin = {
 	y: 100
 }
 
-draw.addElement( "polygon", {
-	left  : 350,
-	top   : 250,
-	fill  : "red",
-	width : 100,
-	height: 100,
-	angle : 0,
-	points: polygon()
-} )
+// draw.addElement( "polygon", {
+// 	left  : 350,
+// 	top   : 250,
+// 	fill  : "red",
+// 	width : 100,
+// 	height: 100,
+// 	angle : 0,
+// 	points: polygon()
+// } )
 
 draw.addElement( "polygon", {
 	left  : 350,
@@ -21,7 +21,7 @@ draw.addElement( "polygon", {
 	fill  : "blue",
 	width : 100,
 	height: 100,
-	angle : 60,
+	angle : 10,
 	points: polygon()
 } )
 

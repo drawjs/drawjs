@@ -1,6 +1,12 @@
+import Graph from "../Graph"
+import rotatePoints from "util/geometry/rotatePoints"
 const { max, min } = Math
 
 export default class RectContainer {
+	/**
+	 * Graph target
+	 */
+	target: Graph
 	contentPoints: Point2D[] = []
 
 	get _contentPointsX(): number[] {
@@ -15,35 +21,73 @@ export default class RectContainer {
 		)
 		return res
 	}
-	get left(): number {
+	get _radian() {
+		return this.target.radianAngle
+	}
+	get basicLeft(): number {
 		const res: number = min( ...this._contentPointsX )
 		return res
 	}
-	get right(): number {
+	get basicRight(): number {
 		const res: number = max( ...this._contentPointsX )
 		return res
 	}
-	get top(): number {
+	get basicTop(): number {
 		const res: number = min( ...this._contentPointsY )
 		return res
 	}
-	get bottom(): number {
+	get basicBottom(): number {
 		const res: number = max( ...this._contentPointsY )
 		return res
 	}
-	get width(): number {
-		return this.right - this.left
+	get basicWidth(): number {
+		return this.basicRight - this.basicLeft
 	}
-	get height(): number {
-		return this.bottom - this.top
+	get basicHeight(): number {
+		return this.basicBottom - this.basicTop
 	}
-	get center(): Point2D {
+	get basicCenter(): Point2D {
 		return {
-			x: ( this.left + this.right ) / 2,
-			y: ( this.top + this.bottom ) / 2
+			x: ( this.basicLeft + this.basicRight ) / 2,
+			y: ( this.basicTop + this.basicBottom ) / 2
 		}
 	}
-	constructor( props: Point2D[] ) {
-		this.contentPoints = props
+	/**
+	 * Points not rotated and sized
+	 */
+	get basicPoints(): Point2D[] {
+		return [
+			{
+				x: this.basicLeft,
+				y: this.basicTop
+			},
+			{
+				x: this.basicRight,
+				y: this.basicTop
+			},
+			{
+				x: this.basicRight,
+				y: this.basicBottom
+			},
+			{
+				x: this.basicLeft,
+				y: this.basicBottom
+			}
+		]
+	}
+
+	get points(): Point2D[] {
+		const res: Point2D[] = rotatePoints( this.basicPoints, this._radian, this.basicCenter )
+		return res
+	}
+
+	/**
+	 *
+	 * @param points Bound points
+	 * @param target Graph target
+	 */
+	constructor( points, target ) {
+		this.contentPoints = points
+		this.target = target
 	}
 }

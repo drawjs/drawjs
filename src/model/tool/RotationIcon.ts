@@ -98,7 +98,7 @@ export default class RotationIcon extends Cell {
 		ctx.restore()
 	}
 
-	containPoint( x, y ): boolean {
+	contain( x, y ): boolean {
 		const self = this
 		const transformedReverselyPoint: Point2D = getTransformedPointForContainPoint(
 			{

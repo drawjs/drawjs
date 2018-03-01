@@ -67,7 +67,7 @@ export default class Point extends Cell {
 		ctx.restore()
 	}
 
-	public containPoint( x, y ) {
+	public contain( x, y ) {
 		// const res = isInstancePathContainPointTransformed( x, y, this )
 
 		const isContain = this.draw.ctx.isPointInPath(
