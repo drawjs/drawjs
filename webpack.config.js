@@ -27,6 +27,7 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
+			draw: path.resolve( __dirname, './src/draw' ),
 			model: path.resolve( __dirname, './src/model' ),
 			shape: path.resolve( __dirname, './src/shape' ),
 			util: path.resolve( __dirname, './src/util' ),

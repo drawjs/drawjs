@@ -1,6 +1,7 @@
 import Graph from "../Graph"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints";
+import getters from "../../store/draw/getters";
 const { max, min } = Math
 
 export default class RectContainer {
@@ -93,7 +94,7 @@ export default class RectContainer {
 	}
 
 	render() {
-		const { ctx } = this.target.draw
+		const ctx = getters.ctx
 		const path: Path2D = connectPolygonPoints( this.points )
 
 		ctx.save()

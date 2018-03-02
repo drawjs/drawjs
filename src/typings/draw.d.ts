@@ -3,7 +3,9 @@
  */
 interface DrawStoreWithoutInstance {
 	activePanelId: string
-	panels: DrawStorePanelWithoutInstance[]
+	panels: DrawStorePanelWithoutInstance[],
+	cellList: any[],
+	canvas: HTMLCanvasElement
 }
 
 interface DrawStorePanelWithoutInstance {
@@ -31,7 +33,7 @@ interface DrawStoreElementInstance
 	extends DrawStoreElementWithoutInstance {}
 
 interface DrawStore extends DrawStoreWithoutInstance {
-	panels: DrawStorePanel[]
+	panels: DrawStorePanel[],
 }
 
 interface DrawStorePanel extends DrawStorePanelWithoutInstance {

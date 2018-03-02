@@ -3,18 +3,21 @@ import RectContainer from "./RectContainer"
 import getRectVertices from "util/geometry/getRectVertices"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
-import coupleRotatingCell from "../../mixin/coupleRotatingCell"
+import coupleShouldRotateCell from "../../mixin/coupleShouldRotateCell"
 import coupleSelectCell from "../../mixin/coupleSelectCell"
 import { getPointAngleToOrigin } from "../../util/index"
-import { RADIAN_TO_DEGREE, ROTATION_ARROW_SRC } from '../../store/constant/index';
+import {
+	RADIAN_TO_DEGREE,
+	ROTATION_ARROW_SRC
+} from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
+import getters from "../../store/draw/getters"
 
 export default class RotationArrow extends Cell {
 	/**
 	 * Graph target to rotate
 	 */
 	target: any
-
 
 	img: HTMLImageElement = new Image()
 
@@ -50,6 +53,13 @@ export default class RotationArrow extends Cell {
 		return res
 	}
 
+	get shouldRender(): boolean {
+		const { isSelected } = this.target
+		const { shouldRotate } = this.target
+		const res: boolean = isSelected || shouldRotate
+		return res
+	}
+
 	/**
 	 * Space between icon and graph the topo of target's rect container
 	 */
@@ -80,40 +90,55 @@ export default class RotationArrow extends Cell {
 
 	constructor( props ) {
 		super( props )
+
+		const self = this
+
 		this.target = props.target
 
 		this.img.src = ROTATION_ARROW_SRC
+		this.img.onload = function() {
+			self.render()
+		}
 	}
 
 	render() {
-		const { ctx } = this.draw
-		const { SIZE } = RotationArrow
-		ctx.save()
-		ctx.transform( 1, 0, 0, 1, this.rotatedCenter.x, this.rotatedCenter.y )
-		ctx.drawImage(
-			this.img,
-			-SIZE / 2,
-			-SIZE / 2,
-			SIZE,
-			SIZE
-		)
-		ctx.restore()
+		if ( this.shouldRender ) {
+			const ctx: CanvasRenderingContext2D = getters.ctx
+			const { SIZE } = RotationArrow
+			ctx.save()
+			ctx.transform(
+				1,
+				0,
+				0,
+				1,
+				this.rotatedCenter.x,
+				this.rotatedCenter.y
+			)
+			ctx.drawImage( this.img, -SIZE / 2, -SIZE / 2, SIZE, SIZE )
+			ctx.restore()
+		}
 	}
 
 	contain( x: number, y: number ) {
-		const res: boolean = this.draw.ctx.isPointInPath( this.path, x, y )
+		const res: boolean = getters.ctx.isPointInPath( this.path, x, y )
 		return res
 	}
 
 	// ******* Drag ******
+	public handleStartDrag( event ) {
+		// const { isSelected } = this.target
+		// coupleShouldRotateCell( this.target, true )
+		// coupleSelectCell( this.target, false )
+		// this.render()
+	}
 	public _updateDrag( event ) {
 		const { x: eventX, y: eventY }: Point2D = event
-		const x = eventX - this.draw.canvasLeft
-		const y = eventY - this.draw.canvasTop
+		const x = eventX - getters.canvasLeft
+		const y = eventY - getters.canvasTop
 
 		const { x: prevEventX, y: prevEventY } = this._prevDraggingPoint
-		const prevX = prevEventX - this.draw.canvasLeft
-		const prevY = prevEventY - this.draw.canvasTop
+		const prevX = prevEventX - getters.canvasLeft
+		const prevY = prevEventY - getters.canvasTop
 
 		const {
 			x: centerX_r,
@@ -127,7 +152,6 @@ export default class RotationArrow extends Cell {
 				y: prevY - centerY_r
 			} )
 
-
 		const radian = this.radian + deltaRadian
 
 		// console.log( radian * RADIAN_TO_DEGREE )
@@ -135,6 +159,14 @@ export default class RotationArrow extends Cell {
 		this._updatePrevDraggingPoint( event )
 
 		this.target.angle = radian * RADIAN_TO_DEGREE
+
+		this.draw.render()
+	}
+	public handleStopDrag( event ) {
+		const { shouldRotate } = this.target
+
+		// coupleSelectCell( this.target, true )
+		// coupleShouldRotateCell( this.target, false )
 
 		this.draw.render()
 	}

@@ -12,7 +12,7 @@ export default function( x: number, y: number, instance: any, path?: Path2D ) {
 		instance
 	)
 
-	const isContain = instance.draw.ctx.isPointInPath(
+	const isContain = instance.getters.ctx.isPointInPath(
 		path,
 		transformedPoint.x,
 		transformedPoint.y

@@ -6,6 +6,7 @@ import { getRotatedPoint, log } from "util/index"
 import Size from "mixin/Size"
 import { coupleSizingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
 import { getTransformedPointForContainPoint } from "shared/index"
+import getters from "../../store/draw/getters";
 
 export default abstract class SizePoint extends Point {
 	public type: string = SIZE_POINT
@@ -61,7 +62,7 @@ export default abstract class SizePoint extends Point {
 	 * Override
 	 */
 	public render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 
 		ctx.save()
 
@@ -130,8 +131,8 @@ export default abstract class SizePoint extends Point {
 		this._hideOtherSizePointsExceptCurrent()
 
 		const newPoint: Point2D = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 
 		this.size( newPoint )
@@ -154,7 +155,7 @@ export default abstract class SizePoint extends Point {
 	public contain( x, y ) {
 		// const res = isInstancePathContainPointTransformed( x, y, this )
 
-		// const isContain = this.draw.ctx.isPointInPath(
+		// const isContain = getters.ctx.isPointInPath(
 		// 	this.path,
 		// 	x,
 		// 	y

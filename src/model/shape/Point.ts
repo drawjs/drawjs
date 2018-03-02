@@ -5,6 +5,7 @@ import { getTransformedPointForContainPoint, isInstancePathContainPointTransform
 import { transformCenterPointForContext } from "mixin/index"
 import { POINT } from 'store/constant/cellType';
 import { log } from 'util/index';
+import getters from "../../store/draw/getters";
 
 export default class Point extends Cell {
 	public type: string = POINT
@@ -47,7 +48,7 @@ export default class Point extends Cell {
 	}
 
 	public render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 
 		ctx.save()
 
@@ -70,7 +71,7 @@ export default class Point extends Cell {
 	public contain( x, y ) {
 		// const res = isInstancePathContainPointTransformed( x, y, this )
 
-		const isContain = this.draw.ctx.isPointInPath(
+		const isContain = getters.ctx.isPointInPath(
 			this.path,
 			x,
 			y
@@ -84,8 +85,8 @@ export default class Point extends Cell {
 		const zoom = this.draw.zoomPan.zoom
 
 		let newPoint: Point2D = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 
 		newPoint = this.draw.zoomPan.transformPointReversely( newPoint )

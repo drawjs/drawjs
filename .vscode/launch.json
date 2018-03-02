@@ -9,7 +9,8 @@
 			"request": "launch",
 			"name": "Launch Chrome ",
 			"port": 9222,
-			"url": "http://localhost:8600/build/__test__/polygon/index.html",
+			// "url": "http://localhost:8600/build/__test__/polygon/index.html",
+			"url": "http://localhost:8600/build/__test__/comprehensive/index.html",
 			"pathMapping": {
 				"/": "${workspaceFolder}"
 			},

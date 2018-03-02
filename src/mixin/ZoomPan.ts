@@ -1,6 +1,7 @@
 import Draw from "Draw"
 import { isMouseMiddleClick, log } from "util/index"
 import * as _ from "lodash"
+import getters from "../store/draw/getters";
 
 export default class ZoomPan {
 	public draw: Draw
@@ -62,8 +63,8 @@ export default class ZoomPan {
 		}
 		if ( !_.isNil( this._mouseEvent ) ) {
 			focusZCT = {
-				x: this._mouseEvent.x - this.draw.canvasLeft,
-				y: this._mouseEvent.y - this.draw.canvasTop
+				x: this._mouseEvent.x - getters.canvasLeft,
+				y: this._mouseEvent.y - getters.canvasTop
 			}
 		}
 		if ( _.isNil( this._mouseEvent ) ) {
@@ -127,8 +128,8 @@ export default class ZoomPan {
 	}
 	get canvasNotZoomedPannedCenterPoint(): Point2D{
 		const res = {
-			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2
+			x: getters.canvas.width / 2,
+			y: getters.canvas.height / 2
 		}
 		return res
 	}
@@ -171,7 +172,7 @@ export default class ZoomPan {
 	public transformCenterPointForContext( point, keepRatio: boolean = false ) {
 		const transformedPoint: Point2D= this.transformPoint( point )
 		const zoom = ! keepRatio ? this.zoom : 1
-		this.draw.ctx.setTransform(
+		getters.ctx.setTransform(
 			zoom,
 			0,
 			0,
@@ -205,20 +206,20 @@ export default class ZoomPan {
 	}
 
 	public bindEvents() {
-		this.draw.canvas.addEventListener(
+		getters.canvas.addEventListener(
 			"mousewheel",
 			this._mousewheelListener.bind( this )
 		)
-		this.draw.canvas.addEventListener(
+		getters.canvas.addEventListener(
 			"mousedown",
 			this._mousedownListener.bind( this )
 		)
-		// this.draw.canvas.addEventListener('mousemove', this._mousemoveListener.bind(this))
+		// getters.canvas.addEventListener('mousemove', this._mousemoveListener.bind(this))
 		document.addEventListener(
 			"mousemove",
 			this._mousemoveListener.bind( this )
 		)
-		this.draw.canvas.addEventListener(
+		getters.canvas.addEventListener(
 			"mouseup",
 			this._mouseupListener.bind( this )
 		)
@@ -270,8 +271,8 @@ export default class ZoomPan {
 
 	public _updateTmpPointForPan( event ) {
 		this._tmpPointForPan = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 	}
 
@@ -279,8 +280,8 @@ export default class ZoomPan {
 		this._updateThePrevious()
 
 		const focusPoint: Point2D = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 
 		const deltaX = focusPoint.x - this._tmpPointForPan.x

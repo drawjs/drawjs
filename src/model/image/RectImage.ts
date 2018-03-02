@@ -2,6 +2,7 @@ import Rect from "model/shape/Rect"
 import { RECT_IMAGE } from "store/constant/cellType"
 import { transformCenterPointForContext } from "mixin/index"
 import { DEGREE_TO_RADIAN } from "store/constant/index"
+import getters from "../../store/draw/getters";
 
 export default class RectImage extends Rect {
 	public type: string = RECT_IMAGE
@@ -15,7 +16,7 @@ export default class RectImage extends Rect {
 	}
 
 	public render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 
 		ctx.save()
 		transformCenterPointForContext(

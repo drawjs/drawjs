@@ -4,8 +4,12 @@ import RectContainer from "model/tool/RectContainer"
 import translatePoints from "util/geometry/translatePoints"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints";
+import { POLYGON } from 'store/constant/cellType';
+import getters from "../../store/draw/getters";
 
 export default class Polygon extends Graph {
+
+	type = POLYGON
 
 	basicPoints: Point2D[] = []
 	// rectContainer: RectContainer
@@ -28,8 +32,6 @@ export default class Polygon extends Graph {
 		super( props )
 
 		this.basicPoints = props.points
-		// this.rectContainer = new RectContainer( this.points, this )
-
 	}
 
 	translate( x: number, y: number ) {
@@ -37,7 +39,7 @@ export default class Polygon extends Graph {
 	}
 
 	render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		super.render()
 
 		ctx.save()
@@ -49,7 +51,7 @@ export default class Polygon extends Graph {
 	}
 
 	contain( x: number, y: number ) {
-		const res: boolean = this.draw.ctx.isPointInPath( this.path, x, y )
+		const res: boolean = getters.ctx.isPointInPath( this.path, x, y )
 
 		return res
 	}

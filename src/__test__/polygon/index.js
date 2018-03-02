@@ -22,7 +22,8 @@ draw.addElement( "polygon", {
 	width : 100,
 	height: 100,
 	angle : 10,
-	points: polygon()
+	points: polygon(),
+	rotatable: true
 } )
 
 draw.render()

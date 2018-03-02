@@ -12,6 +12,7 @@ import Cell from "model/Cell"
 import { MINI_MAP } from "store/constant/cellType"
 import excludingTypesForMiniMapElementsBounds from "store/exclude/excludingTypesForMiniMapElementsBounds"
 import { coupleZoomPanSetPanPoint } from "mixin/coupleZoomPanSet"
+import getters from "../../store/draw/getters";
 
 export default class MiniMap extends Cell {
 	public draw: Draw
@@ -48,12 +49,12 @@ export default class MiniMap extends Cell {
 
 	get elementsBounds(): RectBounds {
 		let minLeft: number = 0
-		let maxRight: number = this.draw.canvas.width
+		let maxRight: number = getters.canvas.width
 		let minTop: number = 0
-		let maxBottom: number = this.draw.canvas.height
+		let maxBottom: number = getters.canvas.height
 		let res: RectBounds
 
-		this.draw.cellList.filter( isInclude ).map( get )
+		getters.storeCellList.filter( isInclude ).map( get )
 
 		function get( cell ) {
 			minLeft = getCellMin( "__left", minLeft )
@@ -108,14 +109,14 @@ export default class MiniMap extends Cell {
 	get scopeRect(): RectBounds {
 		const zoom = this.canvasScopeZoom
 		const center: Point2D = {
-			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2
+			x: getters.canvas.width / 2,
+			y: getters.canvas.height / 2
 		}
 		const res = {
-			left  : center.x - this.draw.canvas.width / 2 * zoom,
-			top   : center.x - this.draw.canvas.height / 2 * zoom,
-			width : this.draw.canvas.width * zoom,
-			height: this.draw.canvas.height * zoom
+			left  : center.x - getters.canvas.width / 2 * zoom,
+			top   : center.x - getters.canvas.height / 2 * zoom,
+			width : getters.canvas.width * zoom,
+			height: getters.canvas.height * zoom
 		}
 		return res
 	}
@@ -128,8 +129,8 @@ export default class MiniMap extends Cell {
 
 		const b = this.elementsBounds
 		const center: Point2D = {
-			x: this.draw.canvas.width / 2,
-			y: this.draw.canvas.height / 2
+			x: getters.canvas.width / 2,
+			y: getters.canvas.height / 2
 		}
 
 		const leftZoom = Math.abs( ( center.x - b.left ) / center.x )
@@ -150,16 +151,16 @@ export default class MiniMap extends Cell {
 
 	get deltaXForAutoZoom(): number {
 		const res =
-			( this.sizeRate * this.draw.canvas.width -
-				this.transformRatio * this.draw.canvas.width ) /
+			( this.sizeRate * getters.canvas.width -
+				this.transformRatio * getters.canvas.width ) /
 			2
 		return res
 	}
 
 	get deltaYForAutoZoom(): number {
 		const res =
-			( this.sizeRate * this.draw.canvas.height -
-				this.transformRatio * this.draw.canvas.height ) /
+			( this.sizeRate * getters.canvas.height -
+				this.transformRatio * getters.canvas.height ) /
 			2
 		return res
 	}
@@ -167,10 +168,10 @@ export default class MiniMap extends Cell {
 	constructor( props ) {
 		super( props )
 
-		this.width = this.draw.canvas.width * this.sizeRate
-		this.height = this.draw.canvas.height * this.sizeRate
+		this.width = getters.canvas.width * this.sizeRate
+		this.height = getters.canvas.height * this.sizeRate
 		this.left = 0
-		this.top = this.draw.canvas.height - this.height
+		this.top = getters.canvas.height - this.height
 		this.viewBox = new ViewBox( {
 			draw   : this.draw,
 			miniMap: this
@@ -183,7 +184,7 @@ export default class MiniMap extends Cell {
 	 */
 	public render() {
 		if ( isNotNil( this.imageData ) ) {
-			this.draw.ctx.putImageData( this.imageData, this.left, this.top )
+			getters.ctx.putImageData( this.imageData, this.left, this.top )
 		}
 	}
 
@@ -192,7 +193,7 @@ export default class MiniMap extends Cell {
 	 */
 	public renderMainToGetImageData() {
 		this.renderMain()
-		this.imageData = this.draw.ctx.getImageData(
+		this.imageData = getters.ctx.getImageData(
 			this.left,
 			this.top,
 			this.width,
@@ -213,7 +214,7 @@ export default class MiniMap extends Cell {
 
 		this.isRendering = false
 		function _renderContainer() {
-			const ctx = self.draw.ctx
+			const ctx = getters.ctx
 			ctx.save()
 
 			ctx.translate( self.originX, self.originY )
@@ -228,7 +229,7 @@ export default class MiniMap extends Cell {
 		}
 
 		function _renderCanvasMain() {
-			self.draw.cellList.map( renderElement )
+			getters.storeCellList.map( renderElement )
 		}
 
 		function _renderGrid() {
@@ -237,7 +238,7 @@ export default class MiniMap extends Cell {
 				y: self.top
 			}
 			renderGridMiniMap( {
-				canvas                  : self.draw.canvas,
+				canvas                  : getters.canvas,
 				width                   : self.width,
 				height                  : self.height,
 				origin,
@@ -259,7 +260,7 @@ export default class MiniMap extends Cell {
 			y: point.y * this.transformRatio + this.top + this.deltaYForAutoZoom
 		}
 
-		this.draw.ctx.setTransform(
+		getters.ctx.setTransform(
 			this.transformRatio,
 			0,
 			0,
@@ -272,9 +273,9 @@ export default class MiniMap extends Cell {
 	public contain( x, y ) {
 		const self = this
 
-		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
+		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
 		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			this.draw.canvasCenterPoint
+			getters.canvasCenterPoint
 		)
 
 		const deltaX =
@@ -286,7 +287,7 @@ export default class MiniMap extends Cell {
 
 		const transformedPoint = getTransformedPointForContainPoint()
 
-		const isContain = this.draw.ctx.isPointInPath(
+		const isContain = getters.ctx.isPointInPath(
 			this.path,
 			transformedPoint.x,
 			transformedPoint.y
@@ -347,7 +348,7 @@ class ViewBox extends Cell {
 	}
 
 	public renderByMiniMap() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		let zoom: number = this.draw.zoomPan.zoom * this.miniMap.canvasScopeZoom
 
 		ctx.save()
@@ -376,9 +377,9 @@ class ViewBox extends Cell {
 	public contain( x, y ) {
 		const self = this
 
-		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
+		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
 		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			this.draw.canvasCenterPoint
+			getters.canvasCenterPoint
 		)
 
 		const deltaX =
@@ -390,7 +391,7 @@ class ViewBox extends Cell {
 
 		const transformedPoint = getTransformedPointForContainPoint()
 
-		const isContain = this.draw.ctx.isPointInPath(
+		const isContain = getters.ctx.isPointInPath(
 			this.path,
 			transformedPoint.x,
 			transformedPoint.y
@@ -422,9 +423,9 @@ class ViewBox extends Cell {
 	}
 
 	transformPoint( point: Point2D ) {
-		const staticBasicOriginalCanvasCenterPoint = this.draw.canvasCenterPoint
+		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
 		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			this.draw.canvasCenterPoint
+			getters.canvasCenterPoint
 		)
 
 		const deltaX =
@@ -446,13 +447,13 @@ class ViewBox extends Cell {
 	// ******* Pan view box { ******
 	public _updateDrag( event ) {
 		const pep: Point2D = {
-			x: this._prevDraggingPoint.x - this.draw.canvasLeft,
-			y: this._prevDraggingPoint.y - this.draw.canvasTop,
+			x: this._prevDraggingPoint.x - getters.canvasLeft,
+			y: this._prevDraggingPoint.y - getters.canvasTop,
 		}
 		// curernt event point
 		const cep: Point2D = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop,
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop,
 		}
 
 		const deltaX = ( pep.x - cep.x ) / this.miniMap.sizeRate * this.miniMap.canvasScopeZoom
@@ -470,14 +471,14 @@ class ViewBox extends Cell {
 
 	public handleMouseMove( event ) {
 		if ( this._isDragging || this.contain(
-			event.x - this.draw.canvasLeft,
-			event.y - this.draw.canvasTop
+			event.x - getters.canvasLeft,
+			event.y - getters.canvasTop
 		) ) {
-			this.draw.canvas.style.cursor = "-webkit-grab"
+			getters.canvas.style.cursor = "-webkit-grab"
 			return
 		}
 		if ( ! this._isDragging ) {
-			this.draw.canvas.style.cursor = "default"
+			getters.canvas.style.cursor = "default"
 			return
 		}
 	}

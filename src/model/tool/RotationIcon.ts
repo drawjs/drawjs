@@ -5,13 +5,14 @@ import Cell from "model/Cell"
 import { ROTATE_ICON } from "store/constant/cellType"
 import { getPointAngleToOrigin, log } from "util/index"
 import {
-	coupleRotatingCell,
+	// coupleRotatingCell,
 	coupleSelectCell,
 	transformCenterPointForContext
 } from "mixin/index"
 import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant/index"
 import { getTransformedPointForContainPoint } from "shared/index"
+import getters from "../../store/draw/getters";
 
 export default class RotationIcon extends Cell {
 	public type = ROTATE_ICON
@@ -73,7 +74,7 @@ export default class RotationIcon extends Cell {
 
 	public renderByInstance() {
 		const self = this
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		ctx.save()
 
 		transformCenterPointForContext(
@@ -112,7 +113,7 @@ export default class RotationIcon extends Cell {
 
 		const deltaY = getDeltaY()
 
-		const isContain = this.draw.ctx.isPointInPath( this.path, transformedReverselyPoint.x, transformedReverselyPoint.y - deltaY )
+		const isContain = getters.ctx.isPointInPath( this.path, transformedReverselyPoint.x, transformedReverselyPoint.y - deltaY )
 
 		return isContain
 
@@ -138,7 +139,7 @@ export default class RotationIcon extends Cell {
 	// ******* Drag ******
 	public handleStartDrag( event ) {
 		if ( this.instance.isSelected ) {
-			coupleRotatingCell( this.instance, true )
+			// coupleRotatingCell( this.instance, true )
 			coupleSelectCell( this.instance, false )
 		}
 	}
@@ -159,12 +160,12 @@ export default class RotationIcon extends Cell {
 			getPointAngleToOrigin( {
 				x:
 					event.x -
-					this.draw.canvasLeft -
+					getters.canvasLeft -
 					this.originX -
 					panPoint.x * zoom,
 				y:
 					event.y -
-					this.draw.canvasTop -
+					getters.canvasTop -
 					this.originY -
 					panPoint.y * zoom
 			} ) +
@@ -178,7 +179,7 @@ export default class RotationIcon extends Cell {
 	}
 	public handleStopDrag( event ) {
 		if ( this.instance.isRotating ) {
-			coupleRotatingCell( this.instance, false )
+			// coupleRotatingCell( this.instance, false )
 			coupleSelectCell( this.instance, true )
 			this.draw.render()
 		}

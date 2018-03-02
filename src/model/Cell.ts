@@ -3,6 +3,8 @@ import { generateUniqueId, isNotNil } from "util/index"
 import Draw from "Draw"
 import * as constant from "store/constant/index"
 import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
+import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
+import getters from "../store/draw/getters";
 
 export default abstract class Cell {
 	public id: string = generateUniqueId()
@@ -78,29 +80,29 @@ export default abstract class Cell {
 
 		this.draw = draw
 
-		this.draw.cellList.push( this )
+		ADD_ELEMENT_TO_CELL_LIST( this )
 
 		this.bindEvents()
 	}
 
 	private bindEvents() {
-		this.draw.canvas.removeEventListener(
+		getters.canvas.removeEventListener(
 			"mousedown",
 			this._mousedownListener
 		)
-		this.draw.canvas.addEventListener( "mousedown", this._mousedownListener )
+		getters.canvas.addEventListener( "mousedown", this._mousedownListener )
 
-		this.draw.canvas.removeEventListener(
+		getters.canvas.removeEventListener(
 			"mousemove",
 			this._mousemoveListener
 		)
-		this.draw.canvas.addEventListener( "mousemove", this._mousemoveListener )
+		getters.canvas.addEventListener( "mousemove", this._mousemoveListener )
 
-		this.draw.canvas.removeEventListener( "mouseup", this._mouseupListener )
-		this.draw.canvas.addEventListener( "mouseup", this._mouseupListener )
+		getters.canvas.removeEventListener( "mouseup", this._mouseupListener )
+		getters.canvas.addEventListener( "mouseup", this._mouseupListener )
 
-		this.draw.canvas.removeEventListener( "click", this._clickListener )
-		this.draw.canvas.addEventListener( "click", this._clickListener )
+		getters.canvas.removeEventListener( "click", this._clickListener )
+		getters.canvas.addEventListener( "click", this._clickListener )
 	}
 
 	public _mousedownListener = event => {
@@ -172,35 +174,4 @@ export default abstract class Cell {
 	public handleStopDrag( event ) {}
 	// ******* # Drag ******
 	// ******* Interaction ******
-
-	// ******* Transform ******
-	public rotatePoint(
-		point: Point2D,
-		angle: number,
-		centerPoint: Point2D = { x: 0, y: 0 }
-	) {
-		if ( angle === 0 ) {
-			return point
-		}
-
-		let resPoint: Point2D = _.cloneDeep( point )
-		const alpha = angle * constant.DEGREE_TO_RADIAN
-
-		const relativePoint = {
-			x: resPoint.x - centerPoint.x,
-			y: resPoint.y - centerPoint.y
-		}
-
-		resPoint = {
-			x:
-				relativePoint.x * Math.cos( alpha ) -
-				relativePoint.y * Math.sin( alpha ),
-			y:
-				relativePoint.x * Math.sin( alpha ) +
-				relativePoint.y * Math.cos( alpha )
-		}
-
-		return resPoint
-	}
-	// ******* Transform ******
 }

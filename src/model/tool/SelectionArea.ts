@@ -9,6 +9,7 @@ import {
 } from "mixin/index"
 import selectionExcludingCellTypes from "store/exclude/selectionExcludingCellTypes"
 import { log } from "util/index"
+import getters from 'store/draw/getters';
 
 export default class SelectionArea extends Geometry {
 	public startPoint: Point2D
@@ -57,7 +58,7 @@ export default class SelectionArea extends Geometry {
 
 	get selectedCells(): Cell[] {
 		let res: Cell[] = []
-		res = this.draw.cellList.filter( isSelected )
+		res = getters.storeCellList.filter( isSelected )
 
 		function isSelected( cell ): boolean {
 			return cell.isSelected && cell.isSelected === true
@@ -69,7 +70,7 @@ export default class SelectionArea extends Geometry {
 	get cellsInSelectionArea(): Cell[] {
 		const self = this
 		let res: Cell[] = []
-		res = this.draw.cellList.filter( isCellInSelectionArea )
+		res = getters.storeCellList.filter( isCellInSelectionArea )
 
 		function isCellInSelectionArea( props ): boolean {
 			const { left, top, width, height } = props
@@ -80,20 +81,20 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public _initialize(): void {
-		this.draw.canvas.removeEventListener(
+		getters.canvas.removeEventListener(
 			"mousedown",
 			this._mousedownListener
 		)
-		this.draw.canvas.addEventListener( "mousedown", this._mousedownListener )
+		getters.canvas.addEventListener( "mousedown", this._mousedownListener )
 
-		this.draw.canvas.removeEventListener(
+		getters.canvas.removeEventListener(
 			"mousemove",
 			this._mousemoveListener
 		)
-		this.draw.canvas.addEventListener( "mousemove", this._mousemoveListener )
+		getters.canvas.addEventListener( "mousemove", this._mousemoveListener )
 
-		this.draw.canvas.removeEventListener( "mouseup", this._mouseupListener )
-		this.draw.canvas.addEventListener( "mouseup", this._mouseupListener )
+		getters.canvas.removeEventListener( "mouseup", this._mouseupListener )
+		getters.canvas.addEventListener( "mouseup", this._mouseupListener )
 	}
 
 	public _mousedownListener = event => {
@@ -137,16 +138,16 @@ export default class SelectionArea extends Geometry {
 
 	public startSelect( event ): void {
 		this.startPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 		this.draw.render()
 	}
 
 	public selecting( event ): void {
 		this.endPoint = {
-			x: event.x - this.draw.canvasLeft,
-			y: event.y - this.draw.canvasTop
+			x: event.x - getters.canvasLeft,
+			y: event.y - getters.canvasTop
 		}
 		this.draw.render()
 	}
@@ -229,7 +230,7 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public _unselectCells() {
-		this.draw.cellList.map( unselectCell )
+		getters.storeCellList.map( unselectCell )
 
 		function unselectCell( cell ) {
 			coupleSelectCell( cell, false )
@@ -245,7 +246,7 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public render(): void {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		if ( !_.isNil( this.startPoint ) && !_.isNil( this.endPoint ) ) {
 			ctx.save()
 

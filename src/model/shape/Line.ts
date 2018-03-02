@@ -6,6 +6,7 @@ import { defaultPathExandingValue } from "store/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
 import { transformCenterPointForContext } from 'mixin/index';
+import getters from "../../store/draw/getters";
 
 export default class Line extends Graph {
 	public pointStart: Point2D
@@ -216,7 +217,7 @@ export default class Line extends Graph {
 	}
 
 	public render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		super.render()
 
 		ctx.save()

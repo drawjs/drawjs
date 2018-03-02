@@ -17,6 +17,7 @@ import { getRotatedPoint } from "util/index"
 import * as constant from "store/constant/index"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from 'shared/index';
 import { transformCenterPointForContext } from "mixin/index";
+import getters from "../../store/draw/getters";
 
 export default class Rect extends Graph {
 	public _rotationIcon: RotationIcon
@@ -114,7 +115,7 @@ export default class Rect extends Graph {
 	}
 
 	public render() {
-		const ctx = this.draw.ctx
+		const ctx = getters.ctx
 		super.render()
 
 		ctx.save()
@@ -141,7 +142,7 @@ export default class Rect extends Graph {
 	}
 
 	public contain( x, y ): boolean {
-		const res = this.draw.ctx.isPointInPath( this.path, x, y )
+		const res = getters.ctx.isPointInPath( this.path, x, y )
 		return res
 	}
 

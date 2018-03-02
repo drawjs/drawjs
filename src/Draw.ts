@@ -10,11 +10,9 @@ import {
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
 } from "store/constant/index"
-import * as a from "store/constant/action"
 import { ROTATE_ICON } from "store/constant/cellType"
 import {
 	getInstanceByElementWithoutInstance,
-	updateStoreElementsByTheirInstances,
 	coupleUpdateZoomPanZoom
 } from "mixin/index"
 import ZoomPan from "mixin/ZoomPan"
@@ -23,29 +21,25 @@ import EventKeyboard from "mixin/EventKeyboard"
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/map/cellTypeClassMap"
-import { generateUniqueId, log } from "util/index"
+import { log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
 import { SelectionArea } from "model/tool/index"
 import MiniMap from "./model/tool/MiniMap"
 import renderElement from "./shared/renderElement"
 import { renderGridCanvas } from "shared/index"
+import Selector from "./model/tool/Selector"
+import getters from "store/draw/getters"
+import {
+	ADD_ELEMENT,
+	MODIFY_ACTIVE_PANEL_ID,
+	MODIFY_STORE,
+	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES,
+	UPDATE_CANVAS
+} from "store/draw/actions"
 
 const ajv = new Ajv()
 
 export default class Draw {
-	public store: DrawStore = {
-		activePanelId: null,
-
-		panels: [
-			{
-				id      : this.generateUniqueId(),
-				name    : DRAW_STORE_PANEL_DEFAULT_NAME,
-				elements: []
-			}
-		]
-	}
-	public canvas: HTMLCanvasElement
-
 	/**
 	 * event
 	 */
@@ -60,119 +54,29 @@ export default class Draw {
 	public _selectionAreaInstance: SelectionArea
 
 	/**
+	 * Selector
+	 */
+	selector: Selector
+
+	/**
 	 * Mini map
 	 */
 	public miniMap: MiniMap
 
-	/**
-	 * Cells collection for sorting visual level,
-	 * the more end, the more top
-	 */
-	public cellList: Cell[] = []
-
 	public onGraphClick: Function
 	public onGraphHover: Function
 
-	get storeActivePanelId(): string {
-		return !_.isNil( this.store.activePanelId ) ?
-			this.store.activePanelId :
-			this.store.panels.length > 0 ? this.store.panels[ 0 ].id : null
-	}
-
-	get storeActiveElements(): DrawStoreElement[] {
-		return this.getStoreElementsByPanelId( this.storeActivePanelId )
-	}
-
-	get storeElementsIds(): string[] {
-		let ids: string[]
-		let cachedElements: DrawStoreElement[] = []
-
-		if ( _.isNil( this.store ) || _.isNil( this.store.panels ) ) {
-			return []
-		}
-
-		this.store.panels.map( pushElementsToCachedElement )
-
-		ids = cachedElements.map( getId )
-
-		function pushElementsToCachedElement( panel: DrawStorePanel ) {
-			cachedElements = [ ...cachedElements, ...panel.elements ]
-		}
-
-		function getId( element: DrawStoreElement ): string {
-			return element.id
-		}
-
-		return ids
-	}
-
-	get storePanels(): DrawStorePanel[] {
-		return this.store.panels
-	}
-
-	get __storeIgnoreInstance__(): DrawStore {
-		let store: DrawStore = _.cloneDeep( this.store )
-
-		store.panels.map( mapPanelElements )
-
-		function mapPanelElements( panel, panelIndex ) {
-			panel.elements.map( getDelete__Instance__( panelIndex ) )
-		}
-
-		function getDelete__Instance__( panelIndex ) {
-			return ( element, elementIndex ) => {
-				delete store.panels[ panelIndex ].elements[ elementIndex ]
-					.__instance__
-			}
-		}
-
-		return store
-	}
-
-	get __storeActiveElementsInstances__(): DrawStoreElementInstance[] {
-		function get__instance__( element ) {
-			return element.__instance__
-		}
-		return this.storeActiveElements.map( get__instance__ )
-	}
-
-	get canvasLeft(): number {
-		return this.canvas.getBoundingClientRect().left
-	}
-	get canvasTop(): number {
-		return this.canvas.getBoundingClientRect().top
-	}
-	get canvasCenterPoint(): Point2D {
-		const res = {
-			x: this.canvas.width / 2,
-			y: this.canvas.height / 2
-		}
-		return res
-	}
-	get ctx(): CanvasRenderingContext2D {
-		const res = <CanvasRenderingContext2D>this.canvas.getContext( "2d" )
-		return res
-	}
-
 	constructor( canvas: HTMLCanvasElement ) {
-		this.canvas = canvas
+		UPDATE_CANVAS( canvas )
 
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
 		this.miniMap = new MiniMap( { draw: this } )
 
-		this.initialize()
-	}
+		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
 
-	/****** initialization and render ******/
-	private initialize() {
-		this.dispatch( a.MODIFY_ACTIVE_PANEL_ID, this.storeActivePanelId )
-
-		this._initializeSelectionArea()
-	}
-
-	private _initializeSelectionArea(): void {
-		this._selectionAreaInstance = new SelectionArea( { draw: this } )
+		// this._selectionAreaInstance = new SelectionArea( { draw: this } )
+		this.selector = new Selector( { draw: this } )
 	}
 
 	public render() {
@@ -194,125 +98,22 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
-		this.cellList.map( renderElement )
+		getters.storeCellList.map( renderElement )
 
 		// this.miniMap.render()
 	}
-
-	/****** initialization and render ******/
-
-	/****** store ******/
-	private getStoreElementsByPanelId( id: string ) {
-		const foundPanel = _.find( this.store.panels, { id } )
-		return !_.isNil( foundPanel ) ? foundPanel.elements : []
-	}
-
-	private dispatch(
-		actionName: string,
-		param1?: any,
-		param2?: any,
-		param3?: any
-	) {
-		let actionMethod: Function
-		const actionMethods = {
-			[ a.ADD_PANEL ]: ( name: string ): void => {
-				this.storePanels.push( {
-					id      : this.generateUniqueId(),
-					name,
-					elements: []
-				} )
-			},
-
-			[ a.ADD_ELEMENT ]: (
-				elementType: string,
-				setting: any,
-				panelId?: string
-			): void => {
-				const ElementClass = cellTypeClassMap[ elementType ]
-
-				if ( _.isNil( ElementClass ) ) {
-					console.log( `Type not found: "${elementType}"` )
-					return
-				}
-				const instance = new ElementClass( {
-					draw: this,
-					...setting
-				} )
-
-				const {
-					id,
-					type,
-					top,
-					left,
-					width,
-					height,
-					fill,
-					angle,
-					points,
-					draggable,
-					isSelected
-				}: {
-					id: string
-					type: string
-					top: number
-					left: number
-					width: number
-					height: number
-					fill: string
-					angle: number
-					points: Point2D[]
-					draggable: boolean
-					isSelected: boolean
-				} = setting
-
-				const wholeElement = {
-					id          : !_.isNil( id ) ? id : this.generateUniqueId(),
-					__instance__: instance,
-					type,
-					top,
-					left,
-					width,
-					height,
-					fill,
-					angle,
-					points,
-					draggable,
-					isSelected
-				}
-
-				if ( _.isNil( panelId ) ) {
-					this.storeActiveElements.push( wholeElement )
-				}
-
-				if ( !_.isNil( panelId ) ) {
-					this.getStoreElementsByPanelId( panelId ).push( wholeElement )
-				}
-			},
-
-			[ a.MODIFY_ACTIVE_PANEL_ID ]: ( panelId: string ): void => {
-				this.store.activePanelId = panelId
-			},
-
-			[ a.MODIFY_STORE ]: ( store: DrawStore ): void => {
-				this.store = store
-			}
-		}
-		actionMethod = actionMethods[ actionName ] || ( () => {} )
-		return actionMethod( param1, param2 )
-	}
-	/****** store ******/
 
 	/****** interaction ******/
 	public _getMostTopCell( event ): Cell {
 		const self = this
 		let resCell = null
-		this.cellList.map( getProperCell )
+		getters.storeCellList.map( getProperCell )
 
 		function getProperCell( Cell ) {
 			if (
 				Cell.contain(
-					event.x - self.canvasLeft,
-					event.y - self.canvasTop
+					event.x - getters.canvasLeft,
+					event.y - getters.canvasTop
 				)
 			) {
 				resCell = Cell
@@ -324,7 +125,8 @@ export default class Draw {
 	/****** interaction ******/
 
 	public addElement( type: string, setting: any, panelId?: string ) {
-		this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
+		// this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
+		ADD_ELEMENT( this, type, setting, panelId )
 	}
 
 	private attachDrawToElement( element ) {
@@ -332,7 +134,7 @@ export default class Draw {
 	}
 
 	private clearEntireCanvas() {
-		this.ctx.clearRect( 0, 0, this.canvas.width, this.canvas.height )
+		getters.ctx.clearRect( 0, 0, getters.canvas.width, getters.canvas.height )
 	}
 
 	private importData( dataString ) {
@@ -345,7 +147,7 @@ export default class Draw {
 				storeWithoutInstance
 			)
 
-			this.dispatch( a.MODIFY_STORE, storeWithoutInstanceCleanElements )
+			MODIFY_STORE( storeWithoutInstanceCleanElements )
 
 			addStoreElementsAndInstances( storeWithoutInstance )
 
@@ -409,24 +211,10 @@ export default class Draw {
 	}
 
 	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		const storeUpdatedElements = updateStoreElementsByTheirInstances(
-			this.store
+		UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
+		const dataString: string = JSON.stringify(
+			getters.clonedStoreWithoutCircularObjects
 		)
-		this.dispatch( a.MODIFY_STORE, storeUpdatedElements )
-		const dataString: string = JSON.stringify( this.__storeIgnoreInstance__ )
 		download( dataString, `${fileName}.json` )
-	}
-
-	private generateUniqueId() {
-		const self = this
-		let id: string = generateUniqueId()
-		id = checkAndUpdateIdIfNeeded( id )
-
-		function checkAndUpdateIdIfNeeded( id: string ) {
-			return _.includes( self.storeElementsIds, id ) ?
-				checkAndUpdateIdIfNeeded( generateUniqueId() ) :
-				id
-		}
-		return id
 	}
 }
