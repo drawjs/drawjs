@@ -98,7 +98,7 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
-		getters.storeCellList.map( renderElement )
+		getters.cellList.map( renderElement )
 
 		// this.miniMap.render()
 	}
@@ -107,7 +107,7 @@ export default class Draw {
 	public _getMostTopCell( event ): Cell {
 		const self = this
 		let resCell = null
-		getters.storeCellList.map( getProperCell )
+		getters.cellList.map( getProperCell )
 
 		function getProperCell( Cell ) {
 			if (

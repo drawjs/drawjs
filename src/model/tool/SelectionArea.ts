@@ -9,7 +9,7 @@ import {
 } from "mixin/index"
 import selectionExcludingCellTypes from "store/exclude/selectionExcludingCellTypes"
 import { log } from "util/index"
-import getters from 'store/draw/getters';
+import getters from "store/draw/getters"
 
 export default class SelectionArea extends Geometry {
 	public startPoint: Point2D
@@ -58,7 +58,7 @@ export default class SelectionArea extends Geometry {
 
 	get selectedCells(): Cell[] {
 		let res: Cell[] = []
-		res = getters.storeCellList.filter( isSelected )
+		res = getters.cellList.filter( isSelected )
 
 		function isSelected( cell ): boolean {
 			return cell.isSelected && cell.isSelected === true
@@ -70,7 +70,7 @@ export default class SelectionArea extends Geometry {
 	get cellsInSelectionArea(): Cell[] {
 		const self = this
 		let res: Cell[] = []
-		res = getters.storeCellList.filter( isCellInSelectionArea )
+		res = getters.cellList.filter( isCellInSelectionArea )
 
 		function isCellInSelectionArea( props ): boolean {
 			const { left, top, width, height } = props
@@ -81,16 +81,10 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public _initialize(): void {
-		getters.canvas.removeEventListener(
-			"mousedown",
-			this._mousedownListener
-		)
+		getters.canvas.removeEventListener( "mousedown", this._mousedownListener )
 		getters.canvas.addEventListener( "mousedown", this._mousedownListener )
 
-		getters.canvas.removeEventListener(
-			"mousemove",
-			this._mousemoveListener
-		)
+		getters.canvas.removeEventListener( "mousemove", this._mousemoveListener )
 		getters.canvas.addEventListener( "mousemove", this._mousemoveListener )
 
 		getters.canvas.removeEventListener( "mouseup", this._mouseupListener )
@@ -116,7 +110,8 @@ export default class SelectionArea extends Geometry {
 
 		if ( this._isPointOnUnselectedCell( event ) ) {
 			this._unselectCells()
-			const mostTopCell = this.draw._getMostTopCell( event )
+			const point = getters.getPoint( event )
+			const mostTopCell = getters.getMostTopCellFocus( point )
 			this._selectCell( mostTopCell )
 			return
 		}
@@ -161,7 +156,8 @@ export default class SelectionArea extends Geometry {
 	}
 
 	private _isPointOnEmptyArea( event ): boolean {
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 		return mostTopCell === null
 	}
 
@@ -170,17 +166,20 @@ export default class SelectionArea extends Geometry {
 	}
 
 	private _isPointOnUnselectedCell( event ): boolean {
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 		return mostTopCell && mostTopCell.isSelected === false
 	}
 
 	private _isPointOnSelectedCell( event ): boolean {
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 		return mostTopCell && mostTopCell.isSelected === true
 	}
 
 	private _isPointOnSelectionExcludingCell( event ): boolean {
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 		const res = _.includes( selectionExcludingCellTypes, mostTopCell.type )
 		return mostTopCell && res
 	}
@@ -230,7 +229,7 @@ export default class SelectionArea extends Geometry {
 	}
 
 	public _unselectCells() {
-		getters.storeCellList.map( unselectCell )
+		getters.cellList.map( unselectCell )
 
 		function unselectCell( cell ) {
 			coupleSelectCell( cell, false )

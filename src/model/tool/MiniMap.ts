@@ -54,7 +54,7 @@ export default class MiniMap extends Cell {
 		let maxBottom: number = getters.canvas.height
 		let res: RectBounds
 
-		getters.storeCellList.filter( isInclude ).map( get )
+		getters.cellList.filter( isInclude ).map( get )
 
 		function get( cell ) {
 			minLeft = getCellMin( "__left", minLeft )
@@ -229,7 +229,7 @@ export default class MiniMap extends Cell {
 		}
 
 		function _renderCanvasMain() {
-			getters.storeCellList.map( renderElement )
+			getters.cellList.map( renderElement )
 		}
 
 		function _renderGrid() {

@@ -5,6 +5,7 @@ import * as constant from "store/constant/index"
 import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
 import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
 import getters from "../store/draw/getters";
+import getters from 'store/core/getters';
 
 export default abstract class Cell {
 	public id: string = generateUniqueId()
@@ -110,7 +111,8 @@ export default abstract class Cell {
 			return
 		}
 
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 
 		if ( mostTopCell === this ) {
 			this._startDrag( event )
@@ -127,7 +129,8 @@ export default abstract class Cell {
 	}
 
 	public _clickListener = event => {
-		const mostTopCell = this.draw._getMostTopCell( event )
+		const point = getters.getPoint( event )
+		const mostTopCell = getters.getMostTopCellFocus( point )
 
 		if ( mostTopCell === this ) {
 			this.handleClick( event )

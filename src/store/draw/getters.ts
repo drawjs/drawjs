@@ -68,32 +68,31 @@ class Getters {
 		return res
 	}
 
-
+	getPoint( event ): Point2D {
+		const point: Point2D = {
+			x: event.x - this.canvasLeft,
+			y: event.y - this.canvasTop
+		}
+		return point
+	}
 
 	/**
 	 * Cell list
 	 */
-	get storeCellList(): Cell[] {
+	get cellList(): Cell[] {
 		return drawStore.cellList
 	}
 
-	get storeMostTopCell(): Cell {
-		return
-		// let res: Cell
-		// this.storeCellList.map( getProperCell )
+	getMostTopCellFocus( { x, y }: Point2D ): Cell {
+		let res: Cell
+		this.cellList.map( getProperCell )
+		return res
 
-		// function getProperCell( Cell ) {
-		// 	if (
-		// 		Cell.contain(
-		// 			event.x - self.canvasLeft,
-		// 			event.y - self.canvasTop
-		// 		)
-		// 	) {
-		// 		res = Cell
-		// 	}
-		// }
-
-		// return resCell
+		function getProperCell( Cell ) {
+			if ( Cell.contain( x, y ) ) {
+				res = Cell
+			}
+		}
 	}
 
 	/**
@@ -105,6 +104,8 @@ class Getters {
 		deleteCellList()
 
 		clonedStore.panels.map( resolvePanel )
+
+		return clonedStore
 
 		function resolvePanel( panel, panelIndex ) {
 			panel.elements.map( delete__Instance__( panelIndex ) )
@@ -120,20 +121,29 @@ class Getters {
 		function deleteCellList() {
 			delete clonedStore[ "cellList" ]
 		}
-
-		return clonedStore
 	}
 
 	get __storeActiveElementsInstances__(): DrawStoreElementInstance[] {
+		const res: DrawStoreElementInstance[] = this.storeActiveElements.map(
+			get__instance__
+		)
+		return res
+
 		function get__instance__( element ) {
 			return element.__instance__
 		}
-		return this.storeActiveElements.map( get__instance__ )
 	}
 
-	getStoreElementsByPanelId( id: string ) {
+	getStoreElementsByPanelId( id: string ): any {
 		const foundPanel = find( drawStore.panels, { id } )
-		return !isNil( foundPanel ) ? foundPanel.elements : []
+		const res: any = !isNil( foundPanel ) ? foundPanel.elements : []
+		return res
+	}
+
+	pointOnEmpty( point: Point2D ): boolean {
+		const mostTopCell: Cell = this.getMostTopCellFocus( point )
+		const res: boolean = mostTopCell === null
+		return res
 	}
 }
 

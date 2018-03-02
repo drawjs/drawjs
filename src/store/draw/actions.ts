@@ -7,6 +7,7 @@ import Draw from "Draw"
 import Cell from "../../model/Cell";
 import { isNotNil } from 'util/index';
 import storeElementFields from 'store/storeElementFields';
+import { selectCell } from "../../mixin/coupleCell";
 
 export function MODIFY_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 	const cloned = cloneDeep( store )
@@ -138,4 +139,17 @@ export function UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {
 	}
 
 
+}
+
+
+
+/**
+ * Cell list
+ */
+export default function DESELECT_ALL_CELLS () {
+	getters.cellList.map( unselectCell )
+
+	function unselectCell( cell ) {
+		selectCell( cell, false )
+	}
 }
