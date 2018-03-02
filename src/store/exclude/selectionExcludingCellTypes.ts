@@ -1,7 +1,8 @@
-import { ROTATE_ICON, SIZE_POINT, MINI_MAP } from "store/constant/cellType"
+import { ROTATE_ARROW, SIZE_POINT, MINI_MAP, MINI_MAP_VIEW_BOX } from "store/constant/cellType"
 
 export default [
-	ROTATE_ICON,
+	ROTATE_ARROW,
 	SIZE_POINT,
-	MINI_MAP
+	MINI_MAP,
+	MINI_MAP_VIEW_BOX
 ]

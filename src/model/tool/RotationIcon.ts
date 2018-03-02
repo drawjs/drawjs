@@ -2,7 +2,7 @@ import * as _ from "lodash"
 
 import Geometry from "model/Geometry"
 import Cell from "model/Cell"
-import { ROTATE_ICON } from "store/constant/cellType"
+import { ROTATE_ARROW } from "store/constant/cellType"
 import { getPointAngleToOrigin, log } from "util/index"
 import {
 	// coupleRotatingCell,
@@ -15,7 +15,7 @@ import { getTransformedPointForContainPoint } from "shared/index"
 import getters from "../../store/draw/getters";
 
 export default class RotationIcon extends Cell {
-	public type = ROTATE_ICON
+	public type = ROTATE_ARROW
 	public instance: any
 	public _size: number = 15
 
@@ -138,7 +138,7 @@ export default class RotationIcon extends Cell {
 
 	// ******* Drag ******
 	public handleStartDrag( event ) {
-		if ( this.instance.isSelected ) {
+		if ( this.instance.shouldSelect ) {
 			// coupleRotatingCell( this.instance, true )
 			coupleSelectCell( this.instance, false )
 		}

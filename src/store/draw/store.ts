@@ -18,7 +18,13 @@ let drawStore: DrawStore = {
 	 */
 	cellList: [],
 
-	canvas: null
+	draw: null,
+
+	canvas: null,
+
+	selector: null
+
+
 }
 
 export default drawStore

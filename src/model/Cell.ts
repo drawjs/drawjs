@@ -4,8 +4,7 @@ import Draw from "Draw"
 import * as constant from "store/constant/index"
 import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
 import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
-import getters from "../store/draw/getters";
-import getters from 'store/core/getters';
+import getters from 'store/draw/getters';
 
 export default abstract class Cell {
 	public id: string = generateUniqueId()
@@ -18,17 +17,17 @@ export default abstract class Cell {
 	 * interaction - drag
 	 */
 	public _prevDraggingPoint: Point2D
-	public _isDragging: boolean = false
+	public shouldDrag: boolean = false
 
 	/**
 	 * interaction - selection
 	 */
-	public isSelected: boolean = false
+	shouldSelect: boolean = false
 
 	/**
 	 * interaction - rotation
 	 */
-	public isRotating: boolean = false
+	shouldRotate: boolean = false
 
 	/**
 	 * interaction - size
@@ -120,7 +119,7 @@ export default abstract class Cell {
 	}
 
 	public _mousemoveListener = event => {
-		this._isDragging && this._dragging( event )
+		this.shouldDrag && this._dragging( event )
 		this.handleMouseMove && this.handleMouseMove( event )
 	}
 
@@ -159,7 +158,7 @@ export default abstract class Cell {
 	}
 	public _updateDrag( event ) {}
 	public _startDrag( event ): void {
-		this._isDragging = true
+		this.shouldDrag = true
 		this._updatePrevDraggingPoint( event )
 		this.handleStartDrag && this.handleStartDrag( event )
 	}
@@ -169,7 +168,7 @@ export default abstract class Cell {
 		this.handleDragging && this.handleDragging( event )
 	}
 	public _stopDrag( event ): void {
-		this._isDragging = false
+		this.shouldDrag = false
 		this.handleStopDrag && this.handleStopDrag( event )
 	}
 	public handleStartDrag( event ) {}

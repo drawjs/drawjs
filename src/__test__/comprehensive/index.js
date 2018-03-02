@@ -42,6 +42,17 @@ draw.addElement( "polygon", {
 	rotatable: true
 } )
 
+draw.addElement( "polygon", {
+	left     : 550,
+	top      : 550,
+	fill     : "blue",
+	width    : 100,
+	height   : 100,
+	angle    : 10,
+	points   : polygon2(),
+	rotatable: true
+} )
+
 
 // draw.addElement( 'rect', {
 // 	left  : 350,
@@ -110,6 +121,40 @@ function polygon() {
 	const basicOrigin = {
 		x: 100,
 		y: 100
+	}
+
+	return [
+		{
+			x: basicOrigin.x + 100,
+			y: basicOrigin.y + 10
+		},
+		{
+			x: basicOrigin.x + 150,
+			y: basicOrigin.y + 10
+		},
+		{
+			x: basicOrigin.x + 200,
+			y: basicOrigin.y + 100
+		},
+		{
+			x: basicOrigin.x + 150,
+			y: basicOrigin.y + 200
+		},
+		{
+			x: basicOrigin.x + 100,
+			y: basicOrigin.y + 200
+		},
+		{
+			x: basicOrigin.x + 50,
+			y: basicOrigin.y + 100
+		}
+	]
+}
+
+function polygon2() {
+	const basicOrigin = {
+		x: 300,
+		y: 300
 	}
 
 	return [

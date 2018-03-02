@@ -3,9 +3,7 @@
  */
 interface DrawStoreWithoutInstance {
 	activePanelId: string
-	panels: DrawStorePanelWithoutInstance[],
-	cellList: any[],
-	canvas: HTMLCanvasElement
+	panels: DrawStorePanelWithoutInstance[]
 }
 
 interface DrawStorePanelWithoutInstance {
@@ -26,14 +24,17 @@ interface DrawStoreElementWithoutInstance {
 	angle: number
 	points: Point2D[]
 	draggable: boolean
-	isSelected: boolean
+	shouldSelect: boolean
 }
 
-interface DrawStoreElementInstance
-	extends DrawStoreElementWithoutInstance {}
+interface DrawStoreElementInstance extends DrawStoreElementWithoutInstance {}
 
 interface DrawStore extends DrawStoreWithoutInstance {
-	panels: DrawStorePanel[],
+	cellList: any[]
+	panels: DrawStorePanel[]
+	draw: any,
+	canvas: HTMLCanvasElement
+	selector: any
 }
 
 interface DrawStorePanel extends DrawStorePanelWithoutInstance {

@@ -58,10 +58,10 @@ export default class SelectionArea extends Geometry {
 
 	get selectedCells(): Cell[] {
 		let res: Cell[] = []
-		res = getters.cellList.filter( isSelected )
+		res = getters.cellList.filter( shouldSelect )
 
-		function isSelected( cell ): boolean {
-			return cell.isSelected && cell.isSelected === true
+		function shouldSelect( cell ): boolean {
+			return cell.shouldSelect && cell.shouldSelect === true
 		}
 
 		return res
@@ -168,13 +168,13 @@ export default class SelectionArea extends Geometry {
 	private _isPointOnUnselectedCell( event ): boolean {
 		const point = getters.getPoint( event )
 		const mostTopCell = getters.getMostTopCellFocus( point )
-		return mostTopCell && mostTopCell.isSelected === false
+		return mostTopCell && mostTopCell.shouldSelect === false
 	}
 
 	private _isPointOnSelectedCell( event ): boolean {
 		const point = getters.getPoint( event )
 		const mostTopCell = getters.getMostTopCellFocus( point )
-		return mostTopCell && mostTopCell.isSelected === true
+		return mostTopCell && mostTopCell.shouldSelect === true
 	}
 
 	private _isPointOnSelectionExcludingCell( event ): boolean {

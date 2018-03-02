@@ -1,15 +1,16 @@
 import selectionRendererExcludingCellTypes from "store/exclude/selectionRendererExcludingCellTypes"
 import { includes } from "lodash";
+import getters from "../store/draw/getters";
 
 /**
  *
  * @param element Graph element
  */
 export default function( element ) {
-	const { isSelected, type, draw, path } = element
-	const { ctx } = draw
+	const { shouldSelect, type, draw, path } = element
+	const ctx = getters.ctx
 	if (
-		isSelected &&
+		shouldSelect &&
 		!includes( selectionRendererExcludingCellTypes, type )
 	) {
 		ctx.save()

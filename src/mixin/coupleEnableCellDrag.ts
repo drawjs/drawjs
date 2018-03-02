@@ -5,5 +5,5 @@ export default function( cell: Cell, event: any ) {
 		x: event.x,
 		y: event.y
 	}
-	cell._isDragging = true
+	cell.shouldDrag = true
 }

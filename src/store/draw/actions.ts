@@ -4,12 +4,17 @@ import generateDrawUniqueId from "draw/generateDrawUniqueId"
 import cellTypeClassMap from "../map/cellTypeClassMap"
 import { isNil, cloneDeep, intersection } from "lodash"
 import Draw from "Draw"
-import Cell from "../../model/Cell";
-import { isNotNil } from 'util/index';
-import storeElementFields from 'store/storeElementFields';
-import { selectCell } from "../../mixin/coupleCell";
+import Cell from "../../model/Cell"
+import { isNotNil } from "util/index"
+import storeElementFields from "store/storeElementFields"
+import {
+	selectCell,
+	deselectCell,
+	enableCellDrag
+} from "../../mixin/coupleCell"
+import Selector from "../../model/tool/Selector";
 
-export function MODIFY_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
+export function UPDATE_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 	const cloned = cloneDeep( store )
 	const keys: string[] = Object.keys( store )
 	keys.map( set )
@@ -19,8 +24,16 @@ export function MODIFY_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 	}
 }
 
+export function UPDATE_DRAW( draw: Draw ) {
+	drawStore[ "draw" ] = draw
+}
+
 export function UPDATE_CANVAS( canvas: HTMLCanvasElement ) {
-	drawStore[ 'canvas' ] = canvas
+	drawStore[ "canvas" ] = canvas
+}
+
+export function UPDATE_SELECTOR( selector: Selector ) {
+	drawStore[ "selector" ] = selector
 }
 
 export function ADD_ELEMENT(
@@ -51,7 +64,7 @@ export function ADD_ELEMENT(
 		angle,
 		points,
 		draggable,
-		isSelected
+		shouldSelect
 	}: {
 		id: string
 		type: string
@@ -63,7 +76,7 @@ export function ADD_ELEMENT(
 		angle: number
 		points: Point2D[]
 		draggable: boolean
-		isSelected: boolean
+		shouldSelect: boolean
 	} = setting
 
 	const wholeElement = {
@@ -78,7 +91,7 @@ export function ADD_ELEMENT(
 		angle,
 		points,
 		draggable,
-		isSelected
+		shouldSelect
 	}
 
 	if ( isNil( panelId ) ) {
@@ -102,11 +115,9 @@ export function MODIFY_ACTIVE_PANEL_ID( panelId: string ) {
 	drawStore.activePanelId = panelId
 }
 
-
 export function ADD_ELEMENT_TO_CELL_LIST( cell: Cell ) {
 	drawStore.cellList.push( cell )
 }
-
 
 export function UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {
 	drawStore.panels.map( resolvePanel )
@@ -137,19 +148,24 @@ export function UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {
 				][ field ]
 		}
 	}
-
-
 }
-
-
 
 /**
  * Cell list
  */
-export default function DESELECT_ALL_CELLS () {
-	getters.cellList.map( unselectCell )
+export function DESELECT_ALL_CELLS() {
+	getters.cellList.map( deselectCell )
+}
 
-	function unselectCell( cell ) {
-		selectCell( cell, false )
-	}
+export function SELECT_MOST_TOP_CELL_FOCUS( point: Point2D ) {
+	const mostTopCell = getters.getMostTopCellFocus( point )
+	selectCell( mostTopCell )
+}
+
+export function ENABLE_CELLS_SELECTED_DRAG() {
+	getters.cellsSelected.map( enableCellDrag )
+}
+
+export function SELECT_CELLS_IN_SELECTOR_RIGION() {
+	getters.cellsInSelectorRigion.map( selectCell )
 }

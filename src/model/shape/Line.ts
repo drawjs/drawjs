@@ -237,7 +237,7 @@ export default class Line extends Graph {
 		/**
 		 * render size points
 		 */
-		if ( this.isSizing || this.isSelected ) {
+		if ( this.isSizing || this.shouldSelect ) {
 			this.sizePoints.map( renderSizePoint )
 		}
 		function renderSizePoint( sizePoint ) {

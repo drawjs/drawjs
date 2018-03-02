@@ -12,8 +12,11 @@ import {
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
 import getters from "../../store/draw/getters"
+import { ROTATE_ARROW } from "../../store/constant/cellType"
 
 export default class RotationArrow extends Cell {
+	type: string = ROTATE_ARROW
+
 	/**
 	 * Graph target to rotate
 	 */
@@ -54,9 +57,9 @@ export default class RotationArrow extends Cell {
 	}
 
 	get shouldRender(): boolean {
-		const { isSelected } = this.target
+		const { shouldSelect } = this.target
 		const { shouldRotate } = this.target
-		const res: boolean = isSelected || shouldRotate
+		const res: boolean = shouldSelect || shouldRotate
 		return res
 	}
 
@@ -126,7 +129,7 @@ export default class RotationArrow extends Cell {
 
 	// ******* Drag ******
 	public handleStartDrag( event ) {
-		// const { isSelected } = this.target
+		// const { shouldSelect } = this.target
 		// coupleShouldRotateCell( this.target, true )
 		// coupleSelectCell( this.target, false )
 		// this.render()

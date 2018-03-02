@@ -9,14 +9,14 @@ import {
 import * as _ from "lodash"
 import { log, isNotNil } from "util/index"
 import Cell from "model/Cell"
-import { MINI_MAP } from "store/constant/cellType"
+import { MINI_MAP, MINI_MAP_VIEW_BOX } from "store/constant/cellType"
 import excludingTypesForMiniMapElementsBounds from "store/exclude/excludingTypesForMiniMapElementsBounds"
 import { coupleZoomPanSetPanPoint } from "mixin/coupleZoomPanSet"
 import getters from "../../store/draw/getters";
 
 export default class MiniMap extends Cell {
 	public draw: Draw
-	public type: string = MINI_MAP
+	type: string = MINI_MAP
 
 	public viewBox: ViewBox
 
@@ -318,6 +318,7 @@ export default class MiniMap extends Cell {
 }
 
 class ViewBox extends Cell {
+	type: string = MINI_MAP_VIEW_BOX
 	public miniMap: MiniMap
 
 	constructor( props ) {
@@ -470,14 +471,14 @@ class ViewBox extends Cell {
 	}
 
 	public handleMouseMove( event ) {
-		if ( this._isDragging || this.contain(
+		if ( this.shouldDrag || this.contain(
 			event.x - getters.canvasLeft,
 			event.y - getters.canvasTop
 		) ) {
 			getters.canvas.style.cursor = "-webkit-grab"
 			return
 		}
-		if ( ! this._isDragging ) {
+		if ( ! this.shouldDrag ) {
 			getters.canvas.style.cursor = "default"
 			return
 		}

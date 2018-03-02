@@ -1,6 +1,6 @@
 import { getRotatedPoint } from "util/index"
 import * as _ from "lodash"
-import { SIZE_POINT, ROTATE_ICON } from 'store/constant/cellType';
+import { SIZE_POINT, ROTATE_ARROW } from 'store/constant/cellType';
 
 /**
  * Get the point
@@ -38,7 +38,7 @@ export default function getTransformedPointForContainPoint(
 	}
 
 	function isRotateIcon(): boolean {
-		return instance.type === ROTATE_ICON
+		return instance.type === ROTATE_ARROW
 	}
 
 	function getAngle(): number {

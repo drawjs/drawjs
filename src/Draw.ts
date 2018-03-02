@@ -10,7 +10,6 @@ import {
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
 } from "store/constant/index"
-import { ROTATE_ICON } from "store/constant/cellType"
 import {
 	getInstanceByElementWithoutInstance,
 	coupleUpdateZoomPanZoom
@@ -32,9 +31,11 @@ import getters from "store/draw/getters"
 import {
 	ADD_ELEMENT,
 	MODIFY_ACTIVE_PANEL_ID,
-	MODIFY_STORE,
+	UPDATE_STORE,
 	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES,
-	UPDATE_CANVAS
+	UPDATE_CANVAS,
+	UPDATE_SELECTOR,
+	UPDATE_DRAW
 } from "store/draw/actions"
 
 const ajv = new Ajv()
@@ -67,16 +68,17 @@ export default class Draw {
 	public onGraphHover: Function
 
 	constructor( canvas: HTMLCanvasElement ) {
+		UPDATE_DRAW( this )
 		UPDATE_CANVAS( canvas )
+
+		const selector = new Selector( { draw: this } )
+		UPDATE_SELECTOR( selector )
 
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
 		this.miniMap = new MiniMap( { draw: this } )
 
 		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
-
-		// this._selectionAreaInstance = new SelectionArea( { draw: this } )
-		this.selector = new Selector( { draw: this } )
 	}
 
 	public render() {
@@ -98,7 +100,11 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
+
 		getters.cellList.map( renderElement )
+
+		getters.selector.render()
+
 
 		// this.miniMap.render()
 	}
@@ -147,7 +153,7 @@ export default class Draw {
 				storeWithoutInstance
 			)
 
-			MODIFY_STORE( storeWithoutInstanceCleanElements )
+			UPDATE_STORE( storeWithoutInstanceCleanElements )
 
 			addStoreElementsAndInstances( storeWithoutInstance )
 

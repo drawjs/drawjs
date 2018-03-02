@@ -126,14 +126,14 @@ export default class Rect extends Graph {
 		/**
 		 * render rotation icon
 		 */
-		if ( this.isRotating || this.isSelected ) {
+		if ( this.shouldRotate || this.shouldSelect ) {
 			this._rotationIcon.renderByInstance()
 		}
 
 		/**
 		 * render size points
 		 */
-		if ( this.isSizing || this.isSelected ) {
+		if ( this.isSizing || this.shouldSelect ) {
 			this.sizePoints.map( renderSizePoint )
 		}
 		function renderSizePoint( sizePoint ) {

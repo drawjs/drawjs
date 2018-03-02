@@ -1,6 +1,10 @@
 import drawStore from "store/draw/store"
-import { isNil, cloneDeep, find } from "lodash"
+import { isNil, cloneDeep, find, includes } from "lodash"
 import { Cell } from "../../model/index"
+import Graph from "model/Graph"
+import Selector from "../../model/tool/Selector"
+import Draw from "Draw"
+import selectionExcludingCellTypes from "../exclude/selectionExcludingCellTypes"
 
 class Getters {
 	get storeActivePanelId(): string {
@@ -41,7 +45,14 @@ class Getters {
 	}
 
 	/**
-	 * Canvas
+	 * // Draw
+	 */
+	get draw(): Draw {
+		return drawStore.draw
+	}
+
+	/**
+	 * // Canvas
 	 */
 	get canvas(): HTMLCanvasElement {
 		return drawStore.canvas
@@ -77,10 +88,58 @@ class Getters {
 	}
 
 	/**
-	 * Cell list
+	 * // Selector
+	 */
+	get selector(): Selector {
+		return drawStore.selector
+	}
+	get cellsInSelectorRigion(): Cell[] {
+		const self = this
+		const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )
+
+		console.log( res.map( cell => cell ) )
+
+		function shouldExclude( { type }: Cell ): boolean {
+			const res: boolean = ! includes( selectionExcludingCellTypes, type )
+			return res
+		}
+		function inRigion( cell: Graph ): boolean {
+			const { rectContainer } = cell
+			const {
+				basicLeft,
+				basicTop,
+				basicWidth,
+				basicHeight
+			} = rectContainer
+			const res: boolean = self.selector.rectInSelectionArea(
+				basicLeft,
+				basicTop,
+				basicWidth,
+				basicHeight
+			)
+			return res
+		}
+
+		return res
+	}
+
+	/**
+	 * // Cell list
 	 */
 	get cellList(): Cell[] {
 		return drawStore.cellList
+	}
+
+	get cellsSelected(): Cell[] {
+		let res: Cell[] = []
+		res = this.cellList.filter( shouldCellSelect )
+
+		function shouldCellSelect( cell ): boolean {
+			const { shouldSelect } = cell
+			return shouldSelect === true
+		}
+
+		return res
 	}
 
 	getMostTopCellFocus( { x, y }: Point2D ): Cell {
@@ -142,7 +201,7 @@ class Getters {
 
 	pointOnEmpty( point: Point2D ): boolean {
 		const mostTopCell: Cell = this.getMostTopCellFocus( point )
-		const res: boolean = mostTopCell === null
+		const res: boolean = isNil( mostTopCell )
 		return res
 	}
 }

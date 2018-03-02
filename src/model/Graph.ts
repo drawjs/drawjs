@@ -7,13 +7,14 @@ import applyRotationArrow from '../shared/applyRotationArrow';
 import applySelection from '../shared/applySelection';
 import { isBoolean } from 'lodash';
 import getters from '../store/draw/getters';
+import RectContainer from './tool/RectContainer';
 
 export default abstract class Graph extends Geometry {
+	rectContainer: RectContainer
 
 	/**
 	 * Rotation
 	 */
-	shouldRotate: boolean = false
 	rotatable: boolean = true
 	rotationArrow: RotationArrow
 
