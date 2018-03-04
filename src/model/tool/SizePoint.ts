@@ -123,7 +123,7 @@ export default abstract class SizePoint extends Point {
 		coupleSelectCell( this.instance, false )
 	}
 
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		if ( !this.instance.isSizing ) {
 			return
 		}
@@ -137,7 +137,7 @@ export default abstract class SizePoint extends Point {
 
 		this.size( newPoint )
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 		this.draw.render()
 	}
 

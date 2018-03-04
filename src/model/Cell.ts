@@ -81,60 +81,8 @@ export default abstract class Cell {
 		this.draw = draw
 
 		ADD_ELEMENT_TO_CELL_LIST( this )
-
-		this.bindEvents()
 	}
 
-	private bindEvents() {
-		getters.canvas.removeEventListener(
-			"mousedown",
-			this._mousedownListener
-		)
-		getters.canvas.addEventListener( "mousedown", this._mousedownListener )
-
-		getters.canvas.removeEventListener(
-			"mousemove",
-			this._mousemoveListener
-		)
-		getters.canvas.addEventListener( "mousemove", this._mousemoveListener )
-
-		getters.canvas.removeEventListener( "mouseup", this._mouseupListener )
-		getters.canvas.addEventListener( "mouseup", this._mouseupListener )
-
-		getters.canvas.removeEventListener( "click", this._clickListener )
-		getters.canvas.addEventListener( "click", this._clickListener )
-	}
-
-	public _mousedownListener = event => {
-		if ( coupleIsMouseDownToPan( this.draw.zoomPan, event ) ) {
-			return
-		}
-
-		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
-
-		if ( mostTopCell === this ) {
-			this._startDrag( event )
-		}
-	}
-
-	public _mousemoveListener = event => {
-		this.shouldDrag && this._dragging( event )
-		this.handleMouseMove && this.handleMouseMove( event )
-	}
-
-	public _mouseupListener = event => {
-		this._stopDrag( event )
-	}
-
-	public _clickListener = event => {
-		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
-
-		if ( mostTopCell === this ) {
-			this.handleClick( event )
-		}
-	}
 
 	private set( field: string, value: any ) {
 		this[ field ] = value
@@ -143,31 +91,27 @@ export default abstract class Cell {
 	public render() {}
 
 	// ******* Interaction ******
-	// ******* # General ******
-	public handleClick( event ) {}
-	public handleMouseMove( event ) {}
-	// ******* # General ******
 	// ******* # Drag ******
 	public abstract contain( x: number, y: number ): void
 
-	public _updatePrevDraggingPoint( event ) {
+	public updatePrevDraggingPoint( event ) {
 		this._prevDraggingPoint = {
 			x: event.x,
 			y: event.y
 		}
 	}
-	public _updateDrag( event ) {}
-	public _startDrag( event ): void {
+	public updateDrag( event ) {}
+	public startDrag( event ): void {
 		this.shouldDrag = true
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 		this.handleStartDrag && this.handleStartDrag( event )
 	}
-	public _dragging( event ): void {
-		this._updateDrag( event )
-		this._updatePrevDraggingPoint( event )
+	public dragging( event ): void {
+		this.updateDrag( event )
+		this.updatePrevDraggingPoint( event )
 		this.handleDragging && this.handleDragging( event )
 	}
-	public _stopDrag( event ): void {
+	public stopDrag( event ): void {
 		this.shouldDrag = false
 		this.handleStopDrag && this.handleStopDrag( event )
 	}

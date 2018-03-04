@@ -15,3 +15,15 @@ export function enableCellDrag( cell: Cell ) {
 export function disableCellDrag( cell: Cell ) {
 	cell.shouldDrag = false
 }
+
+export function startDragCell( cell: Cell, event: any ) {
+	cell.startDrag( event )
+}
+
+export function draggingCell( cell: Cell, event: any ) {
+	cell.dragging( event )
+}
+
+export function stopDragCell( cell: Cell, event: any ) {
+	cell.stopDrag( event )
+}

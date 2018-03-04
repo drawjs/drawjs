@@ -12,7 +12,8 @@ import {
 	deselectCell,
 	enableCellDrag
 } from "../../mixin/coupleCell"
-import Selector from "../../model/tool/Selector";
+import Selector from "../../model/tool/Selector"
+import Interaction from "../../core/interaction"
 
 export function UPDATE_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 	const cloned = cloneDeep( store )
@@ -34,6 +35,10 @@ export function UPDATE_CANVAS( canvas: HTMLCanvasElement ) {
 
 export function UPDATE_SELECTOR( selector: Selector ) {
 	drawStore[ "selector" ] = selector
+}
+
+export function UPDATE_INTERACTION( interaction: Interaction ) {
+	drawStore[ "interaction" ] = interaction
 }
 
 export function ADD_ELEMENT(
@@ -151,21 +156,28 @@ export function UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {
 }
 
 /**
- * Cell list
+ * // Select
  */
 export function DESELECT_ALL_CELLS() {
 	getters.cellList.map( deselectCell )
 }
 
-export function SELECT_MOST_TOP_CELL_FOCUS( point: Point2D ) {
-	const mostTopCell = getters.getMostTopCellFocus( point )
+export function SELECT_MOST_TOP_CELL_FOCUSED( point: Point2D ) {
+	const mostTopCell = getters.getMostTopCellFocused( point )
 	selectCell( mostTopCell )
-}
-
-export function ENABLE_CELLS_SELECTED_DRAG() {
-	getters.cellsSelected.map( enableCellDrag )
 }
 
 export function SELECT_CELLS_IN_SELECTOR_RIGION() {
 	getters.cellsInSelectorRigion.map( selectCell )
 }
+
+/**
+ * // Drag
+ */
+// export function ENABLE_MOST_TOP_CELL_FOCUSED_DRAG( point: Point2D ) {
+// 	const mostTopCell = getters.getMostTopCellFocused( point )
+// 	enableCellDrag( mostTopCell )
+// }
+//  export function ENABLE_CELLS_SELECTED_DRAG() {
+// 	getters.cellsSelected.map( enableCellDrag )
+// }

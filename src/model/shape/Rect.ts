@@ -147,13 +147,13 @@ export default class Rect extends Graph {
 	}
 
 	// ******* Drag ******
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		const zoom = this.draw.zoomPan.zoom
 		this.left =
 			this.left + event.x / zoom - this._prevDraggingPoint.x / zoom
 		this.top = this.top + event.y / zoom - this._prevDraggingPoint.y / zoom
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 
 		this.draw.render()
 	}

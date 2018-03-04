@@ -62,7 +62,7 @@ export default class Polygon extends Graph {
 	}
 
 	// ******* Drag ******
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		const { x, y } = event
 		let { _prevDraggingPoint } = this
 		const { x: prevX, y: prevY } = _prevDraggingPoint
@@ -71,7 +71,7 @@ export default class Polygon extends Graph {
 
 		this.translate( deltaX, deltaY )
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 
 		this.draw.render()
 	}

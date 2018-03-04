@@ -22,7 +22,9 @@ let drawStore: DrawStore = {
 
 	canvas: null,
 
-	selector: null
+	selector: null,
+
+	interaction: null,
 
 
 }

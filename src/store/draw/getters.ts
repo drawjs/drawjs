@@ -45,6 +45,45 @@ class Getters {
 	}
 
 	/**
+	 * // Cell list
+	 */
+	get cellList(): Cell[] {
+		return drawStore.cellList
+	}
+
+	get cellsShouldSelect(): Cell[] {
+		const res: Cell[] = this.cellList.filter( shouldCellSelect )
+		return res
+
+		function shouldCellSelect( cell ): boolean {
+			const { shouldSelect } = cell
+			return shouldSelect === true
+		}
+	}
+
+	get cellsShouldDrag(): Cell[] {
+		const res: Cell[] = this.cellList.filter( shouldCellDrag )
+		return res
+
+		function shouldCellDrag( cell ): boolean {
+			const { shouldDrag } = cell
+			return shouldDrag === true
+		}
+	}
+
+	getMostTopCellFocused( { x, y }: Point2D ): Cell {
+		let res: Cell
+		this.cellList.map( getProperCell )
+		return res
+
+		function getProperCell( Cell ) {
+			if ( Cell.contain( x, y ) ) {
+				res = Cell
+			}
+		}
+	}
+
+	/**
 	 * // Draw
 	 */
 	get draw(): Draw {
@@ -97,10 +136,8 @@ class Getters {
 		const self = this
 		const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )
 
-		console.log( res.map( cell => cell ) )
-
 		function shouldExclude( { type }: Cell ): boolean {
-			const res: boolean = ! includes( selectionExcludingCellTypes, type )
+			const res: boolean = !includes( selectionExcludingCellTypes, type )
 			return res
 		}
 		function inRigion( cell: Graph ): boolean {
@@ -121,37 +158,6 @@ class Getters {
 		}
 
 		return res
-	}
-
-	/**
-	 * // Cell list
-	 */
-	get cellList(): Cell[] {
-		return drawStore.cellList
-	}
-
-	get cellsSelected(): Cell[] {
-		let res: Cell[] = []
-		res = this.cellList.filter( shouldCellSelect )
-
-		function shouldCellSelect( cell ): boolean {
-			const { shouldSelect } = cell
-			return shouldSelect === true
-		}
-
-		return res
-	}
-
-	getMostTopCellFocus( { x, y }: Point2D ): Cell {
-		let res: Cell
-		this.cellList.map( getProperCell )
-		return res
-
-		function getProperCell( Cell ) {
-			if ( Cell.contain( x, y ) ) {
-				res = Cell
-			}
-		}
 	}
 
 	/**
@@ -200,7 +206,7 @@ class Getters {
 	}
 
 	pointOnEmpty( point: Point2D ): boolean {
-		const mostTopCell: Cell = this.getMostTopCellFocus( point )
+		const mostTopCell: Cell = this.getMostTopCellFocused( point )
 		const res: boolean = isNil( mostTopCell )
 		return res
 	}

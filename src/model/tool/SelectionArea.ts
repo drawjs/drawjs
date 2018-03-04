@@ -111,7 +111,7 @@ export default class SelectionArea extends Geometry {
 		if ( this._isPointOnUnselectedCell( event ) ) {
 			this._unselectCells()
 			const point = getters.getPoint( event )
-			const mostTopCell = getters.getMostTopCellFocus( point )
+			const mostTopCell = getters.getMostTopCellFocused( point )
 			this._selectCell( mostTopCell )
 			return
 		}
@@ -157,7 +157,7 @@ export default class SelectionArea extends Geometry {
 
 	private _isPointOnEmptyArea( event ): boolean {
 		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
+		const mostTopCell = getters.getMostTopCellFocused( point )
 		return mostTopCell === null
 	}
 
@@ -167,19 +167,19 @@ export default class SelectionArea extends Geometry {
 
 	private _isPointOnUnselectedCell( event ): boolean {
 		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
+		const mostTopCell = getters.getMostTopCellFocused( point )
 		return mostTopCell && mostTopCell.shouldSelect === false
 	}
 
 	private _isPointOnSelectedCell( event ): boolean {
 		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
+		const mostTopCell = getters.getMostTopCellFocused( point )
 		return mostTopCell && mostTopCell.shouldSelect === true
 	}
 
 	private _isPointOnSelectionExcludingCell( event ): boolean {
 		const point = getters.getPoint( event )
-		const mostTopCell = getters.getMostTopCellFocus( point )
+		const mostTopCell = getters.getMostTopCellFocused( point )
 		const res = _.includes( selectionExcludingCellTypes, mostTopCell.type )
 		return mostTopCell && res
 	}

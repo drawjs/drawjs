@@ -134,7 +134,7 @@ export default class RotationArrow extends Cell {
 		// coupleSelectCell( this.target, false )
 		// this.render()
 	}
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		const { x: eventX, y: eventY }: Point2D = event
 		const x = eventX - getters.canvasLeft
 		const y = eventY - getters.canvasTop
@@ -159,7 +159,7 @@ export default class RotationArrow extends Cell {
 
 		// console.log( radian * RADIAN_TO_DEGREE )
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 
 		this.target.angle = radian * RADIAN_TO_DEGREE
 

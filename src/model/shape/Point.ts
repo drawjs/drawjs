@@ -81,7 +81,7 @@ export default class Point extends Cell {
 	}
 
 	// ******* Drag ******
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		const zoom = this.draw.zoomPan.zoom
 
 		let newPoint: Point2D = {
@@ -94,7 +94,7 @@ export default class Point extends Cell {
 		this.x = newPoint.x
 		this.y = newPoint.y
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 		this.draw.render()
 	}
 	// ******* Drag ******

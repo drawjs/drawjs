@@ -2,8 +2,7 @@ import Cell from "../Cell"
 import getters from "../../store/draw/getters"
 import {
 	DESELECT_ALL_CELLS,
-	SELECT_MOST_TOP_CELL_FOCUS,
-	ENABLE_CELLS_SELECTED_DRAG,
+	SELECT_MOST_TOP_CELL_FOCUSED,
 	SELECT_CELLS_IN_SELECTOR_RIGION
 } from "../../store/draw/actions"
 import sharedGetters from "../../shared/sharedGetters"
@@ -45,72 +44,72 @@ export default class Selector {
 		return res
 	}
 
-	constructor( props ) {
-		const self = this
+	constructor() {
+		// const self = this
 
-		const canvas = getters.canvas
+		// const canvas = getters.canvas
 
-		canvas.removeEventListener( "mousedown", mousedownListener )
-		canvas.addEventListener( "mousedown", mousedownListener )
+		// canvas.removeEventListener( "mousedown", mousedownListener )
+		// canvas.addEventListener( "mousedown", mousedownListener )
 
-		canvas.removeEventListener( "mousemove", mousemoveListener )
-		canvas.addEventListener( "mousemove", mousemoveListener )
+		// canvas.removeEventListener( "mousemove", mousemoveListener )
+		// canvas.addEventListener( "mousemove", mousemoveListener )
 
-		canvas.removeEventListener( "mouseup", mouseupListener )
-		canvas.addEventListener( "mouseup", mouseupListener )
+		// canvas.removeEventListener( "mouseup", mouseupListener )
+		// canvas.addEventListener( "mouseup", mouseupListener )
 
-		function mousedownListener( event ) {
-			const point = getters.getPoint( event )
-			if ( getters.pointOnEmpty( point ) ) {
-				DESELECT_ALL_CELLS()
+		// function mousedownListener( event ) {
+		// 	const point = getters.getPoint( event )
+		// 	if ( getters.pointOnEmpty( point ) ) {
+		// 		DESELECT_ALL_CELLS()
 
-				startSelect( event )
-			}
+		// 		startSelect( event )
+		// 	}
 
-			if ( sharedGetters.pointOnSelectionExcludingCells( point ) ) {
-				return
-			}
+		// 	if ( sharedGetters.pointOnSelectionExcludingCells( point ) ) {
+		// 		return
+		// 	}
 
-			if ( sharedGetters.pointOnCellDeselected( point ) ) {
-				DESELECT_ALL_CELLS()
+		// 	if ( sharedGetters.pointOnCellDeselected( point ) ) {
+		// 		DESELECT_ALL_CELLS()
 
-				SELECT_MOST_TOP_CELL_FOCUS( point )
-			}
+		// 		SELECT_MOST_TOP_CELL_FOCUSED( point )
+		// 	}
 
-			if ( sharedGetters.pointOnCellSelected( point ) ) {
-				ENABLE_CELLS_SELECTED_DRAG()
-				return
-			}
-		}
+		// 	if ( sharedGetters.pointOnCellSelected( point ) ) {
+		// 		ENABLE_CELLS_SELECTED_DRAG()
+		// 		return
+		// 	}
+		// }
 
-		function mousemoveListener( event ) {
-			self.shouldSelect && selecting( event )
-		}
+		// function mousemoveListener( event ) {
+		// 	self.shouldSelect && selecting( event )
+		// }
 
-		function mouseupListener( event ) {
-			self.shouldSelect = false
-			stopSelect( event )
-		}
+		// function mouseupListener( event ) {
+		// 	self.shouldSelect = false
+		// 	stopSelect( event )
+		// }
 
-		function startSelect( event ) {
-			self.shouldSelect = true
+		// function startSelect( event ) {
+		// 	self.shouldSelect = true
 
-			self.startPoint = getters.getPoint( event )
-			getters.draw.render()
-		}
+		// 	self.startPoint = getters.getPoint( event )
+		// 	getters.draw.render()
+		// }
 
-		function selecting( event ) {
-			self.endPoint = getters.getPoint( event )
-			getters.draw.render()
-		}
+		// function selecting( event ) {
+		// 	self.endPoint = getters.getPoint( event )
+		// 	getters.draw.render()
+		// }
 
-		function stopSelect( event ) {
-			SELECT_CELLS_IN_SELECTOR_RIGION()
+		// function stopSelect( event ) {
+		// 	SELECT_CELLS_IN_SELECTOR_RIGION()
 
-			self.startPoint = null
-			self.endPoint = null
-			getters.draw.render()
-		}
+		// 	self.startPoint = null
+		// 	self.endPoint = null
+		// 	getters.draw.render()
+		// }
 	}
 
 	render() {

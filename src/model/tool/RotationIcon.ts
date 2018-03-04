@@ -144,7 +144,7 @@ export default class RotationIcon extends Cell {
 		}
 	}
 
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		if ( !this.instance.isRotating ) {
 			return
 		}
@@ -171,7 +171,7 @@ export default class RotationIcon extends Cell {
 			} ) +
 			Math.PI / 2
 
-		this._updatePrevDraggingPoint( event )
+		this.updatePrevDraggingPoint( event )
 
 		this.instance.angle = radianAngle * constant.RADIAN_TO_DEGREE
 

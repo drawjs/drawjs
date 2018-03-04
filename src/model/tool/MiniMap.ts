@@ -446,7 +446,7 @@ class ViewBox extends Cell {
 
 
 	// ******* Pan view box { ******
-	public _updateDrag( event ) {
+	public updateDrag( event ) {
 		const pep: Point2D = {
 			x: this._prevDraggingPoint.x - getters.canvasLeft,
 			y: this._prevDraggingPoint.y - getters.canvasTop,

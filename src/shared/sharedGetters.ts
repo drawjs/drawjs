@@ -8,7 +8,7 @@ class SharedGetters {
 	// Selection
 	pointOnSelectionExcludingCells( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = getters.getMostTopCellFocus( point )
+		const mostTopCell: Cell = getters.getMostTopCellFocused( point )
 		if ( isNotNil( mostTopCell ) ) {
 			res = includes( selectionExcludingCellTypes, mostTopCell.type )
 		}
@@ -17,7 +17,7 @@ class SharedGetters {
 
 	pointOnCellSelected( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = getters.getMostTopCellFocus( point )
+		const mostTopCell: Cell = getters.getMostTopCellFocused( point )
 		if ( isNotNil( mostTopCell ) ) {
 			const { shouldSelect } = mostTopCell
 			res = shouldSelect === true
@@ -27,17 +27,13 @@ class SharedGetters {
 
 	pointOnCellDeselected( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = getters.getMostTopCellFocus( point )
+		const mostTopCell: Cell = getters.getMostTopCellFocused( point )
 		if ( isNotNil( mostTopCell ) ) {
 			const { shouldSelect } = mostTopCell
 			res = shouldSelect === false
 		}
 		return res
 	}
-
-
-
-
 }
 
 export default new SharedGetters()

@@ -3,7 +3,6 @@ import * as Ajv from "lib/ajv"
 
 import { Rect, Line } from "model/shape/index"
 import { Cell } from "model/index"
-// import Interaction from "interaction/Interaction"
 import {
 	DRAW_INSTANCE_NAME,
 	DRAW_STORE_PANEL_DEFAULT_NAME,
@@ -35,8 +34,10 @@ import {
 	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES,
 	UPDATE_CANVAS,
 	UPDATE_SELECTOR,
-	UPDATE_DRAW
+	UPDATE_DRAW,
+	UPDATE_INTERACTION
 } from "store/draw/actions"
+import Interaction from "./core/interaction";
 
 const ajv = new Ajv()
 
@@ -71,8 +72,11 @@ export default class Draw {
 		UPDATE_DRAW( this )
 		UPDATE_CANVAS( canvas )
 
-		const selector = new Selector( { draw: this } )
+		const selector = new Selector()
 		UPDATE_SELECTOR( selector )
+
+		const interaction = new Interaction()
+		UPDATE_INTERACTION( interaction )
 
 		this.zoomPan = new ZoomPan( { draw: this } )
 		this.eventKeyboard = new EventKeyboard()
@@ -108,27 +112,6 @@ export default class Draw {
 
 		// this.miniMap.render()
 	}
-
-	/****** interaction ******/
-	public _getMostTopCell( event ): Cell {
-		const self = this
-		let resCell = null
-		getters.cellList.map( getProperCell )
-
-		function getProperCell( Cell ) {
-			if (
-				Cell.contain(
-					event.x - getters.canvasLeft,
-					event.y - getters.canvasTop
-				)
-			) {
-				resCell = Cell
-			}
-		}
-
-		return resCell
-	}
-	/****** interaction ******/
 
 	public addElement( type: string, setting: any, panelId?: string ) {
 		// this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
