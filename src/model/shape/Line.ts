@@ -5,7 +5,6 @@ import * as cellTypeList from "store/constant/cellType"
 import { DEFAULT_PATH_EXPANDING_VALUE } from "store/constant/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
-import { transformCenterPointForContext } from 'mixin/index';
 import getters from "../../store/draw/getters";
 
 export default class Line extends Graph {
@@ -221,10 +220,6 @@ export default class Line extends Graph {
 		super.render()
 
 		ctx.save()
-		transformCenterPointForContext( this.draw, {
-			x: this.originX,
-			y: this.originY
-		}, this )
 		ctx.lineWidth = 1
 		ctx.strokeStyle = this.fill
 		ctx.stroke( this.path )
@@ -252,16 +247,16 @@ export default class Line extends Graph {
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const zoom = this.draw.zoomPan.zoom
-		this.pointStart.x =
-			this.pointStart.x + ( event.x - this.dragger.prevPoint.x ) / zoom
-		this.pointStart.y =
-			this.pointStart.y + ( event.y - this.dragger.prevPoint.y ) / zoom
+		// const zoom = this.draw.zoomPan.zoom
+		// this.pointStart.x =
+		// 	this.pointStart.x + ( event.x - this.dragger.prevPoint.x ) / zoom
+		// this.pointStart.y =
+		// 	this.pointStart.y + ( event.y - this.dragger.prevPoint.y ) / zoom
 
-		this.pointEnd.x = this.pointEnd.x + ( event.x - this.dragger.prevPoint.x ) / zoom
-		this.pointEnd.y = this.pointEnd.y + ( event.y - this.dragger.prevPoint.y ) / zoom
+		// this.pointEnd.x = this.pointEnd.x + ( event.x - this.dragger.prevPoint.x ) / zoom
+		// this.pointEnd.y = this.pointEnd.y + ( event.y - this.dragger.prevPoint.y ) / zoom
 
-		this.draw.render()
+		// this.draw.render()
 	}
 	// ******* Drag ******
 }

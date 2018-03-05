@@ -1,10 +1,10 @@
 export default function(
-	point: Point2D,
-	rate: number,
 	center: Point2D = {
 		x: 0,
 		y: 0
-	}
+	},
+	rate: number,
+	point: Point2D
 ): Point2D {
 	const { x: cx, y: cy }: Point2D = center
 	const { x, y }: Point2D = point

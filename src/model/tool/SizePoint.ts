@@ -4,7 +4,6 @@ import Point from "model/shape/Point"
 import * as _ from "lodash"
 import { getRotatedPoint, log } from "util/index"
 import Size from "mixin/Size"
-import { coupleSizingCell, coupleSelectCell, transformCenterPointForContext } from 'mixin/index';
 import { getTransformedPointForContainPoint } from "shared/index"
 import getters from "../../store/draw/getters";
 
@@ -66,18 +65,6 @@ export default abstract class SizePoint extends Point {
 
 		ctx.save()
 
-		/**
-		 * Keep ratio
-		 */
-		transformCenterPointForContext(
-			this.draw,
-			{
-				x: this.originX,
-				y: this.originY
-			},
-			this,
-			true
-		)
 
 		// ctx.fillStyle = this.color
 		// ctx.strokeStyle = this.strokeColor
@@ -119,8 +106,8 @@ export default abstract class SizePoint extends Point {
 	}
 
 	public handleStartDrag( event ) {
-		coupleSizingCell( this.instance, true )
-		coupleSelectCell( this.instance, false )
+		// coupleSizingCell( this.instance, true )
+		// coupleSelectCell( this.instance, false )
 	}
 
 	public updateDrag( event ) {
@@ -144,8 +131,8 @@ export default abstract class SizePoint extends Point {
 		if ( this.instance.isSizing ) {
 			this._showAllSizePoints()
 
-			coupleSizingCell( this.instance, false )
-			coupleSelectCell( this.instance, true )
+			// coupleSizingCell( this.instance, false )
+			// coupleSelectCell( this.instance, true )
 
 			this.draw.render()
 		}
@@ -340,9 +327,9 @@ export class SizePointLineSide extends SizePoint {
 	}
 
 	public size( newPoint ) {
-		const transformedPoint = this.draw.zoomPan.transformPointReversely( newPoint )
+		// const transformedPoint = this.draw.zoomPan.transformPointReversely( newPoint )
 
-		this.relatedPoint.x = transformedPoint.x
-		this.relatedPoint.y = transformedPoint.y
+		// this.relatedPoint.x = transformedPoint.x
+		// this.relatedPoint.y = transformedPoint.y
 	}
 }

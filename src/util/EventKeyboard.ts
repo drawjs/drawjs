@@ -8,6 +8,16 @@ enum KeyboardKeys {
 export default class EventKeyboard {
 	keyboardKeysPressing = []
 
+	get isAltPressing() {
+		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.ALT )
+		return res
+	}
+
+	get isSpacePressing() {
+		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.SPACE )
+		return res
+	}
+
 	constructor() {
 		window.addEventListener( "keydown", this._keydownListener.bind( this ) )
 		window.addEventListener( "keyup", this._keyupListener.bind( this ) )
@@ -34,13 +44,5 @@ export default class EventKeyboard {
 		}
 	}
 
-	isAltPressing() {
-		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.ALT )
-		return res
-	}
 
-	isSpacePressing() {
-		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.SPACE )
-		return res
-	}
 }

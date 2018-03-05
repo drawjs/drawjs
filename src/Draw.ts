@@ -11,16 +11,13 @@ import {
 } from "store/constant/index"
 import {
 	getInstanceByElementWithoutInstance,
-	coupleUpdateZoomPanZoom
 } from "mixin/index"
-import ZoomPan from "mixin/ZoomPan"
 
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import cellTypeClassMap from "store/map/cellTypeClassMap"
 import { log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
-import { SelectionArea } from "model/tool/index"
 import MiniMap from "./model/tool/MiniMap"
 import renderElement from "./shared/renderElement"
 import { renderGridCanvas } from "shared/index"
@@ -51,18 +48,8 @@ export default class Draw {
 	getters: any
 
 
-	/**
-	 * zoom and pan
-	 */
-	public zoomPan: ZoomPan
-
 	public cellTypeClassMap: any = cellTypeClassMap
 
-
-	/**
-	 * Mini map
-	 */
-	public miniMap: MiniMap
 
 	public onGraphClick: Function
 	public onGraphHover: Function
@@ -80,8 +67,6 @@ export default class Draw {
 		const interaction = new Interaction()
 		UPDATE_INTERACTION( interaction )
 
-		this.zoomPan = new ZoomPan( { draw: this } )
-		this.miniMap = new MiniMap( { draw: this } )
 
 		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
 
@@ -90,11 +75,7 @@ export default class Draw {
 
 	public render() {
 		const self = this
-		const { zoom, panX, panY } = getters
-		const movementX = panX * zoom
-		const movementY = panY * zoom
 
-		getters.ctx.transform( zoom, 0, 0, zoom, movementX, movementY )
 
 
 		this.clearEntireCanvas()
@@ -112,6 +93,15 @@ export default class Draw {
 		// 	deltaXForPan : this.zoomPan.deltaXForPan,
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
+
+
+		// const { zoom, panX, panY } = getters
+		// const movementX = panX * zoom
+		// const movementY = panY * zoom
+		// getters.ctx.translate( panX, panY )
+		// getters.ctx.transform( zoom, 0, 0, zoom, movementX, movementY )
+		// getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
+
 
 
 		getters.cellList.map( renderElement )

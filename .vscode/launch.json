@@ -4,29 +4,29 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+		{
+			"type": "chrome",
+			"request": "launch",
+			"name": "Launch Chrome ",
+			"port": 9222,
+			"url": "http://localhost:8600/build/__test__/viewPort/index.html",
+			// "url": "http://localhost:8600/build/__test__/elements/Point/index.html",
+			"pathMapping": {
+				"/": "${workspaceFolder}"
+			},
+		},
+
 		// {
 		// 	"type": "chrome",
 		// 	"request": "launch",
 		// 	"name": "Launch Chrome ",
 		// 	"port": 9222,
 		// 	// "url": "http://localhost:8600/build/__test__/selector/index.html",
-		// 	"url": "http://localhost:8600/build/__test__/elements/Point/index.html",
+		// 	"url": "http://localhost:8600/build/__test__/elements/Polygon/index.html",
 		// 	"pathMapping": {
 		// 		"/": "${workspaceFolder}"
 		// 	},
-		// },
-
-		{
-			"type": "chrome",
-			"request": "launch",
-			"name": "Launch Chrome ",
-			"port": 9222,
-			// "url": "http://localhost:8600/build/__test__/selector/index.html",
-			"url": "http://localhost:8600/build/__test__/elements/Polygon/index.html",
-			"pathMapping": {
-				"/": "${workspaceFolder}"
-			},
-		}
+		// }
 
 		// {
         //     "name": "Attach",

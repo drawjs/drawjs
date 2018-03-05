@@ -3,8 +3,6 @@ import RectContainer from "./RectContainer"
 import getRectVertices from "util/geometry/getRectVertices"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
-import coupleShouldRotateCell from "../../mixin/coupleShouldRotateCell"
-import coupleSelectCell from "../../mixin/coupleSelectCell"
 import { getPointAngleToOrigin } from "../../util/index"
 import {
 	RADIAN_TO_DEGREE,

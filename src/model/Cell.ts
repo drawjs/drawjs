@@ -2,7 +2,6 @@ import * as _ from "lodash"
 import { generateUniqueId, isNotNil } from "util/index"
 import Draw from "Draw"
 import * as constant from "store/constant/index"
-import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
 import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
 import getters from 'store/draw/getters';
 import Dragger from './tool/Dragger';

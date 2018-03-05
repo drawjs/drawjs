@@ -14,7 +14,7 @@ export const RADIAN_TO_DEGREE: number = 180 / Math.PI
 
 
 /**
- * // Default
+ * Default
  */
 export const DEFAULT_PATH_EXPANDING_VALUE = 5
 
@@ -23,9 +23,17 @@ export const DEFAULT_PATH_EXPANDING_VALUE = 5
  */
 export const POINT_RADIUS = 5
 
+
+
 /**
  * Rotation Arrow
  */
 export const ROTATION_ARROW_SRC = "/build/asset/svg/rotate-icon.svg"
 export const ROTATION_ARROW_SPACE = 20
 export const ROTATION_ARROW_SIZE = 20
+
+
+/**
+ * View port
+ */
+export const ZOOM_VARIATION = 0.1

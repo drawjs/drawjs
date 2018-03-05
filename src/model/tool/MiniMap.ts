@@ -1,5 +1,4 @@
 import Draw from "../../Draw"
-import { coupleUpdateZoomPanZoom } from "mixin/index"
 import {
 	renderElement,
 	renderGridMiniMap,
@@ -11,7 +10,6 @@ import { log, isNotNil } from "util/index"
 import Cell from "model/Cell"
 import { MINI_MAP, MINI_MAP_VIEW_BOX } from "store/constant/cellType"
 import excludingTypesForMiniMapElementsBounds from "store/exclude/excludingTypesForMiniMapElementsBounds"
-import { coupleZoomPanSetPanPoint } from "mixin/coupleZoomPanSet"
 import getters from "../../store/draw/getters";
 
 export default class MiniMap extends Cell {
@@ -43,8 +41,9 @@ export default class MiniMap extends Cell {
 	}
 
 	get miniZoom(): number {
-		const res = this.draw.zoomPan.zoom * 0.3
-		return res
+		// const res = this.draw.zoomPan.zoom * 0.3
+		// return res
+		return
 	}
 
 	get elementsBounds(): RectBounds {
@@ -274,16 +273,16 @@ export default class MiniMap extends Cell {
 		const self = this
 
 		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
-		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			getters.canvasCenterPoint
-		)
+		// const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
+		// 	getters.canvasCenterPoint
+		// )
 
-		const deltaX =
-			currentOriginalCanvasCenterPoint.x -
-			staticBasicOriginalCanvasCenterPoint.x
-		const deltaY =
-			currentOriginalCanvasCenterPoint.y -
-			staticBasicOriginalCanvasCenterPoint.y
+		// const deltaX =
+		// 	currentOriginalCanvasCenterPoint.x -
+		// 	staticBasicOriginalCanvasCenterPoint.x
+		// const deltaY =
+		// 	currentOriginalCanvasCenterPoint.y -
+		// 	staticBasicOriginalCanvasCenterPoint.y
 
 		const transformedPoint = getTransformedPointForContainPoint()
 
@@ -296,23 +295,24 @@ export default class MiniMap extends Cell {
 		return isContain
 
 		function getTransformedPointForContainPoint(): Point2D {
-			const originPoint: Point2D = {
-				x: x - deltaX * self.transformRatio,
-				y: y - deltaY * self.transformRatio
-			}
-			const viewBoxOriginPoint: Point2D = {
-				x: self.originX,
-				y: self.originY
-			}
-			const res: Point2D = {
-				x:
-					( originPoint.x - viewBoxOriginPoint.x ) *
-					self.canvasScopeZoom,
-				y:
-					( originPoint.y - viewBoxOriginPoint.y ) *
-					self.canvasScopeZoom
-			}
-			return res
+			// const originPoint: Point2D = {
+			// 	x: x - deltaX * self.transformRatio,
+			// 	y: y - deltaY * self.transformRatio
+			// }
+			// const viewBoxOriginPoint: Point2D = {
+			// 	x: self.originX,
+			// 	y: self.originY
+			// }
+			// const res: Point2D = {
+			// 	x:
+			// 		( originPoint.x - viewBoxOriginPoint.x ) *
+			// 		self.canvasScopeZoom,
+			// 	y:
+			// 		( originPoint.y - viewBoxOriginPoint.y ) *
+			// 		self.canvasScopeZoom
+			// }
+			// return res
+			return
 		}
 	}
 }
@@ -350,7 +350,7 @@ class ViewBox extends Cell {
 
 	public renderByMiniMap() {
 		const ctx = getters.ctx
-		let zoom: number = this.draw.zoomPan.zoom * this.miniMap.canvasScopeZoom
+		// let zoom: number = this.draw.zoomPan.zoom * this.miniMap.canvasScopeZoom
 
 		ctx.save()
 
@@ -359,14 +359,14 @@ class ViewBox extends Cell {
 			y: this.originY
 		} )
 
-		ctx.setTransform(
-			1 / zoom,
-			0,
-			0,
-			1 / zoom,
-			transformedPoint.x,
-			transformedPoint.y
-		)
+		// ctx.setTransform(
+		// 	1 / zoom,
+		// 	0,
+		// 	0,
+		// 	1 / zoom,
+		// 	transformedPoint.x,
+		// 	transformedPoint.y
+		// )
 
 		ctx.lineWidth = 1
 		ctx.strokeStyle = "red"
@@ -376,72 +376,73 @@ class ViewBox extends Cell {
 	}
 
 	public contain( x, y ) {
-		const self = this
+		// const self = this
 
-		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
-		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			getters.canvasCenterPoint
-		)
+		// const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
+		// const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
+		// 	getters.canvasCenterPoint
+		// )
 
-		const deltaX =
-			currentOriginalCanvasCenterPoint.x -
-			staticBasicOriginalCanvasCenterPoint.x
-		const deltaY =
-			currentOriginalCanvasCenterPoint.y -
-			staticBasicOriginalCanvasCenterPoint.y
+		// const deltaX =
+		// 	currentOriginalCanvasCenterPoint.x -
+		// 	staticBasicOriginalCanvasCenterPoint.x
+		// const deltaY =
+		// 	currentOriginalCanvasCenterPoint.y -
+		// 	staticBasicOriginalCanvasCenterPoint.y
 
-		const transformedPoint = getTransformedPointForContainPoint()
+		// const transformedPoint = getTransformedPointForContainPoint()
 
-		const isContain = getters.ctx.isPointInPath(
-			this.path,
-			transformedPoint.x,
-			transformedPoint.y
-		)
+		// const isContain = getters.ctx.isPointInPath(
+		// 	this.path,
+		// 	transformedPoint.x,
+		// 	transformedPoint.y
+		// )
 
-		return isContain
+		// return isContain
 
 		function getTransformedPointForContainPoint(): Point2D {
-			const originPoint: Point2D = {
-				x: x - deltaX * self.miniMap.transformRatio,
-				y: y - deltaY * self.miniMap.transformRatio
-			}
-			const viewBoxOriginPoint: Point2D = {
-				x: self.originX,
-				y: self.originY
-			}
-			const res: Point2D = {
-				x:
-					( originPoint.x - viewBoxOriginPoint.x ) *
-					self.draw.zoomPan.zoom *
-					self.miniMap.canvasScopeZoom,
-				y:
-					( originPoint.y - viewBoxOriginPoint.y ) *
-					self.draw.zoomPan.zoom *
-					self.miniMap.canvasScopeZoom
-			}
-			return res
+			// const originPoint: Point2D = {
+			// 	x: x - deltaX * self.miniMap.transformRatio,
+			// 	y: y - deltaY * self.miniMap.transformRatio
+			// }
+			// const viewBoxOriginPoint: Point2D = {
+			// 	x: self.originX,
+			// 	y: self.originY
+			// }
+			// const res: Point2D = {
+			// 	x:
+			// 		( originPoint.x - viewBoxOriginPoint.x ) *
+			// 		self.draw.zoomPan.zoom *
+			// 		self.miniMap.canvasScopeZoom,
+			// 	y:
+			// 		( originPoint.y - viewBoxOriginPoint.y ) *
+			// 		self.draw.zoomPan.zoom *
+			// 		self.miniMap.canvasScopeZoom
+			// }
+			// return res
+			return
 		}
 	}
 
 	transformPoint( point: Point2D ) {
 		const staticBasicOriginalCanvasCenterPoint = getters.canvasCenterPoint
-		const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
-			getters.canvasCenterPoint
-		)
+		// const currentOriginalCanvasCenterPoint = this.draw.zoomPan.transformPointReversely(
+		// 	getters.canvasCenterPoint
+		// )
 
-		const deltaX =
-			currentOriginalCanvasCenterPoint.x -
-			staticBasicOriginalCanvasCenterPoint.x
-		const deltaY =
-			currentOriginalCanvasCenterPoint.y -
-			staticBasicOriginalCanvasCenterPoint.y
+		// const deltaX =
+		// 	currentOriginalCanvasCenterPoint.x -
+		// 	staticBasicOriginalCanvasCenterPoint.x
+		// const deltaY =
+		// 	currentOriginalCanvasCenterPoint.y -
+		// 	staticBasicOriginalCanvasCenterPoint.y
 
-		const res = {
-			x: point.x + deltaX * this.miniMap.transformRatio,
-			y: point.y + deltaY * this.miniMap.transformRatio
-		}
+		// const res = {
+		// 	x: point.x + deltaX * this.miniMap.transformRatio,
+		// 	y: point.y + deltaY * this.miniMap.transformRatio
+		// }
 
-		return res
+		// return res
 	}
 
 
@@ -461,12 +462,12 @@ class ViewBox extends Cell {
 
 		const deltaY = ( pep.y - cep.y ) /  this.miniMap.sizeRate * this.miniMap.canvasScopeZoom
 
-		const panPointNew: Point2D = {
-			x: this.draw.zoomPan.panPoint.x + deltaX,
-			y: this.draw.zoomPan.panPoint.y + deltaY,
-		}
+		// const panPointNew: Point2D = {
+			// x: this.draw.zoomPan.panPoint.x + deltaX,
+			// y: this.draw.zoomPan.panPoint.y + deltaY,
+		// }
 
-		coupleZoomPanSetPanPoint( this.draw.zoomPan, panPointNew )
+		// coupleZoomPanSetPanPoint( this.draw.zoomPan, panPointNew )
 		this.draw.render()
 	}
 

@@ -1,5 +1,7 @@
 import getters from "store/draw/getters"
 import zoomPoint from "util/geometry/zoom"
+import isMouseMiddleClick from "../../util/isMouseMiddleClick"
+import { ZOOM_VARIATION } from "../../store/constant/index"
 
 const { abs } = Math
 
@@ -13,38 +15,35 @@ const { abs } = Math
  * After panned or zoomed, view port(rectangle) would zoom and pan.
  *
  * We can calculate the change of every tranformed point's position on
- * canvas based on tranformed view port's two key points:
- * 1. the left top vertex of canvas
- * 2. the center point of canvas
+ * canvas based on tranformed view port's special point:
+ * the center point of canvas
  */
 export default class ViewPort {
+	shouldPan: boolean = false
+	prevZoomingPoint: Point2D
+
 	/**
 	 * Zoom rate
 	 */
 	zoom: number = 1
 
+	ZOOM_VARIATION = ZOOM_VARIATION
 
-	/**
-	 * Used to calculate the change of every point's position on
-	 * canvas after view port is zoomed and panned
-	 */
-	leftTop: Point2D = {
-		x: 0,
-		y: 0
-	}
 	/**
 	 * Used to calculate the change of every point's position on
 	 * canvas after view port is zoomed and panned
 	 */
 	center: Point2D
 
-	get basicLeftTop(): Point2D {
-		return {
-			x: 0,
-			y: 0
-		}
-	}
+	get basicCenter(): Point2D {
+		const { canvasWidth, canvasHeight } = getters
 
+		const point: Point2D = {
+			x: canvasWidth / 2,
+			y: canvasHeight / 2
+		}
+		return point
+	}
 
 	get basicWidth(): number {
 		const width: number = getters.canvasWidth
@@ -57,12 +56,14 @@ export default class ViewPort {
 	}
 
 	get width(): number {
-		const width: number = abs( ( this.leftTop.x - this.center.x ) * 2 )
+		const { basicWidth, zoom } = this
+		const width: number = basicWidth * zoom
 		return width
 	}
 
 	get height(): number {
-		const height: number = abs( ( this.leftTop.y - this.center.y ) * 2 )
+		const { basicHeight, zoom } = this
+		const height: number = basicHeight * zoom
 		return height
 	}
 
@@ -70,23 +71,28 @@ export default class ViewPort {
 	 * The movement of viewPort when zoom equals 1
 	 */
 	get pan(): Point2D {
-		const { leftTop, center, zoom, basicLeftTop } = this
-		const res: Point2D =  {
-			x: leftTop.x / zoom - basicLeftTop.x,
-			y: leftTop.y / zoom - basicLeftTop.y,
+		const { center, zoom, basicCenter } = this
+		const res: Point2D = {
+			x: center.x / zoom - basicCenter.x,
+			y: center.y / zoom - basicCenter.y
 		}
 		return res
 	}
 
-	constructor() {
-		const { canvasWidth, canvasHeight } = getters
+	get isPanning(): boolean {
+		const res: boolean =
+			isMouseMiddleClick( event ) || getters.eventKeyboard.isSpacePressing
 
-		this.center = {
-			x: canvasWidth / 2,
-			y: canvasHeight / 2
-		}
+		return res
 	}
 
+	constructor() {
+		this.center = this.basicCenter
+	}
+
+	/**
+	 * // Zoom
+	 */
 	zoomBy(
 		center: Point2D = {
 			x: 0,
@@ -96,23 +102,73 @@ export default class ViewPort {
 	) {
 		this.zoom = this.zoom + deltaZoom
 
-		const { leftTop, center: viewPortCenter, zoom } = this
+		const { basicCenter, zoom } = this
 
-		this.leftTop = zoomPoint( leftTop, zoom, center )
-		this.center = zoomPoint( viewPortCenter, zoom, center )
+		this.center = zoomPoint( center, zoom, basicCenter )
+
+		getters.draw.render()
+	}
+	zoomIn( point: Point2D ) {
+		this.zoomBy( point, this.ZOOM_VARIATION )
+	}
+	zoomOut( point: Point2D ) {
+		this.zoomBy( point, -this.ZOOM_VARIATION )
 	}
 
+	/**
+	 * // Pan
+	 */
 	panBy( deltaX: number, deltaY: number ) {
-		const { x: leftTopX, y: leftTopY }: Point2D = this.leftTop
-		this.leftTop = {
-			x: leftTopX + deltaX,
-			y: leftTopY + deltaY
-		}
-
 		const { x: centerX, y: centerY }: Point2D = this.center
 		this.center = {
 			x: centerX + deltaX,
 			y: centerY + deltaY
 		}
+	}
+
+	getDeltaPointToPrevPanningPoint( point ): Point2D {
+		const { x, y }: Point2D = point
+		const { x: prevX, y: prevY } = this.prevZoomingPoint
+
+		const deltaPoint: Point2D = {
+			x: x - prevX,
+			y: y - prevY
+		}
+		return deltaPoint
+	}
+
+	getDeltaXToPrevPanningPoint( point ): number {
+		const deltaPoint: Point2D = this.getDeltaPointToPrevPanningPoint( point )
+		return deltaPoint.x
+	}
+
+	getDeltaYToPrevPanningPoint( point ): number {
+		const deltaPoint: Point2D = this.getDeltaPointToPrevPanningPoint( point )
+		return deltaPoint.y
+	}
+
+	startPan( event ) {
+		const point: Point2D = getters.getPoint( event )
+
+		this.shouldPan = true
+
+		this.prevZoomingPoint = point
+	}
+
+	panning( event ) {
+		const point: Point2D = getters.getPoint( event )
+
+		const deltaX: number = this.getDeltaXToPrevPanningPoint( point )
+		const deltaY: number = this.getDeltaYToPrevPanningPoint( point )
+
+		this.prevZoomingPoint = point
+
+		this.panBy( deltaX, deltaY )
+
+		getters.draw.render()
+	}
+
+	stopPan() {
+		this.shouldPan = false
 	}
 }

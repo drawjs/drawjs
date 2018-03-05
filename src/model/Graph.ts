@@ -1,7 +1,6 @@
 import * as _ from 'lodash'
 import { generateUniqueId } from 'util/index'
 import Geometry from 'model/Geometry'
-import Selection from 'mixin/Selection'
 import RotationArrow from 'model/tool/RotationArrow';
 import applyRotationArrow from '../shared/applyRotationArrow';
 import applySelectionBorder from '../shared/applySelectionBorder';
