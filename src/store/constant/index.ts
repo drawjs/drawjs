@@ -10,4 +10,22 @@ export const DEGREE_TO_RADIAN: number = Math.PI / 180
 export const RADIAN_TO_DEGREE: number = 180 / Math.PI
 
 
-export const ROTATION_ARROW_SRC = "../../asset/svg/rotate-icon.svg"
+
+
+
+/**
+ * // Default
+ */
+export const DEFAULT_PATH_EXPANDING_VALUE = 5
+
+/**
+ * Point
+ */
+export const POINT_RADIUS = 5
+
+/**
+ * Rotation Arrow
+ */
+export const ROTATION_ARROW_SRC = "/build/asset/svg/rotate-icon.svg"
+export const ROTATION_ARROW_SPACE = 20
+export const ROTATION_ARROW_SIZE = 20

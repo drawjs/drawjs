@@ -3,12 +3,16 @@ import { DESELECT_ALL_CELLS, SELECT_MOST_TOP_CELL_FOCUSED, SELECT_CELLS_IN_SELEC
 import sharedGetters from "../shared/sharedGetters";
 import { startDragCell, draggingCell, stopDragCell } from '../mixin/coupleCell';
 import { startDragMostTopCellFocused, draggingCellsShouldDrag, stopDragCellsShouldDrag, startDragCellsShouldSelect } from "../mixin/mixin";
+import EventKeyboard from '../util/EventKeyboard';
 
 class Interaction {
+	eventKeyboard: EventKeyboard
 	constructor() {
 		const self = this
 
 		const canvas = getters.canvas
+
+		this.eventKeyboard = new EventKeyboard()
 
 		canvas.removeEventListener( "mousedown", mousedownListener )
 		canvas.addEventListener( "mousedown", mousedownListener )

@@ -5,6 +5,9 @@ import Graph from "model/Graph"
 import Selector from "../../model/tool/Selector"
 import Draw from "Draw"
 import selectionExcludingCellTypes from "../exclude/selectionExcludingCellTypes"
+import ViewPort from '../../model/tool/ViewPort';
+import EventKeyboard from '../../util/EventKeyboard';
+import Interaction from "../../core/interaction";
 
 class Getters {
 	get storeActivePanelId(): string {
@@ -104,6 +107,14 @@ class Getters {
 		return this.canvas.getBoundingClientRect().top
 	}
 
+	get canvasWidth(): number {
+		return this.canvas.getBoundingClientRect().width
+	}
+
+	get canvasHeight(): number {
+		return this.canvas.getBoundingClientRect().height
+	}
+
 	get canvasCenterPoint(): Point2D {
 		const res = {
 			x: this.canvas.width / 2,
@@ -125,7 +136,28 @@ class Getters {
 		return point
 	}
 
+	/**
+	 * // View port
+	 */
+	get viewPort(): ViewPort {
+		return drawStore.viewPort
+	}
 
+	get zoom(): number {
+		return this.viewPort.zoom
+	}
+
+	get pan(): Point2D {
+		return this.viewPort.pan
+	}
+
+	get panX(): number {
+		return this.pan.x
+	}
+
+	get panY(): number {
+		return this.pan.y
+	}
 
 	/**
 	 * // Selector
@@ -160,8 +192,6 @@ class Getters {
 
 		return res
 	}
-
-
 
 	/**
 	 * Data to export
@@ -212,6 +242,19 @@ class Getters {
 		const mostTopCell: Cell = this.getMostTopCellFocused( point )
 		const res: boolean = isNil( mostTopCell )
 		return res
+	}
+
+
+
+	/**
+	 * // Interaction
+	 */
+	get interaction(): Interaction {
+		return drawStore.interaction
+	}
+
+	get eventKeyboard(): EventKeyboard {
+		return this.interaction.eventKeyboard
 	}
 }
 

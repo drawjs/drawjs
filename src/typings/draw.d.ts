@@ -34,6 +34,7 @@ interface DrawStore extends DrawStoreWithoutInstance {
 	panels: DrawStorePanel[]
 	draw: any,
 	canvas: HTMLCanvasElement
+	viewPort: any,
 	selector: any,
 	interaction: any,
 }

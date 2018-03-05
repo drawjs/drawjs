@@ -49,7 +49,7 @@ export default abstract class SizePoint extends Point {
 	constructor( props ) {
 		super( props )
 
-		this.color = "blue"
+		// this.color = "blue"
 
 		this.instance = props.instance
 
@@ -79,11 +79,11 @@ export default abstract class SizePoint extends Point {
 			true
 		)
 
-		ctx.fillStyle = this.color
-		ctx.strokeStyle = this.strokeColor
-		ctx.fill( this.path )
-		!_.isNil( this.strokeColor ) && ctx.stroke( this.path )
-		ctx.restore()
+		// ctx.fillStyle = this.color
+		// ctx.strokeStyle = this.strokeColor
+		// ctx.fill( this.path )
+		// !_.isNil( this.strokeColor ) && ctx.stroke( this.path )
+		// ctx.restore()
 	}
 
 	public setRotatedSizePoint( point: Point2D ) {

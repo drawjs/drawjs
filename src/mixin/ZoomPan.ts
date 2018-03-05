@@ -232,11 +232,11 @@ export default class ZoomPan {
 
 		const { deltaX, deltaY }: { deltaX: number; deltaY: number } = event
 
-		if ( isDecreasing() && this.draw.eventKeyboard.isAltPressing() ) {
+		if ( isDecreasing() && getters.eventKeyboard.isAltPressing() ) {
 			this._zoomIn()
 		}
 
-		if ( isIncreasing() && this.draw.eventKeyboard.isAltPressing() ) {
+		if ( isIncreasing() && getters.eventKeyboard.isAltPressing() ) {
 			this._zoomOut()
 		}
 
@@ -253,7 +253,7 @@ export default class ZoomPan {
 	public _mousedownListener( event ) {
 		if (
 			isMouseMiddleClick( event ) ||
-			this.draw.eventKeyboard.isSpacePressing()
+			getters.eventKeyboard.isSpacePressing()
 		) {
 			this._startPan( event )
 		}
@@ -344,7 +344,7 @@ export default class ZoomPan {
 	public isMouseDownToPan( event ): boolean {
 		return (
 			isMouseMiddleClick( event ) ||
-			this.draw.eventKeyboard.isSpacePressing()
+			getters.eventKeyboard.isSpacePressing()
 		)
 	}
 

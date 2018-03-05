@@ -13,14 +13,6 @@ export default abstract class Geometry extends Cell {
 
 	public draggable: boolean
 
-
-	// ****** drag  ******/
-	public deltaDragStartPointToLeftSideX: number
-	public deltaDragStartPointToTopSideY: number
-	public onDragStart: Function
-	public onDragging: Function
-	public onDragStop: Function
-	// ****** drag  ******/
 	constructor( props ) {
 		super( props )
 

@@ -14,6 +14,7 @@ import {
 } from "../../mixin/coupleCell"
 import Selector from "../../model/tool/Selector"
 import Interaction from "../../core/interaction"
+import ViewPort from "../../model/tool/ViewPort";
 
 export function UPDATE_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 	const cloned = cloneDeep( store )
@@ -32,6 +33,17 @@ export function UPDATE_DRAW( draw: Draw ) {
 export function UPDATE_CANVAS( canvas: HTMLCanvasElement ) {
 	drawStore[ "canvas" ] = canvas
 }
+
+
+
+/**
+ * View port
+ */
+export function UPDATE_VIEWPORT( viewPport: ViewPort ) {
+	drawStore[ "viewPort" ] = viewPport
+}
+
+
 
 export function UPDATE_SELECTOR( selector: Selector ) {
 	drawStore[ "selector" ] = selector

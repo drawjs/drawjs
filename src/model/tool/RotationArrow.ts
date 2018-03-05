@@ -8,7 +8,9 @@ import coupleSelectCell from "../../mixin/coupleSelectCell"
 import { getPointAngleToOrigin } from "../../util/index"
 import {
 	RADIAN_TO_DEGREE,
-	ROTATION_ARROW_SRC
+	ROTATION_ARROW_SRC,
+	ROTATION_ARROW_SPACE,
+	ROTATION_ARROW_SIZE
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
 import getters from "../../store/draw/getters"
@@ -90,9 +92,9 @@ export default class RotationArrow extends Cell {
 	/**
 	 * Space between icon and graph the topo of target's rect container
 	 */
-	static SPACE: number = 20
+	static SPACE: number = ROTATION_ARROW_SPACE
 
-	static SIZE: number = 20
+	static SIZE: number = ROTATION_ARROW_SIZE
 
 	get path(): Path2D {
 		const { SIZE } = RotationArrow

@@ -4,7 +4,7 @@ import Geometry from 'model/Geometry'
 import Selection from 'mixin/Selection'
 import RotationArrow from 'model/tool/RotationArrow';
 import applyRotationArrow from '../shared/applyRotationArrow';
-import applySelection from '../shared/applySelection';
+import applySelectionBorder from '../shared/applySelectionBorder';
 import { isBoolean } from 'lodash';
 import getters from '../store/draw/getters';
 import RectContainer from './tool/RectContainer';
@@ -40,7 +40,7 @@ export default abstract class Graph extends Geometry {
 		const ctx = getters.ctx
 		super.render()
 
-		applySelection( this )
+		applySelectionBorder( this )
 
 		this.rotatable && applyRotationArrow( this )
 	}

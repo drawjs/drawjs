@@ -39,8 +39,8 @@ export default class Polygon extends Graph {
 		this.basicPoints = props.points
 	}
 
-	translate( x: number, y: number ) {
-		this.basicPoints = translatePoints( this.basicPoints, x, y )
+	translate( deltaX: number, deltaY: number ) {
+		this.basicPoints = translatePoints( this.basicPoints, deltaX, deltaY )
 	}
 
 	render() {
@@ -61,14 +61,13 @@ export default class Polygon extends Graph {
 		return res
 	}
 
+
 	// ******* Drag ******
 	public updateDrag( event ) {
 		const point: Point2D = getters.getPoint( event )
 
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
-
-		this.dragger.updatePrevPoint( point )
 
 		this.translate( deltaX, deltaY )
 

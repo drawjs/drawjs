@@ -14,7 +14,6 @@ import {
 	coupleUpdateZoomPanZoom
 } from "mixin/index"
 import ZoomPan from "mixin/ZoomPan"
-import EventKeyboard from "mixin/EventKeyboard"
 
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
@@ -35,18 +34,22 @@ import {
 	UPDATE_CANVAS,
 	UPDATE_SELECTOR,
 	UPDATE_DRAW,
-	UPDATE_INTERACTION
+	UPDATE_INTERACTION,
+	UPDATE_VIEWPORT
 } from "store/draw/actions"
 import Interaction from "./core/interaction";
+import ViewPort from './model/tool/ViewPort';
 
 const ajv = new Ajv()
 
 
 export default class Draw {
+
 	/**
-	 * event
+	 * Draw getters
 	 */
-	public eventKeyboard: EventKeyboard
+	getters: any
+
 
 	/**
 	 * zoom and pan
@@ -55,10 +58,6 @@ export default class Draw {
 
 	public cellTypeClassMap: any = cellTypeClassMap
 
-	/**
-	 * Selector
-	 */
-	selector: Selector
 
 	/**
 	 * Mini map
@@ -72,6 +71,9 @@ export default class Draw {
 		UPDATE_DRAW( this )
 		UPDATE_CANVAS( canvas )
 
+		const viewPort = new ViewPort()
+		UPDATE_VIEWPORT( viewPort )
+
 		const selector = new Selector()
 		UPDATE_SELECTOR( selector )
 
@@ -79,14 +81,21 @@ export default class Draw {
 		UPDATE_INTERACTION( interaction )
 
 		this.zoomPan = new ZoomPan( { draw: this } )
-		this.eventKeyboard = new EventKeyboard()
 		this.miniMap = new MiniMap( { draw: this } )
 
 		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
+
+		this.getters = getters
 	}
 
 	public render() {
 		const self = this
+		const { zoom, panX, panY } = getters
+		const movementX = panX * zoom
+		const movementY = panY * zoom
+
+		getters.ctx.transform( zoom, 0, 0, zoom, movementX, movementY )
+
 
 		this.clearEntireCanvas()
 		// this.miniMap.renderMainToGetImageData()

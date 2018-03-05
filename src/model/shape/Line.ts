@@ -2,7 +2,7 @@ import * as _ from "lodash"
 
 import Graph from "model/Graph"
 import * as cellTypeList from "store/constant/cellType"
-import { defaultPathExandingValue } from "store/index"
+import { DEFAULT_PATH_EXPANDING_VALUE } from "store/constant/index"
 import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
 import { transformCenterPointForContext } from 'mixin/index';
@@ -89,7 +89,7 @@ export default class Line extends Graph {
 	get pathStoked(): Path2D {
 		const self = this
 		const path = new Path2D()
-		const w = defaultPathExandingValue
+		const w = DEFAULT_PATH_EXPANDING_VALUE
 		const l = this.length
 		const alpha = this.relativeAngle
 		const isAlphaBiggerThanPIDivide4 = alpha > Math.PI / 4

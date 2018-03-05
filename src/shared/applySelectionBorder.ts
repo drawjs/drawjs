@@ -14,7 +14,7 @@ export default function( element ) {
 		!includes( selectionRendererExcludingCellTypes, type )
 	) {
 		ctx.save()
-		ctx.lineWidth = 2
+		ctx.lineWidth = 1
 		ctx.setLineDash( [ 5, 5 ] )
 		ctx.strokeStyle = "black"
 		ctx.stroke( path )
