@@ -5,19 +5,19 @@ import * as constant from "store/constant/index"
 import coupleIsMouseDownToPan from "mixin/coupleIsMouseDownToPan"
 import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
 import getters from 'store/draw/getters';
+import Dragger from './tool/Dragger';
 
 export default abstract class Cell {
-	public id: string = generateUniqueId()
-	public draw: Draw
-	public _isInstance: boolean = true
-	public type: string
-	public angle: number
+	id: string = generateUniqueId()
+	draw: Draw
+	_isInstance: boolean = true
+	type: string
+	angle: number
 
 	/**
 	 * interaction - drag
 	 */
-	public _prevDraggingPoint: Point2D
-	public shouldDrag: boolean = false
+	dragger:Dragger
 
 	/**
 	 * interaction - selection
@@ -32,12 +32,12 @@ export default abstract class Cell {
 	/**
 	 * interaction - size
 	 */
-	public isSizing: boolean = false
+	isSizing: boolean = false
 
 	/**
 	 * Mini map
 	 */
-	public isVisiableInMiniMap = true
+	isVisiableInMiniMap = true
 
 	get radianAngle(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
@@ -80,6 +80,12 @@ export default abstract class Cell {
 
 		this.draw = draw
 
+		this.dragger = new Dragger()
+		this.dragger.update = this.updateDrag.bind( this )
+		this.dragger.handleStart = this.handleStartDrag.bind( this )
+		this.dragger.handleDragging = this.handleDragging.bind( this )
+		this.dragger.handleStop = this.handleStopDrag.bind( this )
+
 		ADD_ELEMENT_TO_CELL_LIST( this )
 	}
 
@@ -88,36 +94,20 @@ export default abstract class Cell {
 		this[ field ] = value
 	}
 
-	public render() {}
+	render() {}
 
-	// ******* Interaction ******
-	// ******* # Drag ******
-	public abstract contain( x: number, y: number ): void
+	abstract contain( x: number, y: number ): void
 
-	public updatePrevDraggingPoint( event ) {
-		this._prevDraggingPoint = {
-			x: event.x,
-			y: event.y
-		}
+	/**
+	 * // Interaction
+	 */
+	updateDrag( event ) {
+		return this.dragger.update( event )
 	}
-	public updateDrag( event ) {}
-	public startDrag( event ): void {
-		this.shouldDrag = true
-		this.updatePrevDraggingPoint( event )
-		this.handleStartDrag && this.handleStartDrag( event )
+	handleStartDrag( event ) {
 	}
-	public dragging( event ): void {
-		this.updateDrag( event )
-		this.updatePrevDraggingPoint( event )
-		this.handleDragging && this.handleDragging( event )
+	handleDragging( event ) {
 	}
-	public stopDrag( event ): void {
-		this.shouldDrag = false
-		this.handleStopDrag && this.handleStopDrag( event )
+	handleStopDrag( event ) {
 	}
-	public handleStartDrag( event ) {}
-	public handleDragging( event ) {}
-	public handleStopDrag( event ) {}
-	// ******* # Drag ******
-	// ******* Interaction ******
 }

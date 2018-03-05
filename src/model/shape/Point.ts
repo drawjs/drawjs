@@ -94,7 +94,6 @@ export default class Point extends Cell {
 		this.x = newPoint.x
 		this.y = newPoint.y
 
-		this.updatePrevDraggingPoint( event )
 		this.draw.render()
 	}
 	// ******* Drag ******

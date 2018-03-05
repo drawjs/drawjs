@@ -2,10 +2,12 @@ import getters from "../store/draw/getters"
 import Cell from "model/Cell"
 import selectionExcludingCellTypes from "../store/exclude/selectionExcludingCellTypes"
 import { includes } from "lodash"
-import { isNotNil } from "util/index"
+import { isNotNil, getPointAngleToOrigin } from "util/index"
+import Dragger from "../model/tool/Dragger"
+import Graph from "../model/Graph"
 
 class SharedGetters {
-	// Selection
+	// Selector
 	pointOnSelectionExcludingCells( point: Point2D ): boolean {
 		let res: boolean = false
 		const mostTopCell: Cell = getters.getMostTopCellFocused( point )

@@ -13,6 +13,7 @@ import {
 import rotate from "../../util/geometry/rotate"
 import getters from "../../store/draw/getters"
 import { ROTATE_ARROW } from "../../store/constant/cellType"
+import { deselectCell, selectCell, enableCellRotate, disableCellRotate } from "../../mixin/coupleCell";
 
 export default class RotationArrow extends Cell {
 	type: string = ROTATE_ARROW
@@ -61,6 +62,29 @@ export default class RotationArrow extends Cell {
 		const { shouldRotate } = this.target
 		const res: boolean = shouldSelect || shouldRotate
 		return res
+	}
+
+	getDeltaRadianFromPrevDraggingPointToCur( point : Point2D): number {
+		const { x, y }: Point2D = point
+
+		const { x: prevX, y: prevY } = this.dragger.prevPoint
+
+		/**
+		 * Center x, y of rect container
+		 */
+		const {
+			x: centerX_r,
+			y: centerY_r
+		}: Point2D = this.rectContainer.basicCenter
+
+		const deltaRadian: number =
+			getPointAngleToOrigin( { x: x - centerX_r, y: y - centerY_r } ) -
+			getPointAngleToOrigin( {
+				x: prevX - centerX_r,
+				y: prevY - centerY_r
+			} )
+
+		return deltaRadian
 	}
 
 	/**
@@ -129,37 +153,15 @@ export default class RotationArrow extends Cell {
 
 	// ******* Drag ******
 	public handleStartDrag( event ) {
-		// const { shouldSelect } = this.target
-		// coupleShouldRotateCell( this.target, true )
-		// coupleSelectCell( this.target, false )
-		// this.render()
+		deselectCell( this.target )
+		enableCellRotate( this.target )
+
+		this.draw.render()
 	}
 	public updateDrag( event ) {
-		const { x: eventX, y: eventY }: Point2D = event
-		const x = eventX - getters.canvasLeft
-		const y = eventY - getters.canvasTop
-
-		const { x: prevEventX, y: prevEventY } = this._prevDraggingPoint
-		const prevX = prevEventX - getters.canvasLeft
-		const prevY = prevEventY - getters.canvasTop
-
-		const {
-			x: centerX_r,
-			y: centerY_r
-		}: Point2D = this.rectContainer.basicCenter
-
-		const deltaRadian =
-			getPointAngleToOrigin( { x: x - centerX_r, y: y - centerY_r } ) -
-			getPointAngleToOrigin( {
-				x: prevX - centerX_r,
-				y: prevY - centerY_r
-			} )
-
+		const point: Point2D = getters.getPoint( event )
+		const deltaRadian: number = this.getDeltaRadianFromPrevDraggingPointToCur( point )
 		const radian = this.radian + deltaRadian
-
-		// console.log( radian * RADIAN_TO_DEGREE )
-
-		this.updatePrevDraggingPoint( event )
 
 		this.target.angle = radian * RADIAN_TO_DEGREE
 
@@ -168,8 +170,8 @@ export default class RotationArrow extends Cell {
 	public handleStopDrag( event ) {
 		const { shouldRotate } = this.target
 
-		// coupleSelectCell( this.target, true )
-		// coupleShouldRotateCell( this.target, false )
+		disableCellRotate( this.target )
+		selectCell( this.target )
 
 		this.draw.render()
 	}

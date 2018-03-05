@@ -151,8 +151,8 @@ export default class RotationIcon extends Cell {
 
 		let radianAngle = 0
 		let deltaAngle = 0
-		const deltaX = event.x - this._prevDraggingPoint.x
-		const deltaY = event.y - this._prevDraggingPoint.y
+		const deltaX = event.x - this.dragger.prevPoint.x
+		const deltaY = event.y - this.dragger.prevPoint.y
 
 		const { zoom, panPoint } = this.draw.zoomPan
 
@@ -170,8 +170,6 @@ export default class RotationIcon extends Cell {
 					panPoint.y * zoom
 			} ) +
 			Math.PI / 2
-
-		this.updatePrevDraggingPoint( event )
 
 		this.instance.angle = radianAngle * constant.RADIAN_TO_DEGREE
 

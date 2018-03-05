@@ -254,14 +254,12 @@ export default class Line extends Graph {
 	public updateDrag( event ) {
 		const zoom = this.draw.zoomPan.zoom
 		this.pointStart.x =
-			this.pointStart.x + ( event.x - this._prevDraggingPoint.x ) / zoom
+			this.pointStart.x + ( event.x - this.dragger.prevPoint.x ) / zoom
 		this.pointStart.y =
-			this.pointStart.y + ( event.y - this._prevDraggingPoint.y ) / zoom
+			this.pointStart.y + ( event.y - this.dragger.prevPoint.y ) / zoom
 
-		this.pointEnd.x = this.pointEnd.x + ( event.x - this._prevDraggingPoint.x ) / zoom
-		this.pointEnd.y = this.pointEnd.y + ( event.y - this._prevDraggingPoint.y ) / zoom
-
-		this.updatePrevDraggingPoint( event )
+		this.pointEnd.x = this.pointEnd.x + ( event.x - this.dragger.prevPoint.x ) / zoom
+		this.pointEnd.y = this.pointEnd.y + ( event.y - this.dragger.prevPoint.y ) / zoom
 
 		this.draw.render()
 	}

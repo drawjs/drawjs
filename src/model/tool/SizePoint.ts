@@ -137,7 +137,6 @@ export default abstract class SizePoint extends Point {
 
 		this.size( newPoint )
 
-		this.updatePrevDraggingPoint( event )
 		this.draw.render()
 	}
 

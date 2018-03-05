@@ -63,15 +63,14 @@ export default class Polygon extends Graph {
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const { x, y } = event
-		let { _prevDraggingPoint } = this
-		const { x: prevX, y: prevY } = _prevDraggingPoint
-		const deltaX = x - prevX
-		const deltaY = y - prevY
+		const point: Point2D = getters.getPoint( event )
+
+		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+
+		this.dragger.updatePrevPoint( point )
 
 		this.translate( deltaX, deltaY )
-
-		this.updatePrevDraggingPoint( event )
 
 		this.draw.render()
 	}

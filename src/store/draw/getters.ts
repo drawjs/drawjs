@@ -66,8 +66,7 @@ class Getters {
 		return res
 
 		function shouldCellDrag( cell ): boolean {
-			const { shouldDrag } = cell
-			return shouldDrag === true
+			return cell.dragger.enable === true
 		}
 	}
 
@@ -126,6 +125,8 @@ class Getters {
 		return point
 	}
 
+
+
 	/**
 	 * // Selector
 	 */
@@ -159,6 +160,8 @@ class Getters {
 
 		return res
 	}
+
+
 
 	/**
 	 * Data to export

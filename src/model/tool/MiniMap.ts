@@ -448,8 +448,8 @@ class ViewBox extends Cell {
 	// ******* Pan view box { ******
 	public updateDrag( event ) {
 		const pep: Point2D = {
-			x: this._prevDraggingPoint.x - getters.canvasLeft,
-			y: this._prevDraggingPoint.y - getters.canvasTop,
+			x: this.dragger.prevPoint.x - getters.canvasLeft,
+			y: this.dragger.prevPoint.y - getters.canvasTop,
 		}
 		// curernt event point
 		const cep: Point2D = {
@@ -471,14 +471,14 @@ class ViewBox extends Cell {
 	}
 
 	public handleMouseMove( event ) {
-		if ( this.shouldDrag || this.contain(
+		if ( this.dragger.enable || this.contain(
 			event.x - getters.canvasLeft,
 			event.y - getters.canvasTop
 		) ) {
 			getters.canvas.style.cursor = "-webkit-grab"
 			return
 		}
-		if ( ! this.shouldDrag ) {
+		if ( ! this.dragger.enable ) {
 			getters.canvas.style.cursor = "default"
 			return
 		}

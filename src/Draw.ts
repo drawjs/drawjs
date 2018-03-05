@@ -41,6 +41,7 @@ import Interaction from "./core/interaction";
 
 const ajv = new Ajv()
 
+
 export default class Draw {
 	/**
 	 * event
@@ -53,7 +54,6 @@ export default class Draw {
 	public zoomPan: ZoomPan
 
 	public cellTypeClassMap: any = cellTypeClassMap
-	public _selectionAreaInstance: SelectionArea
 
 	/**
 	 * Selector
