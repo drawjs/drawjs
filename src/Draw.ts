@@ -99,7 +99,7 @@ export default class Draw {
 
 		getters.renderer.setTransformViewPort()
 
-		// getters.grid.render( 50, getters.zoom, getters.pan )
+		getters.grid.render( 50, getters.zoom, getters.pan )
 
 		getters.cellList.map( renderElement )
 

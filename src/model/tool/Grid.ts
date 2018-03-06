@@ -1,5 +1,7 @@
 import getters from "../../store/draw/getters"
 
+const { abs } = Math
+
 export default class Grid {
 	canvas: HTMLCanvasElement
 	zoom: number = 1
@@ -21,44 +23,34 @@ export default class Grid {
 		return getters.ctx
 	}
 
-	get basicWidth(): number {
-		return this.canvas.getBoundingClientRect().width
-	}
-
-	get basicHeight(): number {
-		return this.canvas.getBoundingClientRect().height
-	}
-
 	get width(): number {
-		// if ( this.zoom < 1 ) {
-		// 	return this.basicWidth / this.zoom
-		// }
-		return this.basicWidth
+		return ( abs( getters.panX ) + getters.canvasWidth ) / getters.zoom + this.interval
 	}
 
 	get height(): number {
-		// if ( this.zoom < 1 ) {
-		// 	return this.basicHeight / this.zoom
-		// }
-		return this.basicHeight
+		return ( abs( getters.panY ) + getters.canvasHeight ) / getters.zoom + this.interval
 	}
 
-	get startX(): number {
-		return -( this.width - this.basicWidth ) / 2
+	get left(): number {
+		return -Math.round( getters.panX / this.interval ) * this.interval - this.interval
 	}
 
-	get startY(): number {
-		return -( this.height - this.basicHeight ) / 2
+	get right(): number {
+		return this.left + this.width
+	}
+
+	get top(): number {
+		return -Math.round( getters.panY / this.interval ) * this.interval - this.interval
+	}
+
+	get bottom(): number {
+		return this.top + this.height
 	}
 
 	get path(): Path2D {
 		let path = new Path2D()
 
-		const { width, height, interval, startX, startY } = this
-		const left = -300
-		const right = left + width
-		const top = -300
-		const bottom = top + height
+		const { width, height, interval, left, top, right, bottom } = this
 
 		/**
 		 * Draw vertical lines
@@ -87,7 +79,7 @@ export default class Grid {
 	render(
 		interval = Grid.INTERVAL,
 		zoom: number = Grid.DEFAULT_ZOOM,
-		pan: Point2D = Grid.DEFAULT_PAN
+		pan: Point2D = Grid.DEFAULT_PAN,
 	) {
 		this.interval = interval
 		this.zoom = zoom
@@ -95,12 +87,10 @@ export default class Grid {
 
 		const { ctx } = getters
 		const { path } = this
-		// getters.renderer.resetTransform()
 		ctx.save()
 		ctx.lineWidth = 1
 		ctx.strokeStyle = "grey"
 		ctx.stroke( path )
 		ctx.restore()
-		// getters.renderer.setTransformViewPort()
 	}
 }
