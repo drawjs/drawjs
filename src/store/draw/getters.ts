@@ -161,6 +161,22 @@ class Getters {
 	}
 
 	/**
+	 *  Horizontal movement of zoomed view port
+	 */
+	get movementX(): number {
+		return this.panX * this.zoom
+	}
+
+	/**
+	 *  Vertical movement of zoomed view port
+	 */
+	get movementY(): number {
+		return this.panY * this.zoom
+	}
+
+
+
+	/**
 	 * // Selector
 	 */
 	get selector(): Selector {

@@ -9,9 +9,7 @@ import {
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
 } from "store/constant/index"
-import {
-	getInstanceByElementWithoutInstance,
-} from "mixin/index"
+import { getInstanceByElementWithoutInstance } from "mixin/index"
 
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
@@ -35,23 +33,19 @@ import {
 	UPDATE_VIEWPORT,
 	UPDATE_GRID
 } from "store/draw/actions"
-import Interaction from "./core/interaction";
-import ViewPort from './model/tool/ViewPort';
-import Grid from './model/tool/Grid';
+import Interaction from "./core/interaction"
+import ViewPort from "./model/tool/ViewPort"
+import Grid from "./model/tool/Grid"
 
 const ajv = new Ajv()
 
-
 export default class Draw {
-
 	/**
 	 * Draw getters
 	 */
 	getters: any
 
-
 	public cellTypeClassMap: any = cellTypeClassMap
-
 
 	public onGraphClick: Function
 	public onGraphHover: Function
@@ -72,7 +66,6 @@ export default class Draw {
 		const grid = new Grid( canvas )
 		UPDATE_GRID( grid )
 
-
 		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
 
 		this.getters = getters
@@ -80,8 +73,6 @@ export default class Draw {
 
 	public render() {
 		const self = this
-
-
 
 		this.clearEntireCanvas()
 		// this.miniMap.renderMainToGetImageData()
@@ -99,7 +90,6 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
-
 		// const { zoom, panX, panY } = getters
 		// const movementX = panX * zoom
 		// const movementY = panY * zoom
@@ -107,13 +97,14 @@ export default class Draw {
 		// getters.ctx.transform( zoom, 0, 0, zoom, movementX, movementY )
 		// getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
 
+		const { zoom, movementX, movementY } = getters
+		getters.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
 
 		getters.grid.render( 50 )
 
 		getters.cellList.map( renderElement )
 
 		getters.selector.render()
-
 
 		// this.miniMap.render()
 	}
