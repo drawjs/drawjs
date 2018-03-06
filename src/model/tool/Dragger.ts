@@ -10,7 +10,7 @@ class Dragger {
 	}
 	update( event ) {}
 	start( event ): void {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2D = getters.getInitialPoint( event )
 
 		this.enable = true
 
@@ -19,7 +19,7 @@ class Dragger {
 		this.handleStart && this.handleStart( event )
 	}
 	dragging( event ): void {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2D = getters.getInitialPoint( event )
 
 		this.update( event )
 

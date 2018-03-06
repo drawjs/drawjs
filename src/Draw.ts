@@ -31,11 +31,13 @@ import {
 	UPDATE_DRAW,
 	UPDATE_INTERACTION,
 	UPDATE_VIEWPORT,
-	UPDATE_GRID
+	UPDATE_GRID,
+	UPDATE_RENDERER
 } from "store/draw/actions"
 import Interaction from "./core/interaction"
 import ViewPort from "./model/tool/ViewPort"
 import Grid from "./model/tool/Grid"
+import Renderer from "./model/tool/Renderer"
 
 const ajv = new Ajv()
 
@@ -57,6 +59,9 @@ export default class Draw {
 		const viewPort = new ViewPort()
 		UPDATE_VIEWPORT( viewPort )
 
+		const renderer = new Renderer()
+		UPDATE_RENDERER( renderer )
+
 		const selector = new Selector()
 		UPDATE_SELECTOR( selector )
 
@@ -74,10 +79,10 @@ export default class Draw {
 	public render() {
 		const self = this
 
-		this.clearEntireCanvas()
+		// this.clearEntireCanvas()
 		// this.miniMap.renderMainToGetImageData()
 
-		this.clearEntireCanvas()
+		// this.clearEntireCanvas()
 
 		// renderGridCanvas( {
 		// 	canvas       : this.canvas,
@@ -90,17 +95,11 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
-		// const { zoom, panX, panY } = getters
-		// const movementX = panX * zoom
-		// const movementY = panY * zoom
-		// getters.ctx.translate( panX, panY )
-		// getters.ctx.transform( zoom, 0, 0, zoom, movementX, movementY )
-		// getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
+		getters.renderer.clear()
 
-		const { zoom, movementX, movementY } = getters
-		getters.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
+		getters.renderer.setTransformViewPort()
 
-		getters.grid.render( 50 )
+		// getters.grid.render( 50, getters.zoom, getters.pan )
 
 		getters.cellList.map( renderElement )
 
@@ -116,10 +115,6 @@ export default class Draw {
 
 	private attachDrawToElement( element ) {
 		// element[ DRAW_INSTANCE_NAME ] = this
-	}
-
-	private clearEntireCanvas() {
-		getters.ctx.clearRect( 0, 0, getters.canvas.width, getters.canvas.height )
 	}
 
 	private importData( dataString ) {

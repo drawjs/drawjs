@@ -56,15 +56,14 @@ export default class Polygon extends Graph {
 	}
 
 	contain( x: number, y: number ) {
-		const res: boolean = getters.ctx.isPointInPath( this.path, x, y )
-
-		return res
+		const isContain = getters.pointOnPath( { x, y }, this.path )
+		return isContain
 	}
 
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2DInitial = getters.getInitialPoint( event )
 
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )

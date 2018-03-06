@@ -35,7 +35,7 @@ class Interaction {
 		canvas.addEventListener( "mouseup", mouseupListener )
 
 		function mousedownListener( event ) {
-			const point = getters.getPoint( event )
+			const point: Point2DInitial = getters.getInitialPoint( event )
 
 			if ( getters.viewPort.isPanning ) {
 				return getters.viewPort.startPan( event )
@@ -97,7 +97,6 @@ class Interaction {
 
 			if ( isDecreasing() && eventKeyboard.isAltPressing ) {
 				getters.viewPort.zoomIn( point )
-				console.log( deltaX )
 			}
 
 			if ( isIncreasing() && eventKeyboard.isAltPressing ) {
@@ -117,12 +116,12 @@ class Interaction {
 		function startSelect( event ) {
 			getters.selector.shouldSelect = true
 
-			getters.selector.startPoint = getters.getPoint( event )
+			getters.selector.startPoint = getters.getInitialPoint( event )
 			getters.draw.render()
 		}
 
 		function selecting( event ) {
-			getters.selector.endPoint = getters.getPoint( event )
+			getters.selector.endPoint = getters.getInitialPoint( event )
 			getters.draw.render()
 		}
 

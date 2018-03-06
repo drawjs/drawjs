@@ -24,6 +24,8 @@ let drawStore: DrawStore = {
 
 	viewPort: null,
 
+	renderer: null,
+
 	selector: null,
 
 	interaction: null,

@@ -9,9 +9,9 @@ import sharedGetters from "../../shared/sharedGetters"
 import { isNotNil } from "util/index"
 
 export default class Selector {
-	startPoint: Point2D
+	startPoint: Point2DInitial
 
-	endPoint: Point2D
+	endPoint: Point2DInitial
 
 	shouldSelect: boolean = false
 

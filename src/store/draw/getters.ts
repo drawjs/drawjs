@@ -9,6 +9,7 @@ import ViewPort from '../../model/tool/ViewPort';
 import EventKeyboard from '../../util/EventKeyboard';
 import Interaction from "../../core/interaction";
 import Grid from '../../model/tool/Grid';
+import Renderer from '../../model/tool/Renderer';
 
 class Getters {
 	get storeActivePanelId(): string {
@@ -129,12 +130,31 @@ class Getters {
 		return res
 	}
 
-	getPoint( event ): Point2D {
-		const point: Point2D = {
+	pointOnPath( point: Point2DInitial, path: Path2D ): boolean {
+		const pointOnCurrentViewPort: Point2DCurrent = this.viewPort.transform( point )
+		const { x, y }: Point2DCurrent = pointOnCurrentViewPort
+		const isContain = this.ctx.isPointInPath( path, x, y )
+		return isContain
+	}
+
+	/**
+	 * Get real-time point on view port
+	 */
+	getPoint( event ): Point2DCurrent {
+		const point: Point2DCurrent = {
 			x: event.x - this.canvasLeft,
 			y: event.y - this.canvasTop
 		}
 		return point
+	}
+
+	/**
+	 * Get point on initial view port
+	 */
+	getInitialPoint( event ): Point2DInitial {
+		const point: Point2DCurrent = this.getPoint( event )
+		const res: Point2DInitial = this.viewPort.transformToInitial( point )
+		return res
 	}
 
 	/**
@@ -153,11 +173,11 @@ class Getters {
 	}
 
 	get panX(): number {
-		return this.pan.x
+		return this.viewPort.pan.x
 	}
 
 	get panY(): number {
-		return this.pan.y
+		return this.viewPort.pan.y
 	}
 
 	/**
@@ -172,6 +192,14 @@ class Getters {
 	 */
 	get movementY(): number {
 		return this.panY * this.zoom
+	}
+
+
+	/**
+	 * // Renderer
+	 */
+	get renderer(): Renderer {
+		return drawStore.renderer
 	}
 
 

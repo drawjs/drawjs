@@ -81,18 +81,16 @@ export default class Point extends Graph {
 		ctx.fillStyle = this.fill
 		ctx.fill( this.path )
 		ctx.restore()
-
 	}
 
 	public contain( x, y ) {
-		const isContain = getters.ctx.isPointInPath( this.path, x, y )
-
+		const isContain = getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2DInitial = getters.getInitialPoint( event )
 
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )

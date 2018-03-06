@@ -13,7 +13,12 @@ import {
 import rotate from "../../util/geometry/rotate"
 import getters from "../../store/draw/getters"
 import { ROTATE_ARROW } from "../../store/constant/cellType"
-import { deselectCell, selectCell, enableCellRotate, disableCellRotate } from "../../mixin/coupleCell";
+import {
+	deselectCell,
+	selectCell,
+	enableCellRotate,
+	disableCellRotate
+} from "../../mixin/coupleCell"
 
 export default class RotationArrow extends Cell {
 	type: string = ROTATE_ARROW
@@ -64,7 +69,7 @@ export default class RotationArrow extends Cell {
 		return res
 	}
 
-	getDeltaRadianFromPrevDraggingPointToCur( point : Point2D): number {
+	getDeltaRadianFromPrevDraggingPointToCur( point: Point2D ): number {
 		const { x, y }: Point2D = point
 
 		const { x: prevX, y: prevY } = this.dragger.prevPoint
@@ -143,12 +148,13 @@ export default class RotationArrow extends Cell {
 			)
 			ctx.drawImage( this.img, -SIZE / 2, -SIZE / 2, SIZE, SIZE )
 			ctx.restore()
+			getters.renderer.setTransformViewPort()
 		}
 	}
 
 	contain( x: number, y: number ) {
-		const res: boolean = getters.ctx.isPointInPath( this.path, x, y )
-		return res
+		const isContain = getters.pointOnPath( { x, y }, this.path )
+		return isContain
 	}
 
 	// ******* Drag ******
@@ -159,8 +165,10 @@ export default class RotationArrow extends Cell {
 		this.draw.render()
 	}
 	public updateDrag( event ) {
-		const point: Point2D = getters.getPoint( event )
-		const deltaRadian: number = this.getDeltaRadianFromPrevDraggingPointToCur( point )
+		const point: Point2DInitial = getters.getInitialPoint( event )
+		const deltaRadian: number = this.getDeltaRadianFromPrevDraggingPointToCur(
+			point
+		)
 		const radian = this.radian + deltaRadian
 
 		this.target.angle = radian * RADIAN_TO_DEGREE

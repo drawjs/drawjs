@@ -1,7 +1,7 @@
 import getters from "store/draw/getters"
 import zoomPoint from "util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
-import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from '../../store/constant/index';
+import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from "../../store/constant/index"
 
 const { abs } = Math
 
@@ -35,9 +35,9 @@ export default class ViewPort {
 	 * Used to calculate the change of every point's position on
 	 * canvas after view port is zoomed and panned
 	 */
-	center: Point2D
+	center: Point2DCurrent
 
-	get basicCenter(): Point2D {
+	get basicCenter(): Point2DInitial {
 		const { canvasWidth, canvasHeight } = getters
 
 		const point: Point2D = {
@@ -72,13 +72,21 @@ export default class ViewPort {
 	/**
 	 * The movement of viewPort when zoom equals 1
 	 */
-	get pan(): Point2D {
+	get pan(): Point2DCurrent {
 		const { center, zoom, basicCenter } = this
 		const res: Point2D = {
 			x: center.x / zoom - basicCenter.x,
 			y: center.y / zoom - basicCenter.y
 		}
 		return res
+	}
+
+	get panX(): number {
+		return this.pan.x
+	}
+
+	get panY(): number {
+		return this.pan.y
 	}
 
 	get isPanning(): boolean {
@@ -95,8 +103,12 @@ export default class ViewPort {
 	/**
 	 * // Zoom
 	 */
+	/**
+	 * Zoom by
+	 * @param center point on current view port
+	 */
 	zoomBy(
-		center: Point2D = {
+		center: Point2DCurrent = {
 			x: 0,
 			y: 0
 		},
@@ -126,15 +138,16 @@ export default class ViewPort {
 
 		function willNotInScope() {
 			const potentialNewZoom: number = self.zoom + deltaZoom
-			const { MAX_ZOOM, MIN_ZOOM }  = ViewPort
-			const res: boolean = potentialNewZoom > MAX_ZOOM || potentialNewZoom < MIN_ZOOM
+			const { MAX_ZOOM, MIN_ZOOM } = ViewPort
+			const res: boolean =
+				potentialNewZoom > MAX_ZOOM || potentialNewZoom < MIN_ZOOM
 			return res
 		}
 	}
-	zoomIn( point: Point2D ) {
+	zoomIn( point: Point2DCurrent ) {
 		this.zoomBy( point, ViewPort.ZOOM_VARIATION )
 	}
-	zoomOut( point: Point2D ) {
+	zoomOut( point: Point2DCurrent ) {
 		this.zoomBy( point, -ViewPort.ZOOM_VARIATION )
 	}
 
@@ -149,7 +162,7 @@ export default class ViewPort {
 		}
 	}
 
-	getDeltaPointToPrevPanningPoint( point ): Point2D {
+	getDeltaPointToPrevPanningPoint( point ): Point2DCurrent {
 		const { x, y }: Point2D = point
 		const { x: prevX, y: prevY } = this.prevZoomingPoint
 
@@ -171,7 +184,7 @@ export default class ViewPort {
 	}
 
 	startPan( event ) {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2DCurrent = getters.getPoint( event )
 
 		this.shouldPan = true
 
@@ -179,7 +192,7 @@ export default class ViewPort {
 	}
 
 	panning( event ) {
-		const point: Point2D = getters.getPoint( event )
+		const point: Point2DCurrent = getters.getPoint( event )
 
 		const deltaX: number = this.getDeltaXToPrevPanningPoint( point )
 		const deltaY: number = this.getDeltaYToPrevPanningPoint( point )
@@ -193,5 +206,31 @@ export default class ViewPort {
 
 	stopPan() {
 		this.shouldPan = false
+	}
+
+	/**
+	 * Transform point on initial view port to current view port
+	 */
+	transform( point: Point2DInitial ): Point2DCurrent {
+		const { x, y }: Point2DInitial = point
+		const { zoom, panX, panY } = this
+		const res: Point2DCurrent = {
+			x: ( x + panX ) * zoom,
+			y: ( y + panY ) * zoom
+		}
+		return res
+	}
+
+	/**
+	 * Transform real-time point on canvas to the point on initial view port
+	 */
+	transformToInitial( point: Point2DCurrent ): Point2DInitial {
+		const { x, y } = point
+		const { zoom, panX, panY } = this
+		const res: Point2DInitial = {
+			x: x / zoom - panX,
+			y: y / zoom - panY
+		}
+		return res
 	}
 }

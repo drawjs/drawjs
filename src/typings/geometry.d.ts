@@ -1,9 +1,25 @@
-interface Point2D {
+type Point2D = {
 	x: number
 	y: number
 }
 
 
-type Segment =  [ Point2D, Point2D ]
+type MockNumber = number
 
+/**
+ * Point on initial view port
+ */
+declare type Point2DInitial = {
+	x: number
+	y: number
+}
 
+/**
+ * Point on current view port
+ */
+declare type Point2DCurrent = {
+	x: number
+	y: number
+}
+
+type Segment = [Point2D, Point2D]

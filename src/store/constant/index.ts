@@ -36,6 +36,6 @@ export const ROTATION_ARROW_SIZE = 20
 /**
  * View port
  */
-export const ZOOM_VARIATION = 0.5
+export const ZOOM_VARIATION = 0.25
 export const MAX_ZOOM = 32
 export const MIN_ZOOM = 0.19
