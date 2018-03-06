@@ -97,6 +97,7 @@ class Interaction {
 
 			if ( isDecreasing() && eventKeyboard.isAltPressing ) {
 				getters.viewPort.zoomIn( point )
+				console.log( deltaX )
 			}
 
 			if ( isIncreasing() && eventKeyboard.isAltPressing ) {

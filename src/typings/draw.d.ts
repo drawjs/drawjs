@@ -37,6 +37,7 @@ interface DrawStore extends DrawStoreWithoutInstance {
 	viewPort: any,
 	selector: any,
 	interaction: any,
+	grid: any
 }
 
 interface DrawStorePanel extends DrawStorePanelWithoutInstance {

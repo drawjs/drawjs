@@ -79,11 +79,11 @@ export default class Point extends Graph {
 
 		ctx.save()
 
-		// const { zoom, panX, panY } = getters
-		// const movementX = panX * zoom
-		// const movementY = panY * zoom
+		const { zoom, panX, panY } = getters
+		const movementX = panX * zoom
+		const movementY = panY * zoom
 		// ctx.translate( panX, panY )
-		// getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
+		getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
 
 		ctx.fillStyle = this.fill
 		ctx.fill( this.path )

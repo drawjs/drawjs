@@ -28,6 +28,7 @@ let drawStore: DrawStore = {
 
 	interaction: null,
 
+	grid: null
 
 }
 

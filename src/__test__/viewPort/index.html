@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		#canvas {
+			border: 1px solid grey;
+			margin: 20px 0 0 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="canvas" width="600" height="600"></canvas>
+	<div style="margin-top: 20px;">
+		<button id="exportBtn">Export</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="file" name="upload" id="uploadButton">
+	</div>
+
+	<script src="../../draw.js"></script>
+	<script src="./index.js"></script>
+</body>
+
+</html>

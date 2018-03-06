@@ -1,7 +1,7 @@
 import getters from "store/draw/getters"
 import zoomPoint from "util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
-import { ZOOM_VARIATION } from "../../store/constant/index"
+import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from '../../store/constant/index';
 
 const { abs } = Math
 
@@ -27,7 +27,9 @@ export default class ViewPort {
 	 */
 	zoom: number = 1
 
-	ZOOM_VARIATION = ZOOM_VARIATION
+	static ZOOM_VARIATION: number = ZOOM_VARIATION
+	static MAX_ZOOM: number = MAX_ZOOM
+	static MIN_ZOOM: number = MIN_ZOOM
 
 	/**
 	 * Used to calculate the change of every point's position on
@@ -100,19 +102,40 @@ export default class ViewPort {
 		},
 		deltaZoom: number
 	) {
+		const self = this
+
+		if ( willNotInScope() ) {
+			return
+		}
+
+		const prevZoom: number = this.zoom
+
+		/**
+		 * Update zoom
+		 */
 		this.zoom = this.zoom + deltaZoom
 
-		const { basicCenter, zoom } = this
+		/**
+		 * Update center point
+		 */
+		const { center: viewPortCenter, basicCenter, zoom } = this
 
-		this.center = zoomPoint( center, zoom, basicCenter )
+		this.center = zoomPoint( center, zoom / prevZoom, this.center )
 
 		getters.draw.render()
+
+		function willNotInScope() {
+			const potentialNewZoom: number = self.zoom + deltaZoom
+			const { MAX_ZOOM, MIN_ZOOM }  = ViewPort
+			const res: boolean = potentialNewZoom > MAX_ZOOM || potentialNewZoom < MIN_ZOOM
+			return res
+		}
 	}
 	zoomIn( point: Point2D ) {
-		this.zoomBy( point, this.ZOOM_VARIATION )
+		this.zoomBy( point, ViewPort.ZOOM_VARIATION )
 	}
 	zoomOut( point: Point2D ) {
-		this.zoomBy( point, -this.ZOOM_VARIATION )
+		this.zoomBy( point, -ViewPort.ZOOM_VARIATION )
 	}
 
 	/**

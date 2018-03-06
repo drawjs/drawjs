@@ -32,10 +32,12 @@ import {
 	UPDATE_SELECTOR,
 	UPDATE_DRAW,
 	UPDATE_INTERACTION,
-	UPDATE_VIEWPORT
+	UPDATE_VIEWPORT,
+	UPDATE_GRID
 } from "store/draw/actions"
 import Interaction from "./core/interaction";
 import ViewPort from './model/tool/ViewPort';
+import Grid from './model/tool/Grid';
 
 const ajv = new Ajv()
 
@@ -66,6 +68,9 @@ export default class Draw {
 
 		const interaction = new Interaction()
 		UPDATE_INTERACTION( interaction )
+
+		const grid = new Grid( canvas )
+		UPDATE_GRID( grid )
 
 
 		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
@@ -103,6 +108,7 @@ export default class Draw {
 		// getters.ctx.transform( getters.zoom, 0, 0, getters.zoom, movementX, movementY )
 
 
+		getters.grid.render( 50 )
 
 		getters.cellList.map( renderElement )
 

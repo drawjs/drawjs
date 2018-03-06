@@ -8,6 +8,7 @@ import selectionExcludingCellTypes from "../exclude/selectionExcludingCellTypes"
 import ViewPort from '../../model/tool/ViewPort';
 import EventKeyboard from '../../util/EventKeyboard';
 import Interaction from "../../core/interaction";
+import Grid from '../../model/tool/Grid';
 
 class Getters {
 	get storeActivePanelId(): string {
@@ -255,6 +256,15 @@ class Getters {
 
 	get eventKeyboard(): EventKeyboard {
 		return this.interaction.eventKeyboard
+	}
+
+
+
+	/**
+	 * // Grid
+	 */
+	get grid(): Grid {
+		return drawStore.grid
 	}
 }
 
