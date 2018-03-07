@@ -1,7 +1,6 @@
 import { Cell } from "../index"
 import { POINT } from "../../store/constant/cellType"
 import { POINT_RADIUS } from "../../store/constant/index"
-import getters from "../../store/draw/getters"
 import Graph from "../Graph"
 import RectContainer from "../tool/RectContainer"
 import translate from "util/geometry/translate"
@@ -51,7 +50,11 @@ export default class Point extends Graph {
 
 		const points: Point2D[] = [ leftTop, rightTop, rightBottom, leftBottom ]
 
-		return new RectContainer( points, this )
+		return new RectContainer( {
+			points,
+			target: this,
+			draw: this.draw
+		} )
 	}
 
 	translate( deltaX: number, deltaY: number ) {
@@ -74,7 +77,7 @@ export default class Point extends Graph {
 	}
 
 	public render() {
-		const ctx = getters.ctx
+		const { ctx } = this.getters
 		super.render()
 
 		ctx.save()
@@ -84,13 +87,13 @@ export default class Point extends Graph {
 	}
 
 	public contain( x, y ) {
-		const isContain = getters.pointOnPath( { x, y }, this.path )
+		const isContain = this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const point: Point2DInitial = getters.getInitialPoint( event )
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )

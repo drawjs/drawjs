@@ -1,7 +1,6 @@
 import * as _ from "lodash"
 import * as Ajv from "lib/ajv"
 
-import { Rect, Line } from "model/shape/index"
 import { Cell } from "model/index"
 import {
 	DRAW_INSTANCE_NAME,
@@ -9,76 +8,80 @@ import {
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
 } from "store/constant/index"
-import { getInstanceByElementWithoutInstance } from "mixin/index"
 
 import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
-import cellTypeClassMap from "store/map/cellTypeClassMap"
 import { log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
-import MiniMap from "./model/tool/MiniMap"
-import renderElement from "./shared/renderElement"
-import { renderGridCanvas } from "shared/index"
+// import MiniMap from "./model/tool/MiniMap"
 import Selector from "./model/tool/Selector"
-import getters from "store/draw/getters"
-import {
-	ADD_ELEMENT,
-	MODIFY_ACTIVE_PANEL_ID,
-	UPDATE_STORE,
-	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES,
-	UPDATE_CANVAS,
-	UPDATE_SELECTOR,
-	UPDATE_DRAW,
-	UPDATE_INTERACTION,
-	UPDATE_VIEWPORT,
-	UPDATE_GRID,
-	UPDATE_RENDERER
-} from "store/draw/actions"
 import Interaction from "./core/interaction"
 import ViewPort from "./model/tool/ViewPort"
 import Grid from "./model/tool/Grid"
 import Renderer from "./model/tool/Renderer"
+import Getters from './store/draw/Getters';
+import DrawStore from './store/draw/DrawStore';
+import Actions from './store/draw/Actions';
+import SharedActions from "./shared/SharedActions";
 
 const ajv = new Ajv()
 
 export default class Draw {
 	/**
-	 * Draw getters
+	 * Draw store
 	 */
-	getters: any
+	drawStore: DrawStore
 
-	public cellTypeClassMap: any = cellTypeClassMap
+	/**
+	 * Draw getters, based on "drawStore"
+	 */
+	getters: Getters
+
+	/**
+	 * Draw actions, which mutates "drawStore"
+	 */
+	actions: Actions
+
+	/**
+	 * Draw shared actions, which is based on "drawStore" but doesn't mutate "drawStore"
+	 */
+	sharedActions: SharedActions
+
 
 	public onGraphClick: Function
 	public onGraphHover: Function
 
 	constructor( canvas: HTMLCanvasElement ) {
-		UPDATE_DRAW( this )
-		UPDATE_CANVAS( canvas )
+		this.drawStore = new DrawStore()
+		this.getters = new Getters( this.drawStore )
+		this.actions = new Actions( this.drawStore, this.getters )
+		this.sharedActions = new SharedActions( this.drawStore, this.getters )
 
-		const viewPort = new ViewPort()
-		UPDATE_VIEWPORT( viewPort )
+		this.actions.UPDATE_DRAW( this )
+		this.actions.UPDATE_CANVAS( canvas )
 
-		const renderer = new Renderer()
-		UPDATE_RENDERER( renderer )
+		const viewPort = new ViewPort( { draw: this } )
+		this.actions.UPDATE_VIEWPORT( viewPort )
 
-		const selector = new Selector()
-		UPDATE_SELECTOR( selector )
+		const renderer = new Renderer( { draw: this } )
+		this.actions.UPDATE_RENDERER( renderer )
 
-		const interaction = new Interaction()
-		UPDATE_INTERACTION( interaction )
+		const selector = new Selector( { draw: this } )
+		this.actions.UPDATE_SELECTOR( selector )
 
-		const grid = new Grid( canvas )
-		UPDATE_GRID( grid )
+		const interaction = new Interaction( { draw: this } )
+		this.actions.UPDATE_INTERACTION( interaction )
 
-		MODIFY_ACTIVE_PANEL_ID( getters.storeActivePanelId )
+		const grid = new Grid( { draw: this, canvas } )
+		this.actions.UPDATE_GRID( grid )
 
-		this.getters = getters
+		this.actions.MODIFY_ACTIVE_PANEL_ID( this.getters.storeActivePanelId )
 	}
 
 	public render() {
 		const self = this
 
+		const { renderElement } = this.sharedActions
 		// this.clearEntireCanvas()
 		// this.miniMap.renderMainToGetImageData()
 
@@ -95,22 +98,22 @@ export default class Draw {
 		// 	deltaYForPan : this.zoomPan.deltaYForPan
 		// } )
 
-		getters.renderer.clear()
+		this.getters.renderer.clear()
 
-		getters.renderer.setTransformViewPort()
+		this.getters.renderer.setTransformViewPort()
 
-		getters.grid.render( 50, getters.zoom, getters.pan )
+		this.getters.grid.render( 50, this.getters.zoom, this.getters.pan )
 
-		getters.cellList.map( renderElement )
+		this.getters.cellList.map( renderElement )
 
-		getters.selector.render()
+		this.getters.selector.render()
 
 		// this.miniMap.render()
 	}
 
 	public addElement( type: string, setting: any, panelId?: string ) {
 		// this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
-		ADD_ELEMENT( this, type, setting, panelId )
+		this.actions.ADD_ELEMENT( this, type, setting, panelId )
 	}
 
 	private attachDrawToElement( element ) {
@@ -127,7 +130,7 @@ export default class Draw {
 				storeWithoutInstance
 			)
 
-			UPDATE_STORE( storeWithoutInstanceCleanElements )
+			this.actions.UPDATE_STORE( storeWithoutInstanceCleanElements )
 
 			addStoreElementsAndInstances( storeWithoutInstance )
 
@@ -191,9 +194,9 @@ export default class Draw {
 	}
 
 	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
+		this.actions.UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
 		const dataString: string = JSON.stringify(
-			getters.clonedStoreWithoutCircularObjects
+			this.getters.clonedStoreWithoutCircularObjects
 		)
 		download( dataString, `${fileName}.json` )
 	}

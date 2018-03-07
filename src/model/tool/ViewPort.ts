@@ -1,7 +1,7 @@
-import getters from "store/draw/getters"
 import zoomPoint from "util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
 import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from "../../store/constant/index"
+import Particle from '../Particle';
 
 const { abs } = Math
 
@@ -18,7 +18,7 @@ const { abs } = Math
  * canvas based on tranformed view port's special point:
  * the center point of canvas
  */
-export default class ViewPort {
+export default class ViewPort extends Particle {
 	shouldPan: boolean = false
 	prevZoomingPoint: Point2D
 
@@ -37,8 +37,14 @@ export default class ViewPort {
 	 */
 	center: Point2DCurrent
 
+	constructor( props ) {
+		super( props )
+
+		this.center = this.basicCenter
+	}
+
 	get basicCenter(): Point2DInitial {
-		const { canvasWidth, canvasHeight } = getters
+		const { canvasWidth, canvasHeight } = this.getters
 
 		const point: Point2D = {
 			x: canvasWidth / 2,
@@ -48,12 +54,12 @@ export default class ViewPort {
 	}
 
 	get basicWidth(): number {
-		const width: number = getters.canvasWidth
+		const width: number = this.getters.canvasWidth
 		return width
 	}
 
 	get basicHeight(): number {
-		const height: number = getters.canvasHeight
+		const height: number = this.getters.canvasHeight
 		return height
 	}
 
@@ -91,13 +97,9 @@ export default class ViewPort {
 
 	get isPanning(): boolean {
 		const res: boolean =
-			isMouseMiddleClick( event ) || getters.eventKeyboard.isSpacePressing
+			isMouseMiddleClick( event ) || this.getters.eventKeyboard.isSpacePressing
 
 		return res
-	}
-
-	constructor() {
-		this.center = this.basicCenter
 	}
 
 	/**
@@ -134,7 +136,7 @@ export default class ViewPort {
 
 		this.center = zoomPoint( center, zoom / prevZoom, this.center )
 
-		getters.draw.render()
+		this.draw.render()
 
 		function willNotInScope() {
 			const potentialNewZoom: number = self.zoom + deltaZoom
@@ -184,7 +186,7 @@ export default class ViewPort {
 	}
 
 	startPan( event ) {
-		const point: Point2DCurrent = getters.getPoint( event )
+		const point: Point2DCurrent = this.getters.getPoint( event )
 
 		this.shouldPan = true
 
@@ -192,7 +194,7 @@ export default class ViewPort {
 	}
 
 	panning( event ) {
-		const point: Point2DCurrent = getters.getPoint( event )
+		const point: Point2DCurrent = this.getters.getPoint( event )
 
 		const deltaX: number = this.getDeltaXToPrevPanningPoint( point )
 		const deltaY: number = this.getDeltaYToPrevPanningPoint( point )
@@ -201,7 +203,7 @@ export default class ViewPort {
 
 		this.panBy( deltaX, deltaY )
 
-		getters.draw.render()
+		this.draw.render()
 	}
 
 	stopPan() {

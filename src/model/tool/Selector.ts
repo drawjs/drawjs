@@ -1,19 +1,17 @@
 import Cell from "../Cell"
-import getters from "../../store/draw/getters"
-import {
-	DESELECT_ALL_CELLS,
-	SELECT_MOST_TOP_CELL_FOCUSED,
-	SELECT_CELLS_IN_SELECTOR_RIGION
-} from "../../store/draw/actions"
-import sharedGetters from "../../shared/sharedGetters"
 import { isNotNil } from "util/index"
+import Particle from '../Particle';
 
-export default class Selector {
+export default class Selector extends Particle {
 	startPoint: Point2DInitial
 
 	endPoint: Point2DInitial
 
 	shouldSelect: boolean = false
+
+	constructor( props ) {
+		super( props )
+	}
 
 	get path(): Path2D {
 		const path = new Path2D()
@@ -45,7 +43,7 @@ export default class Selector {
 	}
 
 	render() {
-		const ctx = getters.ctx
+		const { ctx } = this.getters
 		if ( isNotNil( this.startPoint ) && isNotNil( this.endPoint ) ) {
 			ctx.save()
 

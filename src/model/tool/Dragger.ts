@@ -1,7 +1,7 @@
-import getters from "store/draw/getters"
 import { cloneDeep } from "lodash"
+import Particle from '../Particle';
 
-class Dragger {
+class Dragger extends Particle {
 	enable: boolean
 	prevPoint: Point2D
 
@@ -10,7 +10,7 @@ class Dragger {
 	}
 	update( event ) {}
 	start( event ): void {
-		const point: Point2D = getters.getInitialPoint( event )
+		const point: Point2D = this.getters.getInitialPoint( event )
 
 		this.enable = true
 
@@ -19,7 +19,7 @@ class Dragger {
 		this.handleStart && this.handleStart( event )
 	}
 	dragging( event ): void {
-		const point: Point2D = getters.getInitialPoint( event )
+		const point: Point2D = this.getters.getInitialPoint( event )
 
 		this.update( event )
 

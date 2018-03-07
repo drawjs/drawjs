@@ -1,30 +1,22 @@
-import getters from "../store/draw/getters"
-import {
-	DESELECT_ALL_CELLS,
-	SELECT_MOST_TOP_CELL_FOCUSED,
-	SELECT_CELLS_IN_SELECTOR_RIGION,
-} from "../store/draw/actions"
-import sharedGetters from "../shared/sharedGetters"
-import { startDragCell, draggingCell, stopDragCell } from "../mixin/coupleCell"
-import {
-	startDragMostTopCellFocused,
-	draggingCellsShouldDrag,
-	stopDragCellsShouldDrag,
-	startDragCellsShouldSelect
-} from "../mixin/mixin"
 import EventKeyboard from "../util/EventKeyboard"
+import Particle from "../model/Particle"
 
-class Interaction {
+class Interaction extends Particle {
 	eventKeyboard: EventKeyboard
-	constructor() {
+	constructor( props ) {
+		super( props )
+
 		const self = this
 
-		const canvas = getters.canvas
+		const canvas = self.getters.canvas
 
-		this.eventKeyboard = new EventKeyboard()
+		self.eventKeyboard = new EventKeyboard()
 
-		getters.canvas.removeEventListener( "mousewheel", mousewheelListener )
-		getters.canvas.addEventListener( "mousewheel", mousewheelListener )
+		self.getters.canvas.removeEventListener(
+			"mousewheel",
+			mousewheelListener
+		)
+		self.getters.canvas.addEventListener( "mousewheel", mousewheelListener )
 		canvas.removeEventListener( "mousedown", mousedownListener )
 		canvas.addEventListener( "mousedown", mousedownListener )
 
@@ -35,72 +27,73 @@ class Interaction {
 		canvas.addEventListener( "mouseup", mouseupListener )
 
 		function mousedownListener( event ) {
-			const point: Point2DInitial = getters.getInitialPoint( event )
+			const point: Point2DInitial = self.getters.getInitialPoint( event )
 
-			if ( getters.viewPort.isPanning ) {
-				return getters.viewPort.startPan( event )
+			if ( self.getters.viewPort.isPanning ) {
+				return self.getters.viewPort.startPan( event )
 			}
 
-			if ( getters.pointOnEmpty( point ) ) {
-				DESELECT_ALL_CELLS()
+			if ( self.getters.pointOnEmpty( point ) ) {
+				self.actions.DESELECT_ALL_CELLS()
 				startSelect( event )
 				return
 			}
 
-			if ( sharedGetters.pointOnSelectionExcludingCells( point ) ) {
-				startDragMostTopCellFocused( point )
+			if ( self.getters.pointOnSelectionExcludingCells( point ) ) {
+				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( point )
 				return
 			}
 
-			if ( sharedGetters.pointOnCellDeselected( point ) ) {
-				DESELECT_ALL_CELLS()
+			if ( self.getters.pointOnCellDeselected( point ) ) {
+				self.actions.DESELECT_ALL_CELLS()
 
-				SELECT_MOST_TOP_CELL_FOCUSED( point )
+				self.actions.SELECT_MOST_TOP_CELL_FOCUSED( point )
 
-				startDragMostTopCellFocused( point )
+				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( point )
 				return
 			}
 
 			/**
 			 * Start dragging selected cells
 			 */
-			if ( sharedGetters.pointOnCellSelected( point ) ) {
-				startDragCellsShouldSelect( event )
+			if ( self.getters.pointOnCellSelected( point ) ) {
+				self.actions.START_DRAG_CELLS_SHOULD_SELECT( event )
 				return
 			}
 		}
 
 		function mousemoveListener( event ) {
-			getters.selector.shouldSelect && selecting( event )
+			self.getters.selector.shouldSelect && selecting( event )
 
-			getters.viewPort.shouldPan && getters.viewPort.panning( event )
+			self.getters.viewPort.shouldPan &&
+				self.getters.viewPort.panning( event )
 
-			draggingCellsShouldDrag()
+			self.actions.DRAGGING_CELLS_SHOULD_DRAG()
 		}
 
 		function mouseupListener( event ) {
-			getters.selector.shouldSelect = false
+			self.getters.selector.shouldSelect = false
 
 			stopSelect( event )
 
-			stopDragCellsShouldDrag()
+			self.actions.STOP_DRAG_CELLS_SHOULD_DRAG()
 
-			getters.viewPort.stopPan()
+			self.getters.viewPort.stopPan()
 		}
 
 		function mousewheelListener( event ) {
 			event.preventDefault()
 
-			const { eventKeyboard } = getters
-			const point: Point2D = getters.getPoint( event )
+			const { eventKeyboard } = self.getters
+			const point: Point2D = self.getters.getPoint( event )
 			const { deltaX, deltaY }: { deltaX: number; deltaY: number } = event
 
 			if ( isDecreasing() && eventKeyboard.isAltPressing ) {
-				getters.viewPort.zoomIn( point )
+				self.getters.viewPort.zoomIn( point )
 			}
 
 			if ( isIncreasing() && eventKeyboard.isAltPressing ) {
-				getters.viewPort.zoomOut( point )
+				self.getters.viewPort.zoomOut( point )
 			}
 
 			function isIncreasing() {
@@ -114,23 +107,25 @@ class Interaction {
 		}
 
 		function startSelect( event ) {
-			getters.selector.shouldSelect = true
+			self.getters.selector.shouldSelect = true
 
-			getters.selector.startPoint = getters.getInitialPoint( event )
-			getters.draw.render()
+			self.getters.selector.startPoint = self.getters.getInitialPoint(
+				event
+			)
+			self.getters.draw.render()
 		}
 
 		function selecting( event ) {
-			getters.selector.endPoint = getters.getInitialPoint( event )
-			getters.draw.render()
+			self.getters.selector.endPoint = self.getters.getInitialPoint( event )
+			self.getters.draw.render()
 		}
 
 		function stopSelect( event ) {
-			SELECT_CELLS_IN_SELECTOR_RIGION()
+			self.actions.SELECT_CELLS_IN_SELECTOR_RIGION()
 
-			getters.selector.startPoint = null
-			getters.selector.endPoint = null
-			getters.draw.render()
+			self.getters.selector.startPoint = null
+			self.getters.selector.endPoint = null
+			self.getters.draw.render()
 		}
 	}
 }

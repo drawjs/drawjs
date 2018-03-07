@@ -2,13 +2,14 @@ import * as _ from "lodash"
 import { generateUniqueId, isNotNil } from "util/index"
 import Draw from "Draw"
 import * as constant from "store/constant/index"
-import { ADD_ELEMENT_TO_CELL_LIST } from "../store/draw/actions";
-import getters from 'store/draw/getters';
 import Dragger from './tool/Dragger';
+import Getters from '../store/draw/Getters';
+import Actions from '../store/draw/Actions';
+import DrawStore from '../store/draw/DrawStore';
+import Particle from "./Particle";
 
-export default abstract class Cell {
+export default abstract class Cell extends Particle {
 	id: string = generateUniqueId()
-	draw: Draw
 	_isInstance: boolean = true
 	type: string
 	angle: number
@@ -37,6 +38,19 @@ export default abstract class Cell {
 	 * Mini map
 	 */
 	isVisiableInMiniMap = true
+
+	constructor( props ) {
+		super( props )
+
+		this.dragger = new Dragger( { draw: this.draw } )
+		this.dragger.update = this.updateDrag.bind( this )
+		this.dragger.handleStart = this.handleStartDrag.bind( this )
+		this.dragger.handleDragging = this.handleDragging.bind( this )
+		this.dragger.handleStop = this.handleStopDrag.bind( this )
+
+		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
+	}
+
 
 	get radianAngle(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
@@ -73,21 +87,6 @@ export default abstract class Cell {
 		const res = isNotNil( potentialValue ) ? potentialValue : 0
 		return res
 	}
-
-	constructor( props ) {
-		const { draw } = props
-
-		this.draw = draw
-
-		this.dragger = new Dragger()
-		this.dragger.update = this.updateDrag.bind( this )
-		this.dragger.handleStart = this.handleStartDrag.bind( this )
-		this.dragger.handleDragging = this.handleDragging.bind( this )
-		this.dragger.handleStop = this.handleStopDrag.bind( this )
-
-		ADD_ELEMENT_TO_CELL_LIST( this )
-	}
-
 
 	private set( field: string, value: any ) {
 		this[ field ] = value

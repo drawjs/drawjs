@@ -1,13 +1,17 @@
-import getters from "../../store/draw/getters"
+import Particle from "../Particle"
 
-export default class Renderer {
+export default class Renderer extends Particle {
+	constructor( props ) {
+		super( props )
+	}
+
 	get ctx(): CanvasRenderingContext2D {
-		return getters.ctx
+		return this.getters.ctx
 	}
 
 	clear() {
-		getters.renderer.resetTransform()
-		getters.ctx.clearRect( 0, 0, getters.canvasWidth, getters.canvasHeight )
+		this.getters.renderer.resetTransform()
+		this.getters.ctx.clearRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
 	}
 
 	resetTransform() {
@@ -15,7 +19,7 @@ export default class Renderer {
 	}
 
 	setTransformViewPort() {
-		const { zoom, movementX, movementY } = getters
+		const { zoom, movementX, movementY } = this.getters
 		this.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
 	}
 }

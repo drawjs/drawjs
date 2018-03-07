@@ -1,8 +1,8 @@
-import getters from "../../store/draw/getters"
+import Particle from '../Particle';
 
 const { abs } = Math
 
-export default class Grid {
+export default class Grid extends Particle {
 	canvas: HTMLCanvasElement
 	zoom: number = 1
 	pan: Point2D = {
@@ -19,20 +19,24 @@ export default class Grid {
 
 	interval: number = Grid.INTERVAL
 
+	constructor( props ) {
+		super( props )
+	}
+
 	get ctx(): CanvasRenderingContext2D {
-		return getters.ctx
+		return this.getters.ctx
 	}
 
 	get width(): number {
-		return ( abs( getters.panX ) + getters.canvasWidth ) / getters.zoom + this.interval
+		return ( abs( this.getters.panX ) + this.getters.canvasWidth ) / this.getters.zoom + 5 * this.interval
 	}
 
 	get height(): number {
-		return ( abs( getters.panY ) + getters.canvasHeight ) / getters.zoom + this.interval
+		return ( abs( this.getters.panY ) + this.getters.canvasHeight ) / this.getters.zoom + 5 * this.interval
 	}
 
 	get left(): number {
-		return -Math.round( getters.panX / this.interval ) * this.interval - this.interval
+		return -Math.round( this.getters.panX / this.interval ) * this.interval - 2 * this.interval
 	}
 
 	get right(): number {
@@ -40,7 +44,7 @@ export default class Grid {
 	}
 
 	get top(): number {
-		return -Math.round( getters.panY / this.interval ) * this.interval - this.interval
+		return -Math.round( this.getters.panY / this.interval ) * this.interval - 2 * this.interval
 	}
 
 	get bottom(): number {
@@ -72,10 +76,6 @@ export default class Grid {
 		return path
 	}
 
-	constructor( canvas: HTMLCanvasElement ) {
-		this.canvas = canvas
-	}
-
 	render(
 		interval = Grid.INTERVAL,
 		zoom: number = Grid.DEFAULT_ZOOM,
@@ -85,7 +85,7 @@ export default class Grid {
 		this.zoom = zoom
 		this.pan = pan
 
-		const { ctx } = getters
+		const { ctx } = this.getters
 		const { path } = this
 		ctx.save()
 		ctx.lineWidth = 1

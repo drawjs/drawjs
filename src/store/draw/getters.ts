@@ -1,32 +1,48 @@
-import drawStore from "store/draw/store"
 import { isNil, cloneDeep, find, includes } from "lodash"
+import { generateUniqueId, isNotNil } from "util/index"
 import { Cell } from "../../model/index"
 import Graph from "model/Graph"
 import Selector from "../../model/tool/Selector"
 import Draw from "Draw"
 import selectionExcludingCellTypes from "../exclude/selectionExcludingCellTypes"
-import ViewPort from '../../model/tool/ViewPort';
-import EventKeyboard from '../../util/EventKeyboard';
-import Interaction from "../../core/interaction";
-import Grid from '../../model/tool/Grid';
-import Renderer from '../../model/tool/Renderer';
+import ViewPort from "../../model/tool/ViewPort"
+import EventKeyboard from "../../util/EventKeyboard"
+import Interaction from "../../core/interaction"
+import Grid from "../../model/tool/Grid"
+import Renderer from "../../model/tool/Renderer"
+import DrawStore from "./DrawStore"
 
-class Getters {
+export default class Getters {
+	drawStore: DrawStore
+
+	constructor( drawStore ) {
+		this.drawStore = drawStore
+	}
+
+	get draw(): Draw {
+		return this.drawStore.draw
+	}
+
+	/**
+	 * Store without instances
+	 */
 	get storeActivePanelId(): string {
-		return !isNil( drawStore.activePanelId ) ?
-			drawStore.activePanelId :
-			drawStore.panels.length > 0 ? drawStore.panels[ 0 ].id : null
+		return !isNil( this.drawStore.activePanelId ) ?
+			this.drawStore.activePanelId :
+			this.drawStore.panels.length > 0 ?
+				this.drawStore.panels[ 0 ].id :
+				null
 	}
 
 	get storeElementsIds(): string[] {
 		let ids: string[]
 		let cachedElements: DrawStoreElement[] = []
 
-		if ( isNil( drawStore ) || isNil( drawStore.panels ) ) {
+		if ( isNil( this.drawStore ) || isNil( this.drawStore.panels ) ) {
 			return []
 		}
 
-		drawStore.panels.map( pushElementsToCachedElement )
+		this.drawStore.panels.map( pushElementsToCachedElement )
 
 		ids = cachedElements.map( getId )
 
@@ -46,14 +62,27 @@ class Getters {
 	}
 
 	get storePanels(): DrawStorePanel[] {
-		return drawStore.panels
+		return this.drawStore.panels
+	}
+
+	generateDrawUniqueId(): string {
+		const self = this
+		let id: string = generateUniqueId()
+		id = checkAndUpdateIdIfNeeded( id )
+
+		function checkAndUpdateIdIfNeeded( id: string ) {
+			return includes( self.storeElementsIds, id ) ?
+				checkAndUpdateIdIfNeeded( generateUniqueId() ) :
+				id
+		}
+		return id
 	}
 
 	/**
 	 * // Cell list
 	 */
 	get cellList(): Cell[] {
-		return drawStore.cellList
+		return this.drawStore.cellList
 	}
 
 	get cellsShouldSelect(): Cell[] {
@@ -88,17 +117,10 @@ class Getters {
 	}
 
 	/**
-	 * // Draw
-	 */
-	get draw(): Draw {
-		return drawStore.draw
-	}
-
-	/**
 	 * // Canvas
 	 */
 	get canvas(): HTMLCanvasElement {
-		return drawStore.canvas
+		return this.drawStore.canvas
 	}
 
 	get canvasLeft(): number {
@@ -131,7 +153,9 @@ class Getters {
 	}
 
 	pointOnPath( point: Point2DInitial, path: Path2D ): boolean {
-		const pointOnCurrentViewPort: Point2DCurrent = this.viewPort.transform( point )
+		const pointOnCurrentViewPort: Point2DCurrent = this.viewPort.transform(
+			point
+		)
 		const { x, y }: Point2DCurrent = pointOnCurrentViewPort
 		const isContain = this.ctx.isPointInPath( path, x, y )
 		return isContain
@@ -161,7 +185,7 @@ class Getters {
 	 * // View port
 	 */
 	get viewPort(): ViewPort {
-		return drawStore.viewPort
+		return this.drawStore.viewPort
 	}
 
 	get zoom(): number {
@@ -194,21 +218,18 @@ class Getters {
 		return this.panY * this.zoom
 	}
 
-
 	/**
 	 * // Renderer
 	 */
 	get renderer(): Renderer {
-		return drawStore.renderer
+		return this.drawStore.renderer
 	}
-
-
 
 	/**
 	 * // Selector
 	 */
 	get selector(): Selector {
-		return drawStore.selector
+		return this.drawStore.selector
 	}
 	get cellsInSelectorRigion(): Cell[] {
 		const self = this
@@ -238,11 +259,40 @@ class Getters {
 		return res
 	}
 
+	pointOnSelectionExcludingCells( point: Point2D ): boolean {
+		let res: boolean = false
+		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		if ( isNotNil( mostTopCell ) ) {
+			res = includes( selectionExcludingCellTypes, mostTopCell.type )
+		}
+		return res
+	}
+
+	pointOnCellSelected( point: Point2D ): boolean {
+		let res: boolean = false
+		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		if ( isNotNil( mostTopCell ) ) {
+			const { shouldSelect } = mostTopCell
+			res = shouldSelect === true
+		}
+		return res
+	}
+
+	pointOnCellDeselected( point: Point2D ): boolean {
+		let res: boolean = false
+		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		if ( isNotNil( mostTopCell ) ) {
+			const { shouldSelect } = mostTopCell
+			res = shouldSelect === false
+		}
+		return res
+	}
+
 	/**
 	 * Data to export
 	 */
 	get clonedStoreWithoutCircularObjects(): DrawStore {
-		let clonedStore: DrawStore = cloneDeep( drawStore )
+		let clonedStore: DrawStore = cloneDeep( this.drawStore )
 
 		deleteCellList()
 
@@ -278,7 +328,7 @@ class Getters {
 	}
 
 	getStoreElementsByPanelId( id: string ): any {
-		const foundPanel = find( drawStore.panels, { id } )
+		const foundPanel = find( this.drawStore.panels, { id } )
 		const res: any = !isNil( foundPanel ) ? foundPanel.elements : []
 		return res
 	}
@@ -289,27 +339,21 @@ class Getters {
 		return res
 	}
 
-
-
 	/**
 	 * // Interaction
 	 */
 	get interaction(): Interaction {
-		return drawStore.interaction
+		return this.drawStore.interaction
 	}
 
 	get eventKeyboard(): EventKeyboard {
 		return this.interaction.eventKeyboard
 	}
 
-
-
 	/**
 	 * // Grid
 	 */
 	get grid(): Grid {
-		return drawStore.grid
+		return this.drawStore.grid
 	}
 }
-
-export default new Getters()

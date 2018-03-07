@@ -5,7 +5,6 @@ import translatePoints from "util/geometry/translatePoints"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
 import { POLYGON } from "store/constant/cellType"
-import getters from "../../store/draw/getters"
 import { isNotNil } from "util/index"
 import { isNil } from 'lodash';
 
@@ -30,7 +29,11 @@ export default class Polygon extends Graph {
 	}
 
 	get rectContainer(): RectContainer {
-		return new RectContainer( this.basicPoints, this )
+		return new RectContainer( {
+			points: this.basicPoints,
+			target: this,
+			draw: this.draw
+		} )
 	}
 
 	constructor( props ) {
@@ -44,7 +47,7 @@ export default class Polygon extends Graph {
 	}
 
 	render() {
-		const ctx = getters.ctx
+		const { ctx } = this.getters
 		super.render()
 
 		ctx.save()
@@ -56,14 +59,14 @@ export default class Polygon extends Graph {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = getters.pointOnPath( { x, y }, this.path )
+		const isContain = this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const point: Point2DInitial = getters.getInitialPoint( event )
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )

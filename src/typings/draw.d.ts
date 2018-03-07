@@ -29,17 +29,6 @@ interface DrawStoreElementWithoutInstance {
 
 interface DrawStoreElementInstance extends DrawStoreElementWithoutInstance {}
 
-interface DrawStore extends DrawStoreWithoutInstance {
-	cellList: any[]
-	panels: DrawStorePanel[]
-	draw: any,
-	canvas: HTMLCanvasElement
-	viewPort: any,
-	renderer: any,
-	selector: any,
-	interaction: any,
-	grid: any
-}
 
 interface DrawStorePanel extends DrawStorePanelWithoutInstance {
 	elements: DrawStoreElement[]

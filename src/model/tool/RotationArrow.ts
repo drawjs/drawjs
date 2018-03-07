@@ -11,14 +11,7 @@ import {
 	ROTATION_ARROW_SIZE
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
-import getters from "../../store/draw/getters"
 import { ROTATE_ARROW } from "../../store/constant/cellType"
-import {
-	deselectCell,
-	selectCell,
-	enableCellRotate,
-	disableCellRotate
-} from "../../mixin/coupleCell"
 
 export default class RotationArrow extends Cell {
 	type: string = ROTATE_ARROW
@@ -135,7 +128,7 @@ export default class RotationArrow extends Cell {
 
 	render() {
 		if ( this.shouldRender ) {
-			const ctx: CanvasRenderingContext2D = getters.ctx
+			const { ctx } = this.getters
 			const { SIZE } = RotationArrow
 			ctx.save()
 			ctx.transform(
@@ -148,24 +141,24 @@ export default class RotationArrow extends Cell {
 			)
 			ctx.drawImage( this.img, -SIZE / 2, -SIZE / 2, SIZE, SIZE )
 			ctx.restore()
-			getters.renderer.setTransformViewPort()
+			this.getters.renderer.setTransformViewPort()
 		}
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = getters.pointOnPath( { x, y }, this.path )
+		const isContain = this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 
 	// ******* Drag ******
 	public handleStartDrag( event ) {
-		deselectCell( this.target )
-		enableCellRotate( this.target )
+		this.sharedActions.deselectCell( this.target )
+		this.sharedActions.enableCellRotate( this.target )
 
 		this.draw.render()
 	}
 	public updateDrag( event ) {
-		const point: Point2DInitial = getters.getInitialPoint( event )
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const deltaRadian: number = this.getDeltaRadianFromPrevDraggingPointToCur(
 			point
 		)
@@ -178,8 +171,8 @@ export default class RotationArrow extends Cell {
 	public handleStopDrag( event ) {
 		const { shouldRotate } = this.target
 
-		disableCellRotate( this.target )
-		selectCell( this.target )
+		this.sharedActions.disableCellRotate( this.target )
+		this.sharedActions.selectCell( this.target )
 
 		this.draw.render()
 	}

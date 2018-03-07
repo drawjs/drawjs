@@ -1,15 +1,27 @@
 import Graph from "../Graph"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints";
-import getters from "../../store/draw/getters";
+import Particle from '../Particle';
 const { max, min } = Math
 
-export default class RectContainer {
+export default class RectContainer extends Particle {
 	/**
 	 * Graph target
 	 */
 	target: Graph
 	contentPoints: Point2D[] = []
+
+	/**
+	 *
+	 * @param points Bound points
+	 * @param target Graph target
+	 */
+	constructor( props) {
+		super( props )
+
+		this.contentPoints = props.points
+		this.target = props.target
+	}
 
 	get _contentPointsX(): number[] {
 		const res: number[] = this.contentPoints.map(
@@ -83,18 +95,8 @@ export default class RectContainer {
 		return res
 	}
 
-	/**
-	 *
-	 * @param points Bound points
-	 * @param target Graph target
-	 */
-	constructor( points, target ) {
-		this.contentPoints = points
-		this.target = target
-	}
-
 	render() {
-		const ctx = getters.ctx
+		const { ctx } = this.getters
 		const path: Path2D = connectPolygonPoints( this.points )
 
 		ctx.save()
