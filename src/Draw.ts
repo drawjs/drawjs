@@ -23,6 +23,7 @@ import Getters from './store/draw/Getters';
 import DrawStore from './store/draw/DrawStore';
 import Actions from './store/draw/Actions';
 import SharedActions from "./shared/SharedActions";
+import SharedGetters from './shared/SharedGetters';
 
 const ajv = new Ajv()
 
@@ -43,6 +44,11 @@ export default class Draw {
 	actions: Actions
 
 	/**
+	 * Draw shared getters, which isn't based on "drawStore"
+	 */
+	sharedGetters: SharedGetters
+
+	/**
 	 * Draw shared actions, which is based on "drawStore" but doesn't mutate "drawStore"
 	 */
 	sharedActions: SharedActions
@@ -55,6 +61,7 @@ export default class Draw {
 		this.drawStore = new DrawStore()
 		this.getters = new Getters( this.drawStore )
 		this.actions = new Actions( this.drawStore, this.getters )
+		this.sharedGetters = new SharedGetters()
 		this.sharedActions = new SharedActions( this.drawStore, this.getters )
 
 		this.actions.UPDATE_DRAW( this )

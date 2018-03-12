@@ -2,22 +2,61 @@ import * as _ from "lodash"
 import { generateUniqueId, isNotNil } from "util/index"
 import Draw from "Draw"
 import * as constant from "store/constant/index"
-import Dragger from './tool/Dragger';
-import Getters from '../store/draw/Getters';
-import Actions from '../store/draw/Actions';
-import DrawStore from '../store/draw/DrawStore';
-import Particle from "./Particle";
+import Dragger from "./tool/Dragger"
+import Getters from "../store/draw/Getters"
+import Actions from "../store/draw/Actions"
+import DrawStore from "../store/draw/DrawStore"
+import Particle from "./Particle"
+
+const { min, max } = Math
 
 export default abstract class Cell extends Particle {
 	id: string = generateUniqueId()
 	_isInstance: boolean = true
 	type: string
-	angle: number
 
 	/**
-	 * interaction - drag
+	 * // Angle
 	 */
-	dragger:Dragger
+	angle: number = 0
+	prevAngle: number = 0
+
+	/**
+	 * // Canvas
+	 */
+	fill: string = "black"
+
+	/**
+	 * // Segment
+	 */
+	segments = []
+
+	get segmentsCenter(): Point2D {
+		const segmentsX = this.segments.map( ( { x } ) => x )
+		const segmentsY = this.segments.map( ( { y } ) => y )
+
+		const left = min( ...segmentsX )
+		const right = max( ...segmentsX )
+		const top = min( ...segmentsY )
+		const bottom = max( ...segmentsY )
+		const res: Point2D = {
+			x: ( left + right ) / 2,
+			y: ( top + bottom ) / 2
+		}
+		return res
+	}
+
+	/**
+	 * // Bound
+	 */
+	get boundLeft(): number {
+		return
+	}
+
+	/**
+	 * // Curve
+	 */
+	curves = []
 
 	/**
 	 * interaction - selection
@@ -25,22 +64,33 @@ export default abstract class Cell extends Particle {
 	shouldSelect: boolean = false
 
 	/**
-	 * interaction - rotation
+	 * // interaction
+	 */
+	/**
+	 * Drag
+	 */
+	dragger: Dragger
+
+	/**
+	 * Rotation
 	 */
 	shouldRotate: boolean = false
 
 	/**
-	 * interaction - size
+	 * Size
 	 */
 	isSizing: boolean = false
 
 	/**
-	 * Mini map
+	 * // Mini map
 	 */
 	isVisiableInMiniMap = true
 
 	constructor( props ) {
 		super( props )
+
+		this.angle = props.angle || this.angle
+		this.fill = props.fill || this.fill
 
 		this.dragger = new Dragger( { draw: this.draw } )
 		this.dragger.update = this.updateDrag.bind( this )
@@ -51,8 +101,7 @@ export default abstract class Cell extends Particle {
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
 	}
 
-
-	get radianAngle(): number {
+	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
 		return res
 	}
@@ -99,13 +148,24 @@ export default abstract class Cell extends Particle {
 	/**
 	 * // Interaction
 	 */
-	updateDrag( event ) {
-		return this.dragger.update( event )
-	}
-	handleStartDrag( event ) {
-	}
-	handleDragging( event ) {
-	}
-	handleStopDrag( event ) {
+	/**
+	 * Drag
+	 */
+	updateDrag( event ) {}
+	handleStartDrag( event ) {}
+	handleDragging( event ) {}
+	handleStopDrag( event ) {}
+
+	/**
+	 * Rotate
+	 */
+	rotate() {
+		const deltaAngle: number = this.angle - this.prevAngle
+		this.sharedActions.rotateSegments(
+			this.segments,
+			deltaAngle,
+			this.segmentsCenter
+		)
+		this.prevAngle = this.angle
 	}
 }

@@ -3,8 +3,10 @@ import DrawStore from "../store/draw/DrawStore"
 import Getters from "../store/draw/Getters"
 import { includes } from "lodash"
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
-import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes";
-import { Cell } from "../model/index";
+import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
+import { Cell } from "../model/index"
+import Segment from "../model/Segment"
+import { getRotatedPoint } from "util/index"
 
 export default class SharedActions {
 	drawStore: DrawStore
@@ -14,7 +16,6 @@ export default class SharedActions {
 		this.drawStore = drawStore
 		this.getters = getters
 	}
-
 
 	/**
 	 * Cell
@@ -47,11 +48,12 @@ export default class SharedActions {
 		cell.shouldRotate = false
 	}
 
-
-
 	/**
 	 * // Render
 	 */
+	renderCell( cell: any ) {
+		cell.render()
+	}
 	renderElement( cell: any ) {
 		isInclude( cell.type ) && cell.render()
 		function isInclude( type: String ): boolean {
@@ -59,6 +61,39 @@ export default class SharedActions {
 		}
 	}
 
+	/**
+	 * Segment
+	 */
+	updateSegmentX( segment: Segment, x: number ) {
+		segment.x = x
+	}
+	updateSegmentY( segment: Segment, y: number ) {
+		segment.y = y
+	}
+	updateSegmentPoint( segment: Segment, { x, y }: Point2D ) {
+		segment.x = x
+		segment.y = y
+	}
+	renderSegments( segments: Segment[] ) {
+		segments.map( segment => this.renderCell( segment ) )
+	}
+	translateSegment( segment: Segment, deltaX: number, deltaY: number ) {
+		const { x, y } = segment
+		this.updateSegmentPoint( segment, {
+			x: x + deltaX,
+			y: y + deltaY
+		} )
+	}
+	translateSegments( segments: Segment[], deltaX: number, deltaY: number ) {
+		segments.map( segment => this.translateSegment( segment, deltaX, deltaY ) )
+	}
+	rotateSegment( segment: Segment, angle: number, centerPoint?: Point2D ) {
+		const rotatedPoint: Point2D = getRotatedPoint( segment, angle, centerPoint )
+		this.updateSegmentPoint( segment, rotatedPoint )
+	}
+	rotateSegments( segments: Segment[], angle: number, centerPoint?: Point2D ) {
+		segments.map( segment => this.rotateSegment( segment, angle, centerPoint ) )
+	}
 
 
 	/**
@@ -68,15 +103,10 @@ export default class SharedActions {
 		element.rotationArrow.render()
 	}
 
-
-
 	/**
 	 * // Scale
 	 */
-	applyScalePoint( element ) {
-
-	}
-
+	applyScalePoint( element ) {}
 
 	/**
 	 * // Selection

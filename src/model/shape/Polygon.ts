@@ -6,45 +6,42 @@ import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
 import { POLYGON } from "store/constant/cellType"
 import { isNotNil } from "util/index"
-import { isNil } from 'lodash';
+import { isNil, cloneDeep } from 'lodash';
+import Segment from "../Segment"
 
 export default class Polygon extends Graph {
 	type = POLYGON
 
-	basicPoints: Point2D[] = []
 	// rectContainer: RectContainer
 
-	get pathPoints(): Point2D[] {
-		const rotatedPoints: Point2D[] = rotatePoints(
-			this.basicPoints,
-			this.radianAngle,
-			this.rectContainer.basicCenter
+	constructor( props ) {
+		super( props )
+
+		this.segments = props.points.map(
+			point => new Segment( { draw: this.draw, x: point.x, y: point.y } )
 		)
-		return rotatedPoints
 	}
 
 	get path(): Path2D {
-		const path: Path2D = connectPolygonPoints( this.pathPoints )
+		this.rotate()
+
+		const path: Path2D = connectPolygonPoints( this.segments )
 		return path
 	}
 
 	get rectContainer(): RectContainer {
 		return new RectContainer( {
-			points: this.basicPoints,
-			target: this,
-			draw: this.draw
+			segments: this.segments,
+			target  : this,
+			draw    : this.draw
 		} )
 	}
 
-	constructor( props ) {
-		super( props )
-
-		this.basicPoints = props.points
-	}
-
 	translate( deltaX: number, deltaY: number ) {
-		this.basicPoints = translatePoints( this.basicPoints, deltaX, deltaY )
+		this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
 	}
+
+
 
 	render() {
 		const { ctx } = this.getters
@@ -55,14 +52,15 @@ export default class Polygon extends Graph {
 		ctx.fill( this.path )
 		ctx.restore()
 
-		this.rectContainer.render()
+		// this.rectContainer.render()
+
+		this.sharedActions.renderSegments( this.segments )
 	}
 
 	contain( x: number, y: number ) {
 		const isContain = this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
-
 
 	// ******* Drag ******
 	public updateDrag( event ) {

@@ -6,7 +6,8 @@ import { DEFAULT_PATH_EXPANDING_VALUE } from "store/constant/index"
 // import SizePoint, { SizePointLineSide } from "model/tool/SizePoint"
 // import { getTransformedPointForContainPoint, isInstancePathContainPointTransformed } from "shared/index"
 
-export default class Line extends Graph {
+// export default class Line extends Graph {
+export default class Line  {
 	// public pointStart: Point2D
 	// public pointEnd: Point2D
 	// public lineWidth: number

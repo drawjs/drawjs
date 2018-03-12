@@ -1,12 +1,9 @@
-import Point from "../shape/Point"
-import { Cell } from "../index";
+import Point from '../shape/Point';
 
-export default class ScalePoint extends Cell {
+export default class ScalePoint extends Point {
 	constructor( props ) {
 		super( props )
 	}
-
-	contain() {
-
-	}
 }
+
+

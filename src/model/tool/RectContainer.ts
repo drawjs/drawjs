@@ -2,6 +2,7 @@ import Graph from "../Graph"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints";
 import Particle from '../Particle';
+import Segment from '../Segment'
 const { max, min } = Math
 
 export default class RectContainer extends Particle {
@@ -9,7 +10,6 @@ export default class RectContainer extends Particle {
 	 * Graph target
 	 */
 	target: Graph
-	contentPoints: Point2D[] = []
 
 	/**
 	 *
@@ -19,39 +19,54 @@ export default class RectContainer extends Particle {
 	constructor( props) {
 		super( props )
 
-		this.contentPoints = props.points
 		this.target = props.target
 	}
 
-	get _contentPointsX(): number[] {
-		const res: number[] = this.contentPoints.map(
-			( point: Point2D ) => point.x
+	get targetCenter(): Point2D {
+		return this.target.segmentsCenter
+	}
+	get targetSegments(): Segment[] {
+		return this.target.segments
+	}
+	get targetAngle(): number {
+		return this.target.angle
+	}
+	get targetRadian() {
+		return this.target.radian
+	}
+	get targetPoints(): Segment[] {
+		return this.target.segments.map( segment => segment.point )
+	}
+	get targetBasicPoints(): Point2D[] {
+		const res: Point2D[] = rotatePoints( this.targetPoints, - this.targetRadian, this.targetCenter )
+		return res
+	}
+	get targetSegmentsX(): number[] {
+		const res: number[] = this.targetBasicPoints.map(
+			( segment: Segment ) => segment.x
 		)
 		return res
 	}
-	get _contentPointsY(): number[] {
-		const res: number[] = this.contentPoints.map(
-			( point: Point2D ) => point.y
+	get targetSegmentsY(): number[] {
+		const res: number[] = this.targetBasicPoints.map(
+			( segment: Segment ) => segment.y
 		)
 		return res
-	}
-	get _radian() {
-		return this.target.radianAngle
 	}
 	get basicLeft(): number {
-		const res: number = min( ...this._contentPointsX )
+		const res: number = min( ...this.targetSegmentsX )
 		return res
 	}
 	get basicRight(): number {
-		const res: number = max( ...this._contentPointsX )
+		const res: number = max( ...this.targetSegmentsX )
 		return res
 	}
 	get basicTop(): number {
-		const res: number = min( ...this._contentPointsY )
+		const res: number = min( ...this.targetSegmentsY )
 		return res
 	}
 	get basicBottom(): number {
-		const res: number = max( ...this._contentPointsY )
+		const res: number = max( ...this.targetSegmentsY )
 		return res
 	}
 	get basicWidth(): number {
@@ -61,10 +76,7 @@ export default class RectContainer extends Particle {
 		return this.basicBottom - this.basicTop
 	}
 	get basicCenter(): Point2D {
-		return {
-			x: ( this.basicLeft + this.basicRight ) / 2,
-			y: ( this.basicTop + this.basicBottom ) / 2
-		}
+		return this.targetCenter
 	}
 	/**
 	 * Points not rotated and sized
@@ -91,7 +103,7 @@ export default class RectContainer extends Particle {
 	}
 
 	get points(): Point2D[] {
-		const res: Point2D[] = rotatePoints( this.basicPoints, this._radian, this.basicCenter )
+		const res: Point2D[] = rotatePoints( this.basicPoints, this.targetRadian, this.targetCenter )
 		return res
 	}
 
