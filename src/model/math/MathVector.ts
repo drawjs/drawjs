@@ -1,5 +1,7 @@
 import { isNumber } from "lodash"
-import MathPoint from "./MathPoint";
+import MathPoint from "./MathPoint"
+
+const { sqrt, pow } = Math
 
 export default class MathVector {
 	x: number
@@ -20,6 +22,11 @@ export default class MathVector {
 		function isMathPoint( value: any ) {
 			return value instanceof MathPoint
 		}
+	}
+
+	get unit(): MathVector {
+		const absolute: number = sqrt( pow( this.x, 2 ) + pow( this.y, 2 ) )
+		return this.divide( absolute )
 	}
 
 	add( { x, y }: MathVector ) {

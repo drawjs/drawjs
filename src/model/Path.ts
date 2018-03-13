@@ -39,7 +39,7 @@ export default class Path extends Cell {
 	get path(): Path2D {
 		let path = new Path2D()
 
-		// path = bezierCurve( this.segments.map( ( { point } ) => point ) )
+		path = bezierCurve( this.segments.map( ( { point } ) => point ) )
 
 		return path
 	}
@@ -52,11 +52,8 @@ export default class Path extends Cell {
 		// ctx.stroke( this.path )
 		// ctx.restore()
 
-		// this.segments.map( this.sharedActions.renderParticle )
-		// this.curves.map( this.sharedActions.renderParticle )
-
-		this.segments[0].render()
-		this.curves[0].render()
+		this.segments.map( this.sharedActions.renderParticle )
+		this.curves.map( this.sharedActions.renderParticle )
 	}
 
 	contain( x: number, y: number ) {

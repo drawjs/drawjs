@@ -1,6 +1,6 @@
 import isNotNil from "../util/isNotNil"
 import Segment from "./Segment"
-import { HandleType, DEGREE_TO_RADIAN } from "../store/constant/index"
+import { HandleType, DEGREE_TO_RADIAN, DEFAULT_LENGTH } from '../store/constant/index';
 import Dragger from "./tool/Dragger"
 import { Cell } from "./index"
 import distance from "../util/geometry/distance"
@@ -21,7 +21,7 @@ export default class Handle extends Cell {
 
 	partner: Handle = null
 
-	static DEFAULT_LENGTH = 30
+	static DEFAULT_LENGTH = DEFAULT_LENGTH
 
 	constructor( props ) {
 		super( props )

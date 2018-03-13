@@ -69,11 +69,11 @@ function polygon() {
 			y: basicOrigin.y + 100
 		},
 		{
-			x: basicOrigin.x + 200,
+			x: basicOrigin.x + 400,
 			y: basicOrigin.y + 300
 		},
 		{
-			x: basicOrigin.x + 400,
+			x: basicOrigin.x + 200,
 			y: basicOrigin.y + 300
 		},
 		{

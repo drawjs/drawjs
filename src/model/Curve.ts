@@ -25,43 +25,13 @@ export default class Curve extends Particle {
 		this.handle1 = this.segment1.handleOut
 		this.handle2 = this.segment2.handleIn
 
-		const newHandle1Point = getNewHandle1Point()
-		const newHandle2Point = getNewHandle2Point()
+		const newHandle1Point = this.sharedGetters.getPerpHandlePoint( this.prevSegment, this.segment1, this.segment2 )
 
-		this.sharedActions.updateHandlePoint( this.handle1, newHandle1Point )
-		this.sharedActions.adjustHandleParterPoint( this.handle1 )
-		// this.sharedActions.updateHandlePoint( this.handle2, newHandle2Point )
-		// this.sharedActions.adjustHandleParterPoint( this.handle2 )
+		this.sharedActions.updateHandlePoint( this.handle2, newHandle1Point )
+		this.sharedActions.adjustHandleParterPoint( this.handle2 )
 
-		function getNewHandle1Point(): Point2D {
-			const A: MathPoint = new MathPoint(
-				self.prevPoint.x + self.point1.x / 2,
-				( self.prevPoint.y + self.point1.y ) / 2
-			)
-			const B: MathPoint = new MathPoint( self.point2.x, self.point2.y )
-			const AB: MathVector = new MathVector( A, B )
-			const AH: MathVector = AB.rotate( 90 )
-			const res: Point2D = {
-				x: AH.x + A.x,
-				y: AH.y + A.y
-			}
-			return res
-		}
 
-		// function getNewHandle2Point() {
-		// 	const A: MathPoint = new MathPoint(
-		// 		self.prevPoint.x + self.point1.x / 2,
-		// 		( self.prevPoint.y + self.point1.y ) / 2
-		// 	)
-		// 	const B: MathPoint = new MathPoint( self.point2.x, self.point2.y )
-		// 	const AB: MathVector = new MathVector( A, B )
-		// 	const AH: MathVector = AB.rotate( -90 )
-		// 	const res: Point2D = {
-		// 		x: AH.x + A.x,
-		// 		y: AH.y + A.y
-		// 	}
-		// 	return res
-		// }
+
 	}
 
 	get point1(): Point2D {

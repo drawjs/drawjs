@@ -91,14 +91,19 @@ export default class SharedActions {
 			const first = segments[ 0 ]
 			const last = segments[ lastIndex ]
 
-			for ( let i = 0; i < lastIndex; i++ ) {
-				const previous: Segment = isFirst( i ) ? last : segments[ i - 1 ]
-				const next: Segment = isLast( i, segments ) ?
-					first :
-					segments[ i + 1 ]
+			for ( let i = 0; i < length; i++ ) {
+				const current: Segment = segments[ i ]
+				if ( current === segment ) {
+					const previous: Segment = isFirst( i ) ?
+						last :
+						segments[ i - 1 ]
+					const next: Segment = isLast( i, segments ) ?
+						first :
+						segments[ i + 1 ]
 
-				this.updateSegmentPrevious( segment, previous )
-				this.updateSegmentNext( segment, next )
+					this.updateSegmentPrevious( segment, previous )
+					this.updateSegmentNext( segment, next )
+				}
 			}
 		}
 
