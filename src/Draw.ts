@@ -19,11 +19,12 @@ import Interaction from "./core/interaction"
 import ViewPort from "./model/tool/ViewPort"
 import Grid from "./model/tool/Grid"
 import Renderer from "./model/tool/Renderer"
-import Getters from './store/draw/Getters';
-import DrawStore from './store/draw/DrawStore';
-import Actions from './store/draw/Actions';
-import SharedActions from "./shared/SharedActions";
-import SharedGetters from './shared/SharedGetters';
+import Getters from "./store/draw/Getters"
+import DrawStore from "./store/draw/DrawStore"
+import Actions from "./store/draw/Actions"
+import SharedActions from "./shared/SharedActions"
+import SharedGetters from "./shared/SharedGetters"
+import TestUtils from "./shared/TestUtils"
 
 const ajv = new Ajv()
 
@@ -53,6 +54,10 @@ export default class Draw {
 	 */
 	sharedActions: SharedActions
 
+	/**
+	 * Test utils
+	 */
+	testUtils: TestUtils
 
 	public onGraphClick: Function
 	public onGraphHover: Function
@@ -63,6 +68,9 @@ export default class Draw {
 		this.actions = new Actions( this.drawStore, this.getters )
 		this.sharedGetters = new SharedGetters()
 		this.sharedActions = new SharedActions( this.drawStore, this.getters )
+
+		const testUtils = new TestUtils()
+		this.testUtils = testUtils
 
 		this.actions.UPDATE_DRAW( this )
 		this.actions.UPDATE_CANVAS( canvas )
@@ -113,7 +121,7 @@ export default class Draw {
 
 		this.getters.cellList.map( renderElement )
 
-		this.getters.selector.render()
+		// this.getters.selector.render()
 
 		// this.miniMap.render()
 	}

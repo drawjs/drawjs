@@ -7,8 +7,9 @@ import Getters from "../store/draw/Getters"
 import Actions from "../store/draw/Actions"
 import DrawStore from "../store/draw/DrawStore"
 import Particle from "./Particle"
+import Curve from "./Curve";
+import Path from './Path';
 
-const { min, max } = Math
 
 export default abstract class Cell extends Particle {
 	id: string = generateUniqueId()
@@ -26,37 +27,18 @@ export default abstract class Cell extends Particle {
 	 */
 	fill: string = "black"
 
-	/**
-	 * // Segment
-	 */
-	segments = []
+	// /**
+	//  * // Path
+	//  */
+	// path: Path
 
-	get segmentsCenter(): Point2D {
-		const segmentsX = this.segments.map( ( { x } ) => x )
-		const segmentsY = this.segments.map( ( { y } ) => y )
 
-		const left = min( ...segmentsX )
-		const right = max( ...segmentsX )
-		const top = min( ...segmentsY )
-		const bottom = max( ...segmentsY )
-		const res: Point2D = {
-			x: ( left + right ) / 2,
-			y: ( top + bottom ) / 2
-		}
-		return res
-	}
-
-	/**
-	 * // Bound
-	 */
-	get boundLeft(): number {
-		return
-	}
-
-	/**
-	 * // Curve
-	 */
-	curves = []
+	// /**
+	//  * // Bound
+	//  */
+	// get boundLeft(): number {
+	// 	return
+	// }
 
 	/**
 	 * interaction - selection
@@ -160,12 +142,12 @@ export default abstract class Cell extends Particle {
 	 * Rotate
 	 */
 	rotate() {
-		const deltaAngle: number = this.angle - this.prevAngle
-		this.sharedActions.rotateSegments(
-			this.segments,
-			deltaAngle,
-			this.segmentsCenter
-		)
-		this.prevAngle = this.angle
+		// const deltaAngle: number = this.angle - this.prevAngle
+		// this.sharedActions.rotateSegments(
+		// 	this.segments,
+		// 	deltaAngle,
+		// 	this.segmentsCenter
+		// )
+		// this.prevAngle = this.angle
 	}
 }

@@ -7,7 +7,7 @@ import RectContainer from "./tool/RectContainer"
 import ScalePoint from "./tool/ScalePoint";
 
 export default abstract class Graph extends Geometry {
-	rectContainer: RectContainer
+	// rectContainer: RectContainer
 
 	/**
 	 * Rotation
@@ -24,40 +24,40 @@ export default abstract class Graph extends Geometry {
 	constructor( props ) {
 		super( props )
 
-		const { rotatable, scalable } = props
+		// const { rotatable, scalable } = props
 
 		/**
 		 * // Rotation
 		 */
-		if ( isBoolean( rotatable ) ) {
-			this.rotatable = rotatable
-		}
+		// if ( isBoolean( rotatable ) ) {
+		// 	this.rotatable = rotatable
+		// }
 
-		if ( this.rotatable ) {
-			this.rotationArrow = new RotationArrow( {
-				draw  : this.draw,
-				target: this
-			} )
-		}
+		// if ( this.rotatable ) {
+		// 	this.rotationArrow = new RotationArrow( {
+		// 		draw  : this.draw,
+		// 		target: this
+		// 	} )
+		// }
 
 		/**
 		 * // Scale
 		 */
-		if ( isBoolean( scalable ) ) {
-			this.scalable = scalable
-		}
+		// if ( isBoolean( scalable ) ) {
+		// 	this.scalable = scalable
+		// }
 
-		if ( this.scalable ) {
-			// this.scalePoint = new ScalePoint( { draw: this.draw, target: this } )
-		}
+		// if ( this.scalable ) {
+		// 	// this.scalePoint = new ScalePoint( { draw: this.draw, target: this } )
+		// }
 	}
 
 	public render() {
 		const { ctx } = this.getters
 		super.render()
 
-		this.sharedActions.applySelectionBorder( this )
+		// this.sharedActions.applySelectionBorder( this )
 
-		this.rotatable && this.sharedActions.applyRotationArrow( this )
+		// this.rotatable && this.sharedActions.applyRotationArrow( this )
 	}
 }

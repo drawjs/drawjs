@@ -17,12 +17,12 @@ export default class Point extends Graph {
 		return POINT_RADIUS
 	}
 
-	get path(): Path2D {
-		const path = new Path2D()
-		const { x, y, R }: { x: number; y: number; R: number } = this
-		path.arc( x, y, R, 0, 2 * Math.PI )
-		return path
-	}
+	// get path(): Path2D {
+	// 	const path = new Path2D()
+	// 	const { x, y, R }: { x: number; y: number; R: number } = this
+	// 	path.arc( x, y, R, 0, 2 * Math.PI )
+	// 	return path
+	// }
 
 	get rectContainer(): RectContainer {
 		const { x, y, R } = this
@@ -82,13 +82,13 @@ export default class Point extends Graph {
 
 		ctx.save()
 		ctx.fillStyle = this.fill
-		ctx.fill( this.path )
+		// ctx.fill( this.path )
 		ctx.restore()
 	}
 
 	public contain( x, y ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.path )
-		return isContain
+		// const isContain = this.getters.pointOnPath( { x, y }, this.path )
+		// return isContain
 	}
 
 	// ******* Drag ******

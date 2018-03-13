@@ -22,5 +22,3 @@ declare type Point2DCurrent = {
 	x: number
 	y: number
 }
-
-type Segment = [Point2D, Point2D]
