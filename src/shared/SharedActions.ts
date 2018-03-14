@@ -148,8 +148,8 @@ export default class SharedActions {
 	/**
 	 * // Handle
 	 */
-	updateHandlePoint( handle: Handle, point: Point2D ) {
-		handle.point = cloneDeep( point )
+	updateHandleRelativePoint( handle: Handle, relativePoint: Point2D ) {
+		handle.relativePoint = cloneDeep( relativePoint )
 	}
 	adjustHandleParterPoint( handle: Handle ) {
 		const { partner, segment } = handle
@@ -167,7 +167,7 @@ export default class SharedActions {
 		/**
 		 * B
 		 */
-		let newParterPoint: Point2D
+		let newPartnerRelativePoint: Point2D
 
 		/**
 		 * O
@@ -195,12 +195,12 @@ export default class SharedActions {
 		/**
 		 * New partner point
 		 */
-		newParterPoint = {
-			x: OB.x + sx,
-			y: OB.y + sy
+		newPartnerRelativePoint = {
+			x: OB.x,
+			y: OB.y
 		}
 
-		this.updateHandlePoint( partner, newParterPoint )
+		this.updateHandleRelativePoint( partner, newPartnerRelativePoint )
 	}
 
 	/**

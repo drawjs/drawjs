@@ -1,8 +1,8 @@
 import Particle from "./Particle"
 import Curve from "./Curve"
 import Segment from "./Segment"
-import Cell from './Cell';
-import bezierCurve from "../util/geometry/bezierCurve";
+import Cell from "./Cell"
+import bezierCurve from "../util/geometry/bezierCurve"
 
 const { min, max } = Math
 
@@ -17,8 +17,22 @@ export default class Path extends Cell {
 
 		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
 
-		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
+		this.segments.map( segment => {
+			const newHandleRelativePoint = this.sharedGetters.getPerpHandleRelativePoint(
+				segment.previous,
+				segment,
+				segment.next
+			)
 
+			this.sharedActions.updateHandleRelativePoint(
+				segment.handleOut,
+				newHandleRelativePoint
+			)
+
+			this.sharedActions.adjustHandleParterPoint( segment.handleOut )
+		} )
+
+		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
 	}
 
 	get segmentsCenter(): Point2D {
@@ -37,26 +51,38 @@ export default class Path extends Cell {
 	}
 
 	get path(): Path2D {
-		let path = new Path2D()
-
-		path = bezierCurve( this.segments.map( ( { point } ) => point ) )
-
-		return path
+		const path2d = this.sharedGetters.getPath2dByCurves( this.curves )
+		return path2d
 	}
 
 	render() {
-		// const { ctx } = this.getters
+		const { ctx } = this.getters
 
-		// ctx.save()
-		// ctx.strokeStyle = "blue"
-		// ctx.stroke( this.path )
-		// ctx.restore()
+		ctx.save()
+		ctx.fillStyle = "#85392c"
+		ctx.fill( this.path )
+		ctx.restore()
 
 		this.segments.map( this.sharedActions.renderParticle )
 		this.curves.map( this.sharedActions.renderParticle )
 	}
 
 	contain( x: number, y: number ) {
-		return false
+		const isContain = this.getters.pointOnPath( { x, y }, this.path )
+
+		console.log( isContain )
+
+		return isContain
+	}
+
+	updateDrag( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+
+		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+
+		this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
+
+		this.getters.draw.render()
 	}
 }

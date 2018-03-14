@@ -15,9 +15,9 @@ export default class Handle extends Cell {
 	dragger: Dragger
 
 	/**
-	 * The end point of handle
+	 * The relative point of handle
 	 */
-	point: Point2D
+	relativePoint: Point2D
 
 	partner: Handle = null
 
@@ -36,12 +36,12 @@ export default class Handle extends Cell {
 			this.partner = props.partner
 		}
 
-		this.point = getHandlePoint( this.segmentPoint, this.type )
+		this.relativePoint = getHandleRelativePoint( this.segmentPoint, this.type )
 
 		this.dragger = new Dragger( { draw: this.draw } )
 		this.dragger.update = this.updateDrag.bind( this )
 
-		function getHandlePoint(
+		function getHandleRelativePoint(
 			segmentPoint: Point2D,
 			type: HandleType
 		): Point2D {
@@ -60,12 +60,12 @@ export default class Handle extends Cell {
 			const { DEFAULT_LENGTH } = Handle
 			const deltaX = DEFAULT_LENGTH * cos( angle * DEGREE_TO_RADIAN )
 			const deltaY = DEFAULT_LENGTH * sin( angle * DEGREE_TO_RADIAN )
-			const handlePoint: Point2D = {
-				x: x + deltaX,
-				y: y + deltaY
+			const handleRelativePoint: Point2D = {
+				x: deltaX,
+				y: deltaY
 			}
 
-			return handlePoint
+			return handleRelativePoint
 		}
 	}
 
@@ -87,6 +87,23 @@ export default class Handle extends Cell {
 		const { x, y } = this.point
 		path.arc( x, y, 3, 0, 2 * PI )
 		return path
+	}
+
+	get point() {
+		const { segmentPoint, relativePoint } = this
+		const point: Point2D = {
+			x: segmentPoint.x + relativePoint.x,
+			y: segmentPoint.y + relativePoint.y
+		}
+		return point
+	}
+
+	get x(): number {
+		return this.point.x
+	}
+
+	get y(): number {
+		return this.point.y
 	}
 
 	get length(): number {
@@ -135,14 +152,14 @@ export default class Handle extends Cell {
 		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		const { x, y } = this.point
+		const { x, y } = this.relativePoint
 
-		const newHandlePoint = {
+		const newRelativePoint = {
 			x: x + deltaX,
 			y: y + deltaY
 		}
 
-		this.sharedActions.updateHandlePoint( this, newHandlePoint )
+		this.sharedActions.updateHandleRelativePoint( this, newRelativePoint )
 
 		this.sharedActions.adjustHandleParterPoint( this )
 

@@ -65,28 +65,31 @@ function rect() {
 function polygon() {
 	return [
 		{
-			x: basicOrigin.x + 300,
-			y: basicOrigin.y + 100
+			x: 300,
+			y: 100
 		},
+
+
 		{
-			x: basicOrigin.x + 400,
-			y: basicOrigin.y + 300
+			x: 100,
+			y: 300
 		},
+
 		{
-			x: basicOrigin.x + 200,
-			y: basicOrigin.y + 300
+			x: 150,
+			y: 300
 		},
-		{
-			x: basicOrigin.x + 150,
-			y: basicOrigin.y + 200
-		},
-		{
-			x: basicOrigin.x + 100,
-			y: basicOrigin.y + 200
-		},
-		{
-			x: basicOrigin.x + 50,
-			y: basicOrigin.y + 100
-		}
+		// {
+		// 	x: basicOrigin.x + 150,
+		// 	y: basicOrigin.y + 200
+		// },
+		// {
+		// 	x: basicOrigin.x + 100,
+		// 	y: basicOrigin.y + 200
+		// },
+		// {
+		// 	x: basicOrigin.x + 50,
+		// 	y: basicOrigin.y + 100
+		// }
 	]
 }

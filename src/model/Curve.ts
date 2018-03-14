@@ -24,14 +24,6 @@ export default class Curve extends Particle {
 
 		this.handle1 = this.segment1.handleOut
 		this.handle2 = this.segment2.handleIn
-
-		const newHandle1Point = this.sharedGetters.getPerpHandlePoint( this.prevSegment, this.segment1, this.segment2 )
-
-		this.sharedActions.updateHandlePoint( this.handle2, newHandle1Point )
-		this.sharedActions.adjustHandleParterPoint( this.handle2 )
-
-
-
 	}
 
 	get point1(): Point2D {
@@ -73,12 +65,8 @@ export default class Curve extends Particle {
 
 		path = bezierCurve( [ point1, handle1Point, handle2Point, point2 ] )
 
-		// path = bezierCurve(  )
-
 		return path
 	}
-
-	contain( x: number, y: number ) {}
 
 	render() {
 		const { ctx } = this.getters

@@ -1,3 +1,5 @@
+type Segments = Point2D[]
+
 export default function pointInPolygon( point: Point2D, points: Point2D[] ) {
 	return pointInPolygonWindingNumber( point, points )
 }
@@ -100,7 +102,7 @@ function isPointOnAnyPolygonSegment( P: Point2D, polygonVertices: Point2D[] ) {
 	for ( let i: number = 0; i < polygonVertices.length - 1; i++ ) {
 		const V0: Point2D = polygonVertices[ i ]
 		const V1: Point2D = polygonVertices[ i + 1 ]
-		const segment: Segment = [ V0, V1 ]
+		const segment: Segments = [ V0, V1 ]
 
 		if ( isPointOnSegment( P, segment ) ) {
 			res = true
@@ -110,7 +112,7 @@ function isPointOnAnyPolygonSegment( P: Point2D, polygonVertices: Point2D[] ) {
 	return res
 }
 
-function isPointOnSegment( P: Point2D, segment: Segment ) {
+function isPointOnSegment( P: Point2D, segment: Segments ) {
 	let res: boolean = false
 	if ( isPointOnPoints( P, segment ) ) {
 		res = true
