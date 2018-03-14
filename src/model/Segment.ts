@@ -2,6 +2,7 @@ import Particle from "./Particle";
 import Handle from './Handle';
 import { HandleType } from "../store/constant/index";
 import Cell from "./Cell";
+import Path from "./Path";
 
 const { PI } = Math
 
@@ -24,11 +25,16 @@ export default class Segment extends Cell {
 
 	next: Segment
 
+	path: Path
+
 	constructor( props ) {
 		super( props )
 
+		this.path = props.path
+
 		this.x = props.x
 		this.y = props.y
+
 
 		this.handleIn = new Handle( { draw: this.draw, segment: this, type: HandleType.HANDLE_IN } )
 		this.handleOut = new Handle( { draw: this.draw, segment: this, type: HandleType.HANDLE_OUT } )
@@ -36,6 +42,7 @@ export default class Segment extends Cell {
 		this.handleIn.partner = this.handleOut
 		this.handleOut.partner = this.handleIn
 		this.sharedActions.adjustHandleParterPoint( this.handleIn )
+
 
 	}
 
@@ -46,7 +53,7 @@ export default class Segment extends Cell {
 		}
 	}
 
-	get path(): Path2D {
+	get path2d(): Path2D {
 		const path = new Path2D()
 		path.arc( this.x, this.y, 5, 0, PI * 2 )
 		return path
@@ -58,7 +65,7 @@ export default class Segment extends Cell {
 		ctx.save()
 		ctx.lineWidth = 3
 		ctx.fillStyle = "#4a86e8"
-		ctx.fill( this.path )
+		ctx.fill( this.path2d )
 		ctx.restore()
 
 		this.handleIn.render()
@@ -67,7 +74,7 @@ export default class Segment extends Cell {
 
 	contain( x: number, y: number ) {
 		const { ctx } = this.getters
-		const isContain: boolean = ctx.isPointInPath( this.path, x, y )
+		const isContain: boolean = ctx.isPointInPath( this.path2d, x, y )
 		return isContain
 	}
 

@@ -1,11 +1,9 @@
 import connectPoints from "./connectPoints"
 
-export default function( points: Point2D[], deltaT = 0.001 ) {
+export default function( points: Point2D[], deltaT = 0.001, path: Path2D = new Path2D() ) {
 	if ( points.length <= 1 ) {
 		return null
 	}
-
-	let path = new Path2D()
 
 	const delta = deltaT < 1 ? deltaT : 1
 	let allPoints = []
@@ -17,7 +15,8 @@ export default function( points: Point2D[], deltaT = 0.001 ) {
 		allPoints.push( point )
 	}
 
-	path = connectPoints( allPoints )
+	connectPoints( allPoints, path )
+
 	return path
 }
 

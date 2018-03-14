@@ -4,6 +4,8 @@ import Segment from "./Segment"
 import bezierCurve from "../util/geometry/bezierCurve"
 import MathPoint from "./math/MathPoint"
 import MathVector from "./math/MathVector"
+import Path from './Path';
+import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds";
 
 export default class Curve extends Particle {
 	segment1: Segment
@@ -13,6 +15,8 @@ export default class Curve extends Particle {
 	handle1: Handle
 
 	handle2: Handle
+
+	path: Path
 
 	constructor( props ) {
 		super( props )
@@ -24,6 +28,8 @@ export default class Curve extends Particle {
 
 		this.handle1 = this.segment1.handleOut
 		this.handle2 = this.segment2.handleIn
+
+		this.path = props.path
 	}
 
 	get point1(): Point2D {
@@ -58,21 +64,29 @@ export default class Curve extends Particle {
 		return this.nextSegment.point
 	}
 
-	get path(): Path2D {
-		let path = new Path2D()
+	get path2d(): Path2D {
+		let path2d = new Path2D()
 
 		const { handle1Point, handle2Point, point1, point2 } = this
+		const { t } = this.path
 
-		path = bezierCurve( [ point1, handle1Point, handle2Point, point2 ] )
+		bezierCurve( [ point1, handle1Point, handle2Point, point2 ], t, path2d )
 
-		return path
+		return path2d
+	}
+
+	get bounds(): Bounds {
+		const { handle1Point, handle2Point, point1, point2 } = this
+		const res: Bounds = getBizerCurveBounds( handle1Point, handle2Point, point1, point2 )
+		return res
 	}
 
 	render() {
 		const { ctx } = this.getters
 		ctx.save()
-		ctx.strokeStyle = "blue"
-		ctx.stroke( this.path )
+		ctx.lineWidth = 2
+		ctx.strokeStyle = "#00f0ff"
+		ctx.stroke( this.path2d )
 		ctx.restore()
 	}
 }

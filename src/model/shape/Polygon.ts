@@ -16,27 +16,7 @@ export default class Polygon extends Path {
 	// rectContainer: RectContainer
 
 	constructor( props ) {
-		super( updateProps( props ) )
-
-		const self = this
-
-		// this.path = new Path( {
-		// 	draw: this.draw,
-		// 	segments: props.points.map( getSegment )
-		// } )
-
-		function updateProps( props ) {
-			props.segments = props.points.map( getSegment )
-			return props
-
-			function getSegment( { x, y } ) {
-				return new Segment( {
-					draw: props.draw,
-					x,
-					y
-				} )
-			}
-		}
+		super( props )
 	}
 
 	// get rectContainer(): RectContainer {

@@ -1,9 +1,11 @@
-import Segment from '../model/Segment';
-import Curve from '../model/Curve';
-import MathPoint from '../model/math/MathPoint';
-import MathVector from '../model/math/MathVector';
-import { DEFAULT_LENGTH } from '../store/constant/index';
+import Segment from "../model/Segment"
+import Curve from "../model/Curve"
+import MathPoint from "../model/math/MathPoint"
+import MathVector from "../model/math/MathVector"
+import { DEFAULT_LENGTH } from "../store/constant/index"
 import Path from '../model/Path';
+import bezierCurve from "../util/geometry/bezierCurve"
+import { isNil } from 'lodash';
 export default class SharedGetters {
 	/**
 	 * // Segments
@@ -16,6 +18,7 @@ export default class SharedGetters {
 		}
 
 		let curves: Curve[] = []
+		const path: Path = segments[0].path
 
 		for ( let i = 0; i < length; i++ ) {
 			const segment1: Segment = segments[ i ]
@@ -26,7 +29,8 @@ export default class SharedGetters {
 			const curve: Curve = new Curve( {
 				draw,
 				segment1,
-				segment2
+				segment2,
+				path
 			} )
 
 			curves.push( curve )
@@ -40,13 +44,23 @@ export default class SharedGetters {
 		}
 	}
 
-
 	/**
 	 * // Curve
 	 */
-	getPerpHandleRelativePoint( prevSegemnt: Segment, segment: Segment, nextSegment: Segment, length: number = DEFAULT_LENGTH ): Point2D {
-		const A: Point2D = new MathPoint( prevSegemnt.point.x, prevSegemnt.point.y )
-		const B: Point2D =  new MathPoint( nextSegment.point.x, nextSegment.point.y )
+	getPerpHandleRelativePoint(
+		prevSegemnt: Segment,
+		segment: Segment,
+		nextSegment: Segment,
+		length: number = DEFAULT_LENGTH
+	): Point2D {
+		const A: Point2D = new MathPoint(
+			prevSegemnt.point.x,
+			prevSegemnt.point.y
+		)
+		const B: Point2D = new MathPoint(
+			nextSegment.point.x,
+			nextSegment.point.y
+		)
 
 		// Center
 		const C: MathPoint = new MathPoint( ( A.x + B.x ) / 2, ( A.y + B.y ) / 2 )
@@ -57,14 +71,13 @@ export default class SharedGetters {
 
 		const PC: MathVector = new MathVector( P, C )
 
-
 		const PD: MathVector = PC.rotate( angle )
 		const UnitPD: MathVector = PD.unit
 
 		// New point after PD was rotated
 		const res: Point2D = {
 			x: length * UnitPD.x,
-			y: length * UnitPD.y,
+			y: length * UnitPD.y
 		}
 
 		return res
@@ -81,7 +94,7 @@ export default class SharedGetters {
 	/**
 	 * // Path
 	 */
-	getPath2dByCurves( curves: Curve[] ) {
+	getPath2dByCurves( curves: Curve[], t = 1 ) {
 		let path2d = new Path2D()
 
 		curves.map( resolve )
@@ -93,8 +106,8 @@ export default class SharedGetters {
 				path2d.moveTo( segment1.x, segment1.y )
 			}
 
-			path2d.bezierCurveTo( handle1.x, handle1.y, handle2.x, handle2.y, segment2.x, segment2.y )
-
+			bezierCurve( [ segment1, handle1, handle2, segment2 ], t, path2d )
+			// path2d.bezierCurveTo( handle1.x, handle1.y, handle2.x, handle2.y, segment2.x, segment2.y )
 		}
 
 		return path2d
@@ -102,5 +115,48 @@ export default class SharedGetters {
 		function isFirst( index ) {
 			return index === 0
 		}
+	}
+
+	getBounds( curves: Curve[] ): Bounds {
+		let left: number
+		let right: number
+		let top: number
+		let bottom: number
+
+		curves.map( resolve )
+
+		function resolve( { bounds }: Curve ) {
+			const { left: l, right: r, top: t, bottom: b  } = bounds
+
+			left = isNil( left ) ? l : left
+			right = isNil( right ) ? l : right
+			top = isNil( top ) ? l : top
+			bottom = isNil( bottom ) ? l : bottom
+
+			if ( l < left ) {
+				left = l
+			}
+
+			if ( r > right ) {
+				right = r
+			}
+
+			if ( t < top ) {
+				top = t
+			}
+
+			if ( b > bottom ) {
+				bottom = b
+			}
+		}
+
+		const res: Bounds = {
+			left,
+			right,
+			top,
+			bottom
+		}
+
+		return res
 	}
 }

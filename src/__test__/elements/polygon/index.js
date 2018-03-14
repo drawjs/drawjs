@@ -18,7 +18,7 @@ const basicOrigin = {
 draw.addElement( "polygon", {
 	fill  : "blue",
 	angle : 10,
-	points: polygon(),
+	points: rect(),
 	rotatable: true
 } )
 
