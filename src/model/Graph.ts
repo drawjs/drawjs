@@ -3,11 +3,11 @@ import { generateUniqueId } from "util/index"
 import Geometry from "model/Geometry"
 import RotationArrow from "model/tool/RotationArrow"
 import { isBoolean } from "lodash"
-import RectContainer from "./tool/RectContainer"
+import SizeContainer from "./tool/SizeContainer"
 import ScalePoint from "./tool/ScalePoint";
 
 export default abstract class Graph extends Geometry {
-	// rectContainer: RectContainer
+	// SizeContainer: SizeContainer
 
 	/**
 	 * Rotation

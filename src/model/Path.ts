@@ -1,12 +1,13 @@
 import Particle from "./Particle"
 import Curve from "./Curve"
-import Segment from "./Segment"
-import Cell from "./Cell"
+import Segment from './Segment';
+import PathItem from "./PathItem"
 import bezierCurve from "../util/geometry/bezierCurve"
+import BoundsContainer from './tool/BoundsContainer';
 
 const { min, max } = Math
 
-export default class Path extends Cell {
+export default class Path extends PathItem {
 	segments: Segment[] = []
 	curves: Curve[] = []
 
@@ -14,6 +15,8 @@ export default class Path extends Cell {
 	 * Beizer variable, which determines curve's smooth degree
 	 */
 	t = 0.001
+
+	boundsContainer: BoundsContainer
 
 	constructor( props ) {
 		super( props )
@@ -41,6 +44,14 @@ export default class Path extends Cell {
 
 		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
 
+
+		this.sharedActions.rotateSegments( this.segments, this.angle, this.segmentsCenter )
+
+		this.boundsContainer = new BoundsContainer( {
+			draw: this.draw,
+			target: this
+		} )
+
 		function getSegment( { x, y } ) {
 			return new Segment( {
 				draw: props.draw,
@@ -52,17 +63,7 @@ export default class Path extends Cell {
 	}
 
 	get segmentsCenter(): Point2D {
-		const segmentsX = this.segments.map( ( { x } ) => x )
-		const segmentsY = this.segments.map( ( { y } ) => y )
-
-		const left = min( ...segmentsX )
-		const right = max( ...segmentsX )
-		const top = min( ...segmentsY )
-		const bottom = max( ...segmentsY )
-		const res: Point2D = {
-			x: ( left + right ) / 2,
-			y: ( top + bottom ) / 2
-		}
+		const res: Point2D = this.sharedGetters.getSegmentsCenter( this.segments )
 		return res
 	}
 
@@ -76,6 +77,22 @@ export default class Path extends Cell {
 		return res
 	}
 
+	get boundsCenter(): Point2D {
+		const res: Point2D = this.sharedGetters.getBoundsCenter( this.bounds )
+		return res
+	}
+
+
+
+	/**
+	 * Bounds of path not rotated or sized
+	 */
+	get initialBounds(): Bounds {
+		const res: Bounds = this.sharedGetters.getInitialBounds( this.curves, this.angle )
+		return res
+	}
+
+
 	render() {
 		const { ctx } = this.getters
 
@@ -86,6 +103,9 @@ export default class Path extends Cell {
 
 		this.segments.map( this.sharedActions.renderParticle )
 		this.curves.map( this.sharedActions.renderParticle )
+
+		// this.sizeContainer.render()
+		this.boundsContainer.render()
 	}
 
 	contain( x: number, y: number ) {

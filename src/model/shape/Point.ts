@@ -2,7 +2,7 @@ import { Cell } from "../index"
 import { POINT } from "../../store/constant/cellType"
 import { POINT_RADIUS } from "../../store/constant/index"
 import Graph from "../Graph"
-import RectContainer from "../tool/RectContainer"
+import SizeContainer from "../tool/SizeContainer"
 import translate from "util/geometry/translate"
 
 export default class Point extends Graph {
@@ -24,7 +24,7 @@ export default class Point extends Graph {
 	// 	return path
 	// }
 
-	get rectContainer(): RectContainer {
+	get SizeContainer(): SizeContainer {
 		const { x, y, R } = this
 		const halfR = R / 2
 
@@ -50,7 +50,7 @@ export default class Point extends Graph {
 
 		const points: Point2D[] = [ leftTop, rightTop, rightBottom, leftBottom ]
 
-		return new RectContainer( {
+		return new SizeContainer( {
 			points,
 			target: this,
 			draw: this.draw

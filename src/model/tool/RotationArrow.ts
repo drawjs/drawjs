@@ -1,5 +1,5 @@
 import Cell from "model/Cell"
-import RectContainer from "./RectContainer"
+import SizeContainer from "./SizeContainer"
 import getRectVertices from "util/geometry/getRectVertices"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
@@ -14,29 +14,33 @@ import rotate from "../../util/geometry/rotate"
 import { ROTATE_ARROW } from "../../store/constant/cellType"
 
 export default class RotationArrow extends Cell {
-	// type: string = ROTATE_ARROW
+	type: string = ROTATE_ARROW
 
-	// /**
-	//  * Graph target to rotate
-	//  */
-	// target: any
+	/**
+	 * Item to rotate
+	 */
+	target: any
 
-	// img: HTMLImageElement = new Image()
+	img: HTMLImageElement = new Image()
 
-	// /**
-	//  * Graph target's radian
-	//  */
-	// get radian(): number {
-	// 	return this.target.radianAngle
-	// }
+	/**
+	 * Space between icon and graph the topo of target's rect container
+	 */
+	static SPACE: number = ROTATION_ARROW_SPACE
 
-	// get rectContainer(): RectContainer {
-	// 	return this.target.rectContainer
-	// }
+	static SIZE: number = ROTATION_ARROW_SIZE
+
+	/**
+	 * Graph target's radian
+	 */
+	get radian(): number {
+		return this.target.radianAngle
+	}
 
 	// get basicCenter(): Point2D {
 	// 	const { SPACE } = RotationArrow
-	// 	const { basicCenter: basicCenter_r, basicTop } = this.rectContainer
+	// 	const { boundsCenter } = this.target
+	// 	const { top } = this.target.bounds
 	// 	const basicCenter: Point2D = {
 	// 		x: basicCenter_r.x,
 	// 		y: basicTop - SPACE
@@ -46,7 +50,7 @@ export default class RotationArrow extends Cell {
 	// }
 
 	// get rotatedCenter(): Point2D {
-	// 	const { basicCenter: basicCenter_r } = this.rectContainer
+	// 	const { basicCenter: basicCenter_r } = this.SizeContainer
 	// 	const res: Point2D = rotate(
 	// 		this.basicCenter,
 	// 		this.radian,
@@ -73,7 +77,7 @@ export default class RotationArrow extends Cell {
 	// 	const {
 	// 		x: centerX_r,
 	// 		y: centerY_r
-	// 	}: Point2D = this.rectContainer.basicCenter
+	// 	}: Point2D = this.SizeContainer.basicCenter
 
 	// 	const deltaRadian: number =
 	// 		getPointAngleToOrigin( { x: x - centerX_r, y: y - centerY_r } ) -
@@ -85,16 +89,11 @@ export default class RotationArrow extends Cell {
 	// 	return deltaRadian
 	// }
 
-	// /**
-	//  * Space between icon and graph the topo of target's rect container
-	//  */
-	// static SPACE: number = ROTATION_ARROW_SPACE
 
-	// static SIZE: number = ROTATION_ARROW_SIZE
 
 	// get path(): Path2D {
 	// 	const { SIZE } = RotationArrow
-	// 	const { basicCenter: basicCenter_r } = this.rectContainer
+	// 	const { basicCenter: basicCenter_r } = this.SizeContainer
 
 	// 	const basicRectPoints: Point2D[] = getRectVertices(
 	// 		this.basicCenter,
@@ -145,10 +144,10 @@ export default class RotationArrow extends Cell {
 	// 	}
 	// }
 
-	// contain( x: number, y: number ) {
-	// 	const isContain = this.getters.pointOnPath( { x, y }, this.path )
-	// 	return isContain
-	// }
+	contain( x: number, y: number ) {
+		const isContain = this.getters.pointOnPath( { x, y }, this.path )
+		return isContain
+	}
 
 	// // ******* Drag ******
 	// public handleStartDrag( event ) {

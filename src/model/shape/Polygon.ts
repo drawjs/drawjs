@@ -1,6 +1,6 @@
 import Graph from "model/Graph"
 import pointInPolygon from "util/geometry/pointInPolygon"
-import RectContainer from "model/tool/RectContainer"
+import SizeContainer from "model/tool/SizeContainer"
 import translatePoints from "util/geometry/translatePoints"
 import rotatePoints from "util/geometry/rotatePoints"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
@@ -13,14 +13,14 @@ import Path from "../Path"
 export default class Polygon extends Path {
 	type = POLYGON
 
-	// rectContainer: RectContainer
+	// SizeContainer: SizeContainer
 
 	constructor( props ) {
 		super( props )
 	}
 
-	// get rectContainer(): RectContainer {
-	// 	return new RectContainer( {
+	// get SizeContainer(): SizeContainer {
+	// 	return new SizeContainer( {
 	// 		segments: this.segments,
 	// 		target  : this,
 	// 		draw    : this.draw
@@ -38,7 +38,7 @@ export default class Polygon extends Path {
 		// ctx.fillStyle = this.fill
 		// ctx.fill( this.path )
 		// ctx.restore()
-		// // this.rectContainer.render()
+		// // this.SizeContainer.render()
 		// this.sharedActions.renderSegments( this.segments )
 		// this.path.render()
 	// }

@@ -6,6 +6,9 @@ import MathPoint from "./math/MathPoint"
 import MathVector from "./math/MathVector"
 import Path from './Path';
 import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds";
+import rotate from "../util/geometry/rotate";
+
+const { PI } = Math
 
 export default class Curve extends Particle {
 	segment1: Segment
@@ -77,7 +80,24 @@ export default class Curve extends Particle {
 
 	get bounds(): Bounds {
 		const { handle1Point, handle2Point, point1, point2 } = this
-		const res: Bounds = getBizerCurveBounds( handle1Point, handle2Point, point1, point2 )
+		const res: Bounds = getBizerCurveBounds( point1, handle1Point, handle2Point, point2 )
+		return res
+	}
+
+	/**
+	 * Bounds of curve whose path not rotated or sized
+	 */
+	get initialBounds(): Bounds {
+		const { handle1Point, handle2Point, point1, point2 } = this
+		const { boundsCenter, angle } = this.path
+		const radian = -angle * PI / 180
+
+		const rotated1: Point2D = rotate( point1, radian, boundsCenter )
+		const rotated2: Point2D = rotate( handle1Point, radian, boundsCenter )
+		const rotated3: Point2D = rotate( handle2Point, radian, boundsCenter )
+		const rotated4: Point2D = rotate( point2, radian, boundsCenter )
+
+		const res: Bounds = getBizerCurveBounds( rotated1, rotated2, rotated3, rotated4 )
 		return res
 	}
 

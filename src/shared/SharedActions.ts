@@ -5,7 +5,7 @@ import { includes, cloneDeep } from "lodash"
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
-import Segment from "../model/Segment"
+import Segment from '../model/Segment';
 import { getRotatedPoint } from "util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
@@ -19,6 +19,17 @@ export default class SharedActions {
 		this.drawStore = drawStore
 		this.getters = getters
 	}
+	/**
+	 * // Particle
+	 */
+	copyParticle( instance: any, ClassName: any ) {
+		return new ClassName( instance.cachedConstructorProps )
+	}
+
+	copyParticles( instances: any, ClassName: any ) {
+		return instances.map( instance => this.copyParticle( instance, ClassName ) )
+	}
+
 
 	/**
 	 * Cell
@@ -67,6 +78,12 @@ export default class SharedActions {
 	/**
 	 * Segment
 	 */
+	copySegment( segment: Segment ) {
+		return this.copyParticle( segment, Segment )
+	}
+	copySegments( segments: Segment[] ) {
+		return this.copyParticles( segments, Segment )
+	}
 	updateSegmentPrevious( segment: Segment, previous: Segment ) {
 		segment.previous = previous
 	}

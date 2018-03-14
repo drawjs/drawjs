@@ -243,13 +243,13 @@ export default class Getters {
 		// 	return res
 		// }
 		// function inRigion( cell: Graph ): boolean {
-		// 	const { rectContainer } = cell
+		// 	const { SizeContainer } = cell
 		// 	const {
 		// 		basicLeft,
 		// 		basicTop,
 		// 		basicWidth,
 		// 		basicHeight
-		// 	} = rectContainer
+		// 	} = SizeContainer
 		// 	const res: boolean = self.selector.rectInSelectionArea(
 		// 		basicLeft,
 		// 		basicTop,

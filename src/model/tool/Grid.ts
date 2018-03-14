@@ -11,7 +11,7 @@ export default class Grid extends Particle {
 	}
 
 	static INTERVAL: number = 10
-	static DEFAULT_ZOOM: number = 10
+	static DEFAULT_ZOOM: number = 1
 	static DEFAULT_PAN: Point2D = {
 		x: 0,
 		y: 0
