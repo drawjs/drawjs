@@ -77,8 +77,6 @@ export default class Path extends Cell {
 	}
 
 	render() {
-		console.log( this.bounds )
-
 		const { ctx } = this.getters
 
 		ctx.save()
@@ -92,7 +90,6 @@ export default class Path extends Cell {
 
 	contain( x: number, y: number ) {
 		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
-
 		return isContain
 	}
 

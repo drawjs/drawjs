@@ -153,11 +153,13 @@ export default class Getters {
 	}
 
 	pointOnPath( point: Point2DInitial, path: Path2D ): boolean {
-		const pointOnCurrentViewPort: Point2DCurrent = this.viewPort.transform(
-			point
-		)
-		const { x, y }: Point2DCurrent = pointOnCurrentViewPort
+		this.renderer.resetTransform()
+
+		const { x, y }: Point2DCurrent = point
 		const isContain = this.ctx.isPointInPath( path, x, y )
+
+		this.renderer.setTransformViewPort()
+
 		return isContain
 	}
 

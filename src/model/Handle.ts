@@ -141,8 +141,7 @@ export default class Handle extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const { ctx } = this.getters
-		const isContain: boolean = ctx.isPointInPath( this.pointPath, x, y )
+		const isContain = this.getters.pointOnPath( { x, y }, this.pointPath )
 		return isContain
 	}
 
