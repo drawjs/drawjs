@@ -15,14 +15,22 @@ const basicOrigin = {
 // 	points: polygon()
 // } )
 
-draw.addElement( "polygon", {
-	fill  : "blue",
-	angle : 60,
-	points: rect(),
+const polygonInstance = draw.addElement( "polygon", {
+	fill     : "blue",
+	angle    : 0,
+	points   : rect(),
 	rotatable: true
 } )
 
-draw.render()
+
+function render() {
+	polygonInstance.rotate( polygonInstance.angle + 0.1 )
+	draw.render()
+
+	window.requestAnimationFrame( render )
+}
+
+window.requestAnimationFrame( render )
 
 function triangle() {
 	return [
@@ -69,7 +77,6 @@ function polygon() {
 			y: 100
 		},
 
-
 		{
 			x: 100,
 			y: 300
@@ -78,7 +85,7 @@ function polygon() {
 		{
 			x: 150,
 			y: 300
-		},
+		}
 		// {
 		// 	x: basicOrigin.x + 150,
 		// 	y: basicOrigin.y + 200

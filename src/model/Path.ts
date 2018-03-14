@@ -104,8 +104,8 @@ export default class Path extends PathItem {
 		this.segments.map( this.sharedActions.renderParticle )
 		this.curves.map( this.sharedActions.renderParticle )
 
-		// this.sizeContainer.render()
-		this.boundsContainer.render()
+		this.sizeContainer.render()
+		// this.boundsContainer.render()
 	}
 
 	contain( x: number, y: number ) {

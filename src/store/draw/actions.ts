@@ -134,6 +134,8 @@ export default class Actions {
 		if ( !isNil( panelId ) ) {
 			this.getters.getStoreElementsByPanelId( panelId ).push( wholeElement )
 		}
+
+		return instance
 	}
 
 	ADD_PANEL( name: string ) {

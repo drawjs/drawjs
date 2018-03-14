@@ -22,8 +22,11 @@ export default abstract class Item extends Cell {
 		}
 	}
 
-	get initialBoundsCenter(): Point2D {
-		const res: Point2D = this.sharedGetters.getBoundsCenter( this.initialBounds )
+	get boundsCenter(): Point2D {
+		const res: Point2D = {
+			x: 0,
+			y: 0
+		}
 		return res
 	}
 

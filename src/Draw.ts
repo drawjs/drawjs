@@ -128,7 +128,7 @@ export default class Draw {
 
 	public addElement( type: string, setting: any, panelId?: string ) {
 		// this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
-		this.actions.ADD_ELEMENT( this, type, setting, panelId )
+		return this.actions.ADD_ELEMENT( this, type, setting, panelId )
 	}
 
 	private attachDrawToElement( element ) {

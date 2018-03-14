@@ -141,7 +141,9 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Rotate
 	 */
-	rotate() {
+	rotate( angle: number ) {
+		this.angle = angle
+		this.draw.render()
 		// const deltaAngle: number = this.angle - this.prevAngle
 		// this.sharedActions.rotateSegments(
 		// 	this.segments,

@@ -30,13 +30,13 @@ export default class SizeContainer extends Particle {
 		return this.angle * PI / 180
 	}
 
-	get initialBoundsCenter(): Point2D {
-		return this.target.initialBoundsCenter
+	get boundsCenter(): Point2D {
+		return this.target.boundsCenter
 	}
 
 	get path2d(): Path2D {
 		const { left, right, top, bottom } = this.initialBounds
-		const { radian, initialBoundsCenter } = this
+		const { radian, boundsCenter } = this
 
 		const point1: Point2D = {
 			x: left,
@@ -55,10 +55,10 @@ export default class SizeContainer extends Particle {
 			y: bottom
 		}
 
-		const rotated1: Point2D = rotate( point1, radian, initialBoundsCenter )
-		const rotated2: Point2D = rotate( point2, radian, initialBoundsCenter )
-		const rotated3: Point2D = rotate( point3, radian, initialBoundsCenter )
-		const rotated4: Point2D = rotate( point4, radian, initialBoundsCenter )
+		const rotated1: Point2D = rotate( point1, radian, boundsCenter )
+		const rotated2: Point2D = rotate( point2, radian, boundsCenter )
+		const rotated3: Point2D = rotate( point3, radian, boundsCenter )
+		const rotated4: Point2D = rotate( point4, radian, boundsCenter )
 
 		let path: Path2D = new Path2D()
 
