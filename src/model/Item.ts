@@ -3,9 +3,11 @@ import SizeContainer from "model/tool/SizeContainer"
 import RotationArrow from "./tool/RotationArrow"
 import { isBoolean } from "lodash"
 import rotate from "../util/geometry/rotate"
+import SizePoints from "./tool/SizePoints"
 
 export default abstract class Item extends Cell {
 	sizeContainer: SizeContainer
+	sizePoints: SizePoints
 
 	/**
 	 * Rotation
@@ -19,6 +21,11 @@ export default abstract class Item extends Cell {
 		this.sizeContainer = new SizeContainer( {
 			draw  : this.draw,
 			target: this
+		} )
+
+		this.sizePoints = new SizePoints( {
+			draw         : this.draw,
+			sizeContainer: this.sizeContainer
 		} )
 
 		/**
@@ -85,10 +92,10 @@ export default abstract class Item extends Cell {
 		const rotated4: Point2D = rotate( point4, radian, itemCenter )
 
 		const res: Container = {
-			leftTop: rotated1,
-			rightTop: rotated2,
+			leftTop    : rotated1,
+			rightTop   : rotated2,
 			rightBottom: rotated3,
-			leftBottom: rotated4,
+			leftBottom : rotated4
 		}
 
 		return res

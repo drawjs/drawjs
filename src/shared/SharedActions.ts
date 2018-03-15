@@ -239,6 +239,17 @@ export default class SharedActions {
 	}
 
 	/**
+	 * // Point
+	 */
+	updatePoint( point: Point2D, x: number, y: number ) {
+		point = { x, y }
+	}
+	translatePoint( point: Point2D, deltaX: number, deltaY: number ) {
+		const { x, y }: Point2D = point
+		this.updatePoint( point, x + deltaX, y + deltaY )
+	}
+
+	/**
 	 * // Rotation
 	 */
 	applyRotationArrow( element ) {

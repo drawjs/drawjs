@@ -22,7 +22,7 @@ const instance = draw.addElement( "polygon", {
 	rotatable: true
 } )
 
-instance.rotate( 45 )
+// instance.rotate( 45 )
 
 draw.render()
 
