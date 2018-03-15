@@ -5,7 +5,7 @@ import { includes, cloneDeep } from "lodash"
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
-import Segment from '../model/Segment';
+import Segment from "../model/Segment"
 import { getRotatedPoint } from "util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
@@ -30,7 +30,6 @@ export default class SharedActions {
 		return instances.map( instance => this.copyParticle( instance, ClassName ) )
 	}
 
-
 	/**
 	 * Cell
 	 */
@@ -44,6 +43,10 @@ export default class SharedActions {
 
 	stopDragCell( cell: Cell, event: any ) {
 		cell.dragger.stop( event )
+	}
+
+	rotateCell( cell: Cell, angle: number ) {
+		cell.rotate( angle )
 	}
 
 	selectCell( cell: Cell ) {
@@ -69,10 +72,7 @@ export default class SharedActions {
 		particle.render()
 	}
 	renderElement( cell: any ) {
-		isInclude( cell.type ) && cell.render()
-		function isInclude( type: String ): boolean {
-			return !includes( drawRenderExcludingCellTypes, type )
-		}
+		cell.render()
 	}
 
 	/**
@@ -150,16 +150,19 @@ export default class SharedActions {
 	translateSegments( segments: Segment[], deltaX: number, deltaY: number ) {
 		segments.map( segment => this.translateSegment( segment, deltaX, deltaY ) )
 	}
-	rotateSegment( segment: Segment, angle: number, centerPoint?: Point2D ) {
-		const rotatedPoint: Point2D = getRotatedPoint(
-			segment,
-			angle,
-			centerPoint
-		)
+	rotateSegment( segment: Segment, angle: number, center?: Point2D ) {
+		const { handleIn, handleOut } = segment
+
+		this.rotateHandle( handleIn, angle, center )
+		this.rotateHandle( handleOut, angle, center )
+
+		const rotatedPoint: Point2D = getRotatedPoint( segment, angle, center )
 		this.updateSegmentPoint( segment, rotatedPoint )
+
+
 	}
-	rotateSegments( segments: Segment[], angle: number, centerPoint?: Point2D ) {
-		segments.map( segment => this.rotateSegment( segment, angle, centerPoint ) )
+	rotateSegments( segments: Segment[], angle: number, center?: Point2D ) {
+		segments.map( segment => this.rotateSegment( segment, angle, center ) )
 	}
 
 	/**
@@ -218,6 +221,21 @@ export default class SharedActions {
 		}
 
 		this.updateHandleRelativePoint( partner, newPartnerRelativePoint )
+	}
+	rotateHandle( handle: Handle, angle: number, center?: Point2D ) {
+		const { point, segmentPoint, relativePoint }: Handle = handle
+
+		const { x, y }: Point2D = point
+
+		const rotatedHandlePoint: Point2D = getRotatedPoint( point, angle, center )
+		const rotatedSegmentPoint: Point2D = getRotatedPoint( segmentPoint, angle, center )
+
+		const newRelativePoint: Point2D = {
+			x: rotatedHandlePoint.x - rotatedSegmentPoint.x,
+			y: rotatedHandlePoint.y - rotatedSegmentPoint.y,
+		}
+
+		this.updateHandleRelativePoint( handle, newRelativePoint )
 	}
 
 	/**

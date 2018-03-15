@@ -30,13 +30,9 @@ export default class BoundsContainer extends Particle {
 		return this.angle * PI / 180
 	}
 
-	get boundsCenter(): Point2D {
-		return this.target.boundsCenter
-	}
-
 	get path2d(): Path2D {
 		const { left, right, top, bottom } = this.bounds
-		const { radian, boundsCenter } = this
+		const { radian } = this
 
 		const point1: Point2D = {
 			x: left,

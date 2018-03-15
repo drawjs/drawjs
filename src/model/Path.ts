@@ -1,9 +1,15 @@
 import Particle from "./Particle"
 import Curve from "./Curve"
-import Segment from './Segment';
+import Segment from "./Segment"
 import PathItem from "./PathItem"
 import bezierCurve from "../util/geometry/bezierCurve"
-import BoundsContainer from './tool/BoundsContainer';
+import BoundsContainer from "./tool/BoundsContainer"
+import rotate from "../util/geometry/rotate"
+import distance from "../util/geometry/distance"
+import origin from "../util/geometry/origin"
+import getRotatedPoint from "../util/getRotatedPoint"
+import { cloneDeep } from 'lodash';
+import isNotNil from "../util/isNotNil";
 
 const { min, max } = Math
 
@@ -44,13 +50,12 @@ export default class Path extends PathItem {
 
 		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
 
-
-		this.sharedActions.rotateSegments( this.segments, this.angle, this.segmentsCenter )
-
 		this.boundsContainer = new BoundsContainer( {
-			draw: this.draw,
+			draw  : this.draw,
 			target: this
 		} )
+
+		isNotNil( props.angle ) && this.rotate( props.angle )
 
 		function getSegment( { x, y } ) {
 			return new Segment( {
@@ -72,26 +77,43 @@ export default class Path extends PathItem {
 		return path2d
 	}
 
+	/**
+	 * Real-time and absolute bounds(with no rotation)
+	 */
 	get bounds(): Bounds {
-		const res: Bounds = this.sharedGetters.getBounds( this.curves )
+		const res: Bounds = this.sharedGetters.getPathBounds( this.curves )
 		return res
 	}
-
-	get boundsCenter(): Point2D {
-		const res: Point2D = this.sharedGetters.getBoundsCenter( this.bounds )
-		return res
-	}
-
-
 
 	/**
-	 * Bounds of path not rotated or sized
+	 * Initial bounds,
+	 * which rotates -`path.angle` on origin( { x: 0, y: 0 } )
+	 * for caclulating path's item center
 	 */
 	get initialBounds(): Bounds {
-		const res: Bounds = this.sharedGetters.getInitialBounds( this.curves, this.angle )
+		const res: Bounds = this.sharedGetters.getPathInitialBounds( this.curves )
 		return res
 	}
 
+	get itemCenter(): Point2D {
+		return this.sharedGetters.getPathItemCenter( this )
+	}
+
+	get itemInitialBounds(): Bounds {
+		const { itemCenter } = this
+		const { x, y } = itemCenter
+		const rotated: Point2D = rotate( itemCenter, -this.radian, origin )
+
+		const deltaX: number = itemCenter.x - rotated.x
+		const deltaY: number = itemCenter.y - rotated.y
+
+		const bounds: Bounds = this.sharedGetters.getTranslatedBounds(
+			this.initialBounds,
+			deltaX,
+			deltaY
+		)
+		return bounds
+	}
 
 	render() {
 		const { ctx } = this.getters
@@ -106,6 +128,10 @@ export default class Path extends PathItem {
 
 		this.sizeContainer.render()
 		// this.boundsContainer.render()
+
+		this.rotationArrow.render()
+
+		this.testUtils.renderPoint( this.itemCenter )
 	}
 
 	contain( x: number, y: number ) {
@@ -122,5 +148,24 @@ export default class Path extends PathItem {
 		this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
 
 		this.getters.draw.render()
+	}
+
+	/**
+	 * Rotate
+	 */
+	rotate( angle: number ) {
+		const deltaAngle: number = angle - this.angle
+
+		this.sharedActions.rotateSegments(
+			this.segments,
+			deltaAngle,
+			this.itemCenter
+		)
+
+		this.draw.render()
+
+		this.prevAngle = this.angle
+		this.angle = angle
+
 	}
 }

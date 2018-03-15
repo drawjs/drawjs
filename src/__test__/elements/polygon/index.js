@@ -15,57 +15,61 @@ const basicOrigin = {
 // 	points: polygon()
 // } )
 
-const polygonInstance = draw.addElement( "polygon", {
+const instance = draw.addElement( "polygon", {
 	fill     : "blue",
 	angle    : 0,
-	points   : rect(),
+	points   : triangle(),
 	rotatable: true
 } )
 
+instance.rotate( 45 )
 
-function render() {
-	polygonInstance.rotate( polygonInstance.angle + 0.1 )
-	draw.render()
+draw.render()
 
-	window.requestAnimationFrame( render )
-}
 
-window.requestAnimationFrame( render )
+// function render() {
+// 	polygonInstance.rotate( polygonInstance.angle + 0.1 )
+// 	draw.render()
+
+// 	window.requestAnimationFrame( render )
+// }
+
+// window.requestAnimationFrame( render )
 
 function triangle() {
 	return [
 		{
-			x: 100,
-			y: 100
-		},
-		{
 			x: 200,
-			y: 100
+			y: 150
 		},
 		{
-			x: 100,
-			y: 200
-		}
+			x: 250,
+			y: 250
+		},
+		{
+			x: 150,
+			y: 250
+		},
 	]
 }
 
 function rect() {
 	return [
 		{
-			x: 100,
-			y: 100
+			x: 150,
+			y: 150
 		},
 		{
-			x: 200,
-			y: 100
+			x: 250,
+			y: 150
 		},
 		{
-			x: 200,
-			y: 200
+			x: 250,
+			y: 250
 		},
 		{
-			x: 100,
-			y: 200
+			x: 150,
+			y: 250
 		}
 	]
 }

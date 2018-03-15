@@ -21,7 +21,7 @@ export const POINT_RADIUS = 5
 /**
  * Handle
  */
-export const DEFAULT_LENGTH = 30
+export const DEFAULT_LENGTH = 50
 export enum HandleType {
 	HANDLE_IN = "HANDLE_IN",
 	HANDLE_OUT = "HANDLE_OUT"

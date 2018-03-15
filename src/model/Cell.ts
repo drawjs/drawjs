@@ -9,6 +9,7 @@ import DrawStore from "../store/draw/DrawStore"
 import Particle from "./Particle"
 import Curve from "./Curve";
 import Path from './Path';
+import { DEGREE_TO_RADIAN } from '../store/constant/index';
 
 
 export default abstract class Cell extends Particle {
@@ -27,18 +28,6 @@ export default abstract class Cell extends Particle {
 	 */
 	fill: string = "black"
 
-	// /**
-	//  * // Path
-	//  */
-	// path: Path
-
-
-	// /**
-	//  * // Bound
-	//  */
-	// get boundLeft(): number {
-	// 	return
-	// }
 
 	/**
 	 * interaction - selection
@@ -56,7 +45,7 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Rotation
 	 */
-	shouldRotate: boolean = false
+	shouldRotate: boolean = true
 
 	/**
 	 * Size
@@ -71,7 +60,6 @@ export default abstract class Cell extends Particle {
 	constructor( props ) {
 		super( props )
 
-		this.angle = props.angle || this.angle
 		this.fill = props.fill || this.fill
 
 		this.dragger = new Dragger( { draw: this.draw } )
@@ -85,6 +73,17 @@ export default abstract class Cell extends Particle {
 
 	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
+		return res
+	}
+
+	get deltaAngle(): number {
+		const { angle, prevAngle } = this
+		const res: number = angle - prevAngle
+		return res
+	}
+
+	get deltaRadian(): number {
+		const res: number = this.deltaAngle * DEGREE_TO_RADIAN
 		return res
 	}
 
@@ -119,7 +118,8 @@ export default abstract class Cell extends Particle {
 		return res
 	}
 
-	private set( field: string, value: any ) {
+
+	set( field: string, value: any ) {
 		this[ field ] = value
 	}
 
@@ -141,15 +141,9 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Rotate
 	 */
-	rotate( angle: number ) {
+	rotate( angle ) {
+		this.prevAngle = this.angle
 		this.angle = angle
 		this.draw.render()
-		// const deltaAngle: number = this.angle - this.prevAngle
-		// this.sharedActions.rotateSegments(
-		// 	this.segments,
-		// 	deltaAngle,
-		// 	this.segmentsCenter
-		// )
-		// this.prevAngle = this.angle
 	}
 }

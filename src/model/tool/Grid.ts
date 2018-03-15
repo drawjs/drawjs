@@ -80,7 +80,10 @@ export default class Grid extends Particle {
 		interval = Grid.INTERVAL,
 		zoom: number = Grid.DEFAULT_ZOOM,
 		pan: Point2D = Grid.DEFAULT_PAN,
+		setting:any = {}
 	) {
+		const color = setting.color || "black"
+
 		this.interval = interval
 		this.zoom = zoom
 		this.pan = pan
@@ -89,7 +92,7 @@ export default class Grid extends Particle {
 		const { path } = this
 		ctx.save()
 		ctx.lineWidth = 1
-		ctx.strokeStyle = "grey"
+		ctx.strokeStyle = color
 		ctx.stroke( path )
 		ctx.restore()
 	}

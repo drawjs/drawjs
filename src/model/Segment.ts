@@ -59,7 +59,7 @@ export default class Segment extends Cell {
 
 	get path2d(): Path2D {
 		const path = new Path2D()
-		path.arc( this.x, this.y, 5, 0, PI * 2 )
+		path.arc( this.x, this.y, 3, 0, PI * 2 )
 		return path
 	}
 

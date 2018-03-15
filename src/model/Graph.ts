@@ -9,11 +9,7 @@ import ScalePoint from "./tool/ScalePoint";
 export default abstract class Graph extends Geometry {
 	// SizeContainer: SizeContainer
 
-	/**
-	 * Rotation
-	 */
-	rotatable: boolean = true
-	rotationArrow: RotationArrow
+
 
 	/**
 	 * Scale

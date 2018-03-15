@@ -1,4 +1,4 @@
-import * as _ from "lodash"
+import { cloneDeep } from "lodash"
 
 export default function(
 	point: Point2D,
@@ -9,7 +9,7 @@ export default function(
 		return point
 	}
 
-	let resPoint: Point2D = _.cloneDeep( point )
+	let resPoint: Point2D = cloneDeep( point )
 	const alpha = angle * Math.PI / 180
 
 	const relativePoint = {

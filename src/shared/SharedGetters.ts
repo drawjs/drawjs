@@ -3,10 +3,14 @@ import Curve from "../model/Curve"
 import MathPoint from "../model/math/MathPoint"
 import MathVector from "../model/math/MathVector"
 import { DEFAULT_LENGTH } from "../store/constant/index"
-import Path from "../model/Path"
+import Path from '../model/Path';
 import bezierCurve from "../util/geometry/bezierCurve"
 import { isNil } from "lodash"
 import rotatePoints from "../util/geometry/rotatePoints"
+import getPointsBoundsCenter from "../util/geometry/getPointsBoundsCenter"
+import origin from "../util/geometry/origin"
+import rotate from "../util/geometry/rotate"
+import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
 
 const { PI, min, max } = Math
 export default class SharedGetters {
@@ -45,6 +49,10 @@ export default class SharedGetters {
 			const lastIndex = length - 1
 			return i === lastIndex
 		}
+	}
+	getSegmentsCenter( segments: Segment[] ): Point2D {
+		const res: Point2D = getPointsBoundsCenter( segments )
+		return res
 	}
 
 	/**
@@ -93,6 +101,30 @@ export default class SharedGetters {
 			return deltaAngle >= 0
 		}
 	}
+	/**
+	 * Get curve's initial bounds,
+	 * which rotates -`path.angle` on origin( { x: 0, y: 0 } )
+	 * for caclulating path's item center
+	 */
+	getCurveInitialBounds( curve: Curve ): Bounds {
+		const { handle1Point, handle2Point, point1, point2 } = curve
+		const { angle } = curve.path
+		const radian = -angle * PI / 180
+		const rotated1: Point2D = rotate( point1, radian, origin )
+		const rotated2: Point2D = rotate( handle1Point, radian, origin )
+		const rotated3: Point2D = rotate( handle2Point, radian, origin )
+		const rotated4: Point2D = rotate( point2, radian, origin )
+
+		const res: Bounds = getBizerCurveBounds(
+			rotated1,
+			rotated2,
+			rotated3,
+			rotated4
+		)
+		return res
+	}
+
+
 
 	/**
 	 * // Path
@@ -120,7 +152,73 @@ export default class SharedGetters {
 		}
 	}
 
-	getBounds( curves: Curve[] ): Bounds {
+	/**
+	 * Initial bounds,
+	 * which rotates -`path.angle` on origin( { x: 0, y: 0 } )
+	 * for caclulating path's item center
+	 */
+	getPathInitialBounds( curves: Curve[]): Bounds {
+		const self = this
+
+		let left: number
+		let right: number
+		let top: number
+		let bottom: number
+
+		curves.map( resolve )
+
+		function resolve( curve: Curve ) {
+			const initialBounds: Bounds = self.getCurveInitialBounds( curve )
+			const { left: l, right: r, top: t, bottom: b } = initialBounds
+
+			left = isNil( left ) ? l : left
+			right = isNil( right ) ? r : right
+			top = isNil( top ) ? t : top
+			bottom = isNil( bottom ) ? b : bottom
+
+			if ( l < left ) {
+				left = l
+			}
+
+			if ( r > right ) {
+				right = r
+			}
+
+			if ( t < top ) {
+				top = t
+			}
+
+			if ( b > bottom ) {
+				bottom = b
+			}
+		}
+
+		const res: Bounds = {
+			left,
+			right,
+			top,
+			bottom
+		}
+
+		return res
+	}
+
+	/**
+	 * Path item center,
+	 * which rotates `path.angle` on origin( { x: 0, y: 0 } )
+	 */
+	getPathItemCenter( path: Path ): Point2D {
+		const { curves, radian } = path
+		const initialBounds: Bounds = this.getPathInitialBounds( curves )
+		const center: Point2D = this.getBoundsCenter( initialBounds )
+		const rotated: Point2D = rotate( center, radian, origin )
+		return rotated
+	}
+
+	/**
+	 * Get bounds of path not rotated or sized
+	 */
+	getPathBounds( curves: Curve[] ): Bounds {
 		let left: number
 		let right: number
 		let top: number
@@ -162,65 +260,6 @@ export default class SharedGetters {
 
 		return res
 	}
-	/**
-	 * Get bounds of path not rotated or sized
-	 */
-	getSegmentsCenter( segments: Segment[] ): Point2D {
-		const segmentsX = segments.map( ( { x } ) => x )
-		const segmentsY = segments.map( ( { y } ) => y )
-
-		const left = min( ...segmentsX )
-		const right = max( ...segmentsX )
-		const top = min( ...segmentsY )
-		const bottom = max( ...segmentsY )
-		const res: Point2D = {
-			x: ( left + right ) / 2,
-			y: ( top + bottom ) / 2
-		}
-		return res
-	}
-	getInitialBounds( curves: Curve[], angle: number ): Bounds {
-		let left: number
-		let right: number
-		let top: number
-		let bottom: number
-
-		curves.map( resolve )
-
-		function resolve( { initialBounds }: Curve ) {
-			const { left: l, right: r, top: t, bottom: b } = initialBounds
-
-			left = isNil( left ) ? l : left
-			right = isNil( right ) ? r : right
-			top = isNil( top ) ? t : top
-			bottom = isNil( bottom ) ? b : bottom
-
-			if ( l < left ) {
-				left = l
-			}
-
-			if ( r > right ) {
-				right = r
-			}
-
-			if ( t < top ) {
-				top = t
-			}
-
-			if ( b > bottom ) {
-				bottom = b
-			}
-		}
-
-		const res: Bounds = {
-			left,
-			right,
-			top,
-			bottom
-		}
-
-		return res
-	}
 
 	/**
 	 * // Bounds
@@ -230,6 +269,17 @@ export default class SharedGetters {
 		const res: Point2D = {
 			x: ( left + right ) / 2,
 			y: ( top + bottom ) / 2
+		}
+		return res
+	}
+
+	getTranslatedBounds( bounds: Bounds, x: number, y: number ) {
+		const { left, top, right, bottom } = bounds
+		const res: Bounds = {
+			left: left + x,
+			right: right + x,
+			top: top + y,
+			bottom: bottom + y,
 		}
 		return res
 	}

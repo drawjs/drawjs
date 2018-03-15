@@ -11,6 +11,7 @@ import Interaction from "../../core/interaction"
 import Grid from "../../model/tool/Grid"
 import Renderer from "../../model/tool/Renderer"
 import DrawStore from "./DrawStore"
+import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes";
 
 export default class Getters {
 	drawStore: DrawStore
@@ -83,6 +84,15 @@ export default class Getters {
 	 */
 	get cellList(): Cell[] {
 		return this.drawStore.cellList
+	}
+
+	get cellListShouldRender(): Cell[] {
+		const res: Cell[] = this.cellList.filter( notInclude )
+
+		function notInclude(  { type }: Cell  ): boolean {
+			return ! includes( drawRenderExcludingCellTypes, type )
+		}
+		return res
 	}
 
 	get cellsShouldSelect(): Cell[] {

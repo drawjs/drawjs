@@ -64,13 +64,17 @@ export default class Draw {
 
 	constructor( canvas: HTMLCanvasElement ) {
 		this.drawStore = new DrawStore()
+
+
+
 		this.getters = new Getters( this.drawStore )
 		this.actions = new Actions( this.drawStore, this.getters )
+
+		const testUtils = new TestUtils( this.getters )
+		this.testUtils = testUtils
+
 		this.sharedGetters = new SharedGetters()
 		this.sharedActions = new SharedActions( this.drawStore, this.getters )
-
-		const testUtils = new TestUtils()
-		this.testUtils = testUtils
 
 		this.actions.UPDATE_DRAW( this )
 		this.actions.UPDATE_CANVAS( canvas )
@@ -117,9 +121,10 @@ export default class Draw {
 
 		this.getters.renderer.setTransformViewPort()
 
-		this.getters.grid.render( 50, this.getters.zoom, this.getters.pan )
+		this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, { color: "#ddd" })
+		this.getters.grid.render( 50, this.getters.zoom, this.getters.pan, { color: "#888" } )
 
-		this.getters.cellList.map( renderElement )
+		this.getters.cellListShouldRender.map( renderElement )
 
 		// this.getters.selector.render()
 
