@@ -23,11 +23,6 @@ export default abstract class Item extends Cell {
 			target: this
 		} )
 
-		this.sizePoints = new SizePoints( {
-			draw         : this.draw,
-			sizeContainer: this.sizeContainer
-		} )
-
 		/**
 		 * // Rotation
 		 */
@@ -91,13 +86,51 @@ export default abstract class Item extends Cell {
 		const rotated3: Point2D = rotate( point3, radian, itemCenter )
 		const rotated4: Point2D = rotate( point4, radian, itemCenter )
 
-		const res: Container = {
-			leftTop    : rotated1,
-			rightTop   : rotated2,
-			rightBottom: rotated3,
-			leftBottom : rotated4
+		const { unitKX: uX, unitKY: uY } = this
+
+		const updated1: Point2D = {
+			x: uX > 0 ? rotated1.x : rotated3.x,
+			y: uY > 0 ? rotated1.y : rotated3.y
 		}
+
+		const updated2: Point2D = {
+			x: uX > 0 ? rotated2.x : rotated4.x,
+			y: uY > 0 ? rotated2.y : rotated4.y
+		}
+
+		const updated3: Point2D = {
+			x: uX > 0 ? rotated3.x : rotated1.x,
+			y: uY > 0 ? rotated3.y : rotated1.y
+		}
+
+		const updated4: Point2D = {
+			x: uX > 0 ? rotated4.x : rotated2.x,
+			y: uY > 0 ? rotated4.y : rotated2.y
+		}
+
+		const res: Container = {
+			leftTop    : updated1,
+			rightTop   : updated2,
+			rightBottom: updated3,
+			leftBottom : updated4
+		}
+
+		// const res: Container = {
+		// 	leftTop: rotated1,
+		// 	rightTop: rotated2,
+		// 	rightBottom: rotated3,
+		// 	leftBottom: rotated4
+		// }
 
 		return res
 	}
+
+	implementInTopConstructor() {
+		this.sizePoints = new SizePoints( {
+			draw         : this.draw,
+			sizeContainer: this.sizeContainer
+		} )
+	}
+
+	size( kX: number, kY: number, center: Point2D ) {}
 }

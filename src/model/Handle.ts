@@ -1,6 +1,10 @@
 import isNotNil from "../util/isNotNil"
 import Segment from "./Segment"
-import { HandleType, DEGREE_TO_RADIAN, DEFAULT_LENGTH } from '../store/constant/index';
+import {
+	HandleType,
+	DEGREE_TO_RADIAN,
+	DEFAULT_LENGTH
+} from "../store/constant/index"
 import Dragger from "./tool/Dragger"
 import { Cell } from "./index"
 import distance from "../util/geometry/distance"
@@ -13,6 +17,8 @@ export default class Handle extends Cell {
 	segment: Segment
 
 	dragger: Dragger
+
+	show: boolean = true
 
 	/**
 	 * The relative point of handle
@@ -36,7 +42,10 @@ export default class Handle extends Cell {
 			this.partner = props.partner
 		}
 
-		this.relativePoint = getHandleRelativePoint( this.segmentPoint, this.type )
+		this.relativePoint = getHandleRelativePoint(
+			this.segmentPoint,
+			this.type
+		)
 
 		this.dragger = new Dragger( { draw: this.draw } )
 		this.dragger.update = this.updateDrag.bind( this )
@@ -113,8 +122,10 @@ export default class Handle extends Cell {
 	}
 
 	render() {
-		this.renderLine()
-		this.renderPoint()
+		if ( this.show ) {
+			this.renderLine()
+			this.renderPoint()
+		}
 	}
 
 	renderLine() {

@@ -2,48 +2,49 @@ import SizeContainer from "./SizeContainer"
 import Particle from "../Particle"
 import Cell from "../Cell"
 import Item from "../Item"
-import SizePoint from "./SizePoint";
+import { LeftTop } from "./SizePoint";
 
 export default class SizePoints extends Particle {
 	sizeContainer: SizeContainer
 
-	leftTop: SizePoint
-	top: SizePoint
-	rightTop: SizePoint
-	left: SizePoint
-	right: SizePoint
-	leftBottom: SizePoint
-	bottom: SizePoint
-	rightBottom: SizePoint
+	leftTop: LeftTop
+	// top: SizePoint
+	// rightTop: SizePoint
+	// left: SizePoint
+	// right: SizePoint
+	// leftBottom: SizePoint
+	// bottom: SizePoint
+	// rightBottom: SizePoint
 
 	constructor( props ) {
 		super( props )
 
 		this.sizeContainer = props.sizeContainer
 
-		this.leftTop = new SizePoint( {
+		this.leftTop = new LeftTop( {
 			draw : this.draw,
-			sizingPoint: this.leftTopPoint
+			sizePoints: this
 		} )
-		this.top = new SizePoint( { draw: this.draw, sizingPoint: this.topPoint } )
-		this.rightTop = new SizePoint( {
-			draw : this.draw,
-			sizingPoint: this.rightTopPoint
-		} )
-		this.left = new SizePoint( { draw: this.draw, sizingPoint: this.leftPoint } )
-		this.right = new SizePoint( { draw: this.draw, sizingPoint: this.rightPoint } )
-		this.leftBottom = new SizePoint( {
-			draw : this.draw,
-			sizingPoint: this.leftBottomPoint
-		} )
-		this.bottom = new SizePoint( {
-			draw : this.draw,
-			sizingPoint: this.bottomPoint
-		} )
-		this.rightBottom = new SizePoint( {
-			draw : this.draw,
-			sizingPoint: this.rightBottomPoint
-		} )
+
+		// this.top = new Top( { draw: this.draw, sizingPoint: this.topPoint } )
+		// this.rightTop = new SizePoint( {
+		// 	draw : this.draw,
+		// 	sizingPoint: this.rightTopPoint
+		// } )
+		// this.left = new SizePoint( { draw: this.draw, sizingPoint: this.leftPoint } )
+		// this.right = new SizePoint( { draw: this.draw, sizingPoint: this.rightPoint } )
+		// this.leftBottom = new SizePoint( {
+		// 	draw : this.draw,
+		// 	sizingPoint: this.leftBottomPoint
+		// } )
+		// this.bottom = new SizePoint( {
+		// 	draw : this.draw,
+		// 	sizingPoint: this.bottomPoint
+		// } )
+		// this.rightBottom = new SizePoint( {
+		// 	draw : this.draw,
+		// 	sizingPoint: this.rightBottomPoint
+		// } )
 	}
 
 	get target(): Item {
@@ -108,14 +109,14 @@ export default class SizePoints extends Particle {
 
 	get sizePoints(): SizePoint[] {
 		return [
-			this.leftTop,
-			this.top,
-			this.rightTop,
-			this.left,
-			this.right,
-			this.leftBottom,
-			this.bottom,
-			this.rightBottom
+			// this.leftTop,
+			// this.top,
+			// this.rightTop,
+			// this.left,
+			// this.right,
+			// this.leftBottom,
+			// this.bottom,
+			// this.rightBottom
 		]
 	}
 

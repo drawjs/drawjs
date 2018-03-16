@@ -10,6 +10,9 @@ import { getRotatedPoint } from "util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
 import absolute from "../util/geometry/absolute"
+import Item from "../model/Item"
+import sizePoint from "../util/geometry/sizePoint"
+import origin from "../util/geometry/origin";
 
 export default class SharedActions {
 	drawStore: DrawStore
@@ -158,11 +161,22 @@ export default class SharedActions {
 
 		const rotatedPoint: Point2D = getRotatedPoint( segment, angle, center )
 		this.updateSegmentPoint( segment, rotatedPoint )
-
-
 	}
 	rotateSegments( segments: Segment[], angle: number, center?: Point2D ) {
 		segments.map( segment => this.rotateSegment( segment, angle, center ) )
+	}
+	sizeSegment( segment: Segment, kX: number, kY: number, center: Point2D ) {
+		const { handleIn, handleOut } = segment
+
+		this.sizeHandle( handleIn, kX, kY, center )
+		this.sizeHandle( handleOut, kX, kY, center )
+
+
+		const sized: Point2D = sizePoint( segment, kX, kY, center )
+		this.updateSegmentPoint( segment, sized )
+	}
+	sizeSegments( segments: Segment[], kX: number, kY: number, center: Point2D ) {
+		segments.map( segment => this.sizeSegment( segment, kX, kY, center ) )
 	}
 
 	/**
@@ -227,15 +241,55 @@ export default class SharedActions {
 
 		const { x, y }: Point2D = point
 
-		const rotatedHandlePoint: Point2D = getRotatedPoint( point, angle, center )
-		const rotatedSegmentPoint: Point2D = getRotatedPoint( segmentPoint, angle, center )
+		const rotatedHandlePoint: Point2D = getRotatedPoint(
+			point,
+			angle,
+			center
+		)
+		const rotatedSegmentPoint: Point2D = getRotatedPoint(
+			segmentPoint,
+			angle,
+			center
+		)
 
 		const newRelativePoint: Point2D = {
 			x: rotatedHandlePoint.x - rotatedSegmentPoint.x,
-			y: rotatedHandlePoint.y - rotatedSegmentPoint.y,
+			y: rotatedHandlePoint.y - rotatedSegmentPoint.y
 		}
 
 		this.updateHandleRelativePoint( handle, newRelativePoint )
+	}
+	sizeHandle( handle: Handle, kX: number, kY: number, center: Point2D ) {
+		const { point, segmentPoint, relativePoint }: Handle = handle
+
+		const { x, y }: Point2D = point
+
+		const sizedHandlePoint: Point2D = sizePoint(
+			point,
+			kX,
+			kY,
+			center
+		)
+		const sizedSegmentPoint: Point2D = sizePoint(
+			segmentPoint,
+			kX,
+			kY,
+			center
+		)
+
+		const newRelativePoint: Point2D = {
+			x: sizedHandlePoint.x - sizedSegmentPoint.x,
+			y: sizedHandlePoint.y - sizedSegmentPoint.y
+		}
+
+		this.updateHandleRelativePoint( handle, newRelativePoint )
+	}
+
+	/**
+	 * Item
+	 */
+	sizeItem( item: Item, kX: number, kY: number, center: Point2D ) {
+		item.size( kX, kY, center )
 	}
 
 	/**
@@ -248,6 +302,7 @@ export default class SharedActions {
 		const { x, y }: Point2D = point
 		this.updatePoint( point, x + deltaX, y + deltaY )
 	}
+
 
 	/**
 	 * // Rotation

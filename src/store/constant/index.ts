@@ -21,7 +21,7 @@ export const POINT_RADIUS = 5
 /**
  * Handle
  */
-export const DEFAULT_LENGTH = 50
+export const DEFAULT_LENGTH = 0
 export enum HandleType {
 	HANDLE_IN = "HANDLE_IN",
 	HANDLE_OUT = "HANDLE_OUT"
@@ -40,3 +40,10 @@ export const ROTATION_ARROW_SIZE = 20
 export const ZOOM_VARIATION = 0.25
 export const MAX_ZOOM = 32
 export const MIN_ZOOM = 0.19
+
+
+/**
+ * Size
+ */
+export const MIN_SIZE_KX = 0.000000000001
+export const MIN_SIZE_KY = 0.000000000001

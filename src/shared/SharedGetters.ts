@@ -3,7 +3,7 @@ import Curve from "../model/Curve"
 import MathPoint from "../model/math/MathPoint"
 import MathVector from "../model/math/MathVector"
 import { DEFAULT_LENGTH } from "../store/constant/index"
-import Path from '../model/Path';
+import Path from "../model/Path"
 import bezierCurve from "../util/geometry/bezierCurve"
 import { isNil } from "lodash"
 import rotatePoints from "../util/geometry/rotatePoints"
@@ -124,8 +124,6 @@ export default class SharedGetters {
 		return res
 	}
 
-
-
 	/**
 	 * // Path
 	 */
@@ -157,7 +155,7 @@ export default class SharedGetters {
 	 * which rotates -`path.angle` on origin( { x: 0, y: 0 } )
 	 * for caclulating path's item center
 	 */
-	getPathInitialBounds( curves: Curve[]): Bounds {
+	getPathInitialBounds( curves: Curve[] ): Bounds {
 		const self = this
 
 		let left: number
@@ -276,11 +274,25 @@ export default class SharedGetters {
 	getTranslatedBounds( bounds: Bounds, x: number, y: number ) {
 		const { left, top, right, bottom } = bounds
 		const res: Bounds = {
-			left: left + x,
-			right: right + x,
-			top: top + y,
-			bottom: bottom + y,
+			left  : left + x,
+			right : right + x,
+			top   : top + y,
+			bottom: bottom + y
 		}
 		return res
+	}
+
+	/**
+	 * // Point
+	 */
+	getMultipiedPoint( point: Point2D, a: number, b?: number ) {
+		if ( isNil( b ) ) {
+			b = a
+		}
+		const { x, y } = point
+		return {
+			x: x * a,
+			y: y * b
+		}
 	}
 }

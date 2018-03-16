@@ -7,10 +7,11 @@ import Getters from "../store/draw/Getters"
 import Actions from "../store/draw/Actions"
 import DrawStore from "../store/draw/DrawStore"
 import Particle from "./Particle"
-import Curve from "./Curve";
-import Path from './Path';
-import { DEGREE_TO_RADIAN } from '../store/constant/index';
+import Curve from "./Curve"
+import Path from "./Path"
+import { DEGREE_TO_RADIAN } from "../store/constant/index"
 
+const { abs } = Math
 
 export default abstract class Cell extends Particle {
 	id: string = generateUniqueId()
@@ -24,10 +25,27 @@ export default abstract class Cell extends Particle {
 	prevAngle: number = 0
 
 	/**
+	 * // Size
+	 */
+	kX: number = 1
+	kY: number = 1
+	prevKX: number = 1
+	prevKY: number = 1
+
+	get unitKX(): number {
+		const { kX } = this
+		return kX === 0 ? 0 : kX / abs( kX )
+	}
+
+	get unitKY(): number {
+		const { kY } = this
+		return kY === 0 ? 0 : kY / abs( kY )
+	}
+
+	/**
 	 * // Canvas
 	 */
 	fill: string = "black"
-
 
 	/**
 	 * interaction - selection
@@ -118,7 +136,6 @@ export default abstract class Cell extends Particle {
 		return res
 	}
 
-
 	set( field: string, value: any ) {
 		this[ field ] = value
 	}
@@ -145,5 +162,16 @@ export default abstract class Cell extends Particle {
 		this.prevAngle = this.angle
 		this.angle = angle
 		this.draw.render()
+	}
+
+	/**
+	 * Size
+	 */
+	size( kX: number, kY: number, center: Point2D ) {
+		this.prevKX = this.kX
+		this.kX = kX
+
+		this.prevKY = this.kY
+		this.kY = kY
 	}
 }

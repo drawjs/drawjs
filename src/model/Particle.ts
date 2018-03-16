@@ -42,5 +42,7 @@ export default class Particle {
 		return this.draw.testUtils
 	}
 
+	implementInTopConstructor() {
 
+	}
 }

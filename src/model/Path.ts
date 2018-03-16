@@ -8,8 +8,8 @@ import rotate from "../util/geometry/rotate"
 import distance from "../util/geometry/distance"
 import origin from "../util/geometry/origin"
 import getRotatedPoint from "../util/getRotatedPoint"
-import { cloneDeep } from 'lodash';
-import isNotNil from "../util/isNotNil";
+import { cloneDeep } from "lodash"
+import isNotNil from "../util/isNotNil"
 
 const { min, max } = Math
 
@@ -56,6 +56,15 @@ export default class Path extends PathItem {
 		} )
 
 		isNotNil( props.angle ) && this.rotate( props.angle )
+
+		this.implementInTopConstructor()
+
+		if ( isNotNil( props.kX ) || isNotNil( props.kY ) ) {
+			const kX: number = isNotNil( props.kX ) ? props.kX : this.kX
+			const kY: number = isNotNil( props.kY ) ? props.kY : this.kY
+
+			this.size( props.kX, props.kY, this.itemCenter )
+		}
 
 		function getSegment( { x, y } ) {
 			return new Segment( {
@@ -131,6 +140,8 @@ export default class Path extends PathItem {
 
 		this.rotationArrow.render()
 
+		// this.sizePoints.render()
+
 		this.testUtils.renderPoint( this.itemCenter )
 	}
 
@@ -166,6 +177,24 @@ export default class Path extends PathItem {
 
 		this.prevAngle = this.angle
 		this.angle = angle
+	}
 
+	/**
+	 * Size
+	 */
+	size( kX: number, kY: number, center: Point2D ) {
+		const deltaKX: number = kX - this.kX
+		const deltaKY: number = kY - this.kY
+
+		const newKX: number = this.kX === 0 ? 0 : kX / this.kX
+		const newKY: number = this.kY === 0 ? 0 : kY / this.kY
+
+		this.sharedActions.sizeSegments( this.segments, newKX, newKY, center )
+
+		this.prevKX = this.kX
+		this.kX = kX
+
+		this.prevKY = this.kY
+		this.kY = kY
 	}
 }
