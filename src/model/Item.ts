@@ -87,25 +87,88 @@ export default abstract class Item extends Cell {
 		const rotated4: Point2D = rotate( point4, radian, itemCenter )
 
 		const { unitKX: uX, unitKY: uY } = this
-
-		const updated1: Point2D = {
-			x: uX > 0 ? rotated1.x : rotated3.x,
-			y: uY > 0 ? rotated1.y : rotated3.y
+		const bothPositive = uX > 0 && uY > 0
+		// const uX = 1
+		// const uY = 1
+		let updated1: Point2D = {
+			x: rotated1.x,
+			y: rotated1.y
 		}
 
-		const updated2: Point2D = {
-			x: uX > 0 ? rotated2.x : rotated4.x,
-			y: uY > 0 ? rotated2.y : rotated4.y
+		let updated2: Point2D = {
+			x: rotated2.x,
+			y: rotated2.y
 		}
 
-		const updated3: Point2D = {
-			x: uX > 0 ? rotated3.x : rotated1.x,
-			y: uY > 0 ? rotated3.y : rotated1.y
+		let updated3: Point2D = {
+			x: rotated3.x,
+			y: rotated3.y
 		}
 
-		const updated4: Point2D = {
-			x: uX > 0 ? rotated4.x : rotated2.x,
-			y: uY > 0 ? rotated4.y : rotated2.y
+		let updated4: Point2D = {
+			x: rotated4.x,
+			y: rotated4.y
+		}
+
+		if ( uX > 0 && uY > 0 ) {
+			// No need to update
+		}
+
+		if ( uX < 0 && uY < 0 ) {
+			updated1 = {
+				x: rotated3.x,
+				y: rotated3.y,
+			}
+			updated2 = {
+				x: rotated4.x,
+				y: rotated4.y,
+			}
+			updated3 = {
+				x: rotated1.x,
+				y: rotated1.y,
+			}
+			updated4 = {
+				x: rotated2.x,
+				y: rotated2.y,
+			}
+		}
+
+		if ( uX > 0 && uY < 0 ) {
+			updated1 = {
+				x: rotated4.x,
+				y: rotated4.y,
+			}
+			updated2 = {
+				x: rotated3.x,
+				y: rotated3.y,
+			}
+			updated3 = {
+				x: rotated2.x,
+				y: rotated2.y,
+			}
+			updated4 = {
+				x: rotated1.x,
+				y: rotated1.y,
+			}
+		}
+
+		if ( uX < 0 && uY > 0 ) {
+			updated1 = {
+				x: rotated2.x,
+				y: rotated2.y,
+			}
+			updated2 = {
+				x: rotated1.x,
+				y: rotated1.y,
+			}
+			updated3 = {
+				x: rotated4.x,
+				y: rotated4.y,
+			}
+			updated4 = {
+				x: rotated3.x,
+				y: rotated3.y,
+			}
 		}
 
 		const res: Container = {
@@ -114,13 +177,6 @@ export default abstract class Item extends Cell {
 			rightBottom: updated3,
 			leftBottom : updated4
 		}
-
-		// const res: Container = {
-		// 	leftTop: rotated1,
-		// 	rightTop: rotated2,
-		// 	rightBottom: rotated3,
-		// 	leftBottom: rotated4
-		// }
 
 		return res
 	}

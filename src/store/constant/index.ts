@@ -21,7 +21,7 @@ export const POINT_RADIUS = 5
 /**
  * Handle
  */
-export const DEFAULT_LENGTH = 0
+export const DEFAULT_LENGTH = 50
 export enum HandleType {
 	HANDLE_IN = "HANDLE_IN",
 	HANDLE_OUT = "HANDLE_OUT"
@@ -47,3 +47,10 @@ export const MIN_ZOOM = 0.19
  */
 export const MIN_SIZE_KX = 0.000000000001
 export const MIN_SIZE_KY = 0.000000000001
+
+
+/**
+ * Math
+ */
+export const MATH_VECTOR = "MathVector"
+export const MATH_UNIT_VECTOR = "MathUnitVector"

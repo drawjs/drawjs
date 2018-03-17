@@ -18,14 +18,14 @@ const basicOrigin = {
 const instance = draw.addElement( "polygon", {
 	fill     : "blue",
 	// angle    : 0,
-	points   : rect(),
+	points   : polygon(),
 	rotatable: true,
 	// kX: 1,
 	// kY: 1
 } )
 
-instance.rotate( 30 )
-// instance.size( 0.5, 1, instance.itemCenter )
+// instance.rotate( 30 )
+// instance.size( -1, 1, instance.sizePoints.rightBottomPoint )
 
 draw.render()
 
@@ -92,18 +92,18 @@ function polygon() {
 		{
 			x: 150,
 			y: 300
+		},
+		{
+			x: basicOrigin.x + 150,
+			y: basicOrigin.y + 200
+		},
+		{
+			x: basicOrigin.x + 100,
+			y: basicOrigin.y + 200
+		},
+		{
+			x: basicOrigin.x + 50,
+			y: basicOrigin.y + 100
 		}
-		// {
-		// 	x: basicOrigin.x + 150,
-		// 	y: basicOrigin.y + 200
-		// },
-		// {
-		// 	x: basicOrigin.x + 100,
-		// 	y: basicOrigin.y + 200
-		// },
-		// {
-		// 	x: basicOrigin.x + 50,
-		// 	y: basicOrigin.y + 100
-		// }
 	]
 }

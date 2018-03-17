@@ -1,9 +1,12 @@
 import { isNumber } from "lodash"
 import MathPoint from "./MathPoint"
+import { MATH_VECTOR } from "../../store/constant/index"
 
 const { sqrt, pow, atan, abs, PI } = Math
 
 export default class MathVector {
+	type = MATH_VECTOR
+
 	x: number
 
 	y: number
@@ -24,9 +27,13 @@ export default class MathVector {
 		}
 	}
 
+	get length(): number {
+		const length: number = sqrt( pow( this.x, 2 ) + pow( this.y, 2 ) )
+		return length
+	}
+
 	get unit(): MathVector {
-		const absolute: number = sqrt( pow( this.x, 2 ) + pow( this.y, 2 ) )
-		return this.divide( absolute )
+		return this.divide( this.length )
 	}
 
 	/**
@@ -39,7 +46,7 @@ export default class MathVector {
 		const absoluteAngle = absoluteRadian * 180 / PI
 		let angle: number
 
-		if ( isPointOnXAxisPositive( this ) ) {
+		if ( isPointOnOrigin( this ) || isPointOnXAxisPositive( this ) ) {
 			angle = 0
 		}
 

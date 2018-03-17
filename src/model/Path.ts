@@ -10,6 +10,7 @@ import origin from "../util/geometry/origin"
 import getRotatedPoint from "../util/getRotatedPoint"
 import { cloneDeep } from "lodash"
 import isNotNil from "../util/isNotNil"
+import sizePoint from "../util/geometry/sizePoint"
 
 const { min, max } = Math
 
