@@ -9,7 +9,7 @@ export default class Selector extends Particle {
 
 	endPoint: Point2DInitial
 
-	shouldSelect: boolean = true
+	shouldSelect: boolean = false
 
 	constructor( props ) {
 		super( props )

@@ -12,6 +12,8 @@ import Renderer from "../../model/tool/Renderer"
 import DrawStore from "./DrawStore"
 import Getters from "./Getters"
 import SharedActions from "../../shared/SharedActions";
+import MiniMap from '../../model/tool/MiniMap';
+import TestUtils from '../../shared/TestUtils';
 
 export default class Actions {
 	drawStore: DrawStore
@@ -64,8 +66,16 @@ export default class Actions {
 		this.drawStore[ "interaction" ] = interaction
 	}
 
+	UPDATE_MINIMAP( miniMap: MiniMap ) {
+		this.drawStore[ "miniMap" ] = miniMap
+	}
+
 	UPDATE_GRID( grid: Grid ) {
 		this.drawStore[ "grid" ] = grid
+	}
+
+	UPDATE_TEST_UTILS( testUtils: TestUtils ) {
+		this.drawStore[ "testUtils" ] = testUtils
 	}
 
 	ADD_ELEMENT(

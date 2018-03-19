@@ -1,20 +1,26 @@
 import { cloneDeep } from "lodash"
-import Particle from '../Particle';
+import Particle from "../Particle"
 
 class Dragger extends Particle {
 	enable: boolean
-	prevPoint: Point2D
+	prevEvent: any
 
-	updatePrevPoint( point: Point2D ) {
-		this.prevPoint = cloneDeep( point )
+	get prevPoint(): Point2DInitial {
+		const point: Point2DInitial = this.getters.getInitialPoint( this.prevEvent )
+		return point
 	}
+
+	updatePrevEvent( event ) {
+		this.prevEvent = event
+	}
+
 	update( event ) {}
 	start( event ): void {
 		const point: Point2D = this.getters.getInitialPoint( event )
 
 		this.enable = true
 
-		this.updatePrevPoint( point )
+		this.updatePrevEvent( event )
 
 		this.handleStart && this.handleStart( event )
 	}
@@ -23,7 +29,7 @@ class Dragger extends Particle {
 
 		this.update( event )
 
-		this.updatePrevPoint( point )
+		this.updatePrevEvent( event )
 
 		this.handleDragging && this.handleDragging( event )
 	}

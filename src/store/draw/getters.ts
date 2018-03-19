@@ -12,6 +12,8 @@ import Grid from "../../model/tool/Grid"
 import Renderer from "../../model/tool/Renderer"
 import DrawStore from "./DrawStore"
 import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes";
+import MiniMap from '../../model/tool/MiniMap';
+import TestUtils from '../../shared/TestUtils';
 
 export default class Getters {
 	drawStore: DrawStore
@@ -137,8 +139,16 @@ export default class Getters {
 		return this.canvas.getBoundingClientRect().left
 	}
 
+	get canvasRight(): number {
+		return this.canvas.getBoundingClientRect().right
+	}
+
 	get canvasTop(): number {
 		return this.canvas.getBoundingClientRect().top
+	}
+
+	get canvasBottom(): number {
+		return this.canvas.getBoundingClientRect().bottom
 	}
 
 	get canvasWidth(): number {
@@ -353,10 +363,25 @@ export default class Getters {
 		return this.interaction.eventKeyboard
 	}
 
+
+	/**
+	 * // Mini map
+	 */
+	get miniMap(): MiniMap {
+		return this.drawStore.miniMap
+	}
+
 	/**
 	 * // Grid
 	 */
 	get grid(): Grid {
 		return this.drawStore.grid
+	}
+
+	/**
+	 * // Test utils
+	 */
+	get testUtils(): TestUtils {
+		return this.drawStore.testUtils
 	}
 }

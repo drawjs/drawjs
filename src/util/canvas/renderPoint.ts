@@ -7,7 +7,7 @@ export default function( point: Point2D, canvas: HTMLCanvasElement, color: strin
 	const { x, y } = point
 
 	ctx.beginPath()
-	ctx.arc( x, y, 1, 0, PI * 2 )
+	ctx.arc( x, y, 5, 0, PI * 2 )
 	ctx.fillStyle = color
 	ctx.fill()
 

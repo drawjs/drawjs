@@ -13,7 +13,7 @@ import * as download from "lib/download.js"
 import { getDefaultDrawExportFileName } from "store/index"
 import { log } from "util/index"
 import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
-// import MiniMap from "./model/tool/MiniMap"
+// import MiniMap from './model/tool/MiniMap';
 import Selector from "./model/tool/Selector"
 import Interaction from "./core/interaction"
 import ViewPort from "./model/tool/ViewPort"
@@ -25,6 +25,7 @@ import Actions from "./store/draw/Actions"
 import SharedActions from "./shared/SharedActions"
 import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
+import MiniMap from "./model/tool/MiniMap";
 
 const ajv = new Ajv()
 
@@ -71,7 +72,7 @@ export default class Draw {
 		this.actions = new Actions( this.drawStore, this.getters )
 
 		const testUtils = new TestUtils( this.getters )
-		this.testUtils = testUtils
+		this.actions.UPDATE_TEST_UTILS( testUtils )
 
 		this.sharedGetters = new SharedGetters()
 		this.sharedActions = new SharedActions( this.drawStore, this.getters )
@@ -91,6 +92,9 @@ export default class Draw {
 		const interaction = new Interaction( { draw: this } )
 		this.actions.UPDATE_INTERACTION( interaction )
 
+		const miniMap = new MiniMap( { draw: this } )
+		this.actions.UPDATE_MINIMAP( miniMap )
+
 		const grid = new Grid( { draw: this, canvas } )
 		this.actions.UPDATE_GRID( grid )
 
@@ -101,21 +105,7 @@ export default class Draw {
 		const self = this
 
 		const { renderElement } = this.sharedActions
-		// this.clearEntireCanvas()
 		// this.miniMap.renderMainToGetImageData()
-
-		// this.clearEntireCanvas()
-
-		// renderGridCanvas( {
-		// 	canvas       : this.canvas,
-		// 	width        : this.canvas.width,
-		// 	height       : this.canvas.height,
-		// 	zoom         : this.zoomPan.zoom,
-		// 	deltaXForZoom: this.zoomPan.deltaXForZoom,
-		// 	deltaYForZoom: this.zoomPan.deltaYForZoom,
-		// 	deltaXForPan : this.zoomPan.deltaXForPan,
-		// 	deltaYForPan : this.zoomPan.deltaYForPan
-		// } )
 
 		this.getters.renderer.clear()
 
@@ -128,7 +118,7 @@ export default class Draw {
 
 		this.getters.selector.render()
 
-		// this.miniMap.render()
+		this.getters.miniMap.render()
 	}
 
 	public addElement( type: string, setting: any, panelId?: string ) {

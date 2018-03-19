@@ -22,4 +22,8 @@ export default class Renderer extends Particle {
 		const { zoom, movementX, movementY } = this.getters
 		this.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
 	}
+
+	setTransformViewPortToRenderMiniMap() {
+		this.ctx.setTransform( 1, 0, 0, 1, 0, 0 )
+	}
 }

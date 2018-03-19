@@ -6,6 +6,8 @@ import Grid from '../../model/tool/Grid';
 import Renderer from '../../model/tool/Renderer';
 import ViewPort from '../../model/tool/ViewPort';
 import Draw from '../../Draw';
+import MiniMap from '../../model/tool/MiniMap';
+import TestUtils from '../../shared/TestUtils';
 
 export default class DrawStore {
 	activePanelId = null
@@ -36,6 +38,10 @@ export default class DrawStore {
 
 	interaction: Interaction = null
 
+	miniMap: MiniMap = null
+
 	grid: Grid = null
+
+	testUtils: TestUtils = null
 }
 
