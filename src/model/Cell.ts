@@ -24,6 +24,22 @@ export default abstract class Cell extends Particle {
 	angle: number = 0
 	prevAngle: number = 0
 
+	get radian(): number {
+		const res = this.angle * constant.DEGREE_TO_RADIAN
+		return res
+	}
+
+	get deltaAngle(): number {
+		const { angle, prevAngle } = this
+		const res: number = angle - prevAngle
+		return res
+	}
+
+	get deltaRadian(): number {
+		const res: number = this.deltaAngle * DEGREE_TO_RADIAN
+		return res
+	}
+
 	/**
 	 * // Size
 	 */
@@ -43,14 +59,17 @@ export default abstract class Cell extends Particle {
 	}
 
 	/**
-	 * // Canvas
-	 */
-	fill: string = "black"
-
-	/**
 	 * interaction - selection
 	 */
 	shouldSelect: boolean = false
+	get bounds(): Bounds {
+		return {
+			left: 0,
+			right: 0,
+			top: 0,
+			bottom: 0
+		}
+	}
 
 	/**
 	 * // interaction
@@ -63,7 +82,7 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Rotation
 	 */
-	shouldRotate: boolean = true
+	shouldRotate: boolean = false
 
 	/**
 	 * Size
@@ -74,6 +93,13 @@ export default abstract class Cell extends Particle {
 	 * // Mini map
 	 */
 	isVisiableInMiniMap = true
+
+
+
+	/**
+	 * // Canvas
+	 */
+	fill: string = "black"
 
 	constructor( props ) {
 		super( props )
@@ -89,56 +115,8 @@ export default abstract class Cell extends Particle {
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
 	}
 
-	get radian(): number {
-		const res = this.angle * constant.DEGREE_TO_RADIAN
-		return res
-	}
 
-	get deltaAngle(): number {
-		const { angle, prevAngle } = this
-		const res: number = angle - prevAngle
-		return res
-	}
 
-	get deltaRadian(): number {
-		const res: number = this.deltaAngle * DEGREE_TO_RADIAN
-		return res
-	}
-
-	get __left(): number {
-		const potentialValue = this[ "left" ]
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-	get __top(): number {
-		const potentialValue = this[ "top" ]
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-	get __width(): number {
-		const potentialValue = this[ "width" ]
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-	get __height(): number {
-		const potentialValue = this[ "height" ]
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-	get __right(): number {
-		const potentialValue = this.__left + this.__width
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-	get __bottom(): number {
-		const potentialValue = this.__top + this.__height
-		const res = isNotNil( potentialValue ) ? potentialValue : 0
-		return res
-	}
-
-	set( field: string, value: any ) {
-		this[ field ] = value
-	}
 
 	render() {}
 

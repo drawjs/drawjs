@@ -245,31 +245,20 @@ export default class Getters {
 	}
 	get cellsInSelectorRigion(): Cell[] {
 		const self = this
-		return []
-		// const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )
+		const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )
 
-		// function shouldExclude( { type }: Cell ): boolean {
-		// 	const res: boolean = !includes( selectionExcludingCellTypes, type )
-		// 	return res
-		// }
-		// function inRigion( cell: Graph ): boolean {
-		// 	const { SizeContainer } = cell
-		// 	const {
-		// 		basicLeft,
-		// 		basicTop,
-		// 		basicWidth,
-		// 		basicHeight
-		// 	} = SizeContainer
-		// 	const res: boolean = self.selector.rectInSelectionArea(
-		// 		basicLeft,
-		// 		basicTop,
-		// 		basicWidth,
-		// 		basicHeight
-		// 	)
-		// 	return res
-		// }
+		function shouldExclude( { type }: Cell ): boolean {
+			const res: boolean = !includes( selectionExcludingCellTypes, type )
+			return res
+		}
 
-		// return res
+		function inRigion( cell: Graph ): boolean {
+			const { bounds } = cell
+			const res: boolean = self.selector.boundsInSelectionArea( bounds )
+			return res
+		}
+
+		return res
 	}
 
 	pointOnSelectionExcludingCells( point: Point2D ): boolean {

@@ -5,7 +5,7 @@ import {
 	LINE,
 	POINT,
 	RECT_IMAGE,
-	SCALE_POINT
+	SIZE_POINT
 } from "store/constant/cellType"
 import RectImage from "model/image/RectImage"
 import ScalePoint from "../../model/tool/ScalePoint"
@@ -32,6 +32,6 @@ export default function() {
 		/**
 		 * Tool
 		 */
-		[ SCALE_POINT ]: ScalePoint
+		[ SIZE_POINT ]: ScalePoint
 	}
 }

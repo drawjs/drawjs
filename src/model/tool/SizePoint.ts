@@ -2,10 +2,13 @@ import Cell from "../Cell"
 import SizePoints from "./SizePoints"
 import Item from "../Item"
 import SizeUtils from "../../shared/SizeUtils"
+import { SIZE_POINT } from "../../store/constant/cellType";
 
 const { PI } = Math
 
 export abstract class SizePoint extends Cell {
+	type = SIZE_POINT
+
 	sizePoints: SizePoints
 
 	constructor( props ) {

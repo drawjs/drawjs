@@ -35,6 +35,13 @@ export default abstract class Item extends Cell {
 	}
 
 	/**
+	 * Bounds
+	 */
+	get bounds(): Bounds {
+		return this.itemInitialBounds
+	}
+
+	/**
 	 * { abstract }
 	 * Item center, which is used to rotate and size item
 	 */
@@ -117,57 +124,57 @@ export default abstract class Item extends Cell {
 		if ( uX < 0 && uY < 0 ) {
 			updated1 = {
 				x: rotated3.x,
-				y: rotated3.y,
+				y: rotated3.y
 			}
 			updated2 = {
 				x: rotated4.x,
-				y: rotated4.y,
+				y: rotated4.y
 			}
 			updated3 = {
 				x: rotated1.x,
-				y: rotated1.y,
+				y: rotated1.y
 			}
 			updated4 = {
 				x: rotated2.x,
-				y: rotated2.y,
+				y: rotated2.y
 			}
 		}
 
 		if ( uX > 0 && uY < 0 ) {
 			updated1 = {
 				x: rotated4.x,
-				y: rotated4.y,
+				y: rotated4.y
 			}
 			updated2 = {
 				x: rotated3.x,
-				y: rotated3.y,
+				y: rotated3.y
 			}
 			updated3 = {
 				x: rotated2.x,
-				y: rotated2.y,
+				y: rotated2.y
 			}
 			updated4 = {
 				x: rotated1.x,
-				y: rotated1.y,
+				y: rotated1.y
 			}
 		}
 
 		if ( uX < 0 && uY > 0 ) {
 			updated1 = {
 				x: rotated2.x,
-				y: rotated2.y,
+				y: rotated2.y
 			}
 			updated2 = {
 				x: rotated1.x,
-				y: rotated1.y,
+				y: rotated1.y
 			}
 			updated3 = {
 				x: rotated4.x,
-				y: rotated4.y,
+				y: rotated4.y
 			}
 			updated4 = {
 				x: rotated3.x,
-				y: rotated3.y,
+				y: rotated3.y
 			}
 		}
 
@@ -189,4 +196,18 @@ export default abstract class Item extends Cell {
 	}
 
 	size( kX: number, kY: number, center: Point2D ) {}
+
+	renderTransformWidget() {
+		const { shouldSelect } = this
+
+		if ( shouldSelect ) {
+			this.sizeContainer.render()
+			this.sizePoints.render()
+		}
+
+		if ( this.rotationArrow.shouldRender ) {
+			this.sizeContainer.render()
+			this.rotationArrow.render()
+		}
+	}
 }

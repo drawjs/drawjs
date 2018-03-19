@@ -126,7 +126,7 @@ export default class Draw {
 
 		this.getters.cellListShouldRender.map( renderElement )
 
-		// this.getters.selector.render()
+		this.getters.selector.render()
 
 		// this.miniMap.render()
 	}

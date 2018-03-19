@@ -11,11 +11,11 @@ import {
 	ROTATION_ARROW_SIZE
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
-import { ROTATE_ARROW } from "../../store/constant/cellType"
+import { ROTATION_ARROW } from "../../store/constant/cellType"
 import Item from '../Item';
 
 export default class RotationArrow extends Cell {
-	type: string = ROTATE_ARROW
+	type: string = ROTATION_ARROW
 
 	/**
 	 * Item to rotate
@@ -135,8 +135,8 @@ export default class RotationArrow extends Cell {
 
 	// // ******* Drag ******
 	public handleStartDrag( event ) {
-		// this.sharedActions.deselectCell( this.target )
-		// this.sharedActions.enableCellRotate( this.target )
+		this.sharedActions.deselectCell( this.target )
+		this.sharedActions.enableCellRotate( this.target )
 
 		this.draw.render()
 	}
@@ -177,10 +177,10 @@ export default class RotationArrow extends Cell {
 	public handleStopDrag( event ) {
 		const { shouldRotate } = this.target
 
-		// this.sharedActions.disableCellRotate( this.target )
-		// this.sharedActions.selectCell( this.target )
+		this.sharedActions.disableCellRotate( this.target )
+		this.sharedActions.selectCell( this.target )
 
-		// this.draw.render()
+		this.draw.render()
 	}
 
 	// // ******* Drag ******

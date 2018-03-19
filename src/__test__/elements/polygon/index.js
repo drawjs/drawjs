@@ -15,10 +15,19 @@ const basicOrigin = {
 // 	points: polygon()
 // } )
 
-const instance = draw.addElement( "polygon", {
+const instance1 = draw.addElement( "polygon", {
 	fill     : "blue",
 	// angle    : 0,
 	points   : polygon(),
+	rotatable: true,
+	// kX: 1,
+	// kY: 1
+} )
+
+const instance2 = draw.addElement( "polygon", {
+	fill     : "blue",
+	// angle    : 0,
+	points   : triangle(),
 	rotatable: true,
 	// kX: 1,
 	// kY: 1
@@ -42,15 +51,15 @@ draw.render()
 function triangle() {
 	return [
 		{
-			x: 200,
+			x: 600,
 			y: 150
 		},
 		{
-			x: 250,
+			x: 650,
 			y: 250
 		},
 		{
-			x: 150,
+			x: 550,
 			y: 250
 		},
 	]

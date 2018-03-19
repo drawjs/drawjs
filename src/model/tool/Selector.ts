@@ -1,13 +1,15 @@
 import Cell from "../Cell"
 import { isNotNil } from "util/index"
-import Particle from '../Particle';
+import Particle from "../Particle"
+
+const { min, max, abs } = Math
 
 export default class Selector extends Particle {
 	startPoint: Point2DInitial
 
 	endPoint: Point2DInitial
 
-	shouldSelect: boolean = false
+	shouldSelect: boolean = true
 
 	constructor( props ) {
 		super( props )
@@ -58,26 +60,24 @@ export default class Selector extends Particle {
 		}
 	}
 
-	rectInSelectionArea(
-		left: number,
-		top: number,
-		width: number,
-		height: number
-	): boolean {
+	boundsInSelectionArea( bounds: Bounds ): boolean {
+		let res: boolean = false
+		const { left, right, top, bottom } = bounds
+
 		const { startPoint: start, endPoint: end } = this
+
 		if ( isNotNil( start ) && isNotNil( end ) ) {
-			const selectorLeft = Math.min( start.x, end.x )
-			const selectorTop = Math.min( start.y, end.y )
-			const selectorWidth = Math.abs( end.x - start.x )
-			const selectorHeight = Math.abs( end.y - start.y )
-			return (
+			const selectorLeft = min( start.x, end.x )
+			const selectorRight = max( start.x, end.x )
+			const selectorTop = min( start.y, end.y )
+			const selectorBottom = max( start.y, end.y )
+			res =
 				left >= selectorLeft &&
+				right <= selectorRight &&
 				top >= selectorTop &&
-				left + width <= selectorLeft + selectorWidth &&
-				top + height <= selectorTop + selectorHeight
-			)
+				bottom <= selectorBottom
 		}
 
-		return false
+		return res
 	}
 }
