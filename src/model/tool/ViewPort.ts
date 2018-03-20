@@ -260,10 +260,10 @@ export default class ViewPort extends Particle {
 	 */
 	transform( point: Point2DInitial ): Point2DCurrent {
 		const { x, y }: Point2DInitial = point
-		const { zoom, panX, panY } = this
+		const { movementX, movementY, zoom } = this
 		const res: Point2DCurrent = {
-			x: ( x + panX ) * zoom,
-			y: ( y + panY ) * zoom
+			x: x * zoom + movementX,
+			y: y * zoom + movementY
 		}
 		return res
 	}
@@ -272,11 +272,11 @@ export default class ViewPort extends Particle {
 	 * Transform real-time point on canvas to the point on initial view port
 	 */
 	transformToInitial( point: Point2DCurrent ): Point2DInitial {
-		const { x, y } = point
-		const { zoom, panX, panY } = this
+		const { x, y }: Point2DInitial = point
+		const { movementX, movementY, zoom } = this
 		const res: Point2DInitial = {
-			x: x / zoom - panX,
-			y: y / zoom - panY
+			x: ( x - movementX ) / zoom,
+			y: ( y - movementY ) / zoom
 		}
 		return res
 	}

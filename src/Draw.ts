@@ -95,37 +95,40 @@ export default class Draw {
 	}
 
 	public render() {
-		const { testUtils, viewPort, renderer, grid, zoom, pan } = this.getters
+		const { testUtils, viewPort, renderer, grid, zoom, pan, miniMap, ctx, canvasWidth, canvasHeight } = this.getters
 
 		const self = this
 
 		renderer.clear()
 
-		// renderer.setTransformViewPortToRenderMiniMap()
-		// this.renderMain()
-		// miniMap.saveImageDataInRigion()
+		/**
+		 * Save image data on mini map
+		 */
+		renderer.setTransformViewPortToRenderMiniMap()
+		this.renderMain()
+		// renderer.resetTransform()
+		// this.getters.miniMap.viewBox.render()
+		miniMap.saveImageDataInRigion()
+		renderer.clear()
 
-		renderer.resetTransform()
-		grid.render( 10, 1, { x: 0, y: 0 }, { color: "#ddd" } )
-		grid.render( 50, 1, { x: 0, y: 0 }, { color: "#888" } )
-		// grid.render( 10, zoom, pan, { color: "#ddd" })
-		// grid.render( 50, zoom, pan, { color: "#888" } )
 
 		renderer.setTransformViewPort()
-
-		testUtils.renderPoint( { x: 100, y: 100 }, "red" )
-
 		this.renderMain()
 
-		// this.getters.ctx.fillStyle = "blue"
-		// this.getters.ctx.fillRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
 
-		// this.getters.renderer.resetTransform()
-		// this.getters.miniMap.render()
+
+		this.getters.renderer.resetTransform()
+		this.getters.miniMap.render()
+
+		// this.getters.renderer.setTransformViewPortToRenderMiniMap()
+		// testUtils.renderPoint( { x: 0, y: 0 }, "blue" )
 	}
 
 	renderMain() {
 		const { renderElement } = this.sharedActions
+
+		this.getters.ctx.strokeStyle = "blue"
+		this.getters.ctx.strokeRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
 
 		// this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, {
 		// 	color: "#ddd"
@@ -137,6 +140,8 @@ export default class Draw {
 		this.getters.cellListShouldRender.map( renderElement )
 
 		this.getters.selector.render()
+
+
 	}
 
 	public addElement( type: string, setting: any, panelId?: string ) {

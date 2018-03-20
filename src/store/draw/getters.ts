@@ -14,6 +14,7 @@ import DrawStore from "./DrawStore"
 import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes";
 import MiniMap from '../../model/tool/MiniMap';
 import TestUtils from '../../shared/TestUtils';
+import { MINI_MAP } from "../constant/cellType";
 
 export default class Getters {
 	drawStore: DrawStore
@@ -370,6 +371,7 @@ export default class Getters {
 	get miniMap(): MiniMap {
 		return this.drawStore.miniMap
 	}
+
 
 	/**
 	 * // Grid

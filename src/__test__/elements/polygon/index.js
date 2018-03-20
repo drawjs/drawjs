@@ -24,14 +24,23 @@ const instance1 = draw.addElement( "polygon", {
 	// kY: 1
 } )
 
-const instance2 = draw.addElement( "polygon", {
-	fill     : "blue",
-	// angle    : 0,
-	points   : triangle(),
-	rotatable: true,
-	// kX: 1,
-	// kY: 1
-} )
+// const instance2 = draw.addElement( "polygon", {
+// 	fill     : "blue",
+// 	// angle    : 0,
+// 	points   : triangle(),
+// 	rotatable: true,
+// 	// kX: 1,
+// 	// kY: 1
+// } )
+
+// const instance3 = draw.addElement( "polygon", {
+// 	fill     : "blue",
+// 	// angle    : 0,
+// 	points   : rect(),
+// 	rotatable: true,
+// 	// kX: 1,
+// 	// kY: 1
+// } )
 
 // instance.rotate( 30 )
 // instance.size( -1, 1, instance.sizePoints.rightBottomPoint )

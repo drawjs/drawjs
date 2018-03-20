@@ -1,6 +1,6 @@
 import { Cell } from "model/index"
 import MiniMap from "./MiniMap"
-import { MINI_MAP_VIEW_BOX } from '../../store/constant/cellType';
+import { MINI_MAP_VIEW_BOX } from "../../store/constant/cellType"
 
 export default class MiniMapViewBox extends Cell {
 	type = MINI_MAP_VIEW_BOX
@@ -18,7 +18,7 @@ export default class MiniMapViewBox extends Cell {
 	 * Get initial view box's width and height by canvas width divides this ratio
 	 */
 	get initialRatio(): number {
-		const { canvasWidth, canvasHeight ,} = this.getters
+		const { canvasWidth, canvasHeight } = this.getters
 		const { width, height } = this.miniMap
 		const xRate: number = canvasWidth / width
 		const yRate: number = canvasHeight / height
@@ -43,34 +43,59 @@ export default class MiniMapViewBox extends Cell {
 	}
 
 	get center(): Point2D {
-		const { width, height, initialRatio } = this
-		const { movementX, movementY, viewPort } = this.getters
-		const { center: ViewPortCenter, zoom, panX, panY } = viewPort
-		const { x: viewPortCenterX, y: viewPortCenterY } = ViewPortCenter
+		const { initialRatio } = this
+		const { viewPort } = this.getters
+		const { zoom, panX, panY } = viewPort
 		const { x: basicX, y: basicY } = this.basicCenter
 
-		const deltaX: number = panX / initialRatio
-		// const deltaY: number = - panY / this.initialRatio
+		const deltaX: number = panX / initialRatio / zoom
+		const deltaY: number = panY / initialRatio / zoom
 
 		const res: Point2D = {
 			x: basicX - deltaX,
-			y: basicY
+			y: basicY - deltaY
 		}
 		return res
 	}
 
-	get width(): number {
+	get basicLeft(): number {
+		const { left, width } = this.miniMap
+		const { basicWidth } = this
+		const res: number = left + width / 2 - basicWidth / 2
+		return res
+	}
+
+	get basicTop(): number {
+		const { top, height } = this.miniMap
+		const { basicHeight } = this
+		const res: number = top + height / 2 - basicHeight / 2
+		return res
+	}
+
+	get basicWidth(): number {
 		const { initialRatio } = this
-		const { canvasWidth, zoom } = this.getters
-		const basicWidth = canvasWidth / initialRatio
+		const { canvasWidth } = this.getters
+		const basicWidth: number = canvasWidth / initialRatio
+		return basicWidth
+	}
+
+	get basicHeight(): number {
+		const { initialRatio } = this
+		const { canvasHeight } = this.getters
+		const basicHeight: number = canvasHeight / initialRatio
+		return basicHeight
+	}
+
+	get width(): number {
+		const { basicWidth } = this
+		const { zoom } = this.getters
 		const res: number = basicWidth / zoom
 		return res
 	}
 
 	get height(): number {
-		const { initialRatio } = this
-		const { canvasHeight, zoom } = this.getters
-		const basicHeight = canvasHeight / initialRatio
+		const { basicHeight } = this
+		const { zoom } = this.getters
 		const res: number = basicHeight / zoom
 		return res
 	}
@@ -86,13 +111,16 @@ export default class MiniMapViewBox extends Cell {
 		return path2d
 	}
 
-
 	contain( x: number, y: number ) {
 		this.getters.renderer.resetTransform()
 
 		const transformed: Point2D = this.getters.viewPort.transform( { x, y } )
 
-		const isContain = this.getters.ctx.isPointInPath( this.path2d, transformed.x, transformed.y )
+		const isContain = this.getters.ctx.isPointInPath(
+			this.path2d,
+			transformed.x,
+			transformed.y
+		)
 
 		return isContain
 	}
@@ -100,31 +128,27 @@ export default class MiniMapViewBox extends Cell {
 	render() {
 		const { ctx } = this.getters
 
-		this.getters.renderer.resetTransform()
+		ctx.save()
 
-		ctx.fillStyle = "white"
-		ctx.fill( this.path2d )
-
+		ctx.lineWidth = 1
 		ctx.strokeStyle = "red"
 		ctx.stroke( this.path2d )
+
+		ctx.restore()
 	}
-
-
 
 	updateDrag( event ) {
-		// const { initialRatio } = this
-		// const { zoom } = this.getters
+		const { initialRatio } = this
+		const { zoom } = this.getters
 
-		// const deltaX = event.x - this.dragger.prevEvent.x
-		// const deltaY = event.y - this.dragger.prevEvent.y
+		const deltaX = event.x - this.dragger.prevEvent.x
+		const deltaY = event.y - this.dragger.prevEvent.y
 
-		// const deltaXViewPort = - deltaX * initialRatio * zoom
-		// const deltaYViewPort = - deltaY * initialRatio * zoom
+		const deltaXViewPort = -deltaX * initialRatio * zoom
+		const deltaYViewPort = -deltaY * initialRatio * zoom
 
-		// this.getters.viewPort.panBy( deltaXViewPort , 0 )
+		this.getters.viewPort.panBy( deltaXViewPort, deltaYViewPort )
 
-		// this.draw.render()
+		this.draw.render()
 	}
-
-
 }

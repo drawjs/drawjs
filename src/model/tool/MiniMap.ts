@@ -1,9 +1,12 @@
-import Particle from "../Particle"
+import Cell from "../Cell"
 import zoomPoint from "util/geometry/zoom"
 import MiniMapViewBox from "./MiniMapViewBox"
 import { isNotNil } from "../../util/index";
+import { MINI_MAP } from '../../store/constant/cellType';
 
-export default class MiniMap extends Particle {
+export default class MiniMap extends Cell {
+	type = MINI_MAP
+
 	left: number = 0
 	top: number = 0
 	width: number = 0
@@ -24,11 +27,11 @@ export default class MiniMap extends Particle {
 		this.viewBox = new MiniMapViewBox( { draw: this.draw, miniMap: this } )
 	}
 
-	get path(): Path2D {
+	get path2d(): Path2D {
 		const { left, top, width, height } = this
-		const path = new Path2D()
-		path.rect( left, top, width, height )
-		return path
+		const path2d = new Path2D()
+		path2d.rect( left, top, width, height )
+		return path2d
 	}
 
 	get canvasWidthInMiniMap(): number {
@@ -39,7 +42,7 @@ export default class MiniMap extends Particle {
 		return 0
 	}
 
-	get fixedPanelPath2d(): Path2D {
+	get viewBoxBasicPanelPath2d(): Path2D {
 		const { canvasWidth, canvasHeight } = this.getters
 		const {
 			left: miniMapLeft,
@@ -61,34 +64,47 @@ export default class MiniMap extends Particle {
 
 	render() {
 		const { ctx } = this.getters
+		const { basicLeft, basicTop } = this.viewBox
+
+		ctx.save()
+
+		ctx.fillStyle = "#ddd"
+		ctx.fill( this.path2d )
+
+		this.renderViewBoxBasicPanel()
 
 		if ( isNotNil( this.imageDataInRigion ) ) {
-			ctx.putImageData( this.imageDataInRigion, this.left, this.top )
+			ctx.putImageData( this.imageDataInRigion, basicLeft, basicTop )
 		}
 
-
-		ctx.strokeStyle = "black"
-		ctx.stroke( this.path )
-
-		ctx.fillStyle = "grey"
-		ctx.fill( this.path )
-
-		this.renderFixedPanel()
-
-		this.viewBox.render()
+		ctx.restore()
 	}
 
-	renderFixedPanel() {
-		const { ctx } = this.getters
-
+	contain( x: number, y: number ) {
 		this.getters.renderer.resetTransform()
 
+		const transformed: Point2D = this.getters.viewPort.transform( { x, y } )
+
+		const isContain = this.getters.ctx.isPointInPath(
+			this.path2d,
+			transformed.x,
+			transformed.y
+		)
+
+		return isContain
+	}
+
+	renderViewBoxBasicPanel() {
+		const { ctx } = this.getters
+
+		ctx.save()
 		ctx.fillStyle = "white"
-		ctx.fill( this.fixedPanelPath2d )
+		ctx.fill( this.viewBoxBasicPanelPath2d )
+		ctx.restore()
 	}
 
 	saveImageDataInRigion() {
-		const { left, top, width, height } = this
-		this.imageDataInRigion = this.getters.ctx.getImageData( left, top, width, height )
+		const { basicWidth, basicHeight, basicLeft, basicTop } = this.viewBox
+		this.imageDataInRigion = this.getters.ctx.getImageData( basicLeft, basicTop, basicWidth, basicHeight )
 	}
 }
