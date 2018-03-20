@@ -38,6 +38,7 @@ const instance2 = draw.addElement( "polygon", {
 
 draw.render()
 
+// draw.getters.viewPort.zoomBy( { x: 100, y: 100 }, 1 )
 
 // function render() {
 // 	polygonInstance.rotate( polygonInstance.angle + 0.1 )
@@ -61,7 +62,7 @@ function triangle() {
 		{
 			x: 550,
 			y: 250
-		},
+		}
 	]
 }
 

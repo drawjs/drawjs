@@ -1,7 +1,7 @@
 import Particle from "../Particle"
-import zoomPoint from 'util/geometry/zoom';
-import MiniMapViewBox from './MiniMapViewBox';
-
+import zoomPoint from "util/geometry/zoom"
+import MiniMapViewBox from "./MiniMapViewBox"
+import { isNotNil } from "../../util/index";
 
 export default class MiniMap extends Particle {
 	left: number = 0
@@ -10,6 +10,8 @@ export default class MiniMap extends Particle {
 	height: number = 0
 
 	viewBox: MiniMapViewBox
+
+	imageDataInRigion: any
 
 	constructor( props ) {
 		super( props )
@@ -60,14 +62,16 @@ export default class MiniMap extends Particle {
 	render() {
 		const { ctx } = this.getters
 
-		this.getters.renderer.resetTransform()
+		if ( isNotNil( this.imageDataInRigion ) ) {
+			ctx.putImageData( this.imageDataInRigion, this.left, this.top )
+		}
+
 
 		ctx.strokeStyle = "black"
 		ctx.stroke( this.path )
 
 		ctx.fillStyle = "grey"
 		ctx.fill( this.path )
-
 
 		this.renderFixedPanel()
 
@@ -81,6 +85,10 @@ export default class MiniMap extends Particle {
 
 		ctx.fillStyle = "white"
 		ctx.fill( this.fixedPanelPath2d )
+	}
 
+	saveImageDataInRigion() {
+		const { left, top, width, height } = this
+		this.imageDataInRigion = this.getters.ctx.getImageData( left, top, width, height )
 	}
 }

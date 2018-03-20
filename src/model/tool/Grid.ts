@@ -21,22 +21,40 @@ export default class Grid extends Particle {
 
 	constructor( props ) {
 		super( props )
+
+		this.canvas = props.canvas
 	}
 
 	get ctx(): CanvasRenderingContext2D {
-		return this.getters.ctx
+		return this.ctx
+	}
+
+	get panX(): number {
+		return this.pan.x
+	}
+
+	get panY(): number {
+		return this.pan.y
+	}
+
+	get canvasWidth(): number {
+		return this.canvas.getBoundingClientRect().width
+	}
+
+	get canvasHeight(): number {
+		return this.canvas.getBoundingClientRect().height
 	}
 
 	get width(): number {
-		return ( abs( this.getters.panX ) + this.getters.canvasWidth ) / this.getters.zoom + 5 * this.interval
+		return ( abs( this.panX ) + this.canvasWidth ) / this.zoom + 5 * this.interval
 	}
 
 	get height(): number {
-		return ( abs( this.getters.panY ) + this.getters.canvasHeight ) / this.getters.zoom + 5 * this.interval
+		return ( abs( this.panY ) + this.canvasHeight ) / this.zoom + 5 * this.interval
 	}
 
 	get left(): number {
-		return -Math.round( this.getters.panX / this.interval ) * this.interval - 2 * this.interval
+		return -Math.round( this.panX / this.interval ) * this.interval - 2 * this.interval
 	}
 
 	get right(): number {
@@ -44,7 +62,7 @@ export default class Grid extends Particle {
 	}
 
 	get top(): number {
-		return -Math.round( this.getters.panY / this.interval ) * this.interval - 2 * this.interval
+		return -Math.round( this.panY / this.interval ) * this.interval - 2 * this.interval
 	}
 
 	get bottom(): number {

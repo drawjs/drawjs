@@ -1,4 +1,5 @@
 import Particle from "../Particle"
+import Getters from '../../store/draw/getters';
 
 export default class Renderer extends Particle {
 	constructor( props ) {
@@ -10,7 +11,7 @@ export default class Renderer extends Particle {
 	}
 
 	clear() {
-		this.getters.renderer.resetTransform()
+		this.resetTransform()
 		this.getters.ctx.clearRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
 	}
 
@@ -19,8 +20,9 @@ export default class Renderer extends Particle {
 	}
 
 	setTransformViewPort() {
-		const { zoom, movementX, movementY } = this.getters
+		const { zoom, movementX, movementY }: Getters = this.getters
 		this.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
+		// this.ctx.setTransform( 2, 0, 0, 2, 100,100 )
 	}
 
 	setTransformViewPortToRenderMiniMap() {

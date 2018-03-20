@@ -18,7 +18,7 @@ export default class MiniMapViewBox extends Cell {
 	 * Get initial view box's width and height by canvas width divides this ratio
 	 */
 	get initialRatio(): number {
-		const { canvasWidth, canvasHeight } = this.getters
+		const { canvasWidth, canvasHeight ,} = this.getters
 		const { width, height } = this.miniMap
 		const xRate: number = canvasWidth / width
 		const yRate: number = canvasHeight / height
@@ -26,24 +26,35 @@ export default class MiniMapViewBox extends Cell {
 		return res
 	}
 
-	get center(): Point2D {
-		const { width, height } = this
-		const { panX, panY } = this.getters
+	get basicCenter(): Point2D {
 		const {
 			left: miniMapLeft,
 			top: miniMapTop,
 			width: miniMapWidth,
 			height: miniMapHeight
 		} = this.miniMap
-		const basicX: number = miniMapLeft + miniMapWidth / 2
-		const basicY: number = miniMapTop + miniMapHeight / 2
+		const x: number = miniMapLeft + miniMapWidth / 2
+		const y: number = miniMapTop + miniMapHeight / 2
+		const res: Point2D = {
+			x,
+			y
+		}
+		return res
+	}
 
-		const deltaX: number = panX / this.initialRatio
-		const deltaY: number = panY / this.initialRatio
+	get center(): Point2D {
+		const { width, height, initialRatio } = this
+		const { movementX, movementY, viewPort } = this.getters
+		const { center: ViewPortCenter, zoom, panX, panY } = viewPort
+		const { x: viewPortCenterX, y: viewPortCenterY } = ViewPortCenter
+		const { x: basicX, y: basicY } = this.basicCenter
+
+		const deltaX: number = panX / initialRatio
+		// const deltaY: number = - panY / this.initialRatio
 
 		const res: Point2D = {
-			x: basicX + deltaX,
-			y: basicY + deltaY
+			x: basicX - deltaX,
+			y: basicY
 		}
 		return res
 	}
@@ -81,11 +92,7 @@ export default class MiniMapViewBox extends Cell {
 
 		const transformed: Point2D = this.getters.viewPort.transform( { x, y } )
 
-		// this.getters.testUtils.delayRenderPoint( transformed, "orange" )
-
 		const isContain = this.getters.ctx.isPointInPath( this.path2d, transformed.x, transformed.y )
-
-		// console.log( isContain )
 
 		return isContain
 	}
@@ -105,18 +112,18 @@ export default class MiniMapViewBox extends Cell {
 
 
 	updateDrag( event ) {
-		const { initialRatio } = this
-		const { zoom } = this.getters
+		// const { initialRatio } = this
+		// const { zoom } = this.getters
 
-		const deltaX = event.x - this.dragger.prevEvent.x
-		const deltaY = event.y - this.dragger.prevEvent.y
+		// const deltaX = event.x - this.dragger.prevEvent.x
+		// const deltaY = event.y - this.dragger.prevEvent.y
 
-		const deltaXViewPort = deltaX * initialRatio * zoom
-		const deltaYViewPort = deltaY * initialRatio * zoom
+		// const deltaXViewPort = - deltaX * initialRatio * zoom
+		// const deltaYViewPort = - deltaY * initialRatio * zoom
 
-		this.getters.viewPort.panBy( deltaXViewPort , deltaYViewPort )
+		// this.getters.viewPort.panBy( deltaXViewPort , 0 )
 
-		this.draw.render()
+		// this.draw.render()
 	}
 
 

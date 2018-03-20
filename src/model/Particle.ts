@@ -38,10 +38,6 @@ export default class Particle {
 		return this.draw.sharedActions
 	}
 
-	get testUtils(): TestUtils {
-		return this.draw.testUtils
-	}
-
 	implementInTopConstructor() {
 
 	}

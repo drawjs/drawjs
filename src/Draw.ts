@@ -25,7 +25,7 @@ import Actions from "./store/draw/Actions"
 import SharedActions from "./shared/SharedActions"
 import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
-import MiniMap from "./model/tool/MiniMap";
+import MiniMap from "./model/tool/MiniMap"
 
 const ajv = new Ajv()
 
@@ -55,18 +55,11 @@ export default class Draw {
 	 */
 	sharedActions: SharedActions
 
-	/**
-	 * Test utils
-	 */
-	testUtils: TestUtils
-
 	public onGraphClick: Function
 	public onGraphHover: Function
 
 	constructor( canvas: HTMLCanvasElement ) {
 		this.drawStore = new DrawStore()
-
-
 
 		this.getters = new Getters( this.drawStore )
 		this.actions = new Actions( this.drawStore, this.getters )
@@ -102,23 +95,48 @@ export default class Draw {
 	}
 
 	public render() {
+		const { testUtils, viewPort, renderer, grid, zoom, pan } = this.getters
+
 		const self = this
 
+		renderer.clear()
+
+		// renderer.setTransformViewPortToRenderMiniMap()
+		// this.renderMain()
+		// miniMap.saveImageDataInRigion()
+
+		renderer.resetTransform()
+		grid.render( 10, 1, { x: 0, y: 0 }, { color: "#ddd" } )
+		grid.render( 50, 1, { x: 0, y: 0 }, { color: "#888" } )
+		// grid.render( 10, zoom, pan, { color: "#ddd" })
+		// grid.render( 50, zoom, pan, { color: "#888" } )
+
+		renderer.setTransformViewPort()
+
+		testUtils.renderPoint( { x: 100, y: 100 }, "red" )
+
+		this.renderMain()
+
+		// this.getters.ctx.fillStyle = "blue"
+		// this.getters.ctx.fillRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
+
+		// this.getters.renderer.resetTransform()
+		// this.getters.miniMap.render()
+	}
+
+	renderMain() {
 		const { renderElement } = this.sharedActions
-		// this.miniMap.renderMainToGetImageData()
 
-		this.getters.renderer.clear()
-
-		this.getters.renderer.setTransformViewPort()
-
-		this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, { color: "#ddd" })
-		this.getters.grid.render( 50, this.getters.zoom, this.getters.pan, { color: "#888" } )
+		// this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, {
+		// 	color: "#ddd"
+		// } )
+		// this.getters.grid.render( 50, this.getters.zoom, this.getters.pan, {
+		// 	color: "#888"
+		// } )
 
 		this.getters.cellListShouldRender.map( renderElement )
 
 		this.getters.selector.render()
-
-		this.getters.miniMap.render()
 	}
 
 	public addElement( type: string, setting: any, panelId?: string ) {

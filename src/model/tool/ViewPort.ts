@@ -1,13 +1,13 @@
 import zoomPoint from "util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
 import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from "../../store/constant/index"
-import Particle from '../Particle';
+import Particle from "../Particle"
 
 const { abs } = Math
 
 /**
  * View port
- * For that canvas is always fixed, and the origin is always ( 0, 0 ),
+ * For that canvas dom is always fixed, and the origin is always ( 0, 0 ),
  * so if we want a convenient viewPort, we have to mock canvas view
  * port used for zooming and panning calculation.
  *
@@ -78,13 +78,20 @@ export default class ViewPort extends Particle {
 	/**
 	 * The movement of viewPort when zoom equals 1
 	 */
-	get pan(): Point2DCurrent {
+	get pan(): Point2DInitial {
 		const { center, zoom, basicCenter } = this
 		const res: Point2D = {
-			x: center.x / zoom - basicCenter.x,
-			y: center.y / zoom - basicCenter.y
+			x: center.x - basicCenter.x,
+			y: center.y - basicCenter.y
 		}
 		return res
+
+		// const { center, zoom, basicCenter } = this
+		// const res: Point2D = {
+		// 	x: center.x / zoom - basicCenter.x,
+		// 	y: center.y / zoom - basicCenter.y
+		// }
+		// return res
 	}
 
 	get panX(): number {
@@ -97,8 +104,42 @@ export default class ViewPort extends Particle {
 
 	get isPanning(): boolean {
 		const res: boolean =
-			isMouseMiddleClick( event ) || this.getters.eventKeyboard.isSpacePressing
+			isMouseMiddleClick( event ) ||
+			this.getters.eventKeyboard.isSpacePressing
 
+		return res
+	}
+
+	get movement(): Point2D {
+		const { width, height, basicWidth, basicHeight, panX, panY } = this
+		const { x: cx, y: cy } = this.center
+		const { x: basicCX, y: basicCY } = this.basicCenter
+
+		const deltaX: number = cx - basicCX - ( ( width - basicWidth ) / 2 )
+		const deltaY: number = cy - basicCY - ( ( height - basicHeight ) / 2 )
+		const res: Point2D = {
+			x: deltaX,
+			y: deltaY
+		}
+
+		return res
+	}
+
+	/**
+	 *  Horizontal movement of zoomed view port
+	 *  Used in context.setTransform
+	 */
+	get movementX(): number {
+		const res: number = this.movement.x
+		return res
+	}
+
+	/**
+	 *  Vertical movement of zoomed view port
+	 *  Used in context.setTransform
+	 */
+	get movementY(): number {
+		const res: number = this.movement.y
 		return res
 	}
 
@@ -118,7 +159,7 @@ export default class ViewPort extends Particle {
 	) {
 		const self = this
 
-		if ( willNotInScope() ) {
+		if ( willNotInZoomScope() ) {
 			return
 		}
 
@@ -138,7 +179,7 @@ export default class ViewPort extends Particle {
 
 		this.draw.render()
 
-		function willNotInScope() {
+		function willNotInZoomScope() {
 			const potentialNewZoom: number = self.zoom + deltaZoom
 			const { MAX_ZOOM, MIN_ZOOM } = ViewPort
 			const res: boolean =
@@ -157,7 +198,7 @@ export default class ViewPort extends Particle {
 	 * // Pan
 	 */
 	panBy( deltaX: number, deltaY: number ) {
-		const { x: centerX, y: centerY }: Point2D = this.center
+		const { x: centerX, y: centerY }: Point2DCurrent = this.center
 		this.center = {
 			x: centerX + deltaX,
 			y: centerY + deltaY
@@ -165,10 +206,10 @@ export default class ViewPort extends Particle {
 	}
 
 	getDeltaPointToPrevPanningPoint( point ): Point2DCurrent {
-		const { x, y }: Point2D = point
+		const { x, y }: Point2DCurrent = point
 		const { x: prevX, y: prevY } = this.prevZoomingPoint
 
-		const deltaPoint: Point2D = {
+		const deltaPoint: Point2DCurrent = {
 			x: x - prevX,
 			y: y - prevY
 		}
@@ -176,12 +217,16 @@ export default class ViewPort extends Particle {
 	}
 
 	getDeltaXToPrevPanningPoint( point ): number {
-		const deltaPoint: Point2D = this.getDeltaPointToPrevPanningPoint( point )
+		const deltaPoint: Point2DCurrent = this.getDeltaPointToPrevPanningPoint(
+			point
+		)
 		return deltaPoint.x
 	}
 
 	getDeltaYToPrevPanningPoint( point ): number {
-		const deltaPoint: Point2D = this.getDeltaPointToPrevPanningPoint( point )
+		const deltaPoint: Point2DCurrent = this.getDeltaPointToPrevPanningPoint(
+			point
+		)
 		return deltaPoint.y
 	}
 

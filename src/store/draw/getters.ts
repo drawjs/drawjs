@@ -230,14 +230,14 @@ export default class Getters {
 	 *  Horizontal movement of zoomed view port
 	 */
 	get movementX(): number {
-		return this.panX * this.zoom
+		return this.viewPort.movementX
 	}
 
 	/**
 	 *  Vertical movement of zoomed view port
 	 */
 	get movementY(): number {
-		return this.panY * this.zoom
+		return this.viewPort.movementY
 	}
 
 	/**
