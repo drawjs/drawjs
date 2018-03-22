@@ -344,7 +344,8 @@ export default class SharedActions {
 	 * // Point
 	 */
 	updatePoint( point: Point2D, x: number, y: number ) {
-		point = { x, y }
+		point.x = x
+		point.y = y
 	}
 	translatePoint( point: Point2D, deltaX: number, deltaY: number ) {
 		const { x, y }: Point2D = point

@@ -1,4 +1,4 @@
-import { isNumber } from "lodash"
+import { isNumber, isPlainObject } from 'lodash';
 import MathPoint from "./MathPoint"
 
 const { sqrt, pow, atan, abs, PI } = Math
@@ -22,7 +22,8 @@ export default class MathVector {
 		}
 
 		function isPoint( value: any ) {
-			return value instanceof MathPoint
+			const res: boolean = isPlainObject( value ) && isNumber( value.x ) && isNumber( value.y )
+			return res
 		}
 	}
 

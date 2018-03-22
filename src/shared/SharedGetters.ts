@@ -295,4 +295,13 @@ export default class SharedGetters {
 			y: y * b
 		}
 	}
+
+	getTranslatedPoint( point: Point2D, deltaX: number, deltaY: number ) {
+		const { x, y }: Point2D = point
+		const newPoint: Point2D = {
+			x: x + deltaX,
+			y: y + deltaY
+		}
+		return newPoint
+	}
 }

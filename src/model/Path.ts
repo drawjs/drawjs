@@ -30,8 +30,12 @@ export default class Path extends PathItem {
 
 		const self = this
 
-		this.segments = props.points ?
+		this.segments = isNotNil( props.points ) ?
 			props.points.map( getSegment ) :
+			this.segments
+
+		this.segments = isNotNil( props.segments ) ?
+			props.segments :
 			this.segments
 
 		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
