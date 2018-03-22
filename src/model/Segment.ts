@@ -10,6 +10,8 @@ export default class Segment extends Cell {
 	x: number
 	y: number
 
+	show: boolean = true
+
 	selected: boolean = false
 
 	shouldShowHandleIn: boolean = false
@@ -64,19 +66,21 @@ export default class Segment extends Cell {
 	}
 
 	render() {
-		const { ctx } = this.getters
-		ctx.save()
-		ctx.lineWidth = 3
-		ctx.fillStyle = "#4a86e8"
-		ctx.fill( this.path2d )
-		ctx.restore()
+		if ( this.show ) {
+			const { ctx } = this.getters
+			ctx.save()
+			ctx.lineWidth = 3
+			ctx.fillStyle = "#4a86e8"
+			ctx.fill( this.path2d )
+			ctx.restore()
 
-		this.handleIn.render()
-		this.handleOut.render()
+			this.handleIn.render()
+			this.handleOut.render()
+		}
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 

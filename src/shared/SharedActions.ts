@@ -5,7 +5,7 @@ import { includes, cloneDeep } from "lodash"
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
-import Segment from "../model/Segment"
+import Segment from '../model/Segment';
 import { getRotatedPoint } from "util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
@@ -21,16 +21,6 @@ export default class SharedActions {
 	constructor( drawStore: DrawStore, getters: Getters ) {
 		this.drawStore = drawStore
 		this.getters = getters
-	}
-	/**
-	 * // Particle
-	 */
-	copyParticle( instance: any, ClassName: any ) {
-		return new ClassName( instance.cachedConstructorProps )
-	}
-
-	copyParticles( instances: any, ClassName: any ) {
-		return instances.map( instance => this.copyParticle( instance, ClassName ) )
 	}
 
 	/**
@@ -81,12 +71,6 @@ export default class SharedActions {
 	/**
 	 * Segment
 	 */
-	copySegment( segment: Segment ) {
-		return this.copyParticle( segment, Segment )
-	}
-	copySegments( segments: Segment[] ) {
-		return this.copyParticles( segments, Segment )
-	}
 	updateSegmentPrevious( segment: Segment, previous: Segment ) {
 		segment.previous = previous
 	}
@@ -140,6 +124,18 @@ export default class SharedActions {
 			this.ajustSegmentPreviousAndNext( segment, segments )
 		)
 	}
+	showSegment( segment: Segment ) {
+		segment.show = true
+	}
+	showSegments( segments: Segment[] ) {
+		segments.map( segment => this.showSegment( segment ) )
+	}
+	hideSegment( segment: Segment ) {
+		segment.show = false
+	}
+	hideSegments( segments: Segment[] ) {
+		segments.map( segment => this.hideSegment( segment ) )
+	}
 	renderSegments( segments: Segment[] ) {
 		segments.map( segment => this.renderParticle( segment ) )
 	}
@@ -183,6 +179,28 @@ export default class SharedActions {
 	sizeSegments( segments: Segment[], kX: number, kY: number, center: Point2D ) {
 		segments.map( segment => this.sizeSegment( segment, kX, kY, center ) )
 	}
+	showSegmentHandle( segment: Segment ) {
+		this.showHandle( segment.handleIn )
+		this.showHandle( segment.handleOut )
+	}
+	showSegmentsHandles( segments: Segment[] ) {
+		segments.map( segment => this.showSegmentHandle( segment ) )
+	}
+	hideSegmentHandle( segment: Segment ) {
+		this.hideHandle( segment.handleIn )
+		this.hideHandle( segment.handleOut )
+	}
+	hideSegmentsHandles( segments: Segment[] ) {
+		segments.map( segment => this.hideSegmentHandle( segment ) )
+	}
+	clearSegmentHandle( segment: Segment ) {
+		this.clearHandle( segment.handleIn )
+		this.clearHandle( segment.handleOut )
+	}
+	clearSegmentsHandles( segments: Segment[] ) {
+		segments.map( segment => this.clearSegmentHandle( segment ) )
+	}
+
 
 	/**
 	 * // Handle
@@ -240,6 +258,12 @@ export default class SharedActions {
 		}
 
 		this.updateHandleRelativePoint( partner, newPartnerRelativePoint )
+	}
+	showHandle( handle: Handle ) {
+		handle.show = true
+	}
+	hideHandle( handle: Handle ) {
+		handle.show = false
 	}
 	rotateHandle( handle: Handle, angle: number, center?: Point2D ) {
 		const { point, segmentPoint, relativePoint }: Handle = handle
@@ -301,6 +325,12 @@ export default class SharedActions {
 		}
 
 		this.updateHandleRelativePoint( handle, newRelativePoint )
+	}
+	/**
+	 * Set handle relative point to { x: 0, y: 0 }
+	 */
+	clearHandle( handle: Handle ) {
+		this.updateHandleRelativePoint( handle, origin )
 	}
 
 	/**

@@ -152,7 +152,7 @@ export default class Handle extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.pointPath )
+		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.pointPath )
 		return isContain
 	}
 

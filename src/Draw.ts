@@ -101,15 +101,15 @@ export default class Draw {
 
 		renderer.clear()
 
-		/**
-		 * Save image data on mini map
-		 */
-		renderer.setTransformViewPortToRenderMiniMap()
-		this.renderMain()
-		// renderer.resetTransform()
-		// this.getters.miniMap.viewBox.render()
-		miniMap.saveImageDataInRigion()
-		renderer.clear()
+		// /**
+		//  * Save image data on mini map
+		//  */
+		// renderer.setTransformViewPortToRenderMiniMap()
+		// this.renderMain()
+		// // renderer.resetTransform()
+		// // this.getters.miniMap.viewBox.render()
+		// miniMap.saveImageDataInRigion()
+		// renderer.clear()
 
 
 		renderer.setTransformViewPort()
@@ -117,8 +117,8 @@ export default class Draw {
 
 
 
-		this.getters.renderer.resetTransform()
-		this.getters.miniMap.render()
+		// this.getters.renderer.resetTransform()
+		// this.getters.miniMap.render()
 
 		// this.getters.renderer.setTransformViewPortToRenderMiniMap()
 		// testUtils.renderPoint( { x: 0, y: 0 }, "blue" )

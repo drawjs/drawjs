@@ -11,7 +11,9 @@
 			"port": 9222,
 			// "url": "http://localhost:8600/build/__test__/Path/SegmentsAndHandles/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/Point/index.html",
-			"url": "http://localhost:8600/build/__test__/elements/Polygon/index.html",
+			// "url": "http://localhost:8600/build/__test__/elements/polygon/index.html",
+			// "url": "http://localhost:8600/build/__test__/elements/rect/index.html",
+			"url": "http://localhost:8600/build/__test__/elements/line/index.html",
 			"pathMapping": {
 				"/": "${workspaceFolder}"
 			},

@@ -9,13 +9,9 @@ import TestUtils from "../shared/TestUtils";
 export default class Particle {
 	draw: Draw
 
-	cachedConstructorProps: any
-
 	constructor( props ) {
 		const { draw } = props
 		this.draw = draw
-
-		this.cachedConstructorProps = props
 	}
 
 	get drawStore(): DrawStore {
