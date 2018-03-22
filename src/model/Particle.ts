@@ -34,7 +34,5 @@ export default class Particle {
 		return this.draw.sharedActions
 	}
 
-	implementInTopConstructor() {
 
-	}
 }

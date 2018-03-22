@@ -18,6 +18,9 @@ export default class SizeContainer extends Particle {
 		this.target = props.target
 	}
 
+	get targetSizable(): boolean {
+		return this.target.sizable
+	}
 
 	get radian(): number {
 		return this.target.radian
@@ -30,19 +33,26 @@ export default class SizeContainer extends Particle {
 	get path2d(): Path2D {
 		const { leftTop, rightTop, rightBottom, leftBottom } = this.container
 		let path: Path2D = new Path2D()
-		path = connectPolygonPoints( [ leftTop, rightTop, rightBottom, leftBottom ] )
+		path = connectPolygonPoints( [
+			leftTop,
+			rightTop,
+			rightBottom,
+			leftBottom
+		] )
 
 		return path
 	}
 
 	render() {
-		const { ctx } = this.getters
-		ctx.save()
+		if ( this.targetSizable ) {
+			const { ctx } = this.getters
+			ctx.save()
 
-		ctx.lineWidth = 1
-		ctx.strokeStyle = "blue"
-		ctx.stroke( this.path2d )
+			ctx.lineWidth = 1
+			ctx.strokeStyle = "blue"
+			ctx.stroke( this.path2d )
 
-		ctx.restore()
+			ctx.restore()
+		}
 	}
 }

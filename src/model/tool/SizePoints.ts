@@ -48,6 +48,10 @@ export default class SizePoints extends Particle {
 		return this.sizeContainer.target
 	}
 
+	get targetSizable(): boolean {
+		return this.target.sizable
+	}
+
 	get container(): Container {
 		return this.sizeContainer.container
 	}
@@ -118,6 +122,6 @@ export default class SizePoints extends Particle {
 	}
 
 	render() {
-		this.sizePoints.map( this.sharedActions.renderParticle )
+		this.targetSizable && this.sizePoints.map( this.sharedActions.renderParticle )
 	}
 }

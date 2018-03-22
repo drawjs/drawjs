@@ -30,7 +30,9 @@ export default class Path extends PathItem {
 
 		const self = this
 
-		this.segments = props.points ? props.points.map( getSegment ) : this.segments
+		this.segments = props.points ?
+			props.points.map( getSegment ) :
+			this.segments
 
 		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
 
@@ -58,7 +60,7 @@ export default class Path extends PathItem {
 
 		isNotNil( props.angle ) && this.rotate( props.angle )
 
-		this.implementInTopConstructor()
+		this.implementInUpperConstructor()
 
 		if ( isNotNil( props.kX ) || isNotNil( props.kY ) ) {
 			const kX: number = isNotNil( props.kX ) ? props.kX : this.kX
@@ -75,6 +77,10 @@ export default class Path extends PathItem {
 				path: self
 			} )
 		}
+	}
+
+	implementInUpperConstructor() {
+		super.implementInUpperConstructor && super.implementInUpperConstructor()
 	}
 
 	get segmentsCenter(): Point2D {

@@ -31,6 +31,10 @@ export default class RotationArrow extends Cell {
 
 	static SIZE: number = ROTATION_ARROW_SIZE
 
+	get targetRotatable(): boolean {
+		return this.target.sizable
+	}
+
 	/**
 	 * Graph target's radian
 	 */
@@ -68,9 +72,8 @@ export default class RotationArrow extends Cell {
 	}
 
 	get shouldRender(): boolean {
-		const { shouldSelect } = this.target
-		const { shouldRotate } = this.target
-		const res: boolean = shouldSelect || shouldRotate
+		const { shouldSelect, shouldRotate } = this.target
+		const res: boolean =  shouldSelect || shouldRotate
 		return res
 	}
 
@@ -109,7 +112,7 @@ export default class RotationArrow extends Cell {
 	}
 
 	render() {
-		if ( true || this.shouldRender ) {
+		if ( this.targetRotatable && this.shouldRender ) {
 
 			const { ctx } = this.getters
 			const { SIZE } = RotationArrow
@@ -129,7 +132,7 @@ export default class RotationArrow extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.path )
+		const isContain = this.targetRotatable && this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 

@@ -1,11 +1,10 @@
 import { isNumber, isPlainObject, isNil } from 'lodash';
 import MathVector from "./MathVector"
-import { MATH_VECTOR, MATH_UNIT_VECTOR } from "../../store/constant/index";
 
 const { PI, sin, cos } = Math
 
 export default class MathUnitVector extends MathVector {
-	type: string = MATH_UNIT_VECTOR
+	type: string = "MATH_UNIT_VECTOR"
 	x: number
 	y: number
 
@@ -19,7 +18,7 @@ export default class MathUnitVector extends MathVector {
 			this.y = sin( radian )
 		}
 
-		if ( isPlainObject( a ) && a.type === MATH_VECTOR ) {
+		if ( isPlainObject( a ) && a.type === "MATH_VECTOR" ) {
 			const vector: MathVector =  a
 			const unit: MathVector = vector.unit
 			this.x = unit.x

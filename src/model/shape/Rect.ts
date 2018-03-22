@@ -16,7 +16,7 @@ export default class Polygon extends Path {
 	t = 1
 
 	constructor( props ) {
-		super( setPointsToPropsDangerously( props ) )
+		super( setPropsPointsDangerously( props ) )
 
 		this.left = isNotNil( props.left ) ? props.left : this.left
 		this.top = isNotNil( props.top ) ? props.top : this.top
@@ -29,7 +29,7 @@ export default class Polygon extends Path {
 
 
 
-		function setPointsToPropsDangerously( props ) {
+		function setPropsPointsDangerously( props ) {
 			const { left, top, width, height } = props
 			const right: number = left + width
 			const bottom: number = top + height

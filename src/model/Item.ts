@@ -10,18 +10,28 @@ export default abstract class Item extends Cell {
 	sizePoints: SizePoints
 
 	/**
-	 * Rotation
+	 * // Rotation
 	 */
 	rotatable: boolean = true
 	rotationArrow: RotationArrow
 
+	/**
+	 * // Size
+	 */
+	/**
+	 * Be able to size
+	 */
+	sizable: boolean = true
+
 	constructor( props ) {
 		super( props )
 
-		this.sizeContainer = new SizeContainer( {
-			draw  : this.draw,
-			target: this
-		} )
+		if ( this.sizable ) {
+			this.sizeContainer = new SizeContainer( {
+				draw  : this.draw,
+				target: this
+			} )
+		}
 
 		/**
 		 * // Rotation
@@ -32,6 +42,13 @@ export default abstract class Item extends Cell {
 				target: this
 			} )
 		}
+	}
+
+	implementInUpperConstructor() {
+		this.sizePoints = new SizePoints( {
+			draw         : this.draw,
+			sizeContainer: this.sizeContainer
+		} )
 	}
 
 	/**
@@ -186,13 +203,6 @@ export default abstract class Item extends Cell {
 		}
 
 		return res
-	}
-
-	implementInTopConstructor() {
-		this.sizePoints = new SizePoints( {
-			draw         : this.draw,
-			sizeContainer: this.sizeContainer
-		} )
 	}
 
 	size( kX: number, kY: number, center: Point2D ) {}

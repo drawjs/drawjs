@@ -1,11 +1,10 @@
 import { isNumber } from "lodash"
 import MathPoint from "./MathPoint"
-import { MATH_VECTOR } from "../../store/constant/index"
 
 const { sqrt, pow, atan, abs, PI } = Math
 
 export default class MathVector {
-	type = MATH_VECTOR
+	type = "MATH_VECTOR"
 
 	x: number
 

@@ -113,10 +113,8 @@ export default abstract class Cell extends Particle {
 		this.dragger.handleStop = this.handleStopDrag.bind( this )
 
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
+
 	}
-
-
-
 
 	render() {}
 

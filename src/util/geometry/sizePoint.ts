@@ -1,5 +1,5 @@
-import MathUnitVector from "../../model/math/MathUnitVector"
-import MathVector from "../../model/math/MathVector"
+import MathUnitVector from "util/math/MathUnitVector"
+import MathVector from "util/math/MathVector"
 import { isNaN } from "lodash"
 
 const { cos, sin, PI, abs } = Math
