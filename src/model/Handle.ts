@@ -172,7 +172,5 @@ export default class Handle extends Cell {
 		this.sharedActions.updateHandleRelativePoint( this, newRelativePoint )
 
 		this.sharedActions.adjustHandleParterPoint( this )
-
-		this.getters.draw.render()
 	}
 }

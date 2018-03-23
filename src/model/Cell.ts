@@ -130,6 +130,7 @@ export default abstract class Cell extends Particle {
 	updateDrag( event ) {}
 	handleStartDrag( event ) {}
 	handleDragging( event ) {
+		this.getters.draw.render()
 	}
 	handleStopDrag( event ) {}
 

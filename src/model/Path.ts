@@ -164,8 +164,6 @@ export default class Path extends PathItem {
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
 		this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
-
-		this.getters.draw.render()
 	}
 
 	/**

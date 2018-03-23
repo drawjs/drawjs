@@ -151,8 +151,6 @@ export default class RotationArrow extends Cell {
 
 		this.sharedActions.rotateCell( this.target, radian * RADIAN_TO_DEGREE )
 
-		this.draw.render()
-
 		/**
 		 * Get delta radian from prev dragging point to current point
 		 * @param point

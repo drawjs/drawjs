@@ -100,7 +100,5 @@ export default class Segment extends Cell {
 		const newY = y + deltaY
 		this.sharedActions.updateSegmentX( this, newX )
 		this.sharedActions.updateSegmentY( this, newY )
-
-		this.getters.draw.render()
 	}
 }

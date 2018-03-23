@@ -91,8 +91,6 @@ export abstract class SizePoint extends Cell {
 		const newKY = sizeK.kY
 
 		this.sharedActions.sizeItem( this.target, newKX, newKY, this.center )
-
-		this.getters.draw.render()
 	}
 
 	getNewK(

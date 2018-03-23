@@ -148,7 +148,5 @@ export default class MiniMapViewBox extends Cell {
 		const deltaYViewPort = -deltaY * initialRatio * zoom
 
 		this.getters.viewPort.panBy( deltaXViewPort, deltaYViewPort )
-
-		this.draw.render()
 	}
 }

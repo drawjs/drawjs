@@ -99,8 +99,6 @@ export default class Point extends Graph {
 		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
 		this.translate( deltaX, deltaY )
-
-		this.draw.render()
 	}
 	// ******* Drag ******
 }
