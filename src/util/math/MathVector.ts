@@ -22,7 +22,10 @@ export default class MathVector {
 		}
 
 		function isPoint( value: any ) {
-			const res: boolean = isPlainObject( value ) && isNumber( value.x ) && isNumber( value.y )
+			let res: boolean = false
+			try {
+				res = isNumber( value.x ) && isNumber( value.y )
+			} catch(e) {}
 			return res
 		}
 	}

@@ -53,6 +53,7 @@ export default class Segment extends Cell {
 
 		this.handleIn.partner = this.handleOut
 		this.handleOut.partner = this.handleIn
+
 		this.sharedActions.adjustHandleParterPoint( this.handleIn )
 	}
 

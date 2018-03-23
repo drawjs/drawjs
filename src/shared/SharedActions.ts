@@ -257,6 +257,10 @@ export default class SharedActions {
 			y: OB.y
 		}
 
+		if ( isNaN( newPartnerRelativePoint.x ) ) {
+			// debugger
+		}
+
 		this.updateHandleRelativePoint( partner, newPartnerRelativePoint )
 	}
 	showHandle( handle: Handle ) {
