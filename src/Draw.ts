@@ -55,6 +55,8 @@ export default class Draw {
 	 */
 	sharedActions: SharedActions
 
+
+
 	public onGraphClick: Function
 	public onGraphHover: Function
 

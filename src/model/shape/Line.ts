@@ -4,6 +4,7 @@ import { isNotNil } from "util/index"
 import getLineRotatableBounds from "../../util/geometry/getLineRotatableBounds"
 import connectPolygonPoints from "util/canvas/connectPolygonPoints"
 import Segment from "../Segment"
+import getArrowPoints from "../../util/geometry/getArrowPoints"
 
 export default class Line extends Path {
 	type = LINE
@@ -11,32 +12,47 @@ export default class Line extends Path {
 	rotatable: boolean = false
 	sizable: boolean = false
 
-	source: any
-	target: any
-
-	lineWidth: number = 1
-
 	/**
 	 * Override
 	 */
 	t = 1
 
-	constructor( props ) {
-		super( setPropsPointsDangerously( props ) )
+	color: string = "#999"
+
+	// Segment
+	source: any
+
+	// Segment
+	target: any
+
+	lineWidth: number = 1
+
+	showArrow: boolean = true
+
+	constructor( props: LineProps ) {
+		super( setPropsPointsSegmentsDangerously( props ) )
 
 		this.source = this.segments[ 0 ]
 		this.target = this.segments[ 1 ]
+
+		this.showArrow = isNotNil( props.showArrow ) ? props.showArrow : this.showArrow
 
 		this.sharedActions.clearSegmentsHandles( this.segments )
 		this.sharedActions.hideSegmentsHandles( this.segments )
 		// this.sharedActions.hideSegments( this.segments )
 
-		function setPropsPointsDangerously( props ) {
-			const { source, target } = props
+		function setPropsPointsSegmentsDangerously( props: LineProps ) {
+			const { source, target, sourceSegment, targetSegment } = props
 
-			const points: Point2D[] = [ source, target ]
+			if ( isNotNil( source ) && isNotNil( target ) ) {
+				const points: Point2D[] = [ source, target ]
+				props.points = points
+			}
 
-			props.points = points
+			if ( isNotNil( sourceSegment ) && isNotNil( targetSegment ) ) {
+				const segments: Segment[] = [ sourceSegment, targetSegment ]
+				props.segments = segments
+			}
 
 			return props
 		}
@@ -72,18 +88,42 @@ export default class Line extends Path {
 		return path
 	}
 
+	get targetArrowPath2d(): Path2D {
+		const points = getArrowPoints( this.source.point, this.target.point, 20 )
+		const { top, right, bottom, left } = points
+		const path2d: Path2D = connectPolygonPoints( [ top, right, bottom, left ] )
+
+		// this.getters.testUtils.delayRenderPoint( top, "red" )
+		// this.getters.testUtils.delayRenderPoint( right, "orange" )
+		// this.getters.testUtils.delayRenderPoint( bottom, "yellow" )
+		// this.getters.testUtils.delayRenderPoint( left, "green" )
+
+		return path2d
+	}
+
 	render() {
 		super.render()
 
 		this.renderHitRegion()
+		this.showArrow && this.renderArrow()
 	}
 
 	renderHitRegion() {
 		const { ctx } = this.getters
 		ctx.save()
-		ctx.fillStyle = "#999"
+		ctx.fillStyle = this.color
 		ctx.fill( this.hitRegionPath2d )
 		ctx.restore()
+	}
+
+	renderArrow() {
+		if ( this.showArrow ) {
+			const { ctx } = this.getters
+			ctx.save()
+			ctx.fillStyle = this.color
+			ctx.fill( this.targetArrowPath2d )
+			ctx.restore()
+		}
 	}
 
 	contain( x: number, y: number ) {

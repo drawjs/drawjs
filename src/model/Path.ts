@@ -8,7 +8,7 @@ import rotate from "../util/geometry/rotate"
 import distance from "../util/geometry/distance"
 import origin from "../util/geometry/origin"
 import getRotatedPoint from "../util/getRotatedPoint"
-import { cloneDeep } from "lodash"
+import { cloneDeep, isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
 
@@ -30,13 +30,15 @@ export default class Path extends PathItem {
 
 		const self = this
 
-		this.segments = isNotNil( props.points ) ?
-			props.points.map( getSegment ) :
-			this.segments
+		if ( isNotNil( props.segments ) ) {
+			this.segments = props.segments
+		}
 
-		this.segments = isNotNil( props.segments ) ?
-			props.segments :
-			this.segments
+		if ( isNil( props.segments ) ) {
+			this.segments = isNotNil( props.points ) ?
+				props.points.map( getSegment ) :
+				this.segments
+		}
 
 		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
 

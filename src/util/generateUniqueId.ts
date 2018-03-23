@@ -8,5 +8,5 @@ export default function(): string {
 	  i = Math.floor( Math.random() * 16 ).toString( 16 ).toUpperCase()
 	  result = result + i
 	}
-	return `${ topic }-${ result }-${ btoa(  '' +  ( new Date() ).getTime() ) }`
+	return `${ topic }-${ result }-${ ( new Date() ).getTime()  }`
 }

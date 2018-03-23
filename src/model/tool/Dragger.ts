@@ -5,6 +5,11 @@ class Dragger extends Particle {
 	enable: boolean
 	prevEvent: any
 
+	/**
+	 * Drag interface
+	 */
+	interfaceDragging: Function
+
 	get prevPoint(): Point2DInitial {
 		const point: Point2DInitial = this.getters.getInitialPoint( this.prevEvent )
 		return point
@@ -29,9 +34,12 @@ class Dragger extends Particle {
 
 		this.update( event )
 
-		this.updatePrevEvent( event )
+		this.interfaceDragging && this.interfaceDragging( event, this )
 
 		this.handleDragging && this.handleDragging( event )
+
+		this.updatePrevEvent( event )
+
 	}
 	stop( event ): void {
 		this.enable = false

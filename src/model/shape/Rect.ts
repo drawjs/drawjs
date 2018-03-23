@@ -2,7 +2,7 @@ import Path from "../Path"
 import { RECT } from "store/constant/cellType"
 import { isNotNil } from "util/index"
 
-export default class Polygon extends Path {
+export default class Rect extends Path {
 	type = RECT
 
 	left: number = 0
@@ -22,6 +22,8 @@ export default class Polygon extends Path {
 		this.top = isNotNil( props.top ) ? props.top : this.top
 		this.width = isNotNil( props.width ) ? props.width : this.width
 		this.height = isNotNil( props.height ) ? props.height : this.height
+		this.sizable = isNotNil( props.sizable ) ? props.sizable : this.sizable
+		this.rotatable = isNotNil( props.rotatable ) ? props.rotatable : this.rotatable
 
 		this.sharedActions.clearSegmentsHandles( this.segments )
 		this.sharedActions.hideSegmentsHandles( this.segments )

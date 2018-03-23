@@ -3,6 +3,7 @@ import Handle from "./Handle"
 import { HandleType } from "../store/constant/index"
 import Cell from "./Cell"
 import Path from "./Path"
+import { isNotNil } from 'util/index';
 
 const { PI } = Math
 
@@ -36,6 +37,9 @@ export default class Segment extends Cell {
 		this.x = props.x
 		this.y = props.y
 
+		this.path = isNotNil( props.path ) ? props.path : this.path
+
+
 		this.handleIn = new Handle( {
 			draw   : this.draw,
 			segment: this,
@@ -61,7 +65,7 @@ export default class Segment extends Cell {
 
 	get path2d(): Path2D {
 		const path = new Path2D()
-		path.arc( this.x, this.y, 3, 0, PI * 2 )
+		path.arc( this.x, this.y, 5, 0, PI * 2 )
 		return path
 	}
 

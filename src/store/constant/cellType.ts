@@ -1,3 +1,6 @@
+export const SEGMENT = "segment"
+
+
 /**
  * Shape
  */

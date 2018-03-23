@@ -17,11 +17,9 @@ export default function(
 	let clonedSource: Point2D = cloneDeep( source )
 	let clonedTarget: Point2D = cloneDeep( target )
 
-	// Ensure source is on the left
-	let S: Point2D =
-		clonedSource.x < clonedTarget.x ? clonedSource : clonedTarget
-	let T: Point2D =
-		clonedSource.x < clonedTarget.x ? clonedTarget : clonedSource
+
+	let S = clonedSource
+	let T = clonedTarget
 
 	/**
 	 * Reversely rotated T
@@ -46,8 +44,6 @@ export default function(
 	// Bese on source point
 	const ST: MathVector = new MathVector( S, T )
 	angle = ST.angle
-
-	console.log( angle )
 
 	R = getRotatedPoint( T, -angle, S )
 

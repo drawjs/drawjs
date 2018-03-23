@@ -48,6 +48,7 @@ export default abstract class Cell extends Particle {
 	prevKX: number = 1
 	prevKY: number = 1
 
+
 	get unitKX(): number {
 		const { kX } = this
 		return kX === 0 ? 0 : kX / abs( kX )
@@ -128,7 +129,8 @@ export default abstract class Cell extends Particle {
 	 */
 	updateDrag( event ) {}
 	handleStartDrag( event ) {}
-	handleDragging( event ) {}
+	handleDragging( event ) {
+	}
 	handleStopDrag( event ) {}
 
 	/**
