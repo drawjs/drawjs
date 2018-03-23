@@ -18,7 +18,7 @@ export default class Handle extends Cell {
 
 	dragger: Dragger
 
-	show: boolean = true
+	show: boolean = false
 
 	/**
 	 * The relative point of handle

@@ -1,7 +1,9 @@
 import { cloneDeep } from "lodash"
 import Particle from "../Particle"
+import Cell from 'model/Cell';
 
 class Dragger extends Particle {
+	target: Cell
 	enable: boolean
 	prevEvent: any
 
@@ -9,6 +11,12 @@ class Dragger extends Particle {
 	 * Drag interface
 	 */
 	interfaceDragging: Function
+
+	constructor( props ) {
+		super( props )
+
+		this.target = props.target
+	}
 
 	get prevPoint(): Point2DInitial {
 		const point: Point2DInitial = this.getters.getInitialPoint( this.prevEvent )

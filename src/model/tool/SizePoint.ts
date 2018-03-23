@@ -17,6 +17,10 @@ export abstract class SizePoint extends Cell {
 		this.sizePoints = props.sizePoints
 	}
 
+	get sizable(): boolean {
+		return this.target.sizable
+	}
+
 	get path2d(): Path2D {
 		const path = new Path2D()
 		path.arc( this.x, this.y, 5, 0, PI * 2 )
@@ -61,7 +65,7 @@ export abstract class SizePoint extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain = this.sizable && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 

@@ -127,10 +127,18 @@ export default class Line extends Path {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath(
+		const containHitRigion: boolean = this.getters.pointOnPath(
 			{ x, y },
 			this.hitRegionPath2d
 		)
+
+		const containeTargetArrow: boolean = this.getters.pointOnPath(
+			{ x, y },
+			this.targetArrowPath2d
+		)
+
+		const isContain: boolean = this.showArrow ? ( containeTargetArrow || containHitRigion ) : containHitRigion
+
 		return isContain
 	}
 }
