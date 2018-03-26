@@ -10,6 +10,11 @@ export const LINE = 'line'
 export const POINT = 'point'
 
 /**
+ * Text
+ */
+export const TEXT = 'text'
+
+/**
  * Image
  */
 export const RECT_IMAGE = 'rect-image'

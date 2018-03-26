@@ -13,8 +13,9 @@ import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
 import Point from "../../model/shape/Point"
 import Polygon from "../../model/shape/Polygon"
-import { SEGMENT } from '../constant/cellType';
-import Segment from '../../model/Segment';
+import { SEGMENT, TEXT } from '../constant/cellType';
+import Segment from "../../model/Segment"
+import Text from '../../model/text/Text';
 
 export default function() {
 	return {
@@ -27,6 +28,11 @@ export default function() {
 		[ LINE ]   : Line,
 		[ POINT ]  : Point,
 		[ POLYGON ]: Polygon,
+
+		/**
+		 * Text
+		 */
+		[ TEXT ]: Text,
 
 		/**
 		 * Image
