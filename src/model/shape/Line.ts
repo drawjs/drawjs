@@ -1,8 +1,8 @@
 import Path from "../Path"
-import { LINE } from "store/constant/cellType"
-import { isNotNil } from "util/index"
+import { LINE } from "../../store/constant/cellType"
+import { isNotNil } from "../../util/index"
 import getLineRotatableBounds from "../../util/geometry/getLineRotatableBounds"
-import connectPolygonPoints from "util/canvas/connectPolygonPoints"
+import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import Segment from "../Segment"
 import getArrowPoints from "../../util/geometry/getArrowPoints"
 

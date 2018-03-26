@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 
-import { generateUniqueId } from 'util/index'
-import Cell from 'model/Cell'
+import { generateUniqueId } from '../util/index'
+import Cell from '../model/Cell'
 
 
 export default abstract class Geometry extends Cell {

@@ -1,5 +1,5 @@
 import Cell from "../Cell"
-import { isNotNil } from "util/index"
+import { isNotNil } from "../../util/index"
 import Particle from "../Particle"
 
 const { min, max, abs } = Math

@@ -1,4 +1,4 @@
-import { getRotatedPoint, isNotNil } from 'util/index';
+import { getRotatedPoint, isNotNil } from '../util/index';
 import { MIN_SIZE_KX, MIN_SIZE_KY } from "../store/constant/index"
 
 export default class SizeUtils {

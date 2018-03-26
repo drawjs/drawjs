@@ -1,4 +1,4 @@
-import { ROTATION_ARROW, SIZE_POINT, MINI_MAP } from "store/constant/cellType"
+import { ROTATION_ARROW, SIZE_POINT, MINI_MAP } from "../../store/constant/cellType"
 import { MINI_MAP_VIEW_BOX } from '../constant/cellType';
 
 

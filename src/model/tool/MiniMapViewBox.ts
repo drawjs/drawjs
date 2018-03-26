@@ -1,4 +1,4 @@
-import { Cell } from "model/index"
+import { Cell } from "../../model/index"
 import MiniMap from "./MiniMap"
 import { MINI_MAP_VIEW_BOX } from "../../store/constant/cellType"
 

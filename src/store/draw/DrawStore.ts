@@ -1,4 +1,4 @@
-import { DRAW_STORE_PANEL_DEFAULT_NAME } from "store/constant/index"
+import { DRAW_STORE_PANEL_DEFAULT_NAME } from "../../store/constant/index"
 import { generateUniqueId } from "../../util/index"
 import Selector from '../../model/tool/Selector';
 import Interaction from '../../core/interaction';

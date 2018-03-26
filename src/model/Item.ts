@@ -1,5 +1,5 @@
 import Cell from "./Cell"
-import SizeContainer from "model/tool/SizeContainer"
+import SizeContainer from "../model/tool/SizeContainer"
 import RotationArrow from "./tool/RotationArrow"
 import { isBoolean } from "lodash"
 import rotate from "../util/geometry/rotate"

@@ -1,5 +1,5 @@
-import MathUnitVector from "util/math/MathUnitVector"
-import MathVector from "util/math/MathVector"
+import MathUnitVector from "../../util/math/MathUnitVector"
+import MathVector from "../../util/math/MathVector"
 
 const { cos, sin, PI, abs } = Math
 

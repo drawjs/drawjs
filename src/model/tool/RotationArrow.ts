@@ -1,8 +1,8 @@
-import Cell from "model/Cell"
+import Cell from "../../model/Cell"
 import SizeContainer from "./SizeContainer"
-import getRectVertices from "util/geometry/getRectVertices"
-import rotatePoints from "util/geometry/rotatePoints"
-import connectPolygonPoints from "util/canvas/connectPolygonPoints"
+import getRectVertices from "../../util/geometry/getRectVertices"
+import rotatePoints from "../../util/geometry/rotatePoints"
+import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import { getPointAngleToOrigin } from "../../util/index"
 import {
 	RADIAN_TO_DEGREE,

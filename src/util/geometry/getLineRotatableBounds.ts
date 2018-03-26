@@ -1,6 +1,6 @@
-import MathVector from "util/math/MathVector"
+import MathVector from "../../util/math/MathVector"
 import { cloneDeep } from "lodash"
-import { getRotatedPoint } from "util/index"
+import { getRotatedPoint } from "../../util/index"
 
 interface RotatableBounds {
 	leftTop: Point2D

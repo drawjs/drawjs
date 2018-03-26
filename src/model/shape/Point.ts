@@ -3,7 +3,7 @@ import { POINT } from "../../store/constant/cellType"
 import { POINT_RADIUS } from "../../store/constant/index"
 import Graph from "../Graph"
 import SizeContainer from "../tool/SizeContainer"
-import translate from "util/geometry/translate"
+import translate from "../../util/geometry/translate"
 
 export default class Point extends Graph {
 	type = POINT

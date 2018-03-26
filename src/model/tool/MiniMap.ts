@@ -1,5 +1,5 @@
 import Cell from "../Cell"
-import zoomPoint from "util/geometry/zoom"
+import zoomPoint from "../../util/geometry/zoom"
 import MiniMapViewBox from "./MiniMapViewBox"
 import { isNotNil } from "../../util/index";
 import { MINI_MAP } from '../../store/constant/cellType';

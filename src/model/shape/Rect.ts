@@ -1,6 +1,6 @@
 import Path from "../Path"
-import { RECT } from "store/constant/cellType"
-import { isNotNil } from "util/index"
+import { RECT } from "../../store/constant/cellType"
+import { isNotNil } from "../../util/index"
 
 export default class Rect extends Path {
 	type = RECT

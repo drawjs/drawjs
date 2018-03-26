@@ -1,11 +1,11 @@
 import Graph from "../Graph"
-import rotatePoints from "util/geometry/rotatePoints"
+import rotatePoints from "../../util/geometry/rotatePoints"
 import Particle from "../Particle"
 import Path from "../Path"
 import Item from "../Item"
 import connectPoints from "../../util/geometry/connectPoints"
 import rotate from "../../util/geometry/rotate"
-import connectPolygonPoints from "util/canvas/connectPolygonPoints"
+import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 
 const { max, min, PI } = Math
 

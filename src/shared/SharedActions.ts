@@ -6,7 +6,7 @@ import selectionRendererExcludingCellTypes from "../store/exclude/selectionRende
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
 import Segment from '../model/Segment';
-import { getRotatedPoint } from "util/index"
+import { getRotatedPoint } from "../util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
 import absolute from "../util/geometry/absolute"

@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash"
-import MathVector from "util/math/MathVector"
-import { getRotatedPoint } from "util/index"
+import MathVector from "../../util/math/MathVector"
+import { getRotatedPoint } from "../../util/index"
 
 /**
  *     #  top

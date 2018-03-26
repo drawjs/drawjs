@@ -1,18 +1,17 @@
 import * as _ from "lodash"
-import * as Ajv from "lib/ajv"
+import * as Ajv from "./lib/ajv"
 
-import { Cell } from "model/index"
 import {
 	DRAW_INSTANCE_NAME,
 	DRAW_STORE_PANEL_DEFAULT_NAME,
 	DRAW_ELEMENT_ID_PREFIX,
 	DRAW_PANEL_ID_PREFIX
-} from "store/constant/index"
+} from "./store/constant/index"
 
-import * as download from "lib/download.js"
-import { getDefaultDrawExportFileName } from "store/index"
-import { log } from "util/index"
-import SchemaDrawStoreWithoutInstance from "schema/SchemaDrawStoreWithoutInstance"
+import * as download from "./lib/download.js"
+import { getDefaultDrawExportFileName } from "./store/index"
+import { log } from "./util/index"
+import SchemaDrawStoreWithoutInstance from "./schema/SchemaDrawStoreWithoutInstance"
 // import MiniMap from './model/tool/MiniMap';
 import Selector from "./model/tool/Selector"
 import Interaction from "./core/interaction"

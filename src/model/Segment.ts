@@ -3,7 +3,7 @@ import Handle from "./Handle"
 import { HandleType } from "../store/constant/index"
 import Cell from "./Cell"
 import Path from "./Path"
-import { isNotNil } from 'util/index';
+import { isNotNil } from '../util/index';
 
 const { PI } = Math
 
@@ -38,6 +38,7 @@ export default class Segment extends Cell {
 		this.y = props.y
 
 		this.path = isNotNil( props.path ) ? props.path : this.path
+		this.show = isNotNil( props.show ) ? props.show : this.show
 
 
 		this.handleIn = new Handle( {

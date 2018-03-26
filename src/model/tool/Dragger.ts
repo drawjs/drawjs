@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash"
 import Particle from "../Particle"
-import Cell from 'model/Cell';
+import Cell from '../../model/Cell';
 
 class Dragger extends Particle {
 	target: Cell

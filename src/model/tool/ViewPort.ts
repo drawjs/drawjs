@@ -1,4 +1,4 @@
-import zoomPoint from "util/geometry/zoom"
+import zoomPoint from "../../util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
 import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from "../../store/constant/index"
 import Particle from "../Particle"

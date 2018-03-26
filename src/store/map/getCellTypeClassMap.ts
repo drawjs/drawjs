@@ -1,4 +1,4 @@
-import * as cellTypeList from "store/constant/cellType"
+import * as cellTypeList from "../../store/constant/cellType"
 import {
 	POLYGON,
 	RECT,
@@ -6,8 +6,8 @@ import {
 	POINT,
 	RECT_IMAGE,
 	SIZE_POINT
-} from "store/constant/cellType"
-import RectImage from "model/image/RectImage"
+} from "../../store/constant/cellType"
+import RectImage from "../../model/image/RectImage"
 import ScalePoint from "../../model/tool/ScalePoint"
 import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
