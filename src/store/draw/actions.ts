@@ -201,7 +201,8 @@ export default class Actions {
 	/**
 	 * // CEll
 	 */
-	START_DRAG_MOST_TOP_CELL_FOCUSED( point ) {
+	START_DRAG_MOST_TOP_CELL_FOCUSED( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const cell = this.getters.getMostTopCellFocused( point )
 		this.sharedActions.startDragCell( cell, event )
 	}
@@ -216,7 +217,7 @@ export default class Actions {
 		}
 	}
 
-	DRAGGING_CELLS_SHOULD_DRAG() {
+	DRAGGING_CELLS_SHOULD_DRAG( event ) {
 		const self = this
 
 		this.getters.cellsShouldDrag.map( dragging )
@@ -226,7 +227,7 @@ export default class Actions {
 		}
 	}
 
-	STOP_DRAG_CELLS_SHOULD_DRAG() {
+	STOP_DRAG_CELLS_SHOULD_DRAG( event ) {
 		const self = this
 
 		this.getters.cellsShouldDrag.map( stopDrag )
@@ -234,6 +235,12 @@ export default class Actions {
 		function stopDrag( cell ) {
 			self.sharedActions.stopDragCell( cell, event )
 		}
+	}
+
+	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		const cell = this.getters.getMostTopCellFocused( point )
+		isNotNil( cell ) && this.sharedActions.doubleClickCell( cell, event )
 	}
 
 

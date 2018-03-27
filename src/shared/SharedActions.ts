@@ -38,6 +38,10 @@ export default class SharedActions {
 		cell.dragger.stop( event )
 	}
 
+	doubleClickCell( cell: Cell, event: any ) {
+		cell.handleDoubleClick && cell.handleDoubleClick( event )
+	}
+
 	rotateCell( cell: Cell, angle: number ) {
 		cell.rotate( angle )
 	}

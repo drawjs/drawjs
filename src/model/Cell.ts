@@ -53,7 +53,6 @@ export default abstract class Cell extends Particle {
 	prevKX: number = 1
 	prevKY: number = 1
 
-
 	get unitKX(): number {
 		const { kX } = this
 		return kX === 0 ? 0 : kX / abs( kX )
@@ -70,9 +69,9 @@ export default abstract class Cell extends Particle {
 	shouldSelect: boolean = false
 	get bounds(): Bounds {
 		return {
-			left: 0,
-			right: 0,
-			top: 0,
+			left  : 0,
+			right : 0,
+			top   : 0,
 			bottom: 0
 		}
 	}
@@ -100,8 +99,6 @@ export default abstract class Cell extends Particle {
 	 */
 	isVisiableInMiniMap = true
 
-
-
 	/**
 	 * // Canvas
 	 */
@@ -119,7 +116,6 @@ export default abstract class Cell extends Particle {
 		this.dragger.handleStop = this.handleStopDrag.bind( this )
 
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
-
 	}
 
 	render() {}
@@ -138,6 +134,11 @@ export default abstract class Cell extends Particle {
 		this.getters.draw.render()
 	}
 	handleStopDrag( event ) {}
+
+	/**
+	 * Double click
+	 */
+	handleDoubleClick( event ) {}
 
 	/**
 	 * Rotate

@@ -71,4 +71,8 @@ export default class Text extends Cell {
 		this.left = this.left + deltaX
 		this.top = this.top + deltaY
 	}
+
+	handleDoubleClick( event ) {
+		console.log( this, event )
+	}
 }

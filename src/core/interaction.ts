@@ -12,11 +12,9 @@ class Interaction extends Particle {
 
 		self.eventKeyboard = new EventKeyboard()
 
-		self.getters.canvas.removeEventListener(
-			"mousewheel",
-			mousewheelListener
-		)
-		self.getters.canvas.addEventListener( "mousewheel", mousewheelListener )
+		canvas.removeEventListener( "mousewheel", mousewheelListener )
+		canvas.addEventListener( "mousewheel", mousewheelListener )
+
 		canvas.removeEventListener( "mousedown", mousedownListener )
 		canvas.addEventListener( "mousedown", mousedownListener )
 
@@ -25,6 +23,9 @@ class Interaction extends Particle {
 
 		canvas.removeEventListener( "mouseup", mouseupListener )
 		canvas.addEventListener( "mouseup", mouseupListener )
+
+		canvas.removeEventListener( "dblclick", dblclickListener )
+		canvas.addEventListener( "dblclick", dblclickListener )
 
 		function mousedownListener( event ) {
 			const point: Point2DInitial = self.getters.getInitialPoint( event )
@@ -40,7 +41,7 @@ class Interaction extends Particle {
 			}
 
 			if ( self.getters.pointOnSelectionExcludingCells( point ) ) {
-				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( point )
+				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( event )
 				return
 			}
 
@@ -49,7 +50,7 @@ class Interaction extends Particle {
 
 				self.actions.SELECT_MOST_TOP_CELL_FOCUSED( point )
 
-				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( point )
+				self.actions.START_DRAG_MOST_TOP_CELL_FOCUSED( event )
 				return
 			}
 
@@ -68,7 +69,7 @@ class Interaction extends Particle {
 			self.getters.viewPort.shouldPan &&
 				self.getters.viewPort.panning( event )
 
-			self.actions.DRAGGING_CELLS_SHOULD_DRAG()
+			self.actions.DRAGGING_CELLS_SHOULD_DRAG( event )
 		}
 
 		function mouseupListener( event ) {
@@ -76,7 +77,7 @@ class Interaction extends Particle {
 
 			stopSelect( event )
 
-			self.actions.STOP_DRAG_CELLS_SHOULD_DRAG()
+			self.actions.STOP_DRAG_CELLS_SHOULD_DRAG( event )
 
 			self.getters.viewPort.stopPan()
 		}
@@ -104,6 +105,10 @@ class Interaction extends Particle {
 				const res = deltaX < 0 || deltaY < 0
 				return res
 			}
+		}
+
+		function dblclickListener( event ) {
+			self.actions.DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event )
 		}
 
 		function startSelect( event ) {
