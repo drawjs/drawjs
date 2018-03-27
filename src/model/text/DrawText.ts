@@ -5,7 +5,7 @@ import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import TextInput from '../tool/TextInput';
 
-export default class Text extends Cell {
+export default class DrawText extends Cell {
 	type = TEXT
 
 	left: number = 0

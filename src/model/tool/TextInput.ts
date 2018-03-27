@@ -1,10 +1,10 @@
 import { isNotNil } from "../../util/index"
 import Particle from "../Particle"
-import Text from "../text/Text"
+import DrawText from "../text/DrawText"
 
 export default class TextInput extends Particle {
 	input: HTMLInputElement = document.createElement( "input" )
-	target: Text
+	target: DrawText
 
 
 	constructor( props ) {
@@ -13,6 +13,8 @@ export default class TextInput extends Particle {
 		this.input.type = "text"
 		this.input.style.position = "fixed"
 		this.input.style.zIndex = "100000000000000"
+
+		this.hide()
 	}
 
 	get value(): string {
@@ -70,7 +72,7 @@ export default class TextInput extends Particle {
 		this.hide()
 
 		if ( isNotNil( target ) ) {
-			this.sharedActions.updateTheTextOfText( target, value )
+			this.sharedActions.updateTheTextOfDrawText( target, value )
 			this.draw.render()
 		}
 	}

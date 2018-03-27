@@ -305,6 +305,4 @@ export default class SharedGetters {
 		}
 		return newPoint
 	}
-
-
 }

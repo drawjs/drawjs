@@ -15,7 +15,7 @@ import Point from "../../model/shape/Point"
 import Polygon from "../../model/shape/Polygon"
 import { SEGMENT, TEXT } from '../constant/cellType';
 import Segment from "../../model/Segment"
-import Text from '../../model/text/Text';
+import DrawText from '../../model/text/DrawText';
 
 export default function() {
 	return {
@@ -32,7 +32,7 @@ export default function() {
 		/**
 		 * Text
 		 */
-		[ TEXT ]: Text,
+		[ TEXT ]: DrawText,
 
 		/**
 		 * Image

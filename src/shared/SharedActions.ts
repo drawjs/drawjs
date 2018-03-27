@@ -14,7 +14,7 @@ import Item from "../model/Item"
 import sizePoint from "../util/geometry/sizePoint"
 import origin from "../util/geometry/origin";
 import TextInput from '../model/tool/TextInput';
-import Text from '../model/text/Text';
+import DrawText from '../model/text/DrawText';
 
 export default class SharedActions {
 	drawStore: DrawStore
@@ -391,16 +391,20 @@ export default class SharedActions {
 	}
 
 	/**
-	 * // Text
+	 * // Draw text
 	 */
-	updateTheTextOfText( text: Text, value: string ) {
-		text.text = value
+	updateTheTextOfDrawText( drawText: DrawText, value: string ) {
+		drawText.text = value
+	}
+	translateDrawText( drawText: DrawText, deltaX: number, deltaY: number ) {
+		drawText.left = drawText.left + deltaX
+		drawText.top = drawText.top + deltaY
 	}
 
 	/**
 	 * // Text input
 	 */
-	updateTextInputTarget( textInput: TextInput, target: Text ) {
+	updateTextInputTarget( textInput: TextInput, target: DrawText ) {
 		textInput.target = target
 	}
 }
