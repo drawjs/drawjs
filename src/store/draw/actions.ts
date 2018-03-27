@@ -14,6 +14,7 @@ import Getters from "./Getters"
 import SharedActions from "../../shared/SharedActions";
 import MiniMap from '../../model/tool/MiniMap';
 import TestUtils from '../../shared/TestUtils';
+import TextInput from '../../model/tool/TextInput';
 
 export default class Actions {
 	drawStore: DrawStore
@@ -29,6 +30,9 @@ export default class Actions {
 		this.getters = getters
 	}
 
+	/**
+	 * // Update props in drawStore
+	 */
 	UPDATE_STORE( store: DrawStore | DrawStoreWithoutInstance ) {
 		const cloned = cloneDeep( store )
 		const keys: string[] = Object.keys( store )
@@ -76,6 +80,10 @@ export default class Actions {
 
 	UPDATE_TEST_UTILS( testUtils: TestUtils ) {
 		this.drawStore[ "testUtils" ] = testUtils
+	}
+
+	UPDATE_TEXT_INPUT( textInput: TextInput ) {
+		this.drawStore[ "textInput" ] = textInput
 	}
 
 	ADD_ELEMENT(
@@ -262,5 +270,11 @@ export default class Actions {
 		this.getters.cellsInSelectorRigion.map( this.sharedActions.selectCell )
 	}
 
-
+	/**
+	 * // Text input
+	 */
+	APPEND_TEXT_INPUT_TO_DOCUMENT_BODY() {
+		const { input } = this.getters.textInput
+		document.body.appendChild( input )
+	}
 }

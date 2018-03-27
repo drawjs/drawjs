@@ -1,20 +1,27 @@
 import * as _ from "lodash"
 
-enum KeyboardKeys {
-	ALT = "Alt",
-	SPACE = " "
-}
 
 export default class EventKeyboard {
+	static KEYBOARD_KEYS: any = {
+		ALT  : "Alt",
+		SPACE: " ",
+		ENTER: "Enter"
+	}
+
 	keyboardKeysPressing = []
 
 	get isAltPressing() {
-		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.ALT )
+		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ALT )
 		return res
 	}
 
 	get isSpacePressing() {
-		const res = _.includes( this.keyboardKeysPressing, KeyboardKeys.SPACE )
+		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.SPACE )
+		return res
+	}
+
+	get isEnterPressing() {
+		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ENTER )
 		return res
 	}
 
@@ -26,17 +33,19 @@ export default class EventKeyboard {
 	_keydownListener( event ) {
 		const { key } = event
 		this._addToKeyboardKeysPressing( key )
+
+		this.handleKeyDown && this.handleKeyDown( event )
 	}
 	_keyupListener( event ) {
 		const { key } = event
 		this._removeFromKeyboardKeysPressing( key )
 	}
 
-	_addToKeyboardKeysPressing( key: KeyboardKeys ) {
+	_addToKeyboardKeysPressing( key: string ) {
 		this.keyboardKeysPressing = _.uniq( [ ...this.keyboardKeysPressing, key ] )
 	}
 
-	_removeFromKeyboardKeysPressing( key: KeyboardKeys ) {
+	_removeFromKeyboardKeysPressing( key: string ) {
 		this.keyboardKeysPressing = this.keyboardKeysPressing.filter( notKey )
 
 		function notKey( item ) {
@@ -44,5 +53,5 @@ export default class EventKeyboard {
 		}
 	}
 
-
+	handleKeyDown( event ) {}
 }

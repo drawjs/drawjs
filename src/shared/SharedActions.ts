@@ -13,6 +13,8 @@ import absolute from "../util/geometry/absolute"
 import Item from "../model/Item"
 import sizePoint from "../util/geometry/sizePoint"
 import origin from "../util/geometry/origin";
+import TextInput from '../model/tool/TextInput';
+import Text from '../model/text/Text';
 
 export default class SharedActions {
 	drawStore: DrawStore
@@ -386,5 +388,19 @@ export default class SharedActions {
 			ctx.stroke( path )
 			ctx.restore()
 		}
+	}
+
+	/**
+	 * // Text
+	 */
+	updateTheTextOfText( text: Text, value: string ) {
+		text.text = value
+	}
+
+	/**
+	 * // Text input
+	 */
+	updateTextInputTarget( textInput: TextInput, target: Text ) {
+		textInput.target = target
 	}
 }

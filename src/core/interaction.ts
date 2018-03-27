@@ -1,4 +1,4 @@
-import EventKeyboard from "../util/EventKeyboard"
+import EventKeyboard from '../util/EventKeyboard';
 import Particle from "../model/Particle"
 
 class Interaction extends Particle {
@@ -8,7 +8,7 @@ class Interaction extends Particle {
 
 		const self = this
 
-		const canvas = self.getters.canvas
+		const { canvas, textInput } = self.getters
 
 		self.eventKeyboard = new EventKeyboard()
 
@@ -26,6 +26,10 @@ class Interaction extends Particle {
 
 		canvas.removeEventListener( "dblclick", dblclickListener )
 		canvas.addEventListener( "dblclick", dblclickListener )
+
+		textInput.bindEvents()
+
+		self.eventKeyboard.handleKeyDown = keyBoardDownListener
 
 		function mousedownListener( event ) {
 			const point: Point2DInitial = self.getters.getInitialPoint( event )
@@ -111,6 +115,15 @@ class Interaction extends Particle {
 			self.actions.DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event )
 		}
 
+		function keyBoardDownListener( event ) {
+			const { key } = event
+			const { textInput } = self.getters
+			if ( key === EventKeyboard.KEYBOARD_KEYS.ENTER ) {
+				// Text input
+				textInput.isShowing && textInput.hideSelfAndUpdateTarget()
+			}
+		}
+
 		function startSelect( event ) {
 			self.getters.selector.shouldSelect = true
 
@@ -133,6 +146,7 @@ class Interaction extends Particle {
 			self.getters.draw.render()
 		}
 	}
+
 }
 
 export default Interaction

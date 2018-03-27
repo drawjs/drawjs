@@ -8,6 +8,7 @@ import ViewPort from '../../model/tool/ViewPort';
 import Draw from '../../Draw';
 import MiniMap from '../../model/tool/MiniMap';
 import TestUtils from '../../shared/TestUtils';
+import TextInput from "../../model/tool/TextInput";
 
 export default class DrawStore {
 	activePanelId = null
@@ -43,5 +44,10 @@ export default class DrawStore {
 	grid: Grid = null
 
 	testUtils: TestUtils = null
+
+	/**
+	 * Input that updates the text of Text element
+	 */
+	textInput: TextInput = null
 }
 

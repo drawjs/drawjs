@@ -3,6 +3,7 @@ import { TEXT } from "../../store/constant/cellType"
 import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
+import TextInput from '../tool/TextInput';
 
 export default class Text extends Cell {
 	type = TEXT
@@ -13,6 +14,7 @@ export default class Text extends Cell {
 	text: string = ""
 
 	fontSize: number =  12
+
 
 	constructor( props ) {
 		super( props )
@@ -40,6 +42,10 @@ export default class Text extends Cell {
 		const path: Path2D = connectPolygonPoints( points )
 
 		return path
+	}
+
+	get textInput(): TextInput {
+		return this.getters.textInput
 	}
 
 	contain( x: number, y: number ) {
@@ -73,6 +79,18 @@ export default class Text extends Cell {
 	}
 
 	handleDoubleClick( event ) {
-		console.log( this, event )
+		const { x, y } = event
+
+		const left: number = x
+		const top: number = y
+
+		this.getters.textInput.target = this
+		this.getters.textInput.updateProp( {
+			left,
+			top,
+			text: this.text
+		} )
+		this.getters.textInput.show()
+		this.getters.textInput.focus()
 	}
 }

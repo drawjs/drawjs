@@ -15,6 +15,7 @@ import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellType
 import MiniMap from '../../model/tool/MiniMap';
 import TestUtils from '../../shared/TestUtils';
 import { MINI_MAP } from "../constant/cellType";
+import TextInput from '../../model/tool/TextInput';
 
 export default class Getters {
 	drawStore: DrawStore
@@ -385,5 +386,13 @@ export default class Getters {
 	 */
 	get testUtils(): TestUtils {
 		return this.drawStore.testUtils
+	}
+
+	/**
+	 * // Text input
+	 */
+	get textInput(): TextInput {
+		const { textInput } = this.drawStore
+		return textInput
 	}
 }

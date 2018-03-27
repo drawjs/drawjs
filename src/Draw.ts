@@ -25,6 +25,7 @@ import SharedActions from "./shared/SharedActions"
 import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
+import TextInput from './model/tool/TextInput';
 
 const ajv = new Ajv()
 
@@ -83,16 +84,21 @@ export default class Draw {
 		const selector = new Selector( { draw: this } )
 		this.actions.UPDATE_SELECTOR( selector )
 
-		const interaction = new Interaction( { draw: this } )
-		this.actions.UPDATE_INTERACTION( interaction )
-
 		const miniMap = new MiniMap( { draw: this } )
 		this.actions.UPDATE_MINIMAP( miniMap )
 
 		const grid = new Grid( { draw: this, canvas } )
 		this.actions.UPDATE_GRID( grid )
 
+		const textInput: TextInput = new TextInput( { draw: this } )
+		this.actions.UPDATE_TEXT_INPUT( textInput )
+
+		const interaction = new Interaction( { draw: this } )
+		this.actions.UPDATE_INTERACTION( interaction )
+
 		this.actions.MODIFY_ACTIVE_PANEL_ID( this.getters.storeActivePanelId )
+
+		this.actions.APPEND_TEXT_INPUT_TO_DOCUMENT_BODY()
 	}
 
 	public render() {
