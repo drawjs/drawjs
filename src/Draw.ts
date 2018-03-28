@@ -57,8 +57,8 @@ export default class Draw {
 
 
 
-	public onGraphClick: Function
-	public onGraphHover: Function
+	onGraphClick: Function
+	onGraphHover: Function
 
 	constructor( canvas: HTMLCanvasElement ) {
 		this.drawStore = new DrawStore()
@@ -101,7 +101,7 @@ export default class Draw {
 		this.actions.APPEND_TEXT_INPUT_TO_DOCUMENT_BODY()
 	}
 
-	public render() {
+	render() {
 		const { testUtils, viewPort, renderer, grid, zoom, pan, miniMap, ctx, canvasWidth, canvasHeight } = this.getters
 
 		const self = this
@@ -151,16 +151,19 @@ export default class Draw {
 
 	}
 
-	public addElement( type: string, setting: any, panelId?: string ) {
-		// this.dispatch( a.ADD_ELEMENT, type, setting, panelId )
+	addElement( type: string, setting: any, panelId?: string ) {
 		return this.actions.ADD_ELEMENT( this, type, setting, panelId )
 	}
 
-	private attachDrawToElement( element ) {
+	removeElement( element: any ) {
+		this.actions.REMOVE_ELEMENT( element )
+	}
+
+	attachDrawToElement( element ) {
 		// element[ DRAW_INSTANCE_NAME ] = this
 	}
 
-	private importData( dataString ) {
+	importData( dataString ) {
 		const self = this
 		if ( checkDataString( dataString ) ) {
 			const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
@@ -233,7 +236,7 @@ export default class Draw {
 		}
 	}
 
-	private exportData( fileName: string = getDefaultDrawExportFileName() ) {
+	exportData( fileName: string = getDefaultDrawExportFileName() ) {
 		this.actions.UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
 		const dataString: string = JSON.stringify(
 			this.getters.clonedStoreWithoutCircularObjects

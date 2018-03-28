@@ -15,7 +15,11 @@ import sizePoint from "../util/geometry/sizePoint"
 import origin from "../util/geometry/origin";
 import TextInput from '../model/tool/TextInput';
 import DrawText from '../model/text/DrawText';
+import Path from '../model/Path';
 
+/**
+ * Feature: Emphasize that one method is couple with other class or classes
+ */
 export default class SharedActions {
 	drawStore: DrawStore
 	getters: Getters
@@ -344,6 +348,14 @@ export default class SharedActions {
 	 */
 	sizeItem( item: Item, kX: number, kY: number, center: Point2D ) {
 		item.size( kX, kY, center )
+	}
+
+
+	/**
+	 * // Path
+	 */
+	updatePathSegments( path: Path, segments: Segment[] ) {
+		path.updateSegments( segments )
 	}
 
 	/**

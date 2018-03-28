@@ -1,6 +1,6 @@
 import Particle from "./Particle"
 import Curve from "./Curve"
-import Segment from "./Segment"
+import Segment from './Segment';
 import PathItem from "./PathItem"
 import bezierCurve from "../util/geometry/bezierCurve"
 import BoundsContainer from "./tool/BoundsContainer"
@@ -29,35 +29,19 @@ export default class Path extends PathItem {
 		super( props )
 
 		const self = this
+		let segments = this.segments || []
 
 		if ( isNotNil( props.segments ) ) {
-			this.segments = props.segments
+			segments = props.segments
 		}
 
 		if ( isNil( props.segments ) ) {
-			this.segments = isNotNil( props.points ) ?
-				props.points.map( getSegment ) :
+			segments = isNotNil( props.points ) ?
+				props.points.map( point => this.sharedGetters.createSegmentByPoint( point, this.draw, { path: this } ) ) :
 				this.segments
 		}
 
-		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
-
-		this.segments.map( segment => {
-			const newHandleRelativePoint = this.sharedGetters.getPerpHandleRelativePoint(
-				segment.previous,
-				segment,
-				segment.next
-			)
-
-			this.sharedActions.updateHandleRelativePoint(
-				segment.handleOut,
-				newHandleRelativePoint
-			)
-
-			this.sharedActions.adjustHandleParterPoint( segment.handleOut )
-		} )
-
-		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
+		this.updateSegments( segments )
 
 		this.boundsContainer = new BoundsContainer( {
 			draw  : this.draw,
@@ -75,14 +59,6 @@ export default class Path extends PathItem {
 			this.size( props.kX, props.kY, this.itemCenter )
 		}
 
-		function getSegment( { x, y } ) {
-			return new Segment( {
-				draw: props.draw,
-				x,
-				y,
-				path: self
-			} )
-		}
 	}
 
 	implementInUpperConstructor() {
@@ -206,5 +182,31 @@ export default class Path extends PathItem {
 
 		this.prevKY = this.kY
 		this.kY = kY
+	}
+
+	updateSegments( segments: Segment[] ) {
+
+		this.actions.REMOVE_ELEMENTS( this.segments )
+		this.segments = segments
+
+		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )
+
+		this.segments.map( segment => {
+			const newHandleRelativePoint = this.sharedGetters.getPerpHandleRelativePoint(
+				segment.previous,
+				segment,
+				segment.next
+			)
+
+			this.sharedActions.updateHandleRelativePoint(
+				segment.handleOut,
+				newHandleRelativePoint
+			)
+
+			this.sharedActions.adjustHandleParterPoint( segment.handleOut )
+		} )
+
+		this.actions.REMOVE_ELEMENTS( this.curves )
+		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
 	}
 }

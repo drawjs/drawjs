@@ -1,5 +1,5 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
-import { isNil, cloneDeep, intersection } from "lodash"
+import { isNil, cloneDeep, intersection, findIndex } from "lodash"
 import Draw from "Draw"
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"
@@ -154,6 +154,18 @@ export default class Actions {
 		}
 
 		return instance
+	}
+
+	REMOVE_ELEMENT( element: any ) {
+		const elements: any[] = this.getters.cellList
+
+		const elementIndex: number = findIndex( elements, element )
+
+		elements.splice( elementIndex, 1 )
+	}
+
+	REMOVE_ELEMENTS( elements: any[] ) {
+		elements.map( this.REMOVE_ELEMENT )
 	}
 
 	ADD_PANEL( name: string ) {
