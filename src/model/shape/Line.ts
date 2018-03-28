@@ -92,12 +92,6 @@ export default class Line extends Path {
 		const points = getArrowPoints( this.source.point, this.target.point, 20 )
 		const { top, right, bottom, left } = points
 		const path2d: Path2D = connectPolygonPoints( [ top, right, bottom, left ] )
-
-		// this.getters.testUtils.delayRenderPoint( top, "red" )
-		// this.getters.testUtils.delayRenderPoint( right, "orange" )
-		// this.getters.testUtils.delayRenderPoint( bottom, "yellow" )
-		// this.getters.testUtils.delayRenderPoint( left, "green" )
-
 		return path2d
 	}
 

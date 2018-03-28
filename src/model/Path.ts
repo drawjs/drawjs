@@ -137,11 +137,16 @@ export default class Path extends PathItem {
 		return bounds
 	}
 
+	get points(): Point2D[] {
+		const res: Point2D[] = this.segments.map( ( { point } ) => point )
+		return res
+	}
+
 	render() {
 		const { ctx } = this.getters
 
 		ctx.save()
-		ctx.fillStyle = "#85392c"
+		ctx.fillStyle = "#8cccf0"
 		ctx.fill( this.path2d )
 		ctx.restore()
 

@@ -7,6 +7,7 @@ export const SEGMENT = "segment"
 export const POLYGON = 'polygon'
 export const RECT = 'rect'
 export const LINE = 'line'
+export const POLYLINE = 'polyline'
 export const POINT = 'point'
 
 /**

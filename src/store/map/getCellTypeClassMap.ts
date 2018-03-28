@@ -13,9 +13,10 @@ import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
 import Point from "../../model/shape/Point"
 import Polygon from "../../model/shape/Polygon"
-import { SEGMENT, TEXT } from '../constant/cellType';
+import { SEGMENT, TEXT, POLYLINE } from '../constant/cellType';
 import Segment from "../../model/Segment"
 import DrawText from '../../model/text/DrawText';
+import Polyline from '../../model/shape/Polyline';
 
 export default function() {
 	return {
@@ -26,6 +27,7 @@ export default function() {
 		 */
 		[ RECT ]   : Rect,
 		[ LINE ]   : Line,
+		[ POLYLINE ]   : Polyline,
 		[ POINT ]  : Point,
 		[ POLYGON ]: Polygon,
 

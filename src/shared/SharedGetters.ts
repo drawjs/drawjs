@@ -305,4 +305,38 @@ export default class SharedGetters {
 		}
 		return newPoint
 	}
+
+	/**
+	 * Polyline
+	 */
+	getTwoPointsLine( points: Point2D[] ): TwoPointsLineType[] {
+		const { length } = points
+		let res: TwoPointsLineType[] = []
+
+		if ( length >= 2 ) {
+			points.map( resolve )
+
+		}
+
+		return res
+
+		function resolve( point: Point2D, index: number, points: Point2D[] ) {
+			if ( ! isLast( index, points ) ) {
+				const twoPointsLine: TwoPointsLineType = {
+					source: point,
+					target: points[ index + 1 ]
+				}
+				res.push( twoPointsLine )
+			}
+		}
+
+		function isFirst( index ) {
+			return index === 0
+		}
+
+		function isLast( index, array ) {
+			return index === array.length - 1
+		}
+
+	}
 }
