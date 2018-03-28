@@ -165,7 +165,7 @@ export default class Actions {
 	}
 
 	REMOVE_ELEMENTS( elements: any[] ) {
-		elements.map( this.REMOVE_ELEMENT )
+		elements.map( this.REMOVE_ELEMENT.bind( this ) )
 	}
 
 	ADD_PANEL( name: string ) {

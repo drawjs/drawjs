@@ -59,6 +59,7 @@ export default function(
 	const ST: MathVector = new MathVector( S, T )
 	angle = ST.angle
 
+
 	R = getRotatedPoint( T, -angle, S )
 
 	const { x: rx, y: ry }: Point2D = R

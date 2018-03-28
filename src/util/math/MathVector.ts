@@ -58,11 +58,11 @@ export default class MathVector {
 		}
 
 		if ( isPointOnYAxisPositive( this ) ) {
-			angle = 180 * 3 / 2
+			angle = 180 / 2
 		}
 
 		if ( isPointOnYAxisNegative( this ) ) {
-			angle = 180 / 2
+			angle = 180 * 3 / 2
 		}
 
 		if ( isPointOn1Quadrant( this ) ) {
