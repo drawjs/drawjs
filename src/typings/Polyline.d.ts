@@ -1,4 +1,4 @@
-interface PolylineProps {
+interface PolylineProps extends LineProps {
 	points: Point2D[]
 	segments: any[]
 }

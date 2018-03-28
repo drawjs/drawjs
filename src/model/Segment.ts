@@ -11,7 +11,7 @@ export default class Segment extends Cell {
 	x: number
 	y: number
 
-	show: boolean = true
+	show: boolean = false
 
 	selected: boolean = false
 

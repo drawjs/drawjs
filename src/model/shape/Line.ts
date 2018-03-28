@@ -32,8 +32,9 @@ export default class Line extends Path {
 	constructor( props: LineProps ) {
 		super( setPropsPointsSegmentsDangerously( props ) )
 
+		const { length } = this.segments
 		this.source = this.segments[ 0 ]
-		this.target = this.segments[ 1 ]
+		this.target = this.segments[ length - 1 ]
 
 		this.showArrow = isNotNil( props.showArrow ) ? props.showArrow : this.showArrow
 
@@ -80,11 +81,6 @@ export default class Line extends Path {
 			rightBottom,
 			leftBottom
 		] )
-
-		// this.getters.testUtils.delayRenderPoint( leftTop, "red" )
-		// this.getters.testUtils.delayRenderPoint( rightTop, "orange" )
-		// this.getters.testUtils.delayRenderPoint( rightBottom, "yellow" )
-		// this.getters.testUtils.delayRenderPoint( leftBottom, "green" )
 		return path
 	}
 
@@ -96,8 +92,6 @@ export default class Line extends Path {
 	}
 
 	render() {
-		super.render()
-
 		this.renderHitRegion()
 		this.showArrow && this.renderArrow()
 	}

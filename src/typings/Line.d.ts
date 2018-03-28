@@ -1,9 +1,9 @@
 interface LineProps {
-	source: any
-	target: any
-	showArrow: boolean
-	sourceSegment: any
-	targetSegment: any
-	points: any[]
-	segments: any[]
+	source?: any
+	target?: any
+	showArrow?: boolean
+	sourceSegment?: any
+	targetSegment?: any
+	points?: Point2D[]
+	segments?: any[]
 }

@@ -12,7 +12,11 @@ const instance1 = draw.addElement( "polyline", {
 		},
 		{
 			x: 500,
-			y: 600
+			y: 300
+		},
+		{
+			x: 350,
+			y: 500,
 		}
 	]
 } )
