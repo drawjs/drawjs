@@ -161,7 +161,9 @@ export default class Actions {
 
 		const elementIndex: number = findIndex( elements, element )
 
-		elements.splice( elementIndex, 1 )
+		if ( elementIndex !== -1) {
+			elements.splice( elementIndex, 1 )
+		}
 	}
 
 	REMOVE_ELEMENTS( elements: any[] ) {
