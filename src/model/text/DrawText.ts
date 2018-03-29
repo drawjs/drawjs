@@ -3,7 +3,7 @@ import { TEXT } from "../../store/constant/cellType"
 import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
-import TextInput from '../tool/TextInput';
+import TextInput from "../tool/TextInput"
 
 export default class DrawText extends Cell {
 	type = TEXT
@@ -13,8 +13,7 @@ export default class DrawText extends Cell {
 
 	text: string = ""
 
-	fontSize: number =  12
-
+	fontSize: number = 12
 
 	constructor( props ) {
 		super( props )
@@ -49,23 +48,25 @@ export default class DrawText extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 
 	render() {
-		const { ctx } = this.getters
-		const { text, left, top, fontSize } = this
+		if ( this.show ) {
+			const { ctx } = this.getters
+			const { text, left, top, fontSize } = this
 
-		ctx.save()
+			ctx.save()
 
-		ctx.strokeStyle = "#0de2c6"
-		ctx.stroke( this.path2d )
+			ctx.strokeStyle = "#0de2c6"
+			ctx.stroke( this.path2d )
 
-		ctx.font = `${ fontSize }px`
-		ctx.fillText( text, left, top )
+			ctx.font = `${fontSize}px`
+			ctx.fillText( text, left, top )
 
-		ctx.restore()
+			ctx.restore()
+		}
 	}
 
 	updateDrag( event ) {

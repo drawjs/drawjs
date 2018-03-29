@@ -129,4 +129,12 @@ export default class Line extends Path {
 
 		return isContain
 	}
+
+	updateSegments( segments: Segment[] ) {
+		super.updateSegments( segments )
+
+		const { length } = segments
+		this.source = segments[ 0 ]
+		this.target = segments[ length - 1 ]
+	}
 }

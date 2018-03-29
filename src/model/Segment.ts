@@ -3,7 +3,7 @@ import Handle from "./Handle"
 import { HandleType } from "../store/constant/index"
 import Cell from "./Cell"
 import Path from "./Path"
-import { isNotNil } from '../util/index';
+import { isNotNil } from "../util/index"
 
 const { PI } = Math
 
@@ -39,7 +39,6 @@ export default class Segment extends Cell {
 
 		this.path = isNotNil( props.path ) ? props.path : this.path
 		this.show = isNotNil( props.show ) ? props.show : this.show
-
 
 		this.handleIn = new Handle( {
 			draw   : this.draw,
@@ -82,11 +81,24 @@ export default class Segment extends Cell {
 
 			this.handleIn.render()
 			this.handleOut.render()
+
 		}
+		this.renerPosition()
+	}
+
+	renerPosition() {
+		const text = `(${this.x}, ${this.y})`
+
+		const { ctx } = this.getters
+		ctx.save()
+		ctx.font = `${12}px`
+		ctx.fillText( text, this.x, this.y )
+		ctx.restore()
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain =
+			this.show && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 

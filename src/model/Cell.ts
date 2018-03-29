@@ -108,6 +108,7 @@ export default abstract class Cell extends Particle {
 		super( props )
 
 		this.fill = props.fill || this.fill
+		this.show = isNotNil( props.show ) ? props.show : this.show
 
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )

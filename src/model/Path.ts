@@ -186,7 +186,7 @@ export default class Path extends PathItem {
 
 	updateSegments( segments: Segment[] ) {
 
-		this.actions.REMOVE_ELEMENTS( this.segments )
+		// this.actions.REMOVE_ELEMENTS( this.segments )
 		this.segments = segments
 
 		this.sharedActions.ajustSegmentsPreviousAndNext( this.segments )

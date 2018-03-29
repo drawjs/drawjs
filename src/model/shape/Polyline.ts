@@ -52,7 +52,6 @@ export default class Polyline extends Line {
 		const source: Point2D = this.segments[ length - 2 ].point
 		const target: Point2D = this.target.point
 
-
 		const points = getArrowPoints( source, target, 20 )
 		const { top, right, bottom, left } = points
 		const path2d: Path2D = connectPolygonPoints( [ top, right, bottom, left ] )

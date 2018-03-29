@@ -159,10 +159,22 @@ export default class Actions {
 	REMOVE_ELEMENT( element: any ) {
 		const elements: any[] = this.getters.cellList
 
-		const elementIndex: number = findIndex( elements, element )
+		const elementIndex: number = getIndex( elements, element )
 
-		if ( elementIndex !== -1) {
+		if ( isNotNil( elementIndex )) {
 			elements.splice( elementIndex, 1 )
+		}
+
+		function getIndex( elements, element ) {
+			let res = null
+			elements.map( resolve )
+			return res
+
+			function resolve( theElement, index ) {
+				if ( theElement === element ) {
+					res = index
+				}
+			}
 		}
 	}
 
