@@ -83,7 +83,7 @@ export default class Segment extends Cell {
 			this.handleOut.render()
 
 		}
-		this.renerPosition()
+		// this.renerPosition()
 	}
 
 	renerPosition() {

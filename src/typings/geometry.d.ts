@@ -22,3 +22,6 @@ declare type Point2DCurrent = {
 	x: number
 	y: number
 }
+
+
+declare type LineTwoPoints = [Point2D, Point2D]

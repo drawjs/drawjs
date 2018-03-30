@@ -1,10 +1,10 @@
-type TwoPointsLine = [Point2D, Point2D]
+
 
 /**
  * Algorithm:
  * y = kx + b
  */
-export default function( lineA: TwoPointsLine, lineB: TwoPointsLine ) {
+export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ) {
 	let res: Point2D = null
 
 	const PA1: Point2D = lineA[ 0 ]
