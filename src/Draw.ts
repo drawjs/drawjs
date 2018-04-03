@@ -25,7 +25,7 @@ import SharedActions from "./shared/SharedActions"
 import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
-import TextInput from './model/tool/TextInput';
+import TextInput from "./model/tool/TextInput"
 
 const ajv = new Ajv()
 
@@ -54,8 +54,6 @@ export default class Draw {
 	 * Draw shared actions, which is based on "drawStore" but doesn't mutate "drawStore"
 	 */
 	sharedActions: SharedActions
-
-
 
 	onGraphClick: Function
 	onGraphHover: Function
@@ -102,7 +100,18 @@ export default class Draw {
 	}
 
 	render() {
-		const { testUtils, viewPort, renderer, grid, zoom, pan, miniMap, ctx, canvasWidth, canvasHeight } = this.getters
+		const {
+			testUtils,
+			viewPort,
+			renderer,
+			grid,
+			zoom,
+			pan,
+			miniMap,
+			ctx,
+			canvasWidth,
+			canvasHeight
+		} = this.getters
 
 		const self = this
 
@@ -118,11 +127,8 @@ export default class Draw {
 		// miniMap.saveImageDataInRigion()
 		// renderer.clear()
 
-
 		renderer.setTransformViewPort()
 		this.renderMain()
-
-
 
 		// this.getters.renderer.resetTransform()
 		// this.getters.miniMap.render()
@@ -135,7 +141,12 @@ export default class Draw {
 		const { renderElement } = this.sharedActions
 
 		this.getters.ctx.strokeStyle = "blue"
-		this.getters.ctx.strokeRect( 0, 0, this.getters.canvasWidth, this.getters.canvasHeight )
+		this.getters.ctx.strokeRect(
+			0,
+			0,
+			this.getters.canvasWidth,
+			this.getters.canvasHeight
+		)
 
 		// this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, {
 		// 	color: "#ddd"
@@ -147,8 +158,6 @@ export default class Draw {
 		this.getters.cellListShouldRender.map( renderElement )
 
 		this.getters.selector.render()
-
-
 	}
 
 	addElement( type: string, setting: any, panelId?: string ) {

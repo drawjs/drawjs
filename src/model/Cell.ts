@@ -83,6 +83,7 @@ export default abstract class Cell extends Particle {
 	 * Drag
 	 */
 	dragger: Dragger
+	draggable: boolean = true
 
 	/**
 	 * Rotation
@@ -107,8 +108,9 @@ export default abstract class Cell extends Particle {
 	constructor( props ) {
 		super( props )
 
-		this.fill = props.fill || this.fill
+		this.fill = isNotNil( props.fill ) ? props.fill : this.fill
 		this.show = isNotNil( props.show ) ? props.show : this.show
+		this.draggable = isNotNil( props.draggable ) ? props.draggable : this.draggable
 
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )

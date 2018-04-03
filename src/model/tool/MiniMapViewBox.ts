@@ -138,15 +138,17 @@ export default class MiniMapViewBox extends Cell {
 	}
 
 	updateDrag( event ) {
-		const { initialRatio } = this
-		const { zoom } = this.getters
+		if ( this.draggable ) {
+			const { initialRatio } = this
+			const { zoom } = this.getters
 
-		const deltaX = event.x - this.dragger.prevEvent.x
-		const deltaY = event.y - this.dragger.prevEvent.y
+			const deltaX = event.x - this.dragger.prevEvent.x
+			const deltaY = event.y - this.dragger.prevEvent.y
 
-		const deltaXViewPort = -deltaX * initialRatio * zoom
-		const deltaYViewPort = -deltaY * initialRatio * zoom
+			const deltaXViewPort = -deltaX * initialRatio * zoom
+			const deltaYViewPort = -deltaY * initialRatio * zoom
 
-		this.getters.viewPort.panBy( deltaXViewPort, deltaYViewPort )
+			this.getters.viewPort.panBy( deltaXViewPort, deltaYViewPort )
+		}
 	}
 }

@@ -81,7 +81,6 @@ export default class Segment extends Cell {
 
 			this.handleIn.render()
 			this.handleOut.render()
-
 		}
 		// this.renerPosition()
 	}
@@ -103,15 +102,17 @@ export default class Segment extends Cell {
 	}
 
 	updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		const { x, y } = this.point
-		const newX = x + deltaX
-		const newY = y + deltaY
-		this.sharedActions.updateSegmentX( this, newX )
-		this.sharedActions.updateSegmentY( this, newY )
+			const { x, y } = this.point
+			const newX = x + deltaX
+			const newY = y + deltaY
+			this.sharedActions.updateSegmentX( this, newX )
+			this.sharedActions.updateSegmentY( this, newY )
+		}
 	}
 }

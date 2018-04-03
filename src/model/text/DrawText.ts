@@ -48,7 +48,8 @@ export default class DrawText extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain =
+			this.show && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 
@@ -70,13 +71,15 @@ export default class DrawText extends Cell {
 	}
 
 	updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		this.left = this.left + deltaX
-		this.top = this.top + deltaY
+			this.left = this.left + deltaX
+			this.top = this.top + deltaY
+		}
 	}
 
 	handleDoubleClick( event ) {

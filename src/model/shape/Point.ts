@@ -53,7 +53,7 @@ export default class Point extends Graph {
 		return new SizeContainer( {
 			points,
 			target: this,
-			draw: this.draw
+			draw  : this.draw
 		} )
 	}
 
@@ -93,12 +93,14 @@ export default class Point extends Graph {
 
 	// ******* Drag ******
 	public updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		this.translate( deltaX, deltaY )
+			this.translate( deltaX, deltaY )
+		}
 	}
 	// ******* Drag ******
 }

@@ -12,7 +12,7 @@ import {
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
 import { ROTATION_ARROW } from "../../store/constant/cellType"
-import Item from '../Item';
+import Item from "../Item"
 
 export default class RotationArrow extends Cell {
 	type: string = ROTATION_ARROW
@@ -73,7 +73,7 @@ export default class RotationArrow extends Cell {
 
 	get shouldRender(): boolean {
 		const { shouldSelect, shouldRotate } = this.target
-		const res: boolean =  shouldSelect || shouldRotate
+		const res: boolean = shouldSelect || shouldRotate
 		return res
 	}
 
@@ -113,7 +113,6 @@ export default class RotationArrow extends Cell {
 
 	render() {
 		if ( this.targetRotatable && this.shouldRender ) {
-
 			const { ctx } = this.getters
 			const { SIZE } = RotationArrow
 			ctx.save()
@@ -132,7 +131,9 @@ export default class RotationArrow extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.targetRotatable && this.getters.pointOnPath( { x, y }, this.path )
+		const isContain =
+			this.targetRotatable &&
+			this.getters.pointOnPath( { x, y }, this.path )
 		return isContain
 	}
 
@@ -145,11 +146,17 @@ export default class RotationArrow extends Cell {
 	}
 	public updateDrag( event ) {
 		const self = this
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
-		const deltaRadian: number = getDeltaRadian( point )
-		const radian = this.radian + deltaRadian
 
-		this.sharedActions.rotateCell( this.target, radian * RADIAN_TO_DEGREE )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
+			const deltaRadian: number = getDeltaRadian( point )
+			const radian = this.radian + deltaRadian
+
+			this.sharedActions.rotateCell(
+				this.target,
+				radian * RADIAN_TO_DEGREE
+			)
+		}
 
 		/**
 		 * Get delta radian from prev dragging point to current point

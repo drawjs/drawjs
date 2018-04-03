@@ -2,7 +2,7 @@ import Cell from "../Cell"
 import SizePoints from "./SizePoints"
 import Item from "../Item"
 import SizeUtils from "../../shared/SizeUtils"
-import { SIZE_POINT } from "../../store/constant/cellType";
+import { SIZE_POINT } from "../../store/constant/cellType"
 
 const { PI } = Math
 
@@ -65,36 +65,39 @@ export abstract class SizePoint extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.sizable && this.getters.pointOnPath( { x, y }, this.path2d )
+		const isContain =
+			this.sizable && this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 
 	updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		const { kX, kY } = this.target
-		const { x, y } = this.point
-		const potentialNewPoint: Point2D = {
-			x: x + deltaX,
-			y: y + deltaY
+			const { kX, kY } = this.target
+			const { x, y } = this.point
+			const potentialNewPoint: Point2D = {
+				x: x + deltaX,
+				y: y + deltaY
+			}
+
+			const sizeK: SizeK = this.getNewK(
+				kX,
+				kY,
+				this.point,
+				potentialNewPoint,
+				this.center,
+				this.target.angle
+			)
+
+			const newKX = sizeK.kX
+			const newKY = sizeK.kY
+
+			this.sharedActions.sizeItem( this.target, newKX, newKY, this.center )
 		}
-
-		const sizeK: SizeK = this.getNewK(
-			kX,
-			kY,
-			this.point,
-			potentialNewPoint,
-			this.center,
-			this.target.angle
-		)
-
-		const newKX = sizeK.kX
-		const newKY = sizeK.kY
-
-		this.sharedActions.sizeItem( this.target, newKX, newKY, this.center )
 	}
 
 	getNewK(

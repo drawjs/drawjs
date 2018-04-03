@@ -1,6 +1,6 @@
 import Particle from "./Particle"
 import Curve from "./Curve"
-import Segment from './Segment';
+import Segment from "./Segment"
 import PathItem from "./PathItem"
 import bezierCurve from "../util/geometry/bezierCurve"
 import BoundsContainer from "./tool/BoundsContainer"
@@ -37,7 +37,13 @@ export default class Path extends PathItem {
 
 		if ( isNil( props.segments ) ) {
 			segments = isNotNil( props.points ) ?
-				props.points.map( point => this.sharedGetters.createSegmentByPoint( point, this.draw, { path: this } ) ) :
+				props.points.map( point =>
+						this.sharedGetters.createSegmentByPoint(
+							point,
+							this.draw,
+							{ path: this }
+						)
+				  ) :
 				this.segments
 		}
 
@@ -58,7 +64,6 @@ export default class Path extends PathItem {
 
 			this.size( props.kX, props.kY, this.itemCenter )
 		}
-
 	}
 
 	implementInUpperConstructor() {
@@ -139,12 +144,14 @@ export default class Path extends PathItem {
 	}
 
 	updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
+			this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
+		}
 	}
 
 	/**
@@ -185,7 +192,6 @@ export default class Path extends PathItem {
 	}
 
 	updateSegments( segments: Segment[] ) {
-
 		// this.actions.REMOVE_ELEMENTS( this.segments )
 		this.segments = segments
 

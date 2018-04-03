@@ -152,25 +152,28 @@ export default class Handle extends Cell {
 	}
 
 	contain( x: number, y: number ) {
-		const isContain = this.show && this.getters.pointOnPath( { x, y }, this.pointPath )
+		const isContain =
+			this.show && this.getters.pointOnPath( { x, y }, this.pointPath )
 		return isContain
 	}
 
 	updateDrag( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-		const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-		const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
+			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-		const { x, y } = this.relativePoint
+			const { x, y } = this.relativePoint
 
-		const newRelativePoint = {
-			x: x + deltaX,
-			y: y + deltaY
+			const newRelativePoint = {
+				x: x + deltaX,
+				y: y + deltaY
+			}
+
+			this.sharedActions.updateHandleRelativePoint( this, newRelativePoint )
+
+			this.sharedActions.adjustHandleParterPoint( this )
 		}
-
-		this.sharedActions.updateHandleRelativePoint( this, newRelativePoint )
-
-		this.sharedActions.adjustHandleParterPoint( this )
 	}
 }
