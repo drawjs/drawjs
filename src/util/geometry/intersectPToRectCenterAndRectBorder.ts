@@ -43,7 +43,7 @@ export default function( rectCenter, rectLeft, rectTop, P ): Point2D {
 
 	const AB: LineTwoPoints = getAB( angle )
 
-	const intersected: Point2D = intersect( AB, [ O, P ] )
+	const intersected: Point2D = intersect( AB, [ O, P ] ).intersected
 
 	return intersected
 

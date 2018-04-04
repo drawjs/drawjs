@@ -1,11 +1,21 @@
 
+interface Result {
+	// Not at the same line
+	isParallel: boolean,
+	isSameLine: boolean
+	intersected: Point2D,
+}
 
 /**
  * Algorithm:
  * y = kx + b
  */
-export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ) {
-	let res: Point2D = null
+export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ): Result {
+	let res: Result = {
+		isParallel: false,
+		isSameLine: false,
+		intersected: null
+	}
 
 	const PA1: Point2D = lineA[ 0 ]
 	const PA2: Point2D = lineA[ 1 ]
@@ -24,14 +34,22 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ) {
 
 		const kB = getK( PB1, PB2 )
 
+		const bA = getB( PA1, PA2 )
+		const bB = getB( PB1, PB2 )
+
 		// Not parallel
 		if ( kA !== kB ) {
-			const bA = getB( PA1, PA2 )
-			const bB = getB( PB1, PB2 )
-
 			const x = ( bA - bB ) / ( kB - kA )
 			const y = ( bB * kA - bA * kB ) / ( kA - kB )
-			res = { x, y }
+			res.intersected = { x, y }
+		}
+
+		if ( kA === kB &&  bA === bB) {
+			res.isSameLine = true
+		}
+
+		if ( kA === kB &&  bA !== bB) {
+			res.isParallel = true
 		}
 	}
 
@@ -42,7 +60,7 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ) {
 		const x = x1
 		const y = kB * x + bB
 
-		res = { x, y }
+		res.intersected = { x, y }
 	}
 
 	if ( !isLineAVertical() && isLineBVertical() ) {
@@ -52,7 +70,17 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ) {
 		const x = x3
 		const y = kA * x + bA
 
-		res = { x, y }
+		res.intersected = { x, y }
+	}
+
+	if ( isLineAVertical() && isLineBVertical() ) {
+		if ( x1 === x3 ) {
+			res.isSameLine = true
+		}
+
+		if ( x1 !== x3 ) {
+			res.isParallel = true
+		}
 	}
 
 	return res
