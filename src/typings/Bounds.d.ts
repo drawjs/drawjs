@@ -5,6 +5,17 @@ interface Bounds {
 	bottom: number
 }
 
+interface BoundsExtra {
+	left: number
+	right: number
+	top: number
+	bottom: number
+	leftCenter: Point2D
+	topCenter: Point2D
+	rightCenter: Point2D
+	bottomCenter: Point2D
+}
+
 interface RotatableBounds {
 	leftTop: Point2D
 	rightTop: Point2D

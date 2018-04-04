@@ -10,7 +10,9 @@ class Dragger extends Particle {
 	/**
 	 * Drag interface
 	 */
+	interfaceStartDrag: Function
 	interfaceDragging: Function
+	interfaceStopDrag: Function
 
 	constructor( props ) {
 		super( props )
@@ -35,6 +37,7 @@ class Dragger extends Particle {
 
 		this.updatePrevEvent( event )
 
+		this.interfaceStartDrag && this.interfaceStartDrag( event, this )
 		this.handleStart && this.handleStart( event )
 	}
 	dragging( event ): void {
@@ -51,6 +54,9 @@ class Dragger extends Particle {
 	}
 	stop( event ): void {
 		this.enable = false
+
+		this.interfaceStopDrag && this.interfaceStopDrag( event, this )
+
 		this.handleStop && this.handleStop( event )
 	}
 	handleStart( event ) {}

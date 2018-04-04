@@ -58,6 +58,32 @@ export default abstract class Item extends Cell {
 		return this.itemInitialBounds
 	}
 
+	get boundsExtra(): BoundsExtra {
+		const { left, top, right, bottom } = this.bounds
+		return {
+			left,
+			top,
+			right,
+			bottom,
+			leftCenter: {
+				x: left,
+				y: ( bottom + top ) / 2,
+			},
+			topCenter: {
+				x: ( left + right ) / 2,
+				y: top
+			},
+			rightCenter: {
+				x: right,
+				y: ( bottom + top ) / 2
+			},
+			bottomCenter: {
+				x: ( left + right ) / 2,
+				y: bottom
+			}
+		}
+	}
+
 	/**
 	 * { abstract }
 	 * Item center, which is used to rotate and size item
@@ -80,7 +106,7 @@ export default abstract class Item extends Cell {
 			left  : 0,
 			right : 0,
 			top   : 0,
-			bottom: 0
+			bottom: 0,
 		}
 	}
 

@@ -136,7 +136,9 @@ export default abstract class Cell extends Particle {
 	handleDragging( event ) {
 		this.getters.draw.render()
 	}
-	handleStopDrag( event ) {}
+	handleStopDrag( event ) {
+		this.getters.draw.render()
+	}
 
 	/**
 	 * Double click

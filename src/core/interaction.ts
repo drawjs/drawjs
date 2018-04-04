@@ -93,11 +93,13 @@ class Interaction extends Particle {
 			const point: Point2D = self.getters.getPoint( event )
 			const { deltaX, deltaY }: { deltaX: number; deltaY: number } = event
 
-			if ( isDecreasing() && eventKeyboard.isAltPressing ) {
+			// if ( isDecreasing() && eventKeyboard.isAltPressing ) {
+			if ( isDecreasing() ) {
 				self.getters.viewPort.zoomIn( point )
 			}
 
-			if ( isIncreasing() && eventKeyboard.isAltPressing ) {
+			// if ( isIncreasing() && eventKeyboard.isAltPressing ) {
+			if ( isIncreasing() ) {
 				self.getters.viewPort.zoomOut( point )
 			}
 
