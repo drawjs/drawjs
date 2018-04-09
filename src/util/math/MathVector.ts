@@ -149,7 +149,7 @@ export default class MathVector {
 		return rotated
 	}
 
-	parallelWith( V: MathVector ) {
+	absoluteParallelWith( V: MathVector ) {
 		return this.angle === V.angle
 	}
 }
