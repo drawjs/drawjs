@@ -5,6 +5,8 @@ import { isBoolean } from "lodash"
 import rotate from "../util/geometry/rotate"
 import SizePoints from "./tool/SizePoints"
 
+const { abs } = Math
+
 export default abstract class Item extends Cell {
 	sizeContainer: SizeContainer
 	sizePoints: SizePoints
@@ -67,7 +69,7 @@ export default abstract class Item extends Cell {
 			bottom,
 			leftCenter: {
 				x: left,
-				y: ( bottom + top ) / 2,
+				y: ( bottom + top ) / 2
 			},
 			topCenter: {
 				x: ( left + right ) / 2,
@@ -80,7 +82,9 @@ export default abstract class Item extends Cell {
 			bottomCenter: {
 				x: ( left + right ) / 2,
 				y: bottom
-			}
+			},
+			width : abs( right - left ),
+			height: abs( bottom - top )
 		}
 	}
 
@@ -106,7 +110,7 @@ export default abstract class Item extends Cell {
 			left  : 0,
 			right : 0,
 			top   : 0,
-			bottom: 0,
+			bottom: 0
 		}
 	}
 
