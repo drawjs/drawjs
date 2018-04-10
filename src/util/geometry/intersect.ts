@@ -39,8 +39,8 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ): Result {
 
 		// Not parallel
 		if ( kA !== kB ) {
-			const x = ( bA - bB ) / ( kB - kA )
-			const y = ( bB * kA - bA * kB ) / ( kA - kB )
+			const x = + ( ( bA - bB ) / ( kB - kA ) ).toFixed( 12 )
+			const y = + ( ( bB * kA - bA * kB ) / ( kA - kB ) ).toFixed( 12 )
 			res.intersected = { x, y }
 		}
 
@@ -58,7 +58,7 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ): Result {
 		const bB = getB( PB1, PB2 )
 
 		const x = x1
-		const y = kB * x + bB
+		const y = + ( kB * x + bB ).toFixed( 12 )
 
 		res.intersected = { x, y }
 	}
@@ -68,7 +68,7 @@ export default function( lineA: LineTwoPoints, lineB: LineTwoPoints ): Result {
 		const bA = getB( PA1, PA2 )
 
 		const x = x3
-		const y = kA * x + bA
+		const y = + ( kA * x + bA ).toFixed( 12 )
 
 		res.intersected = { x, y }
 	}
