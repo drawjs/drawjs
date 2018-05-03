@@ -32,8 +32,6 @@ export default class Segment extends Cell {
 	constructor( props ) {
 		super( props )
 
-		this.path = props.path
-
 		this.x = props.x
 		this.y = props.y
 
@@ -75,7 +73,7 @@ export default class Segment extends Cell {
 			const { ctx } = this.getters
 			ctx.save()
 			ctx.lineWidth = 3
-			ctx.fillStyle = "#4a86e8"
+			ctx.fillStyle = this.fillColor || "#4a86e8"
 			ctx.fill( this.path2d )
 			ctx.restore()
 

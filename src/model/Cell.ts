@@ -24,10 +24,17 @@ export default abstract class Cell extends Particle {
 	angle: number = 0
 	prevAngle: number = 0
 
+
 	/**
 	 * // Visiable or not
 	 */
 	show: boolean = true
+
+
+	/**
+	 * // Style
+	 */
+	fillColor: null
 
 	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
@@ -108,7 +115,7 @@ export default abstract class Cell extends Particle {
 	constructor( props ) {
 		super( props )
 
-		this.fill = isNotNil( props.fill ) ? props.fill : this.fill
+		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
 		this.show = isNotNil( props.show ) ? props.show : this.show
 		this.draggable = isNotNil( props.draggable ) ? props.draggable : this.draggable
 
