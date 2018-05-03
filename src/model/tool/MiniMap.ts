@@ -12,9 +12,12 @@ export default class MiniMap extends Cell {
 	width: number = 0
 	height: number = 0
 
+	show: boolean = false
+
 	viewBox: MiniMapViewBox
 
 	imageDataInRigion: any
+
 
 	constructor( props ) {
 		super( props )
@@ -85,7 +88,7 @@ export default class MiniMap extends Cell {
 
 		const transformed: Point2D = this.getters.viewPort.transform( { x, y } )
 
-		const isContain = this.getters.ctx.isPointInPath(
+		const isContain = this.show && this.getters.ctx.isPointInPath(
 			this.path2d,
 			transformed.x,
 			transformed.y

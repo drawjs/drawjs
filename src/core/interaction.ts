@@ -1,6 +1,9 @@
 import EventKeyboard from '../util/EventKeyboard';
 import Particle from "../model/Particle"
 
+
+const drawSelection = false
+
 class Interaction extends Particle {
 	eventKeyboard: EventKeyboard
 	constructor( props ) {
@@ -34,13 +37,18 @@ class Interaction extends Particle {
 		function mousedownListener( event ) {
 			const point: Point2DInitial = self.getters.getInitialPoint( event )
 
-			if ( self.getters.viewPort.isPanning ) {
-				return self.getters.viewPort.startPan( event )
-			}
+			// if ( self.getters.viewPort.isPanning ) {
+			// 	return self.getters.viewPort.startPan( event )
+			// }
+
 
 			if ( self.getters.pointOnEmpty( point ) ) {
 				self.actions.DESELECT_ALL_CELLS()
+
 				startSelect( event )
+
+				! drawSelection && self.getters.viewPort.startPan( event )
+
 				return
 			}
 
@@ -68,9 +76,9 @@ class Interaction extends Particle {
 		}
 
 		function mousemoveListener( event ) {
-			self.getters.selector.shouldSelect && selecting( event )
+			drawSelection && self.getters.selector.shouldSelect && selecting( event )
 
-			self.getters.viewPort.shouldPan &&
+			!drawSelection && self.getters.viewPort.shouldPan &&
 				self.getters.viewPort.panning( event )
 
 			self.actions.DRAGGING_CELLS_SHOULD_DRAG( event )

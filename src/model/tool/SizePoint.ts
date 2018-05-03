@@ -23,7 +23,7 @@ export abstract class SizePoint extends Cell {
 
 	get path2d(): Path2D {
 		const path = new Path2D()
-		path.arc( this.x, this.y, 5, 0, PI * 2 )
+		path.arc( this.x, this.y, 10, 0, PI * 2 )
 		return path
 	}
 
@@ -96,7 +96,7 @@ export abstract class SizePoint extends Cell {
 			const newKX = sizeK.kX
 			const newKY = sizeK.kY
 
-			this.sharedActions.sizeItem( this.target, newKX, newKY, this.center )
+			this.target && this.sharedActions.sizeItem( this.target, newKX, newKY, this.center )
 		}
 	}
 
