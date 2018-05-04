@@ -1,13 +1,22 @@
-import Segment from '../Segment';
+import Segment from "../Segment"
 import Line from "./Line"
 import Path from "../Path"
 import { isNotNil } from "../../util/index"
 import Item from "../Item"
-import { isNil, findIndex, cloneDeep } from 'lodash';
+import { isNil, findIndex, cloneDeep } from "lodash"
 import { LINE, SEGMENT } from "../../store/constant/cellType"
-import { isLast, notFirstElement, notFirst, notLastElement, isFirst } from '../../util/js/array';
-import { notNextCornerSegment } from '../../drawUtil/model/orthogonalLine/index';
-import { isIndexFound } from '../../util/lodash/index';
+import {
+	isLast,
+	notFirstElement,
+	notFirst,
+	notLastElement,
+	isFirst
+} from "../../util/js/array"
+import {
+	notNextCornerSegment,
+	mapCreateSegmentInConstructor
+} from "../../drawUtil/model/orthogonalLine/index"
+import { isIndexFound } from "../../util/lodash/index"
 
 export default class OrthogonalLine extends Item {
 	segments: Segment[] = []
@@ -27,12 +36,7 @@ export default class OrthogonalLine extends Item {
 
 		if ( isNil( props.segments ) ) {
 			this.segments = isNotNil( props.points ) ?
-				props.points.map( point =>
-						this.sharedGetters.createSegmentByPoint(
-							point,
-							this.draw
-						)
-				  ) :
+				props.points.map( mapCreateSegmentInConstructor( this ) ) :
 				this.segments
 		}
 
@@ -96,8 +100,21 @@ export default class OrthogonalLine extends Item {
 	// 		}
 	// 	}
 	// }
+	createSegment( props: any ) {
+		return this.draw.addElement( SEGMENT, {
+			...props,
+		} )
+	}
 
-	_createCornerSegment( a: Segment, b: Segment ) {
+	createCornerSegment( props: any ) {
+		return this.createSegment( {
+			...props,
+			fillColor: "grey",
+			draggable: false
+		} )
+	}
+
+	_createCornerSegmentBetween( a: Segment, b: Segment ) {
 		const { segments } = this
 
 		const { x: ax, y: ay } = a
@@ -111,10 +128,7 @@ export default class OrthogonalLine extends Item {
 				y: by
 			}
 
-			const cornerSegment = this.draw.addElement( SEGMENT, {
-				...perp,
-				fillColor: "grey"
-			} )
+			const cornerSegment = this.createCornerSegment( perp )
 
 			return cornerSegment
 		}
@@ -134,8 +148,12 @@ export default class OrthogonalLine extends Item {
 				const prev: Segment = clonedSegments[ index - 1 ]
 
 				if ( notNextCornerSegment( prev, segment ) ) {
-					const cornerSegment = self._createCornerSegment( prev, segment )
-					isNotNil( cornerSegment ) && self._insertCornerSegment( segment, cornerSegment )
+					const cornerSegment = self._createCornerSegmentBetween(
+						prev,
+						segment
+					)
+					isNotNil( cornerSegment ) &&
+						self._insertCornerSegment( segment, cornerSegment )
 				}
 			}
 		}
