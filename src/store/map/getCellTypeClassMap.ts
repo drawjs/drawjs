@@ -17,7 +17,7 @@ import { SEGMENT, TEXT, POLYLINE, ORTHOGONAL_LINE } from '../constant/cellType';
 import Segment from "../../model/Segment"
 import DrawText from '../../model/text/DrawText';
 import Polyline from '../../model/shape/Polyline';
-import OrthogonalLine from '../../model/shape/OrthogonalLine';
+import OrthogonalLine from '../../model/shape/OrthogonalLine/OrthogonalLine';
 
 export default function() {
 	return {

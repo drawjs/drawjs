@@ -99,7 +99,7 @@ export default class Line extends Path {
 	renderHitRegion() {
 		const { ctx } = this.getters
 		ctx.save()
-		ctx.fillStyle = this.color
+		ctx.fillStyle = this.fillColor ? this.fillColor :  this.color
 		ctx.fill( this.hitRegionPath2d )
 		ctx.restore()
 	}
