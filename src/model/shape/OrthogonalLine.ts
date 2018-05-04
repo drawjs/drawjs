@@ -1,22 +1,20 @@
 import Segment from '../Segment';
-import Line from './Line';
-import Path from '../Path';
-import { isNotNil } from '../../util/index';
-import Item from '../Item';
-import { isNil } from 'lodash';
-import { LINE, SEGMENT } from '../../store/constant/cellType';
-import { isLast } from '../../util/array';
+import Line from "./Line"
+import Path from "../Path"
+import { isNotNil } from "../../util/index"
+import Item from "../Item"
+import { isNil, findIndex, cloneDeep } from 'lodash';
+import { LINE, SEGMENT } from "../../store/constant/cellType"
+import { isLast, notFirstElement, notFirst, notLastElement, isFirst } from '../../util/js/array';
+import { notNextCornerSegment } from '../../drawUtil/model/orthogonalLine/index';
+import { isIndexFound } from '../../util/lodash/index';
 
-export default class OrthogonalLine extends Item{
+export default class OrthogonalLine extends Item {
 	segments: Segment[] = []
 
 	startSegment: Segment = null
 
-	endSegment: Segment= null
-
-	cornerSegments: Segment[] = []
-
-	centerSegments: Segment[] = []
+	endSegment: Segment = null
 
 	lines: Line[]
 
@@ -32,7 +30,7 @@ export default class OrthogonalLine extends Item{
 				props.points.map( point =>
 						this.sharedGetters.createSegmentByPoint(
 							point,
-							this.draw,
+							this.draw
 						)
 				  ) :
 				this.segments
@@ -40,13 +38,14 @@ export default class OrthogonalLine extends Item{
 
 		const { segments } = this
 		const { length } = segments
-		this.startSegment = isNotNil( segments[ 0 ] ) ? segments[ 0 ] : this.startSegment
-		this.endSegment = isNotNil( segments[ length - 1 ] ) ? segments[ length - 1  ] : this.endSegment
+		this.startSegment = isNotNil( segments[ 0 ] ) ?
+			segments[ 0 ] :
+			this.startSegment
+		this.endSegment = isNotNil( segments[ length - 1 ] ) ?
+			segments[ length - 1 ] :
+			this.endSegment
 
-
-		if ( this.segmentsLength2 ) {
-			this._convertTwoSegmentsToThree()
-		}
+		this._insertCornerSegmentsIfNecessary()
 
 		this.regenerateLines()
 
@@ -57,13 +56,16 @@ export default class OrthogonalLine extends Item{
 	// ===============================
 	// =========== getters ===========
 	// ===============================
-	get segmentsLength2(): boolean {
-		const { length } = this.segments
-		return length === 2
-	}
-
 	contain() {
 		return false
+	}
+
+	get cornerSegments(): Segment[] {
+		return this.segments.filter( notFirstElement ).filter( notLastElement )
+	}
+
+	get centerSegments(): Segment[] {
+		return []
 	}
 
 	// ===============================
@@ -72,26 +74,77 @@ export default class OrthogonalLine extends Item{
 	/**
 	 * Initialization
 	 */
-	_convertTwoSegmentsToThree() {
-		if ( this.segmentsLength2 ) {
-			const { x: x1, y: y1 } = this.startSegment
-			const { x: x2, y: y2 } = this.endSegment
+	// _convertTwoSegmentsToThree() {
+	// 	if ( this.segmentsLength2 ) {
+	// 		const { x: x1, y: y1 } = this.startSegment
+	// 		const { x: x2, y: y2 } = this.endSegment
 
-			const notVerticalOrHorizontal = x1 !== x2 && y1 !== y2
+	// 		const notVerticalOrHorizontal = x1 !== x2 && y1 !== y2
 
-			if ( notVerticalOrHorizontal ) {
-				const perp: Point2D = {
-					x: x1,
-					y: y2
-				}
+	// 		if ( notVerticalOrHorizontal ) {
+	// 			const perp: Point2D = {
+	// 				x: x1,
+	// 				y: y2
+	// 			}
 
-				const perpSegment = this.draw.addElement( SEGMENT, {
-					...perp,
-					fillColor: 'grey'
-				} )
+	// 			const perpSegment = this.draw.addElement( SEGMENT, {
+	// 				...perp,
+	// 				fillColor: "grey"
+	// 			} )
 
-				this.segments.splice( 1, 0, perpSegment )
+	// 			this.segments.splice( 1, 0, perpSegment )
+	// 		}
+	// 	}
+	// }
+
+	_createCornerSegment( a: Segment, b: Segment ) {
+		const { segments } = this
+
+		const { x: ax, y: ay } = a
+		const { x: bx, y: by } = b
+
+		const notVerticalOrHorizontal = ax !== bx && ay !== by
+
+		if ( notVerticalOrHorizontal ) {
+			const perp: Point2D = {
+				x: ax,
+				y: by
 			}
+
+			const cornerSegment = this.draw.addElement( SEGMENT, {
+				...perp,
+				fillColor: "grey"
+			} )
+
+			return cornerSegment
+		}
+	}
+
+	_insertCornerSegmentsIfNecessary() {
+		const self = this
+		let corners = []
+
+		const clonedSegments = cloneDeep( this.segments )
+		if ( isNotNil( this.startSegment ) ) {
+			clonedSegments.map( createCorner )
+		}
+
+		function createCorner( segment: Segment, index: number, clonedSegments ) {
+			if ( notFirst( index ) ) {
+				const prev: Segment = clonedSegments[ index - 1 ]
+
+				if ( notNextCornerSegment( prev, segment ) ) {
+					const cornerSegment = self._createCornerSegment( prev, segment )
+					isNotNil( cornerSegment ) && self._insertCornerSegment( segment, cornerSegment )
+				}
+			}
+		}
+	}
+
+	_insertCornerSegment( segment: Segment, corner: Segment ) {
+		const index = findIndex( this.segments, segment )
+		if ( isIndexFound( index ) ) {
+			this.segments.splice( index, 0, corner )
 		}
 	}
 
@@ -101,19 +154,16 @@ export default class OrthogonalLine extends Item{
 			this.draw.addElement( LINE, {
 				sourceSegment: accumulator,
 				targetSegment: value,
-				showArrow: isLast( index, length )
+				showArrow    : isLast( index, this.segments )
 			} )
 			return value
 		} )
-
 	}
 
 	// ===============================
 	// =========== actions ===========
 	// ===============================
-	render() {
-	}
-
+	render() {}
 
 	// ===============================
 	// =========== methods ===========
@@ -126,15 +176,11 @@ export default class OrthogonalLine extends Item{
 		this.bindSegmentDrag( this.startSegment, handle )
 
 		function handle( event ) {
-			console.log( 'start segment is being dragged' )
+			console.log( "start segment is being dragged" )
 		}
 	}
 
-	bindDragEndSegment() {
+	bindDragEndSegment() {}
 
-	}
-
-	handleDragStartSegment() {
-
-	}
+	handleDragStartSegment() {}
 }

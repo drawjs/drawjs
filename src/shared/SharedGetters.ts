@@ -13,6 +13,7 @@ import rotate from "../util/geometry/rotate"
 import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
 import { isNotNil } from "util/index"
 import Draw from 'Draw';
+import { isLast } from '../util/js/array';
 
 const { PI, min, max } = Math
 export default class SharedGetters {
@@ -344,10 +345,5 @@ export default class SharedGetters {
 		function isFirst( index ) {
 			return index === 0
 		}
-
-		function isLast( index, array ) {
-			return index === array.length - 1
-		}
-
 	}
 }

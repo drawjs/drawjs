@@ -1,3 +1,4 @@
+import { isLast } from '../js/array';
 export default function( points, path: Path2D ) {
 	points.map( connect )
 
@@ -12,9 +13,5 @@ export default function( points, path: Path2D ) {
 			const firstPoints = points[ 0 ]
 			path.lineTo( firstPoints.x, firstPoints.y )
 		}
-	}
-
-	function isLast( index, array ) {
-		return index === array.length - 1
 	}
 }

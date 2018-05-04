@@ -1,4 +1,4 @@
-import { isLast, isFirst } from "../array"
+import { isLast, isFirst } from "../js/array"
 import MathVector from "../math/MathVector"
 import isPointOnSegmemtLine from "./isPointOnSegmemtLine"
 import { cloneDeep } from "lodash"
@@ -26,7 +26,7 @@ export default function( points: Point2D[] ) {
 			prevNotRepeated = point
 		}
 
-		if ( !isFirst( index ) && !isLast( index, length ) ) {
+		if ( !isFirst( index ) && !isLast( index, points ) ) {
 			const prev: Point2D = points[ index - 1 ]
 			const next: Point2D = points[ index + 1 ]
 

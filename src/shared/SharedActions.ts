@@ -16,6 +16,7 @@ import origin from "../util/geometry/origin";
 import TextInput from '../model/tool/TextInput';
 import DrawText from '../model/text/DrawText';
 import Path from '../model/Path';
+import { isLast } from '../util/js/array';
 
 /**
  * Feature: Emphasize that one method is couple with other class or classes
@@ -123,10 +124,6 @@ export default class SharedActions {
 
 		function isFirst( i ) {
 			return i === 0
-		}
-
-		function isLast( i, array ) {
-			return i === array.length - 1
 		}
 	}
 	ajustSegmentsPreviousAndNext( segments: Segment[] ) {
