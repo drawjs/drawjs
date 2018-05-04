@@ -1,8 +1,19 @@
 import Segment from '../../Segment';
+import OrthogonalLine from './OrthogonalLine';
+import StartLine from './StartLine';
 
 export default class StartSegment extends Segment {
+	orthogonalLine: OrthogonalLine
+
+
 	constructor( props ) {
 		super( props )
+
+		this.orthogonalLine = props.orthogonalLine
+	}
+
+	get startLine(): StartLine {
+		return this.orthogonalLine.startLine
 	}
 
 	updateDrag() {
@@ -12,13 +23,18 @@ export default class StartSegment extends Segment {
 			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
 			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
 
-			console.log( deltaX, deltaY )
 
 			const { x, y } = this.point
 			const newX = x + deltaX
 			const newY = y + deltaY
 			this.sharedActions.updateSegmentX( this, newX )
 			this.sharedActions.updateSegmentY( this, newY )
+
+
+
+			if ( this.startLine.isVertical ) {
+				console.log( 123 )
+			}
 		}
 	}
 }

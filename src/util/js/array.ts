@@ -22,3 +22,16 @@ export function isLastElement( element: any, index: number, array: any[] ) {
 }
 
 export const notLastElement = ( element: any, index: number, array: any[] ) => ! isLastElement( element, index, array )
+
+
+
+export function findArrayFirstIndex( array: any[], element: any ) {
+	for ( let i = 0; i < array.length; i++ ) {
+		const potential = array[ i ]
+		if ( potential === element ) {
+			return i
+		}
+	}
+
+	return null
+}

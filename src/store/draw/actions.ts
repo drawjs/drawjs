@@ -1,5 +1,5 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
-import { isNil, cloneDeep, intersection, findIndex } from "lodash"
+import { isNil, cloneDeep, intersection } from "lodash"
 import Draw from "Draw"
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"

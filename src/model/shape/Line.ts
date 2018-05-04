@@ -36,7 +36,9 @@ export default class Line extends Path {
 		this.source = this.segments[ 0 ]
 		this.target = this.segments[ length - 1 ]
 
-		this.showArrow = isNotNil( props.showArrow ) ? props.showArrow : this.showArrow
+		this.showArrow = isNotNil( props.showArrow ) ?
+			props.showArrow :
+			this.showArrow
 
 		this.sharedActions.clearSegmentsHandles( this.segments )
 		this.sharedActions.hideSegmentsHandles( this.segments )
@@ -91,6 +93,22 @@ export default class Line extends Path {
 		return path2d
 	}
 
+	get isVertical(): boolean {
+		const { source, target }: Line = this
+		const { x: sx } = source
+		const { x: tx } = target
+
+		return sx === tx
+	}
+
+	get isHorizontal(): boolean {
+		const { source, target }: Line = this
+		const { y: sy } = source
+		const { y: ty } = target
+
+		return sy === ty
+	}
+
 	render() {
 		this.renderHitRegion()
 		this.showArrow && this.renderArrow()
@@ -99,7 +117,7 @@ export default class Line extends Path {
 	renderHitRegion() {
 		const { ctx } = this.getters
 		ctx.save()
-		ctx.fillStyle = this.fillColor ? this.fillColor :  this.color
+		ctx.fillStyle = this.fillColor ? this.fillColor : this.color
 		ctx.fill( this.hitRegionPath2d )
 		ctx.restore()
 	}
@@ -125,7 +143,9 @@ export default class Line extends Path {
 			this.targetArrowPath2d
 		)
 
-		const isContain: boolean = this.showArrow ? ( containeTargetArrow || containHitRigion ) : containHitRigion
+		const isContain: boolean = this.showArrow ?
+			containeTargetArrow || containHitRigion :
+			containHitRigion
 
 		return isContain
 	}

@@ -3,7 +3,7 @@ import Line from ".././Line"
 import Path from "../../Path"
 import { isNotNil } from "../../../util/index"
 import Item from "../../Item"
-import { isNil, findIndex, cloneDeep } from "lodash"
+import { isNil, cloneDeep } from "lodash"
 import { LINE, SEGMENT } from "../../../store/constant/cellType"
 import {
 	isLast,
@@ -20,11 +20,12 @@ import { isIndexFound, notNil } from "../../../util/lodash/index"
 import { isLineVertical } from "../../../drawUtil/model/orthogonalLine/index"
 import StartSegment from "./StartSegment"
 import EndSegment from "./EndSegment"
-import StartLine from "./StartLine"
-import EndLine from "./EndLine"
+import StartLine from './StartLine';
+import EndLine from './EndLine';
 import InnerLine from "./InnerLine"
-import CornerSegment from "./CornerSegment"
+import CornerSegment from './CornerSegment';
 import CenterSegment from "./CenterSegment"
+import { findArrayFirstIndex } from '../../../util/js/array';
 
 const { abs } = Math
 
@@ -54,6 +55,7 @@ export default class OrthogonalLine extends Item {
 
 		if ( notNil( potentialStartSegment ) ) {
 			this.startSegment = potentialStartSegment
+			this.startSegment.orthogonalLine = this
 		}
 
 		if ( notNil( potentialEndSegment ) ) {
@@ -89,6 +91,7 @@ export default class OrthogonalLine extends Item {
 	createStartSegment( props: any ) {
 		return new StartSegment( {
 			draw: this.draw,
+			orthogonalLine: this,
 			...props
 		} )
 	}
@@ -96,6 +99,7 @@ export default class OrthogonalLine extends Item {
 	createEndSegment( props: any ) {
 		return new EndSegment( {
 			draw: this.draw,
+			orthogonalLine: this,
 			...props
 		} )
 	}
@@ -104,6 +108,7 @@ export default class OrthogonalLine extends Item {
 		return new CornerSegment( {
 			draw     : this.draw,
 			...props,
+			orthogonalLine: this,
 			fillColor: "grey",
 			draggable: false
 		} )
@@ -112,6 +117,7 @@ export default class OrthogonalLine extends Item {
 	createCenterSegment( props: any ) {
 		return new CenterSegment( {
 			draw: this.draw,
+			orthogonalLine: this,
 			...props
 		} )
 	}
@@ -120,6 +126,7 @@ export default class OrthogonalLine extends Item {
 		return new StartLine( {
 			draw     : this.draw,
 			...props,
+			orthogonalLine: this,
 			fillColor: "red",
 			draggable: false
 		} )
@@ -129,7 +136,9 @@ export default class OrthogonalLine extends Item {
 		return new EndLine( {
 			draw     : this.draw,
 			...props,
+			orthogonalLine: this,
 			fillColor: "blue",
+			showArrow: true,
 			draggable: false
 		} )
 	}
@@ -138,13 +147,7 @@ export default class OrthogonalLine extends Item {
 		return new InnerLine( {
 			draw     : this.draw,
 			...props,
-			draggable: false
-		} )
-	}
-
-	createLine( props: any ) {
-		return this.draw.addElement( LINE, {
-			...props,
+			orthogonalLine: this,
 			draggable: false
 		} )
 	}
@@ -178,6 +181,7 @@ export default class OrthogonalLine extends Item {
 			clonedSegments.map( createCorner )
 		}
 
+
 		function createCorner( segment: Segment, index: number, clonedSegments ) {
 			if ( notFirst( index ) ) {
 				const prev: Segment = clonedSegments[ index - 1 ]
@@ -194,9 +198,9 @@ export default class OrthogonalLine extends Item {
 		}
 	}
 
-	_insertCornerSegment( segment: Segment, corner: Segment ) {
-		const index = findIndex( this.segments, segment )
-		if ( isIndexFound( index ) ) {
+	_insertCornerSegment( segment: Segment, corner: any ) {
+		const index = findArrayFirstIndex( this.segments.map( ( { id } ) => id ), segment.id )
+		if ( notNil( index ) ) {
 			const cornerIndex = index - 1
 			this.cornerSegments.splice( cornerIndex, 0, corner )
 		}
@@ -204,23 +208,28 @@ export default class OrthogonalLine extends Item {
 
 	_initializeLines() {
 		const { segments } = this
+		let startLine: StartLine = null
+		let endLine: EndLine = null
+		let innerLines: InnerLine[] = []
 		segments.reduce( ( accumulator, value, index ) => {
 			if ( isNil( accumulator ) || isNil( value ) ) {
 				return
 			}
 
 			if ( index === 1 ) {
-				this.createStartLine( {
+				startLine = this.createStartLine( {
 					sourceSegment: accumulator,
 					targetSegment: value
 				} )
 			} else if ( isLast( index, segments ) ) {
-				this.createEndLine( {
+				const line = this.createEndLine( {
 					sourceSegment: accumulator,
 					targetSegment: value
 				} )
+
+				innerLines.push( line )
 			} else {
-				this.createInnerLine( {
+				endLine = this.createInnerLine( {
 					sourceSegment: accumulator,
 					targetSegment: value
 				} )
@@ -228,6 +237,10 @@ export default class OrthogonalLine extends Item {
 
 			return value
 		} )
+
+		this.startLine = startLine
+		this.endLine = endLine
+		this.innerLines = innerLines
 	}
 	// regenerateLines() {
 	// 	const { length } = this.segments
@@ -254,4 +267,4 @@ export default class OrthogonalLine extends Item {
 	// ===============================
 	// =========== methods ===========
 	// ===============================
-}
+  }

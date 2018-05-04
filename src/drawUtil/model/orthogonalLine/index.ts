@@ -11,9 +11,6 @@ import EndSegment from '../../../model/shape/OrthogonalLine/EndSegment';
 /**
  * // Constructor
  */
-export function initialize( classObject: OrthogonalLine, props ) {
-
-}
 
 export function mapCreateSegmentInConstructor( classObject: OrthogonalLine ) {
 	return ( point: Point2D, index: number, array: any[] ) => {
