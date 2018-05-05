@@ -1,12 +1,14 @@
-import Line from "../Line"
 import OrthogonalLine from "./OrthogonalLine"
+import CommonLine from './CommonLine';
 
-export default class StartLine extends Line {
-	orthogonalLine: OrthogonalLine
+export default class StartLine extends CommonLine {
 
 	constructor( props ) {
 		super( props )
 
-		this.orthogonalLine = props.orthogonalLine
+		this.centerSegment = this.orthogonalLine.createStartCenterSegment( {
+			...this.center,
+			line: this
+		} )
 	}
 }

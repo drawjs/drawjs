@@ -26,6 +26,10 @@ export function mapCreateSegmentInConstructor( classObject: OrthogonalLine ) {
 	}
 }
 
+
+
+
+
 /**
  * // General
  */

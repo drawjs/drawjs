@@ -24,12 +24,10 @@ export default abstract class Cell extends Particle {
 	angle: number = 0
 	prevAngle: number = 0
 
-
 	/**
 	 * // Visiable or not
 	 */
 	show: boolean = true
-
 
 	/**
 	 * // Style
@@ -115,9 +113,13 @@ export default abstract class Cell extends Particle {
 	constructor( props ) {
 		super( props )
 
-		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.fillColor = isNotNil( props.fillColor ) ?
+			props.fillColor :
+			this.fillColor
 		this.show = isNotNil( props.show ) ? props.show : this.show
-		this.draggable = isNotNil( props.draggable ) ? props.draggable : this.draggable
+		this.draggable = isNotNil( props.draggable ) ?
+			props.draggable :
+			this.draggable
 
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )
@@ -140,23 +142,21 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Drag
 	 */
-	updateDrag( event ) {}
-	handleStartDrag( event ) {}
-	handleBeforeDragging( event ) {}
-	handleDragging( event ) {
-
-	}
-	handleAfterDragging( event ) {
+	updateDrag( event?: any ) {}
+	handleStartDrag( event?: any ) {}
+	handleBeforeDragging( event?: any ) {}
+	handleDragging( event?: any ) {}
+	handleAfterDragging( event?: any ) {
 		this.getters.draw.render()
 	}
-	handleStopDrag( event ) {
+	handleStopDrag( event?: any ) {
 		this.getters.draw.render()
 	}
 
 	/**
 	 * Double click
 	 */
-	handleDoubleClick( event ) {}
+	handleDoubleClick( event?: any ) {}
 
 	/**
 	 * Rotate

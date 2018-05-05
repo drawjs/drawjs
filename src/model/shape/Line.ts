@@ -109,6 +109,15 @@ export default class Line extends Path {
 		return sy === ty
 	}
 
+	get center(): Point2D {
+		const { x: sx, y: sy } = this.source
+		const { x: tx, y: ty } = this.target
+		return {
+			x: ( sx + tx ) / 2,
+			y: ( sy + ty ) / 2,
+		}
+	}
+
 	render() {
 		this.renderHitRegion()
 		this.showArrow && this.renderArrow()

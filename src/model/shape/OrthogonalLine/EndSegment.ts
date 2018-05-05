@@ -1,21 +1,16 @@
 import Segment from "../../Segment"
-// import OrthogonalLine from './OrthogonalLine';
 import EndLine from './EndLine';
 import { notNil } from '../../../util/lodash/index';
 import { lastElement } from '../../../util/js/array';
-import OrthogonalLine from "./OrthogonalLine";
+import CommonSegment from './CommonSegment';
 
-export default class EndSegment extends Segment {
-	orthogonalLine: OrthogonalLine
-
+export default class EndSegment extends CommonSegment {
 
 	prevEndLineHorizontal: boolean = false
 	prevEndLineVertical: boolean = false
 
 	constructor( props ) {
 		super( props )
-
-		this.orthogonalLine = props.orthogonalLine
 	}
 
 	get endLine(): EndLine {

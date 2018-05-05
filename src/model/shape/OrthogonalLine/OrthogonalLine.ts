@@ -24,8 +24,10 @@ import StartLine from './StartLine';
 import EndLine from './EndLine';
 import InnerLine from "./InnerLine"
 import CornerSegment from './CornerSegment';
-import CenterSegment from "./CenterSegment"
 import { findArrayFirstIndex } from '../../../util/js/array';
+import StartCenterSegment from './StartCenterSegment';
+import EndCenterSegment from './EndCenterSegment';
+import InnerCenterSegment from './InnerCenterSegment';
 
 const { abs } = Math
 
@@ -35,8 +37,6 @@ export default class OrthogonalLine extends Item {
 	endSegment: EndSegment = null
 
 	cornerSegments: CornerSegment[] = []
-
-	centerSegments: CenterSegment[] = []
 
 	startLine: StartLine = null
 
@@ -82,6 +82,10 @@ export default class OrthogonalLine extends Item {
 		return [ this.startSegment, ...this.cornerSegments, this.endSegment ]
 	}
 
+	get lines(): any[] {
+		return [ this.startLine, ...this.innerLines ,this.endLine ]
+	}
+
 	// ===============================
 	// =========== mutations =========
 	// ===============================
@@ -114,8 +118,24 @@ export default class OrthogonalLine extends Item {
 		} )
 	}
 
-	createCenterSegment( props: any ) {
-		return new CenterSegment( {
+	createStartCenterSegment( props: any ) {
+		return new StartCenterSegment( {
+			draw: this.draw,
+			orthogonalLine: this,
+			...props
+		} )
+	}
+
+	createEndCenterSegment( props: any ) {
+		return new EndCenterSegment( {
+			draw: this.draw,
+			orthogonalLine: this,
+			...props
+		} )
+	}
+
+	createEndInnerCenterSegment( props: any ) {
+		return new InnerCenterSegment( {
 			draw: this.draw,
 			orthogonalLine: this,
 			...props
@@ -151,6 +171,8 @@ export default class OrthogonalLine extends Item {
 			draggable: false
 		} )
 	}
+
+
 
 	_createCornerSegmentBetween( a: Segment, b: Segment ) {
 		const { segments } = this
@@ -242,29 +264,13 @@ export default class OrthogonalLine extends Item {
 		this.endLine = endLine
 		this.innerLines = innerLines
 	}
-	// regenerateLines() {
-	// 	const { length } = this.segments
-	// 	const cachedlines = []
-
-	// this.segments.reduce( ( accumulator, value, index ) => {
-	// 	const line = this.createLine( {
-	// 		sourceSegment: accumulator,
-	// 		targetSegment: value,
-	// 		showArrow    : isLast( index, this.segments )
-	// 	} )
-	// 	cachedlines.push( line )
-	// 	return value
-	// } )
-
-	// 	this.lines = cachedlines
-	// }
 
 	// ===============================
 	// =========== actions ===========
 	// ===============================
 	render() {}
 
-	// ===============================
-	// =========== methods ===========
-	// ===============================
+	updateCenterSegmentsPosition() {
+		this.lines.map( line => line.updateCenterSegmentPosition() )
+	}
   }
