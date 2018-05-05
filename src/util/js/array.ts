@@ -1,3 +1,5 @@
+import { notNil } from "../lodash/index";
+
 export function isFirst( index: number ) {
 	return index === 0
 }
@@ -34,4 +36,14 @@ export function findArrayFirstIndex( array: any[], element: any ) {
 	}
 
 	return null
+}
+
+
+export function firstElement( array: any[] ) {
+	return array[ 0 ]
+}
+
+export function lastElement( array: any[] ) {
+	const { length } = array
+	return array[ length - 1 ]
 }

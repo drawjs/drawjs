@@ -97,6 +97,8 @@ class Dragger extends Particle {
 		this.handleStart && this.handleStart( event )
 	}
 	dragging( event ): void {
+		this.handleBeforeDragging && this.handleBeforeDragging( event )
+
 		const point: Point2D = this.getters.getInitialPoint( event )
 
 		this.update( event )
@@ -107,6 +109,7 @@ class Dragger extends Particle {
 
 		this.updatePrevEvent( event )
 
+		this.handleAfterDragging && this.handleAfterDragging( event )
 	}
 	stop( event ): void {
 		this.enable = false
@@ -116,7 +119,13 @@ class Dragger extends Particle {
 		this.handleStop && this.handleStop( event )
 	}
 	handleStart( event ) {}
+	handleBeforeDragging( event ) {
+
+	}
 	handleDragging( event ) {}
+	handleAfterDragging( event ) {
+
+	}
 	handleStop( event ) {}
 
 

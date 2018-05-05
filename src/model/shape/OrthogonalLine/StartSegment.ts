@@ -1,10 +1,14 @@
-import Segment from '../../Segment';
-import OrthogonalLine from './OrthogonalLine';
-import StartLine from './StartLine';
+import Segment from "../../Segment"
+import OrthogonalLine from "./OrthogonalLine"
+import StartLine from "./StartLine"
+import { notNil } from "../../../util/lodash/index"
+import { firstElement } from '../../../util/js/array';
 
 export default class StartSegment extends Segment {
 	orthogonalLine: OrthogonalLine
 
+	prevStartLineHorizontal: boolean = false
+	prevStartLineVertical: boolean = false
 
 	constructor( props ) {
 		super( props )
@@ -16,25 +20,33 @@ export default class StartSegment extends Segment {
 		return this.orthogonalLine.startLine
 	}
 
-	updateDrag() {
-		if ( this.draggable ) {
-			const point: Point2DInitial = this.getters.getInitialPoint( event )
+	get firstCornerSegment(): Segment {
+		return firstElement( this.orthogonalLine.cornerSegments )
+	}
 
-			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+	_setPrevStartLineHorizontal( value: boolean ) {
+		this.prevStartLineHorizontal = value
+	}
 
+	_setPrevStartLineVertical( value: boolean ) {
+		this.prevStartLineVertical = value
+	}
 
-			const { x, y } = this.point
-			const newX = x + deltaX
-			const newY = y + deltaY
-			this.sharedActions.updateSegmentX( this, newX )
-			this.sharedActions.updateSegmentY( this, newY )
+	handleStartDrag() {
+		this._setPrevStartLineHorizontal( this.startLine.isHorizontal )
+		this._setPrevStartLineVertical( this.startLine.isVertical )
+	}
 
-
-
-			if ( this.startLine.isVertical ) {
-				console.log( 123 )
-			}
+	handleDragging() {
+		/**
+		 * Update the position of first corner segment
+		 */
+		const { firstCornerSegment } = this
+		if ( notNil( firstCornerSegment ) ) {
+			this.prevStartLineVertical &&
+				this.sharedActions.updateSegmentX( firstCornerSegment, this.x )
+			this.prevStartLineHorizontal &&
+				this.sharedActions.updateSegmentY( firstCornerSegment, this.y )
 		}
 	}
 }

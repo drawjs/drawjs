@@ -122,7 +122,9 @@ export default abstract class Cell extends Particle {
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )
 		this.dragger.handleStart = this.handleStartDrag.bind( this )
+		this.dragger.handleBeforeDragging = this.handleBeforeDragging.bind( this )
 		this.dragger.handleDragging = this.handleDragging.bind( this )
+		this.dragger.handleAfterDragging = this.handleAfterDragging.bind( this )
 		this.dragger.handleStop = this.handleStopDrag.bind( this )
 
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
@@ -140,7 +142,11 @@ export default abstract class Cell extends Particle {
 	 */
 	updateDrag( event ) {}
 	handleStartDrag( event ) {}
+	handleBeforeDragging( event ) {}
 	handleDragging( event ) {
+
+	}
+	handleAfterDragging( event ) {
 		this.getters.draw.render()
 	}
 	handleStopDrag( event ) {

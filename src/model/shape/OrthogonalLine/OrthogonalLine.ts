@@ -222,17 +222,17 @@ export default class OrthogonalLine extends Item {
 					targetSegment: value
 				} )
 			} else if ( isLast( index, segments ) ) {
-				const line = this.createEndLine( {
+				endLine = this.createEndLine( {
+					sourceSegment: accumulator,
+					targetSegment: value
+				} )
+			} else {
+				const line = this.createInnerLine( {
 					sourceSegment: accumulator,
 					targetSegment: value
 				} )
 
 				innerLines.push( line )
-			} else {
-				endLine = this.createInnerLine( {
-					sourceSegment: accumulator,
-					targetSegment: value
-				} )
 			}
 
 			return value
