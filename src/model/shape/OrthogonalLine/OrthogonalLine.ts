@@ -24,7 +24,7 @@ import StartLine from "./StartLine"
 import EndLine from "./EndLine"
 import InnerLine from "./InnerLine"
 import CornerSegment from "./CornerSegment"
-import { findArrayFirstIndex, removeElement } from "../../../util/js/array"
+import { findArrayFirstIndex, removeElement, prevElement, nextElement } from '../../../util/js/array';
 import StartCenterSegment from "./StartCenterSegment"
 import EndCenterSegment from "./EndCenterSegment"
 import InnerCenterSegment from "./InnerCenterSegment"
@@ -238,6 +238,10 @@ export default class OrthogonalLine extends Item {
 			clonedSegments.map( createCorner )
 		}
 
+		const repeatedCorners: CornerSegment[] = this.cornerSegments.filter( notSameDirection )
+
+		this.removeCornerSegments( repeatedCorners )
+
 		function createCorner( segment: Segment, index: number, clonedSegments ) {
 			if ( notFirst( index ) ) {
 				const prev: Segment = clonedSegments[ index - 1 ]
@@ -251,6 +255,20 @@ export default class OrthogonalLine extends Item {
 						self._insertCornerSegment( segment, cornerSegment )
 				}
 			}
+		}
+
+		function notSameDirection( corner: CornerSegment, index: number, array: CornerSegment[] ) {
+			if ( !isFirst( index ) && !isLast( index, array ) ) {
+				const prev: CornerSegment = prevElement( array, index )
+				const next: CornerSegment = nextElement( array, index )
+
+				const { x, y } = corner
+				const { x: px, y: py } = prev
+				const { x: nx, y: ny } = next
+				return ( x === px && x === nx ) || ( y === py && y === ny )
+			}
+
+			return false
 		}
 	}
 

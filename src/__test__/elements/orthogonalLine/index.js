@@ -52,10 +52,15 @@ const instance1 = draw.addElement( "orthogonal-line", {
 			x: 300,
 			y: 300
 		},
+
+		{
+			x: 300,
+			y: 400
+		},
 		{
 			x: 500 ,
 			y: 500
-		}
+		},
 
 
 		/**
