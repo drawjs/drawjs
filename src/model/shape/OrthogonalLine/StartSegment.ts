@@ -33,17 +33,19 @@ export default class StartSegment extends CommonSegment {
 		const { length } = possibleCorners
 		const { point } = this
 
+		let res = null
+
 		for ( let i = 0; i < length; i++ ) {
 			const corner = possibleCorners[ i ]
 			const { point: cornerPoint } = corner
 			const dis = distance( point, cornerPoint )
 
 			if ( dis <= OrthogonalLine.COMBINE_INTERVAL ) {
-				return corner
+				res = corner
 			}
 		}
 
-		return null
+		return res
 
 		function possible(
 			corner: CornerSegment,
@@ -71,6 +73,7 @@ export default class StartSegment extends CommonSegment {
 			this.translateToPoint( corner.point )
 
 			if ( notNil( index ) ) {
+				console.log( index )
 				const removingCorners = cornerSegments
 					.filter( ( element, theIndex ) => theIndex <= index )
 
