@@ -11,10 +11,12 @@ import Grid from "../../model/tool/Grid"
 import Renderer from "../../model/tool/Renderer"
 import DrawStore from "./DrawStore"
 import Getters from "./Getters"
-import SharedActions from "../../shared/SharedActions";
-import MiniMap from '../../model/tool/MiniMap';
-import TestUtils from '../../shared/TestUtils';
-import TextInput from '../../model/tool/TextInput';
+import SharedActions from "../../shared/SharedActions"
+import MiniMap from "../../model/tool/MiniMap"
+import TestUtils from "../../shared/TestUtils"
+import TextInput from "../../model/tool/TextInput"
+import { notNil } from "../../util/lodash/index"
+import { removeElement } from '../../util/js/array';
 
 export default class Actions {
 	drawStore: DrawStore
@@ -157,24 +159,9 @@ export default class Actions {
 	}
 
 	REMOVE_ELEMENT( element: any ) {
-		const elements: any[] = this.getters.cellList
-
-		const elementIndex: number = getIndex( elements, element )
-
-		if ( isNotNil( elementIndex )) {
-			elements.splice( elementIndex, 1 )
-		}
-
-		function getIndex( elements, element ) {
-			let res = null
-			elements.map( resolve )
-			return res
-
-			function resolve( theElement, index ) {
-				if ( theElement === element ) {
-					res = index
-				}
-			}
+		if ( notNil( element ) ) {
+			const elements: any[] = this.getters.cellList
+			removeElement( elements, element )
 		}
 	}
 
@@ -230,8 +217,6 @@ export default class Actions {
 		}
 	}
 
-
-
 	/**
 	 * // CEll
 	 */
@@ -241,7 +226,7 @@ export default class Actions {
 		this.sharedActions.startDragCell( cell, event )
 	}
 
-	 START_DRAG_CELLS_SHOULD_SELECT( event ) {
+	START_DRAG_CELLS_SHOULD_SELECT( event ) {
 		const self = this
 
 		this.getters.cellsShouldSelect.map( startDrag )
@@ -276,9 +261,6 @@ export default class Actions {
 		const cell = this.getters.getMostTopCellFocused( point )
 		isNotNil( cell ) && this.sharedActions.doubleClickCell( cell, event )
 	}
-
-
-
 
 	/**
 	 * // Select

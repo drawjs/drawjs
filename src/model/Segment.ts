@@ -114,4 +114,19 @@ export default class Segment extends Cell {
 			this.sharedActions.updateSegmentY( this, newY )
 		}
 	}
+
+	translate( dx: number, dy: number ) {
+		this.x = this.x + dx
+		this.y = this.y + dy
+	}
+
+	translateTo( x: number, y: number ) {
+		this.x = x
+		this.y = y
+	}
+
+	translateToPoint( point: Point2D ) {
+		this.x = point.x
+		this.y = point.y
+	}
 }

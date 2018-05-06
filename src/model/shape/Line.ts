@@ -166,4 +166,9 @@ export default class Line extends Path {
 		this.source = segments[ 0 ]
 		this.target = segments[ length - 1 ]
 	}
+
+	translate( dx, dy ) {
+		this.source.translate( dx, dy )
+		this.target.translate( dx, dy )
+	}
 }

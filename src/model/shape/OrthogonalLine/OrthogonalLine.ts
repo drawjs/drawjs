@@ -14,20 +14,21 @@ import {
 } from "../../../util/js/array"
 import {
 	notNextCornerSegment,
-	mapCreateSegmentInConstructor,
+	mapCreateSegmentInConstructor
 } from "../../../drawUtil/model/orthogonalLine/index"
 import { isIndexFound, notNil } from "../../../util/lodash/index"
 import { isLineVertical } from "../../../drawUtil/model/orthogonalLine/index"
 import StartSegment from "./StartSegment"
 import EndSegment from "./EndSegment"
-import StartLine from './StartLine';
-import EndLine from './EndLine';
+import StartLine from "./StartLine"
+import EndLine from "./EndLine"
 import InnerLine from "./InnerLine"
-import CornerSegment from './CornerSegment';
-import { findArrayFirstIndex } from '../../../util/js/array';
-import StartCenterSegment from './StartCenterSegment';
-import EndCenterSegment from './EndCenterSegment';
-import InnerCenterSegment from './InnerCenterSegment';
+import CornerSegment from "./CornerSegment"
+import { findArrayFirstIndex, removeElement } from "../../../util/js/array"
+import StartCenterSegment from "./StartCenterSegment"
+import EndCenterSegment from "./EndCenterSegment"
+import InnerCenterSegment from "./InnerCenterSegment"
+import CommonLine from "./CommonLine"
 
 const { abs } = Math
 
@@ -43,6 +44,8 @@ export default class OrthogonalLine extends Item {
 	endLine: EndLine = null
 
 	innerLines: InnerLine[] = []
+
+	static COMBINE_INTERVAL = 10
 
 	constructor( props ) {
 		super( props )
@@ -68,7 +71,7 @@ export default class OrthogonalLine extends Item {
 
 		this._initializeCornerSegments()
 
-		this._initializeLines()
+		this._refreshLines()
 	}
 
 	// ===============================
@@ -78,12 +81,12 @@ export default class OrthogonalLine extends Item {
 		return false
 	}
 
-	get segments(): any[] {
+	get segments(): Segment[] {
 		return [ this.startSegment, ...this.cornerSegments, this.endSegment ]
 	}
 
-	get lines(): any[] {
-		return [ this.startLine, ...this.innerLines ,this.endLine ]
+	get lines(): CommonLine[] {
+		return [ this.startLine, ...this.innerLines, this.endLine ]
 	}
 
 	// ===============================
@@ -94,7 +97,7 @@ export default class OrthogonalLine extends Item {
 	 */
 	createStartSegment( props: any ) {
 		return new StartSegment( {
-			draw: this.draw,
+			draw          : this.draw,
 			orthogonalLine: this,
 			...props
 		} )
@@ -102,7 +105,7 @@ export default class OrthogonalLine extends Item {
 
 	createEndSegment( props: any ) {
 		return new EndSegment( {
-			draw: this.draw,
+			draw          : this.draw,
 			orthogonalLine: this,
 			...props
 		} )
@@ -110,17 +113,17 @@ export default class OrthogonalLine extends Item {
 
 	createCornerSegment( props: any ) {
 		return new CornerSegment( {
-			draw     : this.draw,
+			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor: "grey",
-			draggable: false
+			fillColor     : "grey",
+			draggable     : false
 		} )
 	}
 
 	createStartCenterSegment( props: any ) {
 		return new StartCenterSegment( {
-			draw: this.draw,
+			draw          : this.draw,
 			orthogonalLine: this,
 			...props
 		} )
@@ -128,7 +131,7 @@ export default class OrthogonalLine extends Item {
 
 	createEndCenterSegment( props: any ) {
 		return new EndCenterSegment( {
-			draw: this.draw,
+			draw          : this.draw,
 			orthogonalLine: this,
 			...props
 		} )
@@ -136,7 +139,7 @@ export default class OrthogonalLine extends Item {
 
 	createEndInnerCenterSegment( props: any ) {
 		return new InnerCenterSegment( {
-			draw: this.draw,
+			draw          : this.draw,
 			orthogonalLine: this,
 			...props
 		} )
@@ -144,35 +147,67 @@ export default class OrthogonalLine extends Item {
 
 	createStartLine( props: any ) {
 		return new StartLine( {
-			draw     : this.draw,
+			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor: "red",
-			draggable: false
+			fillColor     : "red",
+			draggable     : false
 		} )
 	}
 
 	createEndLine( props: any ) {
 		return new EndLine( {
-			draw     : this.draw,
+			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor: "blue",
-			showArrow: true,
-			draggable: false
+			fillColor     : "blue",
+			showArrow     : true,
+			draggable     : false
 		} )
 	}
 
 	createInnerLine( props: any ) {
 		return new InnerLine( {
-			draw     : this.draw,
+			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			draggable: false
+			draggable     : false
 		} )
 	}
 
 
+	/**
+	 * // Corner segment
+	 */
+	addCornerSegmentsStart( point: Point2D ) {
+		const corner: CornerSegment = this.createCornerSegment( point )
+
+		this.cornerSegments = [ corner, ...this.cornerSegments ]
+	}
+	addCornerSegmentsEnd( point: Point2D ) {
+		const corner: CornerSegment = this.createCornerSegment( point )
+
+		this.cornerSegments = [ ...this.cornerSegments, corner ]
+	}
+	removeCornerSegment( corner: CornerSegment ) {
+		removeElement( this.cornerSegments, corner )
+		this.actions.REMOVE_ELEMENT( corner )
+	}
+
+	removeCornerSegments( corners: CornerSegment[] ) {
+		corners.map( this.removeCornerSegment.bind( this ) )
+	}
+
+	/**
+	 * // Add temporary line
+	 */
+	addTmpStartLine( props: any ) {
+		return this.createStartLine( props )
+	}
+
+	addTmpEndLine( props: any ) {
+		return this.createEndLine( props )
+	}
 
 	_createCornerSegmentBetween( a: Segment, b: Segment ) {
 		const { segments } = this
@@ -203,7 +238,6 @@ export default class OrthogonalLine extends Item {
 			clonedSegments.map( createCorner )
 		}
 
-
 		function createCorner( segment: Segment, index: number, clonedSegments ) {
 			if ( notFirst( index ) ) {
 				const prev: Segment = clonedSegments[ index - 1 ]
@@ -221,14 +255,19 @@ export default class OrthogonalLine extends Item {
 	}
 
 	_insertCornerSegment( segment: Segment, corner: any ) {
-		const index = findArrayFirstIndex( this.segments.map( ( { id } ) => id ), segment.id )
+		const index = findArrayFirstIndex(
+			this.segments.map( ( { id } ) => id ),
+			segment.id
+		)
 		if ( notNil( index ) ) {
 			const cornerIndex = index - 1
 			this.cornerSegments.splice( cornerIndex, 0, corner )
 		}
 	}
 
-	_initializeLines() {
+	_refreshLines() {
+		this._removeLines()
+
 		const { segments } = this
 		let startLine: StartLine = null
 		let endLine: EndLine = null
@@ -265,6 +304,24 @@ export default class OrthogonalLine extends Item {
 		this.innerLines = innerLines
 	}
 
+	_removeLines() {
+		this.lines.map( line => {
+			if ( notNil( line ) ) {
+				this.actions.REMOVE_ELEMENT( line.centerSegment )
+				this.actions.REMOVE_ELEMENT( line )
+			}
+		} )
+	}
+
+	/**
+	 * Base on startSegment, endSegment, cornerSegments,
+	 * then refresh startLine, endLine, innerLines, centerSegments
+	 */
+	refresh() {
+		this._refreshLines()
+		this.draw.render()
+	}
+
 	// ===============================
 	// =========== actions ===========
 	// ===============================
@@ -273,4 +330,4 @@ export default class OrthogonalLine extends Item {
 	updateCenterSegmentsPosition() {
 		this.lines.map( line => line.updateCenterSegmentPosition() )
 	}
-  }
+}

@@ -58,3 +58,6 @@ export function isLineHorizontal( line: Line ) {
 
 	return sy === ty
 }
+
+
+
