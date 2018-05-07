@@ -70,7 +70,7 @@ export default class Getters {
 		return this.drawStore.panels
 	}
 
-	generateDrawUniqueId(): string {
+	generateUniqueDrawId(): string {
 		const self = this
 		let id: string = generateId()
 		id = checkAndUpdateIdIfNeeded( id )
@@ -91,12 +91,13 @@ export default class Getters {
 	}
 
 	get cellListShouldRender(): Cell[] {
-		const res: Cell[] = this.cellList.filter( notInclude )
+		const res: Cell[] = this.cellList.filter( include )
+		return res
 
-		function notInclude(  { type }: Cell  ): boolean {
+
+		function include(  { type }: Cell  ): boolean {
 			return ! includes( drawRenderExcludingCellTypes, type )
 		}
-		return res
 	}
 
 	get cellsShouldSelect(): Cell[] {

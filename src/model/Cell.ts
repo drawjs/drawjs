@@ -14,7 +14,6 @@ import { DEGREE_TO_RADIAN } from "../store/constant/index"
 const { abs } = Math
 
 export default abstract class Cell extends Particle {
-	id: string = generateId()
 	_isInstance: boolean = true
 	type: string
 

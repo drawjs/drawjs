@@ -14,7 +14,7 @@ interface DrawStorePanelWithoutInstance {
 
 interface DrawStoreElementWithoutInstance {
 	draw?: any
-	id: string
+	id?: string
 	type: string
 	top: number
 	left: number

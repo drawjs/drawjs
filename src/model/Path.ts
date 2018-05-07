@@ -11,6 +11,7 @@ import getRotatedPoint from "../util/getRotatedPoint"
 import { cloneDeep, isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
+import { notUndefined } from '../util/lodash/index';
 
 const { min, max } = Math
 
@@ -125,9 +126,10 @@ export default class Path extends PathItem {
 
 	render() {
 		const { ctx } = this.getters
+		const { fillColor } = this
 
 		ctx.save()
-		ctx.fillStyle = "#8cccf0"
+		ctx.fillStyle = notUndefined( fillColor ) ? fillColor : "#8cccf0"
 		ctx.fill( this.path2d )
 		ctx.restore()
 
@@ -214,5 +216,23 @@ export default class Path extends PathItem {
 
 		this.actions.REMOVE_ELEMENTS( this.curves )
 		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
+	}
+
+
+
+	/**
+	 * // Translate
+	 */
+	translate( dx: number, dy: number ) {
+		this.sharedActions.translateSegments( this.segments, dx, dy )
+	}
+	translateTo( x: number, y: number ) {
+		const { x: cx, y: cy } = this.itemCenter
+		const dx: number = x - cx
+		const dy: number = y - cy
+		this.sharedActions.translateSegments( this.segments, dx, dy )
+	}
+	translateToPoint( point: Point2D ) {
+		this.translateTo( point.x, point.y )
 	}
 }

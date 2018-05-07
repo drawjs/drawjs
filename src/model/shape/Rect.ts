@@ -2,14 +2,20 @@ import Path from "../Path"
 import { RECT } from "../../store/constant/cellType"
 import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
+import { notUndefined } from '../../util/lodash/index';
 
 export default class Rect extends Path {
 	type = RECT
 
-	left: number = 0
-	top: number = 0
-	width: number = 0
-	height: number = 0
+	left: number = Rect.DEFAULT_LEFT
+	top: number = Rect.DEFAULT_TOP
+	width: number = Rect.DEFAULT_WIDTH
+	height: number = Rect.DEFAULT_HEIGHT
+
+	static DEFAULT_LEFT= 0
+	static DEFAULT_TOP = 0
+	static DEFAULT_WIDTH = 100
+	static DEFAULT_HEIGHT = 100
 
 	/**
 	 * Override
@@ -33,7 +39,11 @@ export default class Rect extends Path {
 		this.sharedActions.hideSegments( this.segments )
 
 		function setPropsPointsDangerously( props ) {
-			const { left, top, width, height } = props
+			const left = notUndefined( props.left ) ? props.left : Rect.DEFAULT_LEFT
+			const top = notUndefined( props.top ) ? props.top : Rect.DEFAULT_TOP
+			const width = notUndefined( props.width ) ? props.width : Rect.DEFAULT_WIDTH
+			const height = notUndefined( props.height ) ? props.height : Rect.DEFAULT_HEIGHT
+
 			const rectPoints = getRectPoints( { left, top, width, height } )
 			const { leftTop, rightTop, rightBottom, leftBottom } = rectPoints
 			const points: Point2D[] = [

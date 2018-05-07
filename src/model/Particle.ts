@@ -8,10 +8,13 @@ import TestUtils from "../shared/TestUtils";
 
 export default class Particle {
 	draw: Draw
+	id: string = null
 
 	constructor( props ) {
 		const { draw } = props
 		this.draw = draw
+
+		this.id = this.getters.generateUniqueDrawId()
 	}
 
 	get drawStore(): DrawStore {

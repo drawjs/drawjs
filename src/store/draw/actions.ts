@@ -107,7 +107,6 @@ export default class Actions {
 		} )
 
 		const {
-			id,
 			type,
 			top,
 			left,
@@ -119,7 +118,6 @@ export default class Actions {
 			draggable,
 			shouldSelect
 		}: {
-			id: string
 			type: string
 			top: number
 			left: number
@@ -133,7 +131,6 @@ export default class Actions {
 		} = setting
 
 		const wholeElement = {
-			id          : !isNil( id ) ? id : this.getters.generateDrawUniqueId(),
 			__instance__: instance,
 			type,
 			top,
@@ -171,7 +168,7 @@ export default class Actions {
 
 	ADD_PANEL( name: string ) {
 		this.getters.storePanels.push( {
-			id      : this.getters.generateDrawUniqueId(),
+			id      : this.getters.generateUniqueDrawId(),
 			name,
 			elements: []
 		} )

@@ -147,14 +147,23 @@ export default class SharedActions {
 		segments.map( segment => this.renderParticle( segment ) )
 	}
 	translateSegment( segment: Segment, deltaX: number, deltaY: number ) {
-		const { x, y } = segment
-		this.updateSegmentPoint( segment, {
-			x: x + deltaX,
-			y: y + deltaY
-		} )
+		segment.translate( deltaX, deltaY )
 	}
 	translateSegments( segments: Segment[], deltaX: number, deltaY: number ) {
-		segments.map( segment => this.translateSegment( segment, deltaX, deltaY ) )
+		segments.map( segment => segment.translate( deltaX, deltaY ) )
+	}
+	translateSegmentTo( segment: Segment, x: number, y: number ) {
+		segment.translateTo( x, y )
+	}
+	translateSegmentsTo( segments: Segment[], x: number, y: number ) {
+		console.log( segments, x, y )
+		segments.map( segment => segment.translateTo( x, y ) )
+	}
+	translateSegmentToPoint( segment: Segment, point: Point2D ) {
+		segment.translateToPoint( point )
+	}
+	translateSegmentsToPoint( segments: Segment[], point: Point2D ) {
+		segments.map( segment => segment.translateToPoint( point ) )
 	}
 	rotateSegment( segment: Segment, angle: number, center?: Point2D ) {
 		const { handleIn, handleOut } = segment
