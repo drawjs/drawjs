@@ -171,4 +171,12 @@ export default class Line extends Path {
 		this.source.translate( dx, dy )
 		this.target.translate( dx, dy )
 	}
+
+	/**
+	 * Remove line and segments
+	 */
+	forceRemove() {
+		this.remove()
+		this.actions.REMOVE_ELEMENTS( [ this.source, this.target ] )
+	}
 }

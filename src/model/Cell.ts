@@ -176,4 +176,11 @@ export default abstract class Cell extends Particle {
 		this.prevKY = this.kY
 		this.kY = kY
 	}
+
+	/**
+	 * Remove
+	 */
+	remove() {
+		this.actions.REMOVE_ELEMENT( this )
+	}
 }

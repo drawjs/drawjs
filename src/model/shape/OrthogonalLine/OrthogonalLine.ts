@@ -1,4 +1,4 @@
-import Segment from "../../Segment"
+import Segment from '../../Segment';
 import Line from ".././Line"
 import Path from "../../Path"
 import { isNotNil } from "../../../util/index"
@@ -50,7 +50,7 @@ export default class OrthogonalLine extends Item {
 	constructor( props ) {
 		super( props )
 
-		const { points } = props
+		const { points = [] } = props
 
 		const segments = points.map( mapCreateSegmentInConstructor( this ) )
 		const potentialStartSegment = segments[ 0 ]
@@ -87,6 +87,10 @@ export default class OrthogonalLine extends Item {
 
 	get lines(): CommonLine[] {
 		return [ this.startLine, ...this.innerLines, this.endLine ]
+	}
+
+	get centerSegments(): Segment[] {
+		return this.lines.map( ({ centerSegment }) => centerSegment )
 	}
 
 	// ===============================
@@ -347,5 +351,17 @@ export default class OrthogonalLine extends Item {
 
 	updateCenterSegmentsPosition() {
 		this.lines.map( line => line.updateCenterSegmentPosition() )
+	}
+
+	forceRemove() {
+		this.actions.REMOVE_ELEMENTS( [
+			this.startSegment,
+			...this.cornerSegments,
+			this.endSegment,
+			...this.lines,
+			...this.centerSegments,
+		] )
+
+		super.remove()
 	}
 }
