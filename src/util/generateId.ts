@@ -1,7 +1,6 @@
-export default function(): string {
+export default function( topic='Draw' ): string {
 	var result, i, j
 	result = ''
-	const topic = "Draw"
 	for( j = 0; j < 32; j++ ) {
 	  if( j == 8 || j == 12 || j == 16 || j == 20 )
 		result = result + '-'

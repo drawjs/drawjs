@@ -1,5 +1,5 @@
 import { DRAW_STORE_PANEL_DEFAULT_NAME } from "../../store/constant/index"
-import { generateUniqueId } from "../../util/index"
+import { generateId } from "../../util/index"
 import Selector from '../../model/tool/Selector';
 import Interaction from '../../core/interaction';
 import Grid from '../../model/tool/Grid';
@@ -15,7 +15,7 @@ export default class DrawStore {
 
 	panels = [
 		{
-			id      : generateUniqueId(),
+			id      : generateId(),
 			name    : DRAW_STORE_PANEL_DEFAULT_NAME,
 			elements: []
 		}

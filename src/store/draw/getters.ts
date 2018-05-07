@@ -1,5 +1,5 @@
 import { isNil, cloneDeep, find, includes } from "lodash"
-import { generateUniqueId, isNotNil } from "../../util/index"
+import { generateId, isNotNil } from "../../util/index"
 import { Cell } from "../../model/index"
 import Graph from "../../model/Graph"
 import Selector from "../../model/tool/Selector"
@@ -72,12 +72,12 @@ export default class Getters {
 
 	generateDrawUniqueId(): string {
 		const self = this
-		let id: string = generateUniqueId()
+		let id: string = generateId()
 		id = checkAndUpdateIdIfNeeded( id )
 
 		function checkAndUpdateIdIfNeeded( id: string ) {
 			return includes( self.storeElementsIds, id ) ?
-				checkAndUpdateIdIfNeeded( generateUniqueId() ) :
+				checkAndUpdateIdIfNeeded( generateId() ) :
 				id
 		}
 		return id

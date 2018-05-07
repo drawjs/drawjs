@@ -1,5 +1,5 @@
 import * as _ from "lodash"
-import { generateUniqueId, isNotNil } from "../util/index"
+import { generateId, isNotNil } from "../util/index"
 import Draw from "Draw"
 import * as constant from "../store/constant/index"
 import Dragger from "./tool/Dragger"
@@ -14,7 +14,7 @@ import { DEGREE_TO_RADIAN } from "../store/constant/index"
 const { abs } = Math
 
 export default abstract class Cell extends Particle {
-	id: string = generateUniqueId()
+	id: string = generateId()
 	_isInstance: boolean = true
 	type: string
 
