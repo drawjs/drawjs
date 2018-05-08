@@ -102,13 +102,13 @@ export default class StartSegment extends CommonSegment {
 	}
 
 	handleStopDrag() {
-		super.handleStopDrag && super.handleStopDrag()
-
 		const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
 
 		if ( notNil( cornerSegmentToBeCombined ) ) {
 			this._combineCornerSegment( cornerSegmentToBeCombined )
 			this.orthogonalLine.refresh()
 		}
+
+		super.handleStopDrag && super.handleStopDrag()
 	}
 }

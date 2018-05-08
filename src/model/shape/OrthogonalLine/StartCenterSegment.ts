@@ -59,11 +59,12 @@ export default class StartCenterSegment extends CommonCenterSegment {
 	}
 
 	handleStopDrag() {
-		super.handleStopDrag && super.handleStopDrag()
 		this.shouldAddCornerSegmentWhenMoving = false
 
 		this._removeTmpStartLine()
 
 		this.orthogonalLine.refresh()
+
+		super.handleStopDrag && super.handleStopDrag()
 	}
 }

@@ -335,13 +335,21 @@ export default class OrthogonalLine extends Item {
 		} )
 	}
 
+
 	/**
 	 * Base on startSegment, endSegment, cornerSegments,
 	 * then refresh startLine, endLine, innerLines, centerSegments
 	 */
 	refresh() {
 		this._refreshLines()
-		this.draw.render()
+	}
+
+	/**
+	 * // Translation
+	 */
+	translateTargetToPoint( point: Point2D ) {
+		notNil( this.endSegment ) && this.endSegment.translateToPoint( point )
+		this.refresh()
 	}
 
 	// ===============================
@@ -354,6 +362,8 @@ export default class OrthogonalLine extends Item {
 	}
 
 	forceRemove() {
+		this.remove()
+
 		this.actions.REMOVE_ELEMENTS( [
 			this.startSegment,
 			...this.cornerSegments,
@@ -362,6 +372,9 @@ export default class OrthogonalLine extends Item {
 			...this.centerSegments,
 		] )
 
-		super.remove()
+		this.startSegment = null
+		this.endSegment = null
+		this.cornerSegments = []
+
 	}
 }

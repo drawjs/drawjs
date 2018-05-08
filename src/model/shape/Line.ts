@@ -5,6 +5,7 @@ import getLineRotatableBounds from "../../util/geometry/getLineRotatableBounds"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import Segment from "../Segment"
 import getArrowPoints from "../../util/geometry/getArrowPoints"
+import { notNil } from "../../util/lodash/index";
 
 export default class Line extends Path {
 	type = LINE
@@ -170,6 +171,10 @@ export default class Line extends Path {
 	translate( dx, dy ) {
 		this.source.translate( dx, dy )
 		this.target.translate( dx, dy )
+	}
+
+	translateTargetToPoint( point: Point2D ) {
+		notNil( this.target ) && this.target.translateToPoint( point )
 	}
 
 	/**
