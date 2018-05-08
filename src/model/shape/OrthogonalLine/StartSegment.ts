@@ -7,15 +7,13 @@ import {
 	isLast,
 	findArrayFirstIndex
 } from "../../../util/js/array"
-import CommonSegment from "./CommonSegment"
+import CommonStartEndSegment from "./CommonStartEndSegment"
 import CornerSegment from "./CornerSegment"
 import distance from "../../../util/geometry/distance"
 import OrthogonalLine from "./OrthogonalLine"
+import CommonLine from "./CommonLine"
 
-export default class StartSegment extends CommonSegment {
-	prevStartLineHorizontal: boolean = false
-	prevStartLineVertical: boolean = false
-
+export default class StartSegment extends CommonStartEndSegment {
 	constructor( props ) {
 		super( props )
 	}
@@ -29,7 +27,9 @@ export default class StartSegment extends CommonSegment {
 	}
 
 	_getCornerSegmentToBeCombined(): CornerSegment {
-		const possibleCorners = this.orthogonalLine.cornerSegments.filter( possible )
+		const possibleCorners = this.orthogonalLine.cornerSegments.filter(
+			possible
+		)
 		const { length } = possibleCorners
 		const { point } = this
 
@@ -56,14 +56,6 @@ export default class StartSegment extends CommonSegment {
 		}
 	}
 
-	_setPrevStartLineHorizontal( value: boolean ) {
-		this.prevStartLineHorizontal = value
-	}
-
-	_setPrevStartLineVertical( value: boolean ) {
-		this.prevStartLineVertical = value
-	}
-
 	_combineCornerSegment( corner: CornerSegment ) {
 		const self = this
 		if ( notNil( corner ) ) {
@@ -74,31 +66,17 @@ export default class StartSegment extends CommonSegment {
 
 			if ( notNil( index ) ) {
 				console.log( index )
-				const removingCorners = cornerSegments
-					.filter( ( element, theIndex ) => theIndex <= index )
+				const removingCorners = cornerSegments.filter(
+					( element, theIndex ) => theIndex <= index
+				)
 
 				this.orthogonalLine.removeCornerSegments( removingCorners )
 			}
 		}
-
 	}
 
-	handleStartDrag() {
-		this._setPrevStartLineHorizontal( this.startLine.isHorizontal )
-		this._setPrevStartLineVertical( this.startLine.isVertical )
-	}
-
-	handleDragging() {
-		/**
-		 * Update the position of first corner segment
-		 */
-		const { firstCornerSegment } = this
-		if ( notNil( firstCornerSegment ) ) {
-			this.prevStartLineVertical &&
-				this.sharedActions.updateSegmentX( firstCornerSegment, this.x )
-			this.prevStartLineHorizontal &&
-				this.sharedActions.updateSegmentY( firstCornerSegment, this.y )
-		}
+	translateToPoint( point: Point2D ) {
+		this.translateToPointWith( point, this.startLine, <CornerSegment>this.firstCornerSegment, this.orthogonalLine.getNextLine.bind(this.orthogonalLine) )
 	}
 
 	handleStopDrag() {

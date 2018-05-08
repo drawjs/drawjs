@@ -110,6 +110,14 @@ export default class Line extends Path {
 		return sy === ty
 	}
 
+	get isCoincided(): boolean {
+		const { source, target }: Line = this
+		const { x: sx, y: sy } = source
+		const { x: tx, y: ty } = target
+
+		return ( sx === tx && sy === ty )
+	}
+
 	get center(): Point2D {
 		const { x: sx, y: sy } = this.source
 		const { x: tx, y: ty } = this.target

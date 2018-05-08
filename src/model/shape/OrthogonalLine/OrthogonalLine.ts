@@ -24,7 +24,7 @@ import StartLine from "./StartLine"
 import EndLine from "./EndLine"
 import InnerLine from "./InnerLine"
 import CornerSegment from "./CornerSegment"
-import { findArrayFirstIndex, removeElement, prevElement, nextElement } from '../../../util/js/array';
+import { findArrayFirstIndex, removeElement, prevElement, nextElement, findArrayLastIndex } from '../../../util/js/array';
 import StartCenterSegment from "./StartCenterSegment"
 import EndCenterSegment from "./EndCenterSegment"
 import InnerCenterSegment from "./InnerCenterSegment"
@@ -91,6 +91,26 @@ export default class OrthogonalLine extends Item {
 
 	get centerSegments(): Segment[] {
 		return this.lines.map( ({ centerSegment }) => centerSegment )
+	}
+
+	getNextLine( line: CommonLine ): CommonLine {
+		const index = findArrayLastIndex( this.lines, line )
+
+		if ( notNil( index ) ) {
+			return this.lines[ index + 1 ]
+		}
+
+		return null
+	}
+
+	getPrevLine( line: CommonLine ): CommonLine {
+		const index = findArrayFirstIndex( this.lines, line )
+
+		if ( notNil( index ) ) {
+			return this.lines[ index - 1 ]
+		}
+
+		return null
 	}
 
 	// ===============================
@@ -347,6 +367,10 @@ export default class OrthogonalLine extends Item {
 	/**
 	 * // Translation
 	 */
+	translateStartToPoint( point: Point2D ) {
+		notNil( this.startSegment ) && this.startSegment.translateToPoint( point )
+		this.refresh()
+	}
 	translateTargetToPoint( point: Point2D ) {
 		notNil( this.endSegment ) && this.endSegment.translateToPoint( point )
 		this.refresh()

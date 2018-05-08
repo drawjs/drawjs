@@ -40,12 +40,24 @@ export function findArrayFirstIndex( array: any[], element: any ) {
 	return null
 }
 
+export function findArrayLastIndex( array: any[], element: any ) {
+	let res = null
+	for ( let i = 0; i < array.length; i++ ) {
+		const potential = array[ i ]
+		if ( potential === element ) {
+			res = i
+		}
+	}
+
+	return res
+}
+
 
 
 /**
  * Find element
  */
-export function firstElement( array: any[] ) {
+export function firstElement( array: any[] ): any {
 	return array[ 0 ]
 }
 
