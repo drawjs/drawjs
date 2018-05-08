@@ -30,8 +30,6 @@ export default class StartCenterSegment extends CommonCenterSegment {
 
 
 	handleAfterDragging( event ) {
-		super.handleAfterDragging && super.handleAfterDragging( event )
-
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
 		const dx = this.dragger.getDeltaXToStartPoint( point )
@@ -55,6 +53,8 @@ export default class StartCenterSegment extends CommonCenterSegment {
 
 			this.tmpStartLine && this.tmpStartLine.updateCenterSegmentPosition()
 		}
+
+		super.handleAfterDragging && super.handleAfterDragging( event )
 
 	}
 

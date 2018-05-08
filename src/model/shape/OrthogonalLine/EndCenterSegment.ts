@@ -30,7 +30,6 @@ export default class EndCenterSegment extends CommonCenterSegment {
 
 
 	handleAfterDragging( event ) {
-		super.handleAfterDragging && super.handleAfterDragging( event )
 
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
@@ -55,6 +54,9 @@ export default class EndCenterSegment extends CommonCenterSegment {
 
 			this.tmpEndLine && this.tmpEndLine.updateCenterSegmentPosition()
 		}
+
+		super.handleAfterDragging && super.handleAfterDragging( event )
+
 
 	}
 
