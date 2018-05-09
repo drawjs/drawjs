@@ -10,10 +10,15 @@ export default class MathVector {
 
 	y: number
 
-	constructor( a: any, b: any ) {
+	constructor( a: any, b?: any ) {
 		if ( isNumber( a ) && isNumber( b ) ) {
 			this.x = a
 			this.y = b
+		}
+
+		if ( isPoint( a ) && ! isPoint( b ) ) {
+			this.x = a.x
+			this.y = a.y
 		}
 
 		if ( isPoint( a ) && isPoint( b ) ) {

@@ -203,12 +203,12 @@ export default class OrthogonalLine extends Item {
 	/**
 	 * // Corner segment
 	 */
-	addCornerSegmentsStart( point: Point2D ) {
+	addCornerSegmentStart( point: Point2D ) {
 		const corner: CornerSegment = this.createCornerSegment( point )
 
 		this.cornerSegments = [ corner, ...this.cornerSegments ]
 	}
-	addCornerSegmentsEnd( point: Point2D ) {
+	addCornerSegmentEnd( point: Point2D ) {
 		const corner: CornerSegment = this.createCornerSegment( point )
 
 		this.cornerSegments = [ ...this.cornerSegments, corner ]

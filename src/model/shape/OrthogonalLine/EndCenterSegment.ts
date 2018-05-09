@@ -44,7 +44,7 @@ export default class EndCenterSegment extends CommonCenterSegment {
 			if ( ! this.shouldAddCornerSegmentWhenMoving ) {
 				this.shouldAddCornerSegmentWhenMoving = true
 
-				this.orthogonalLine.addCornerSegmentsEnd( endSegment.point )
+				this.orthogonalLine.addCornerSegmentEnd( endSegment.point )
 				const lastCorner: CornerSegment = lastElement( this.orthogonalLine.cornerSegments )
 
 				this.line.target = lastCorner

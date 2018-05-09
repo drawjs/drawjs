@@ -17,7 +17,7 @@
 			"es2016"
 		],
 		"typeRoots": [
-			"src/typings"
+			"src/typings/**"
 		]
 	}
 }

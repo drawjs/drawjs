@@ -43,7 +43,7 @@ export default class StartCenterSegment extends CommonCenterSegment {
 			if ( ! this.shouldAddCornerSegmentWhenMoving ) {
 				this.shouldAddCornerSegmentWhenMoving = true
 
-				this.orthogonalLine.addCornerSegmentsStart( startSegment.point )
+				this.orthogonalLine.addCornerSegmentStart( startSegment.point )
 				const firstCorner: CornerSegment = firstElement( this.orthogonalLine.cornerSegments )
 
 				this.line.source = firstCorner
