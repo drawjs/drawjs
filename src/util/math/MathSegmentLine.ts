@@ -3,6 +3,10 @@ import MathVector from "./MathVector"
 import { allElementsEqual, equalPoint } from "../js/compare"
 import intersect from "../geometry/intersect";
 import { includes } from 'lodash';
+import { notNil } from "../lodash/index";
+
+const { abs } = Math
+
 export default class MathSegmentLine {
 	start: Point2D
 	end: Point2D
@@ -50,9 +54,27 @@ export default class MathSegmentLine {
 		const OD = new MathVector( t2 )
 
 		const AB = OB.subtract( OA )
+		const BA = OA.subtract( OB )
 		const CD = OD.subtract( OC )
 
-		return AB.angle === CD.angle
+		return AB.angle === CD.angle || BA.angle === CD.angle
+	}
+
+	perpWith( segmentLine: MathSegmentLine ) {
+		const { start: s1, end: t1 } = this
+		const { start: s2, end: t2 } = segmentLine
+
+		const OA = new MathVector( s1 )
+		const OB = new MathVector( t1 )
+		const OC = new MathVector( s2 )
+		const OD = new MathVector( t2 )
+
+		const AB = OB.subtract( OA )
+		const CD = OD.subtract( OC )
+
+		const delta: number  = AB.angle - CD.angle
+
+		return abs( delta / 90 % 2 ) === 1
 	}
 
 	onSameStraightLineWith( segmentLine: MathSegmentLine ) {
@@ -114,7 +136,10 @@ export default class MathSegmentLine {
 			}
 		} else {
 			const intersectedInfo = intersect( this.points, segmentLine.points )
-			res.point = intersectedInfo.intersected
+			const { intersected: point } = intersectedInfo
+			if ( notNil( point ) && this.include( point ) && segmentLine.include( point ) ) {
+				res.point = point
+			}
 		}
 
 		return res

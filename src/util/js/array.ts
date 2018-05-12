@@ -15,6 +15,9 @@ export function isLast( index: number, array: any[] ) {
 
 export const notLast = ( index: number, array: any[] ) => !isLast( index, array )
 
+export const isEmpty = ( array: any[] ) => array.length === 0
+export const notEmpty = ( array: any[] ) => !isEmpty( array )
+
 export function isFirstElement( element: any, index: number ) {
 	return isFirst( index )
 }
@@ -52,8 +55,6 @@ export function findArrayLastIndex( array: any[], element: any ) {
 	return res
 }
 
-
-
 /**
  * Find element
  */
@@ -73,7 +74,6 @@ export function prevElement( array: any[], index: number ) {
 export function nextElement( array: any[], index: number ) {
 	return array[ index + 1 ]
 }
-
 
 /**
  * // Delete

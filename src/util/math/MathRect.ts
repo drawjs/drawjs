@@ -1,5 +1,13 @@
-import MathSegmentLine from './MathSegmentLine';
-import { notNil } from '../lodash/index';
+import MathSegmentLine from "./MathSegmentLine"
+import { notNil, notUndefined } from "../lodash/index"
+
+export const BORDER_TYPES = {
+	LEFT: 'left',
+	TOP: 'top',
+	RIGHT: 'right',
+	BOTTOM: 'bottom',
+}
+
 export default class MathRect {
 	center: Point2D
 	width: number
@@ -9,7 +17,6 @@ export default class MathRect {
 	 * Extending distance
 	 */
 	ed: number
-
 
 	constructor(
 		center: Point2D,
@@ -137,7 +144,12 @@ export default class MathRect {
 	}
 
 	get segmentLines(): MathSegmentLine[] {
-		return [ this.leftSegmentLine, this.topSegmentLine, this.rightSegmentLine, this.bottomSegmentLine ]
+		return [
+			this.leftSegmentLine,
+			this.topSegmentLine,
+			this.rightSegmentLine,
+			this.bottomSegmentLine
+		]
 	}
 
 	/**
@@ -173,64 +185,67 @@ export default class MathRect {
 
 	get lte(): Point2D {
 		return {
-			x: this.left,
-			y: this.top
+			x: this.lce.x,
+			y: this.tce.y
 		}
 	}
 
 	get rte(): Point2D {
 		return {
-			x: this.right,
-			y: this.top
+			x: this.rce.x,
+			y: this.tce.y
 		}
 	}
 
 	get rbe(): Point2D {
 		return {
-			x: this.right,
-			y: this.bottom
+			x: this.rce.x,
+			y: this.bce.y
 		}
 	}
 
 	get lbe(): Point2D {
 		return {
-			x: this.left,
-			y: this.bottom
+			x: this.lce.x,
+			y: this.bce.y
 		}
 	}
 
 	get lbci(): BorderCenterInfo {
 		return {
+			type: 		BORDER_TYPES.LEFT,
 			extension       : this.lce,
 			cornerExtensions: [ this.lbe, this.lte ],
-			mathRect: this
+			mathRect        : this,
 		}
 	}
 
 	get tbci(): BorderCenterInfo {
 		return {
+			type: 		BORDER_TYPES.TOP,
 			extension       : this.tce,
 			cornerExtensions: [ this.lte, this.rte ],
-			mathRect: this
+			mathRect        : this
 		}
 	}
 
 	get rbci(): BorderCenterInfo {
 		return {
+			type: 		BORDER_TYPES.RIGHT,
 			extension       : this.rce,
 			cornerExtensions: [ this.rte, this.rbe ],
-			mathRect: this
+			mathRect        : this
 		}
 	}
 
 	get bbci(): BorderCenterInfo {
 		return {
+			type: 		BORDER_TYPES.BOTTOM,
 			extension       : this.bce,
 			cornerExtensions: [ this.rbe, this.lbe ],
-			mathRect: this
+			mathRect        : this
 		}
 	}
-
 
 	intersectSegmentLineInfo( segmentLine: MathSegmentLine ) {
 		const res = {
@@ -253,10 +268,22 @@ export default class MathRect {
 				res.isInfinite = true
 			}
 
-			notNil( point ) && res.intersectd.push( {
-				point,
-				segmentLines: [ theSegmentLine, segmentLine  ]
-			} )
+			notNil( point ) &&
+				res.intersectd.push( {
+					point,
+					segmentLines: [ theSegmentLine, segmentLine ]
+				} )
+		}
+	}
+
+	/**
+	 * // MathRect
+	 */
+	translateCenter( dx: number, dy: number ) {
+		const { x, y } = this.center
+		this.center = {
+			x: x + dx,
+			y: y + dy
 		}
 	}
 }

@@ -29,6 +29,7 @@ import StartCenterSegment from "./StartCenterSegment"
 import EndCenterSegment from "./EndCenterSegment"
 import InnerCenterSegment from "./InnerCenterSegment"
 import CommonLine from "./CommonLine"
+import MathSegmentLine from '../../../util/math/MathSegmentLine';
 
 const { abs } = Math
 
@@ -55,6 +56,8 @@ export default class OrthogonalLine extends Item {
 		const segments = points.map( mapCreateSegmentInConstructor( this ) )
 		const potentialStartSegment = segments[ 0 ]
 		const potentialEndSegment = segments[ segments.length - 1 ]
+
+		// this.getters.testUtils.delayRenderPoints( points, 'purple' )
 
 		if ( notNil( potentialStartSegment ) ) {
 			this.startSegment = potentialStartSegment
@@ -256,6 +259,7 @@ export default class OrthogonalLine extends Item {
 	_initializeCornerSegments() {
 		const self = this
 		let corners = []
+		const points: Point2D[] = this.segments.map( ( { point } ) => point )
 
 		const clonedSegments = cloneDeep( this.segments )
 		if ( isNotNil( this.startSegment ) ) {
@@ -384,6 +388,33 @@ export default class OrthogonalLine extends Item {
 	updateCenterSegmentsPosition() {
 		this.lines.map( line => line.updateCenterSegmentPosition() )
 	}
+
+
+	reGenerate( points ) {
+		const segments = points.map( mapCreateSegmentInConstructor( this ) )
+		const potentialStartSegment = segments[ 0 ]
+		const potentialEndSegment = segments[ segments.length - 1 ]
+
+		// this.getters.testUtils.delayRenderPoints( points, 'purple' )
+
+		if ( notNil( potentialStartSegment ) ) {
+			this.startSegment = potentialStartSegment
+			this.startSegment.orthogonalLine = this
+		}
+
+		if ( notNil( potentialEndSegment ) ) {
+			this.endSegment = potentialEndSegment
+		}
+
+		this.cornerSegments = segments
+			.filter( notFirstElement )
+			.filter( notLastElement )
+
+		this._initializeCornerSegments()
+
+		this._refreshLines()
+	}
+
 
 	forceRemove() {
 		this.remove()
