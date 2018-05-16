@@ -1,6 +1,6 @@
 import MathVector from "../../util/math/MathVector"
-import { cloneDeep } from "lodash"
 import { getRotatedPoint } from "../../util/index"
+import { clonePoint } from '../js/clone';
 
 interface RotatableBounds {
 	leftTop: Point2D
@@ -14,8 +14,8 @@ export default function(
 	target: Point2D,
 	space: number
 ): RotatableBounds {
-	let clonedSource: Point2D = cloneDeep( source )
-	let clonedTarget: Point2D = cloneDeep( target )
+	let clonedSource: Point2D = clonePoint( source )
+	let clonedTarget: Point2D = clonePoint( target )
 
 
 	let S = clonedSource

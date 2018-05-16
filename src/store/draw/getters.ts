@@ -1,4 +1,4 @@
-import { isNil, cloneDeep, find, includes } from "lodash"
+import { isNil, find, includes, cloneDeep } from 'lodash';
 import { generateId, isNotNil } from "../../util/index"
 import { Cell } from "../../model/index"
 import Graph from "../../model/Graph"

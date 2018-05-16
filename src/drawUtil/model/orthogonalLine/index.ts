@@ -31,15 +31,15 @@ export function mapCreateSegmentInConstructor( classObject: OrthogonalLine ) {
 /**
  * // General
  */
-export function isNextCornerSegment( current: Segment, next: Segment ) {
+export function isNextCornerPoint( current: Segment, next: Segment ) {
 	const { x: cx, y: cy } = current
 	const { x: nx, y: ny } = next
 
 	return ( cx === nx && cy !== ny ) || ( cy === ny && cx !== nx )
 }
 
-export const notNextCornerSegment = ( current: Segment, next: Segment ) =>
-	!isNextCornerSegment( current, next )
+export const notNextCornerPoint = ( current: Segment, next: Segment ) =>
+	!isNextCornerPoint( current, next )
 
 export function isLineVertical( line: Line ) {
 	const { source, target }: Line = line

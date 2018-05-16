@@ -1,13 +1,13 @@
 import { isLast, isFirst } from "../js/array"
 import MathVector from "../math/MathVector"
 import isPointOnSegmemtLine from "./isPointOnSegmemtLine"
-import { cloneDeep } from "lodash"
 import isPointEqual from "./isPointEqual"
+import { clonePoints } from '../js/clone';
 /**
  * Remove points that are on a same segment line which it's next point is on.
  */
 export default function( points: Point2D[] ) {
-	let res: Point2D[] = cloneDeep( points )
+	let res: Point2D[] = clonePoints( points )
 	let prevNotRepeated: Point2D
 
 	const { length }: Point2D[] = points

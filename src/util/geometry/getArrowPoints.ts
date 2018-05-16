@@ -1,6 +1,6 @@
-import { cloneDeep } from "lodash"
 import MathVector from "../../util/math/MathVector"
 import { getRotatedPoint } from "../../util/index"
+import { clonePoint } from '../js/clone';
 
 /**
  *     #  top
@@ -21,8 +21,8 @@ export default function(
 	target: Point2D,
 	size: number = 20
 ): ArrowType {
-	let clonedSource: Point2D = cloneDeep( source )
-	let clonedTarget: Point2D = cloneDeep( target )
+	let clonedSource: Point2D = clonePoint( source )
+	let clonedTarget: Point2D = clonePoint( target )
 
 	// Ensure source is on the left
 	let S: Point2D = clonedSource

@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash"
 import Particle from "../Particle"
 import Cell from '../../model/Cell';
 

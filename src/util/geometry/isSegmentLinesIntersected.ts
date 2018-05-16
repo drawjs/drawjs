@@ -14,7 +14,7 @@ export default function(
 	const P2B: Point2D = segmentLine2[ 1 ]
 
 	const intersectdRes = intersect( segmentLine1, segmentLine2 )
-	const { intersected, isSameLine } = intersectdRes
+	const { intersected, isParallel } = intersectdRes
 
 	if ( intersected !== null ) {
 		res =
@@ -22,7 +22,7 @@ export default function(
 			isPointOnSegmemtLine( intersected, segmentLine2 )
 	}
 
-	if ( isSameLine ) {
+	if ( isParallel ) {
 		res =
 			isPointOnSegmemtLine( P1A, segmentLine2 ) ||
 			isPointOnSegmemtLine( P1B, segmentLine2 ) ||

@@ -8,7 +8,7 @@ import rotate from "../util/geometry/rotate"
 import distance from "../util/geometry/distance"
 import origin from "../util/geometry/origin"
 import getRotatedPoint from "../util/getRotatedPoint"
-import { cloneDeep, isNil } from "lodash"
+import { isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
 import { notUndefined } from '../util/lodash/index';

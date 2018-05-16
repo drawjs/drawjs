@@ -1,7 +1,7 @@
 import Particle from "../model/Particle"
 import DrawStore from "../store/draw/DrawStore"
 import Getters from "../store/draw/Getters"
-import { includes, cloneDeep } from "lodash"
+import { includes } from "lodash"
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
@@ -17,6 +17,7 @@ import TextInput from '../model/tool/TextInput';
 import DrawText from '../model/text/DrawText';
 import Path from '../model/Path';
 import { isLast } from '../util/js/array';
+import { clonePoint } from '../util/js/clone';
 
 /**
  * Feature: Emphasize that one method is couple with other class or classes
@@ -222,7 +223,7 @@ export default class SharedActions {
 	 * // Handle
 	 */
 	updateHandleRelativePoint( handle: Handle, relativePoint: Point2D ) {
-		handle.relativePoint = cloneDeep( relativePoint )
+		handle.relativePoint = clonePoint( relativePoint )
 	}
 	adjustHandleParterPoint( handle: Handle ) {
 		const { partner, segment } = handle

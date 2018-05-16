@@ -3,7 +3,7 @@ import Line from ".././Line"
 import Path from "../../Path"
 import { isNotNil } from "../../../util/index"
 import Item from "../../Item"
-import { isNil, cloneDeep } from "lodash"
+import { isNil, cloneDeep } from 'lodash';
 import { LINE, SEGMENT } from "../../../store/constant/cellType"
 import {
 	isLast,
@@ -12,12 +12,8 @@ import {
 	notLastElement,
 	isFirst
 } from "../../../util/js/array"
-import {
-	notNextCornerSegment,
-	mapCreateSegmentInConstructor
-} from "../../../drawUtil/model/orthogonalLine/index"
 import { isIndexFound, notNil } from "../../../util/lodash/index"
-import { isLineVertical } from "../../../drawUtil/model/orthogonalLine/index"
+import { isLineVertical, isNextCornerPoint, mapCreateSegmentInConstructor } from '../../../drawUtil/model/orthogonalLine/index';
 import StartSegment from "./StartSegment"
 import EndSegment from "./EndSegment"
 import StartLine from "./StartLine"
@@ -30,6 +26,7 @@ import EndCenterSegment from "./EndCenterSegment"
 import InnerCenterSegment from "./InnerCenterSegment"
 import CommonLine from "./CommonLine"
 import MathSegmentLine from '../../../util/math/MathSegmentLine';
+import { clonePoints } from '../../../util/js/clone';
 
 const { abs } = Math
 
@@ -261,26 +258,26 @@ export default class OrthogonalLine extends Item {
 		let corners = []
 		const points: Point2D[] = this.segments.map( ( { point } ) => point )
 
-		const clonedSegments = cloneDeep( this.segments )
+		const clonedSegmentsPoints = clonePoints( this.segments.map( segment => segment.point ) )
 		if ( isNotNil( this.startSegment ) ) {
-			clonedSegments.map( createCorner )
+			clonedSegmentsPoints.map( createCorner )
 		}
 
 		const repeatedCorners: CornerSegment[] = this.cornerSegments.filter( notSameDirection )
 
 		this.removeCornerSegments( repeatedCorners )
 
-		function createCorner( segment: Segment, index: number, clonedSegments ) {
+		function createCorner( segmentPoint: Segment, index: number, clonedSegmentsPoints ) {
 			if ( notFirst( index ) ) {
-				const prev: Segment = clonedSegments[ index - 1 ]
+				const prev: Segment = clonedSegmentsPoints[ index - 1 ]
 
-				if ( notNextCornerSegment( prev, segment ) ) {
+				if ( isNextCornerPoint( prev, segmentPoint ) ) {
 					const cornerSegment = self._createCornerSegmentBetween(
 						prev,
-						segment
+						segmentPoint
 					)
 					isNotNil( cornerSegment ) &&
-						self._insertCornerSegment( segment, cornerSegment )
+						self._insertCornerSegment( segmentPoint, cornerSegment )
 				}
 			}
 		}
@@ -391,6 +388,8 @@ export default class OrthogonalLine extends Item {
 
 
 	reGenerate( points ) {
+		this.removeChildrenElements()
+
 		const segments = points.map( mapCreateSegmentInConstructor( this ) )
 		const potentialStartSegment = segments[ 0 ]
 		const potentialEndSegment = segments[ segments.length - 1 ]
@@ -416,9 +415,7 @@ export default class OrthogonalLine extends Item {
 	}
 
 
-	forceRemove() {
-		this.remove()
-
+	removeChildrenElements() {
 		this.actions.REMOVE_ELEMENTS( [
 			this.startSegment,
 			...this.cornerSegments,
@@ -430,6 +427,12 @@ export default class OrthogonalLine extends Item {
 		this.startSegment = null
 		this.endSegment = null
 		this.cornerSegments = []
+	}
+
+	forceRemove() {
+		this.remove()
+
+
 
 	}
 }

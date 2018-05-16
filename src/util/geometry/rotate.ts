@@ -1,4 +1,3 @@
-import { cloneDeep } from "lodash"
 
 export default function(
 	point: Point2D,
