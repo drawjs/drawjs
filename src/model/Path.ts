@@ -11,7 +11,7 @@ import getRotatedPoint from "../util/getRotatedPoint"
 import { isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
-import { notUndefined } from '../util/lodash/index';
+import { notUndefined, notNil } from '../util/lodash/index';
 
 const { min, max } = Math
 
@@ -26,6 +26,8 @@ export default class Path extends PathItem {
 
 	boundsContainer: BoundsContainer
 
+	fillColor: string = "#8cccf0"
+
 	constructor( props ) {
 		super( props )
 
@@ -35,6 +37,8 @@ export default class Path extends PathItem {
 		if ( isNotNil( props.segments ) ) {
 			segments = props.segments
 		}
+
+		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
 
 		if ( isNil( props.segments ) ) {
 			segments = isNotNil( props.points ) ?

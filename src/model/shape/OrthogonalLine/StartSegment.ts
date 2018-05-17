@@ -79,13 +79,15 @@ export default class StartSegment extends CommonStartEndSegment {
 		this.translateToPointWith( point, this.startLine, <CornerSegment>this.firstCornerSegment, this.orthogonalLine.getNextLine.bind(this.orthogonalLine) )
 	}
 
-	handleStopDrag() {
+	handleStopDrag( event ) {
 		const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
 
 		if ( notNil( cornerSegmentToBeCombined ) ) {
 			this._combineCornerSegment( cornerSegmentToBeCombined )
 			this.orthogonalLine.refresh()
 		}
+
+		this.orthogonalLine.handleStartSegmentStopDrag( event )
 
 		super.handleStopDrag && super.handleStopDrag()
 	}

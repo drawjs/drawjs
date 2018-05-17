@@ -387,14 +387,14 @@ export default class OrthogonalLine extends Item {
 	}
 
 
-	reGenerate( points ) {
+	reGenerate( cornerPoints ) {
 		this.removeChildrenElements()
 
-		const segments = points.map( mapCreateSegmentInConstructor( this ) )
+		const segments = cornerPoints.map( mapCreateSegmentInConstructor( this ) )
 		const potentialStartSegment = segments[ 0 ]
 		const potentialEndSegment = segments[ segments.length - 1 ]
 
-		// this.getters.testUtils.delayRenderPoints( points, 'purple' )
+		// this.getters.testUtils.delayRenderPoints( cornerPoints, 'purple' )
 
 		if ( notNil( potentialStartSegment ) ) {
 			this.startSegment = potentialStartSegment
@@ -435,4 +435,11 @@ export default class OrthogonalLine extends Item {
 
 
 	}
+
+
+	// ===============================
+	// =========== Interfaces ===========
+	// ===============================
+	handleStartSegmentStopDrag( event ) {}
+	handleEndSegmentStopDrag( event ) {}
 }
