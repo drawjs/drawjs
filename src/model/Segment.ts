@@ -29,6 +29,8 @@ export default class Segment extends Cell {
 
 	path: Path
 
+	fillColor: string = "#4a86e8"
+
 	constructor( props ) {
 		super( props )
 
@@ -37,6 +39,8 @@ export default class Segment extends Cell {
 
 		this.path = isNotNil( props.path ) ? props.path : this.path
 		this.show = isNotNil( props.show ) ? props.show : this.show
+		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
+
 
 		this.handleIn = new Handle( {
 			draw   : this.draw,
@@ -73,7 +77,7 @@ export default class Segment extends Cell {
 			const { ctx } = this.getters
 			ctx.save()
 			ctx.lineWidth = 3
-			ctx.fillStyle = this.fillColor || "#4a86e8"
+			ctx.fillStyle = this.fillColor
 			ctx.fill( this.path2d )
 			ctx.restore()
 

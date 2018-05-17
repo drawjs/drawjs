@@ -107,8 +107,9 @@ export default class MathSegmentLine {
 		const { start: s1, end: t1 } = this
 		const { start: s2, end: t2 } = segmentLine
 
+		const { isParallel, intersected } = intersect( this.points, segmentLine.points )
 
-		if ( this.parallelWith( segmentLine ) ) {
+		if ( isParallel ) {
 			if ( this.onSameStraightLineWith( segmentLine ) ) {
 				if ( this.include( s2 ) && this.include( t2 ) ) {
 					if ( s2 === t2 ) {
@@ -135,10 +136,8 @@ export default class MathSegmentLine {
 				}
 			}
 		} else {
-			const intersectedInfo = intersect( this.points, segmentLine.points )
-			const { intersected: point } = intersectedInfo
-			if ( notNil( point ) && this.include( point ) && segmentLine.include( point ) ) {
-				res.point = point
+			if ( notNil( intersected ) && this.include( intersected ) && segmentLine.include( intersected ) ) {
+				res.point = intersected
 			}
 		}
 

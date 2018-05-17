@@ -6,6 +6,7 @@ import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import Segment from "../Segment"
 import getArrowPoints from "../../util/geometry/getArrowPoints"
 import { notNil } from "../../util/lodash/index";
+import { LINE_DEFAULT_COLOR } from '../../store/constant/color';
 
 export default class Line extends Path {
 	type = LINE
@@ -18,7 +19,7 @@ export default class Line extends Path {
 	 */
 	t = 1
 
-	color: string = "#999"
+	fillColor: string = LINE_DEFAULT_COLOR
 
 	// Segment
 	source: any
@@ -44,6 +45,8 @@ export default class Line extends Path {
 		this.sharedActions.clearSegmentsHandles( this.segments )
 		this.sharedActions.hideSegmentsHandles( this.segments )
 		// this.sharedActions.hideSegments( this.segments )
+
+		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
 
 		function setPropsPointsSegmentsDangerously( props: LineProps ) {
 			const { source, target, sourceSegment, targetSegment } = props
@@ -135,7 +138,7 @@ export default class Line extends Path {
 	renderHitRegion() {
 		const { ctx } = this.getters
 		ctx.save()
-		ctx.fillStyle = this.fillColor ? this.fillColor : this.color
+		ctx.fillStyle = this.fillColor
 		ctx.fill( this.hitRegionPath2d )
 		ctx.restore()
 	}
@@ -144,7 +147,7 @@ export default class Line extends Path {
 		if ( this.showArrow ) {
 			const { ctx } = this.getters
 			ctx.save()
-			ctx.fillStyle = this.color
+			ctx.fillStyle = this.fillColor
 			ctx.fill( this.targetArrowPath2d )
 			ctx.restore()
 		}

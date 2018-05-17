@@ -31,7 +31,7 @@ export default abstract class Cell extends Particle {
 	/**
 	 * // Style
 	 */
-	fillColor: null
+	fillColor: string= "#000"
 
 	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN

@@ -1,10 +1,10 @@
 import Segment from "../../Segment"
-import OrthogonalLine from './OrthogonalLine';
-import CommonCenterSegment from './CommonCenterSegment';
-import StartLine from './StartLine';
-import { firstElement } from '../../../util/js/array';
-import CornerSegment from './CornerSegment';
-import { notNil } from '../../../util/lodash/index';
+import OrthogonalLine from "./OrthogonalLine"
+import CommonCenterSegment from "./CommonCenterSegment"
+import StartLine from "./StartLine"
+import { firstElement } from "../../../util/js/array"
+import CornerSegment from "./CornerSegment"
+import { notNil } from "../../../util/lodash/index"
 
 const { abs } = Math
 export default class StartCenterSegment extends CommonCenterSegment {
@@ -29,33 +29,35 @@ export default class StartCenterSegment extends CommonCenterSegment {
 	}
 
 
-	handleAfterDragging( event ) {
+	handleBeforeDragging( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
 		const dx = this.dragger.getDeltaXToStartPoint( point )
 		const dy = this.dragger.getDeltaYToStartPoint( point )
 
-
 		const { isVertical, isHorizontal } = this.line
 		const { startSegment: startSegment } = this.orthogonalLine
 
-		if ( isVertical || isHorizontal) {
-			if ( ! this.shouldAddCornerSegmentWhenMoving ) {
+		if ( isVertical || isHorizontal ) {
+			if ( !this.shouldAddCornerSegmentWhenMoving ) {
 				this.shouldAddCornerSegmentWhenMoving = true
 
 				this.orthogonalLine.addCornerSegmentStart( startSegment.point )
-				const firstCorner: CornerSegment = firstElement( this.orthogonalLine.cornerSegments )
+
+				const firstCorner: CornerSegment = firstElement(
+					this.orthogonalLine.cornerSegments
+				)
 
 				this.line.source = firstCorner
 
-				this.tmpStartLine = this.orthogonalLine.addTmpStartLine( { sourceSegment: startSegment, targetSegment: firstCorner } )
+				this.tmpStartLine = this.orthogonalLine.addTmpStartLine( {
+					sourceSegment: startSegment,
+					targetSegment: firstCorner
+				} )
 			}
 
 			this.tmpStartLine && this.tmpStartLine.updateCenterSegmentPosition()
 		}
-
-		super.handleAfterDragging && super.handleAfterDragging( event )
-
 	}
 
 	handleStopDrag() {

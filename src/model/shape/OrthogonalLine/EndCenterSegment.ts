@@ -28,8 +28,12 @@ export default class EndCenterSegment extends CommonCenterSegment {
 		this.tmpEndLine.updateCenterSegmentPosition()
 	}
 
+	_hideLineArrow() {
+		this.line.showArrow = false
+	}
 
-	handleAfterDragging( event ) {
+
+	handleBeforeDragging( event ) {
 
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 
@@ -49,15 +53,15 @@ export default class EndCenterSegment extends CommonCenterSegment {
 
 				this.line.target = lastCorner
 
+				this._hideLineArrow()
+
 				this.tmpEndLine = this.orthogonalLine.addTmpEndLine( { sourceSegment: lastCorner, targetSegment: endSegment } )
 			}
 
+
+
 			this.tmpEndLine && this.tmpEndLine.updateCenterSegmentPosition()
 		}
-
-		super.handleAfterDragging && super.handleAfterDragging( event )
-
-
 	}
 
 	handleStopDrag() {

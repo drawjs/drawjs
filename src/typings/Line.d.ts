@@ -5,5 +5,6 @@ interface LineProps {
 	sourceSegment?: any
 	targetSegment?: any
 	points?: Point2D[]
-	segments?: any[]
+	segments?: any[],
+	fillColor?: string
 }
