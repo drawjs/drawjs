@@ -27,6 +27,8 @@ export default class Path extends PathItem {
 	boundsContainer: BoundsContainer
 
 	fillColor: string = "#8cccf0"
+	borderColor: string = null
+	borderWidth: number = 1
 
 	constructor( props ) {
 		super( props )
@@ -38,7 +40,9 @@ export default class Path extends PathItem {
 			segments = props.segments
 		}
 
-		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.fillColor = notUndefined( props.fillColor ) ? props.fillColor : this.fillColor
+		this.borderColor = notUndefined( props.borderColor ) ? props.borderColor : this.borderColor
+		this.borderWidth = notUndefined( props.borderWidth ) ? props.borderWidth : this.borderWidth
 
 		if ( isNil( props.segments ) ) {
 			segments = isNotNil( props.points ) ?
@@ -130,11 +134,22 @@ export default class Path extends PathItem {
 
 	render() {
 		const { ctx } = this.getters
-		const { fillColor } = this
+		const { fillColor, borderColor, borderWidth } = this
 
 		ctx.save()
-		ctx.fillStyle = notUndefined( fillColor ) ? fillColor : "#8cccf0"
-		ctx.fill( this.path2d )
+
+		if ( notNil( fillColor ) ) {
+			ctx.fillStyle = notUndefined( fillColor ) ? fillColor : "#8cccf0"
+			ctx.fill( this.path2d )
+		}
+
+
+		if ( notNil( borderColor ) ) {
+			ctx.strokeStyle = borderColor
+			ctx.lineWidth = borderWidth
+			ctx.stroke( this.path2d )
+		}
+
 		ctx.restore()
 
 		this.segments.map( this.sharedActions.renderParticle )

@@ -59,11 +59,15 @@ export default class Draw {
 	onGraphHover: Function
 
 	constructor( canvas: HTMLCanvasElement ) {
-		this.drawStore = new DrawStore()
 
+		this.drawStore = new DrawStore()
 		this.getters = new Getters( this.drawStore )
 		this.actions = new Actions( this.drawStore, this.getters )
+		this.actions.UPDATE_CANVAS( canvas )
+		this._initialize()
+	}
 
+	_initialize() {
 		const testUtils = new TestUtils( this.getters )
 		this.actions.UPDATE_TEST_UTILS( testUtils )
 
@@ -71,7 +75,6 @@ export default class Draw {
 		this.sharedActions = new SharedActions( this.drawStore, this.getters )
 
 		this.actions.UPDATE_DRAW( this )
-		this.actions.UPDATE_CANVAS( canvas )
 
 		const viewPort = new ViewPort( { draw: this } )
 		this.actions.UPDATE_VIEWPORT( viewPort )
@@ -85,7 +88,7 @@ export default class Draw {
 		const miniMap = new MiniMap( { draw: this } )
 		this.actions.UPDATE_MINIMAP( miniMap )
 
-		const grid = new Grid( { draw: this, canvas } )
+		const grid = new Grid( { draw: this, canvas: this.getters.canvas } )
 		this.actions.UPDATE_GRID( grid )
 
 		const textInput: TextInput = new TextInput( { draw: this } )
