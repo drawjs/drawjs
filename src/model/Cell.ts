@@ -32,6 +32,8 @@ export default abstract class Cell extends Particle {
 	 * // Style
 	 */
 	fillColor: string= "#000"
+	strokeColor: string= "#000"
+	strokeWidth: number = 1
 
 	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
@@ -175,12 +177,5 @@ export default abstract class Cell extends Particle {
 
 		this.prevKY = this.kY
 		this.kY = kY
-	}
-
-	/**
-	 * Remove
-	 */
-	remove() {
-		this.actions.REMOVE_ELEMENT( this )
 	}
 }

@@ -8,8 +8,8 @@ import TextInput from "../tool/TextInput"
 export default class DrawText extends Cell {
 	type = TEXT
 
-	left: number = 0
-	top: number = 0
+	x: number = 0
+	y: number = 0
 
 	text: string = ""
 
@@ -18,8 +18,8 @@ export default class DrawText extends Cell {
 	constructor( props ) {
 		super( props )
 
-		this.left = isNotNil( props.left ) ? props.left : this.left
-		this.top = isNotNil( props.top ) ? props.top : this.top
+		this.x = isNotNil( props.x ) ? props.x : this.x
+		this.y = isNotNil( props.y ) ? props.y : this.y
 		this.text = isNotNil( props.text ) ? props.text : this.text
 	}
 
@@ -32,9 +32,14 @@ export default class DrawText extends Cell {
 	}
 
 	get path2d(): Path2D {
-		const { left, top, width, height } = this
-		const newTop: number = top - height
-		const rectPoints = getRectPoints( { left, top: newTop, width, height } )
+		const { x, y, width, height } = this
+		const newTop: number = y - height
+		const rectPoints = getRectPoints( {
+			left: x - width / 2,
+			top : newTop,
+			width,
+			height
+		} )
 		const { leftTop, rightTop, rightBottom, leftBottom } = rectPoints
 		const points: Point2D[] = [ leftTop, rightTop, rightBottom, leftBottom ]
 
@@ -56,15 +61,17 @@ export default class DrawText extends Cell {
 	render() {
 		if ( this.show ) {
 			const { ctx } = this.getters
-			const { text, left, top, fontSize } = this
+			const { text, x, y, fontSize } = this
 
 			ctx.save()
 
+			ctx.textAlign = "center"
 			ctx.strokeStyle = "#0de2c6"
-			ctx.stroke( this.path2d )
+			// ctx.stroke( this.path2d )
 
+			ctx.fillStyle = this.fillColor
 			ctx.font = `${fontSize}px`
-			ctx.fillText( text, left, top )
+			ctx.fillText( text, x, y )
 
 			ctx.restore()
 		}
@@ -74,11 +81,10 @@ export default class DrawText extends Cell {
 		if ( this.draggable ) {
 			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const dx = this.dragger.getDeltaXToPrevPoint( point )
+			const dy = this.dragger.getDeltaYToPrevPoint( point )
 
-			this.left = this.left + deltaX
-			this.top = this.top + deltaY
+			this.translate( dx, dy )
 		}
 	}
 
@@ -96,5 +102,10 @@ export default class DrawText extends Cell {
 		} )
 		this.getters.textInput.show()
 		this.getters.textInput.focus()
+	}
+
+	translate( dx: number, dy: number ) {
+		this.x = this.x + dx
+		this.y = this.y + dy
 	}
 }

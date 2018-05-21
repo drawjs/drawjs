@@ -11,7 +11,7 @@ import getRotatedPoint from "../util/getRotatedPoint"
 import { isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
-import { notUndefined, notNil } from '../util/lodash/index';
+import { notUndefined, notNil } from "../util/lodash/index"
 
 const { min, max } = Math
 
@@ -27,8 +27,8 @@ export default class Path extends PathItem {
 	boundsContainer: BoundsContainer
 
 	fillColor: string = "#8cccf0"
-	borderColor: string = null
-	borderWidth: number = 1
+	strokeColor: string = null
+	strokeWidth: number = 1
 
 	constructor( props ) {
 		super( props )
@@ -40,9 +40,15 @@ export default class Path extends PathItem {
 			segments = props.segments
 		}
 
-		this.fillColor = notUndefined( props.fillColor ) ? props.fillColor : this.fillColor
-		this.borderColor = notUndefined( props.borderColor ) ? props.borderColor : this.borderColor
-		this.borderWidth = notUndefined( props.borderWidth ) ? props.borderWidth : this.borderWidth
+		this.fillColor = notUndefined( props.fillColor ) ?
+			props.fillColor :
+			this.fillColor
+		this.strokeColor = notUndefined( props.strokeColor ) ?
+			props.strokeColor :
+			this.strokeColor
+		this.strokeWidth = notUndefined( props.strokeWidth ) ?
+			props.strokeWidth :
+			this.strokeWidth
 
 		if ( isNil( props.segments ) ) {
 			segments = isNotNil( props.points ) ?
@@ -134,7 +140,7 @@ export default class Path extends PathItem {
 
 	render() {
 		const { ctx } = this.getters
-		const { fillColor, borderColor, borderWidth } = this
+		const { fillColor, strokeColor, strokeWidth } = this
 
 		ctx.save()
 
@@ -144,19 +150,20 @@ export default class Path extends PathItem {
 		}
 
 
-		if ( notNil( borderColor ) ) {
-			ctx.strokeStyle = borderColor
-			ctx.lineWidth = borderWidth
-			ctx.stroke( this.path2d )
-		}
 
 		ctx.restore()
 
 		this.segments.map( this.sharedActions.renderParticle )
-		this.curves.map( this.sharedActions.renderParticle )
+		isNil( strokeColor ) && this.curves.map( this.sharedActions.renderParticle )
 
 		this.renderTransformWidget()
 		// this.boundsContainer.render()
+
+		if ( notNil( strokeColor ) ) {
+			ctx.strokeStyle = strokeColor
+			ctx.lineWidth = strokeWidth
+			ctx.stroke( this.path2d )
+		}
 	}
 
 	contain( x: number, y: number ) {
@@ -236,8 +243,6 @@ export default class Path extends PathItem {
 		this.actions.REMOVE_ELEMENTS( this.curves )
 		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
 	}
-
-
 
 	/**
 	 * // Translate

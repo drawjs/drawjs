@@ -416,8 +416,8 @@ export default class SharedActions {
 		drawText.text = value
 	}
 	translateDrawText( drawText: DrawText, deltaX: number, deltaY: number ) {
-		drawText.left = drawText.left + deltaX
-		drawText.top = drawText.top + deltaY
+		drawText.x = drawText.x + deltaX
+		drawText.y = drawText.y + deltaY
 	}
 
 	/**

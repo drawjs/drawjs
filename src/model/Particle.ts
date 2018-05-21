@@ -37,5 +37,10 @@ export default class Particle {
 		return this.draw.sharedActions
 	}
 
-
+	/**
+	 * Remove
+	 */
+	remove() {
+		this.actions.REMOVE_ELEMENT( this )
+	}
 }

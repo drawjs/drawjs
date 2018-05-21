@@ -7,7 +7,6 @@ import {
 	RECT_IMAGE,
 	SIZE_POINT
 } from "../../store/constant/cellType"
-import RectImage from "../../model/image/RectImage"
 import ScalePoint from "../../model/tool/ScalePoint"
 import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
@@ -37,11 +36,6 @@ export default function() {
 		 * Text
 		 */
 		[ TEXT ]: DrawText,
-
-		/**
-		 * Image
-		 */
-		[ RECT_IMAGE ]: RectImage,
 
 		/**
 		 * Tool

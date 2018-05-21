@@ -1,5 +1,6 @@
 import EventKeyboard from '../util/EventKeyboard';
 import Particle from "../model/Particle"
+import { notNil } from '../util/lodash/index';
 
 
 const drawSelection = false
@@ -30,7 +31,7 @@ class Interaction extends Particle {
 		canvas.removeEventListener( "dblclick", dblclickListener )
 		canvas.addEventListener( "dblclick", dblclickListener )
 
-		textInput.bindEvents()
+		notNil( textInput ) && textInput.bindEvents()
 
 		self.eventKeyboard.handleKeyDown = keyBoardDownListener
 

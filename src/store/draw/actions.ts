@@ -16,7 +16,7 @@ import MiniMap from "../../model/tool/MiniMap"
 import TestUtils from "../../shared/TestUtils"
 import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
-import { removeElement } from '../../util/js/array';
+import { removeElement } from "../../util/js/array"
 
 export default class Actions {
 	drawStore: DrawStore
@@ -279,7 +279,10 @@ export default class Actions {
 	 * // Text input
 	 */
 	APPEND_TEXT_INPUT_TO_DOCUMENT_BODY() {
-		const { input } = this.getters.textInput
-		document.body.appendChild( input )
+		const textInput = this.getters.textInput
+		if ( notNil( textInput ) ) {
+			const { input } = textInput
+			notNil( input ) && document.body.appendChild( input )
+		}
 	}
 }
