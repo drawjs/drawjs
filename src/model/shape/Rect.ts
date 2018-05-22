@@ -2,7 +2,7 @@ import Path from "../Path"
 import { RECT } from "../../store/constant/cellType"
 import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
-import { notUndefined } from '../../util/lodash/index';
+import { notUndefined, notNil } from "../../util/lodash/index"
 
 export default class Rect extends Path {
 	type = RECT
@@ -12,7 +12,7 @@ export default class Rect extends Path {
 	width: number = Rect.DEFAULT_WIDTH
 	height: number = Rect.DEFAULT_HEIGHT
 
-	static DEFAULT_LEFT= 0
+	static DEFAULT_LEFT = 0
 	static DEFAULT_TOP = 0
 	static DEFAULT_WIDTH = 100
 	static DEFAULT_HEIGHT = 100
@@ -25,12 +25,20 @@ export default class Rect extends Path {
 	constructor( props ) {
 		super( setPropsPointsDangerously( props ) )
 
-		this.left = isNotNil( props.left ) ? props.left : this.left
-		this.top = isNotNil( props.top ) ? props.top : this.top
-		this.width = isNotNil( props.width ) ? props.width : this.width
-		this.height = isNotNil( props.height ) ? props.height : this.height
-		this.sizable = isNotNil( props.sizable ) ? props.sizable : this.sizable
-		this.rotatable = isNotNil( props.rotatable ) ?
+		const { x, y, left, top, width, height } = props
+
+		if ( notNil( x ) && notNil( y ) ) {
+			this.left = x - width / 2
+			this.top = y - height / 2
+		} else {
+			this.left = notNil( left ) ? left : this.left
+			this.top = notNil( top ) ? top : this.top
+		}
+
+		this.width = notNil( width ) ? width : this.width
+		this.height = notNil( height ) ? height : this.height
+		this.sizable = notNil( props.sizable ) ? props.sizable : this.sizable
+		this.rotatable = notNil( props.rotatable ) ?
 			props.rotatable :
 			this.rotatable
 
@@ -39,10 +47,18 @@ export default class Rect extends Path {
 		this.sharedActions.hideSegments( this.segments )
 
 		function setPropsPointsDangerously( props ) {
-			const left = notUndefined( props.left ) ? props.left : Rect.DEFAULT_LEFT
-			const top = notUndefined( props.top ) ? props.top : Rect.DEFAULT_TOP
-			const width = notUndefined( props.width ) ? props.width : Rect.DEFAULT_WIDTH
-			const height = notUndefined( props.height ) ? props.height : Rect.DEFAULT_HEIGHT
+			let { x, y, left, top, width, height } = props
+
+			width = notUndefined( width ) ? width : Rect.DEFAULT_WIDTH
+			height = notUndefined( height ) ? height : Rect.DEFAULT_HEIGHT
+
+			if ( notNil( x ) && notNil( y ) ) {
+				left = x - width / 2
+				top = y - height / 2
+			} else {
+				left = notUndefined( left ) ? left : Rect.DEFAULT_LEFT
+				top = notUndefined( top ) ? top : Rect.DEFAULT_TOP
+			}
 
 			const rectPoints = getRectPoints( { left, top, width, height } )
 			const { leftTop, rightTop, rightBottom, leftBottom } = rectPoints
