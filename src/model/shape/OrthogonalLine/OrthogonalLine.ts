@@ -38,13 +38,15 @@ import CommonLine from "./CommonLine"
 import MathSegmentLine from "../../../util/math/MathSegmentLine"
 import { clonePoints } from "../../../util/js/clone"
 import { firstElement, lastElement } from '../../../util/js/array';
+import StartLinking from './StartLinking';
+import EndLinking from './EndLinking';
 
 const { abs } = Math
 
 export default class OrthogonalLine extends Item {
-	startSegment: StartSegment = null
+	startLinking: StartLinking = null
 
-	endSegment: EndSegment = null
+	endLinking: EndLinking = null
 
 	cornerSegments: CornerSegment[] = []
 
@@ -61,8 +63,19 @@ export default class OrthogonalLine extends Item {
 	constructor( props ) {
 		super( props )
 
-		const { points = [] } = props
+		const { points = [], startSegment, endSegment, corners = [] } = props
 		const { length } = points
+
+		if ( notNil( startSegment ) && notNil( endSegment ) ) {
+			this.startLinking = new StartLinking( { draw: this.draw, orthogonalLine: this, segment: startSegment } )
+			this.endLinking = new EndLinking( { draw: this.draw, orthogonalLine: this, segment: endSegment } )
+
+			this.cornerSegments = corners.map( point => this.createCornerSegment( point ) )
+			this._initializeCornerSegments()
+
+			this._refreshLines()
+			return
+		}
 
 		if ( length < 2 ) {
 			throw "Orthgonal line: Require at lest 2 points!"
@@ -70,10 +83,14 @@ export default class OrthogonalLine extends Item {
 
 		this.showArrow = notNil( props.showArrow ) ? props.showArrow : this.showArrow
 
-		if ( length === 2 ) {
+
+		if ( length === 2  ) {
 			const segments = points.map( mapCreateSegmentInConstructor( this ) )
-			this.startSegment = firstElement( segments )
-			this.endSegment = lastElement( segments )
+			// this.startSegment = firstElement( segments )
+			// this.endSegment = lastElement( segments )
+
+
+			this._initializeCornerSegments()
 			this._refreshLines()
 		}
 
@@ -85,12 +102,12 @@ export default class OrthogonalLine extends Item {
 			// this.getters.testUtils.delayRenderPoints( points, 'purple' )
 
 			if ( notNil( potentialStartSegment ) ) {
-				this.startSegment = potentialStartSegment
-				this.startSegment.orthogonalLine = this
+				// this.startSegment = potentialStartSegment
+				// this.startSegment.orthogonalLine = this
 			}
 
 			if ( notNil( potentialEndSegment ) ) {
-				this.endSegment = potentialEndSegment
+				// this.endSegment = potentialEndSegment
 			}
 
 			this.cornerSegments = segments
@@ -108,6 +125,14 @@ export default class OrthogonalLine extends Item {
 	// ===============================
 	contain() {
 		return false
+	}
+
+	get startSegment(): Segment {
+		return this.startLinking.segment
+	}
+
+	get endSegment(): Segment {
+		return this.endLinking.segment
 	}
 
 	get segments(): Segment[] {
@@ -156,22 +181,6 @@ export default class OrthogonalLine extends Item {
 	/**
 	 * Initialization
 	 */
-	createStartSegment( props: any ) {
-		return new StartSegment( {
-			draw          : this.draw,
-			orthogonalLine: this,
-			...props
-		} )
-	}
-
-	createEndSegment( props: any ) {
-		return new EndSegment( {
-			draw          : this.draw,
-			orthogonalLine: this,
-			...props
-		} )
-	}
-
 	createCornerSegment( props: any ) {
 		return new CornerSegment( {
 			draw          : this.draw,
@@ -362,7 +371,7 @@ export default class OrthogonalLine extends Item {
 	_refreshLines() {
 		this._removeLines()
 
-		const { segments, notSimpleLine } = this
+		const { segments } = this
 		let startLine: StartLine = null
 		let endLine: EndLine = null
 		let innerLines: InnerLine[] = []
@@ -445,14 +454,14 @@ export default class OrthogonalLine extends Item {
 
 		// this.getters.testUtils.delayRenderPoints( cornerPoints, 'purple' )
 
-		if ( notNil( potentialStartSegment ) ) {
-			this.startSegment = potentialStartSegment
-			this.startSegment.orthogonalLine = this
-		}
+		// if ( notNil( potentialStartSegment ) ) {
+		// 	this.startSegment = potentialStartSegment
+		// 	this.startSegment.orthogonalLine = this
+		// }
 
-		if ( notNil( potentialEndSegment ) ) {
-			this.endSegment = potentialEndSegment
-		}
+		// if ( notNil( potentialEndSegment ) ) {
+		// 	this.endSegment = potentialEndSegment
+		// }
 
 		this.cornerSegments = segments
 			.filter( notFirstElement )
@@ -464,20 +473,23 @@ export default class OrthogonalLine extends Item {
 	}
 
 	removeChildrenElements() {
+		this.startLinking.remove()
+		this.endLinking.remove()
 		this.actions.REMOVE_ELEMENTS( [
-			this.startSegment,
 			...this.cornerSegments,
-			this.endSegment,
 			...this.lines,
 			...this.centerSegments
 		] )
 
-		this.startSegment = null
-		this.endSegment = null
+		this.startLinking = null
+		this.endLinking = null
 		this.cornerSegments = []
 	}
 
 	forceRemove() {
+		this.startLinking.forceRemove()
+		this.endLinking.forceRemove()
+		this.removeChildrenElements()
 		this.remove()
 	}
 

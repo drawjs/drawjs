@@ -14,13 +14,13 @@ import EndSegment from '../../../model/shape/OrthogonalLine/EndSegment';
 
 export function mapCreateSegmentInConstructor( classObject: OrthogonalLine ) {
 	return ( point: Point2D, index: number, array: any[] ) => {
-		if ( isFirst( index ) ) {
-			return classObject.createStartSegment( point )
-		}
+		// if ( isFirst( index ) ) {
+		// 	return classObject.createStartSegment( point )
+		// }
 
-		if ( isLast( index, array ) ) {
-			return classObject.createEndSegment( point )
-		}
+		// if ( isLast( index, array ) ) {
+		// 	return classObject.createEndSegment( point )
+		// }
 
 		return classObject.createCornerSegment( point )
 	}
