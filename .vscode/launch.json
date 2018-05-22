@@ -14,9 +14,9 @@
 			// "url": "http://localhost:8600/build/__test__/elements/polygon/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/rect/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/line/index.html",
-			"url": "http://localhost:8600/build/__test__/elements/text/index.html",
+			// "url": "http://localhost:8600/build/__test__/elements/text/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/polyline/index.html",
-			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine/index.html",
+			"url": "http://localhost:8600/build/__test__/elements/orthogonalLine/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine-updateCornerSegments/index.html",
 			"pathMapping": {
 				"/": "${workspaceFolder}"

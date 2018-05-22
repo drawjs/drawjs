@@ -1,7 +1,20 @@
 const draw = new Draw( document.getElementById( "canvas" ) )
 
 const instance1 = draw.addElement( "orthogonal-line", {
+	showArrow: true,
 	points: [
+		/**
+		 * One line, two points
+		 */
+		{
+			x: 100,
+			y: 100
+		},
+		{
+			x: 200,
+			y: 100
+		},
+
 		/**
 		 * Two line - Horizontal
 		 */

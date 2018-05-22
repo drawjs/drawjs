@@ -5,9 +5,11 @@ export default class EndLine extends CommonLine {
 	constructor( props ) {
 		super( props )
 
-		this.centerSegment = this.orthogonalLine.createEndCenterSegment( {
-			...this.center,
-			line: this
-		} )
+		if ( !this.orthogonalLine.isSimpleLine ) {
+			this.centerSegment = this.orthogonalLine.createEndCenterSegment( {
+				...this.center,
+				line: this
+			} )
+		}
 	}
 }

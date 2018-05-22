@@ -1,9 +1,9 @@
-import Segment from '../../Segment';
+import Segment from "../../Segment"
 import Line from ".././Line"
 import Path from "../../Path"
 import { isNotNil } from "../../../util/index"
 import Item from "../../Item"
-import { isNil, cloneDeep } from 'lodash';
+import { isNil, cloneDeep } from "lodash"
 import { LINE, SEGMENT } from "../../../store/constant/cellType"
 import {
 	isLast,
@@ -13,20 +13,31 @@ import {
 	isFirst
 } from "../../../util/js/array"
 import { isIndexFound, notNil } from "../../../util/lodash/index"
-import { isLineVertical, isNextCornerPoint, mapCreateSegmentInConstructor } from '../../../drawUtil/model/orthogonalLine/index';
+import {
+	isLineVertical,
+	isNextCornerPoint,
+	mapCreateSegmentInConstructor
+} from "../../../drawUtil/model/orthogonalLine/index"
 import StartSegment from "./StartSegment"
 import EndSegment from "./EndSegment"
 import StartLine from "./StartLine"
 import EndLine from "./EndLine"
 import InnerLine from "./InnerLine"
 import CornerSegment from "./CornerSegment"
-import { findArrayFirstIndex, removeElement, prevElement, nextElement, findArrayLastIndex } from '../../../util/js/array';
+import {
+	findArrayFirstIndex,
+	removeElement,
+	prevElement,
+	nextElement,
+	findArrayLastIndex
+} from "../../../util/js/array"
 import StartCenterSegment from "./StartCenterSegment"
 import EndCenterSegment from "./EndCenterSegment"
 import InnerCenterSegment from "./InnerCenterSegment"
 import CommonLine from "./CommonLine"
-import MathSegmentLine from '../../../util/math/MathSegmentLine';
-import { clonePoints } from '../../../util/js/clone';
+import MathSegmentLine from "../../../util/math/MathSegmentLine"
+import { clonePoints } from "../../../util/js/clone"
+import { firstElement, lastElement } from '../../../util/js/array';
 
 const { abs } = Math
 
@@ -43,35 +54,53 @@ export default class OrthogonalLine extends Item {
 
 	innerLines: InnerLine[] = []
 
+	showArrow: boolean = true
+
 	static COMBINE_INTERVAL = 10
 
 	constructor( props ) {
 		super( props )
 
 		const { points = [] } = props
+		const { length } = points
 
-		const segments = points.map( mapCreateSegmentInConstructor( this ) )
-		const potentialStartSegment = segments[ 0 ]
-		const potentialEndSegment = segments[ segments.length - 1 ]
-
-		// this.getters.testUtils.delayRenderPoints( points, 'purple' )
-
-		if ( notNil( potentialStartSegment ) ) {
-			this.startSegment = potentialStartSegment
-			this.startSegment.orthogonalLine = this
+		if ( length < 2 ) {
+			throw "Orthgonal line: Require at lest 2 points!"
 		}
 
-		if ( notNil( potentialEndSegment ) ) {
-			this.endSegment = potentialEndSegment
+		this.showArrow = notNil( props.showArrow ) ? props.showArrow : this.showArrow
+
+		if ( length === 2 ) {
+			const segments = points.map( mapCreateSegmentInConstructor( this ) )
+			this.startSegment = firstElement( segments )
+			this.endSegment = lastElement( segments )
+			this._refreshLines()
 		}
 
-		this.cornerSegments = segments
-			.filter( notFirstElement )
-			.filter( notLastElement )
+		if ( length >= 3 ) {
+			const segments = points.map( mapCreateSegmentInConstructor( this ) )
+			const potentialStartSegment = segments[ 0 ]
+			const potentialEndSegment = segments[ segments.length - 1 ]
 
-		this._initializeCornerSegments()
+			// this.getters.testUtils.delayRenderPoints( points, 'purple' )
 
-		this._refreshLines()
+			if ( notNil( potentialStartSegment ) ) {
+				this.startSegment = potentialStartSegment
+				this.startSegment.orthogonalLine = this
+			}
+
+			if ( notNil( potentialEndSegment ) ) {
+				this.endSegment = potentialEndSegment
+			}
+
+			this.cornerSegments = segments
+				.filter( notFirstElement )
+				.filter( notLastElement )
+
+			this._initializeCornerSegments()
+
+			this._refreshLines()
+		}
 	}
 
 	// ===============================
@@ -90,7 +119,15 @@ export default class OrthogonalLine extends Item {
 	}
 
 	get centerSegments(): Segment[] {
-		return this.lines.map( ({ centerSegment }) => centerSegment )
+		return this.lines.map( ( { centerSegment } ) => centerSegment )
+	}
+
+	get isSimpleLine(): boolean {
+		return this.segments.length === 2
+	}
+
+	get notSimpleLine(): boolean {
+		return ! this.isSimpleLine
 	}
 
 	getNextLine( line: CommonLine ): CommonLine {
@@ -170,22 +207,25 @@ export default class OrthogonalLine extends Item {
 	}
 
 	createStartLine( props: any ) {
+		const { isSimpleLine, showArrow } = this
 		return new StartLine( {
 			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor     : "red",
-			draggable     : false
+			fillColor     : this.isSimpleLine ? 'grey' : "red",
+			draggable     : false,
+			showArrow: isSimpleLine ? showArrow : false
 		} )
 	}
 
 	createEndLine( props: any ) {
+		const { showArrow } = this
 		return new EndLine( {
 			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
 			fillColor     : "blue",
-			showArrow     : true,
+			showArrow     : showArrow,
 			draggable     : false
 		} )
 	}
@@ -198,7 +238,6 @@ export default class OrthogonalLine extends Item {
 			draggable     : false
 		} )
 	}
-
 
 	/**
 	 * // Corner segment
@@ -258,16 +297,24 @@ export default class OrthogonalLine extends Item {
 		let corners = []
 		const points: Point2D[] = this.segments.map( ( { point } ) => point )
 
-		const clonedSegmentsPoints = clonePoints( this.segments.map( segment => segment.point ) )
+		const clonedSegmentsPoints = clonePoints(
+			this.segments.map( segment => segment.point )
+		)
 		if ( isNotNil( this.startSegment ) ) {
 			clonedSegmentsPoints.map( createCorner )
 		}
 
-		const repeatedCorners: CornerSegment[] = this.cornerSegments.filter( notSameDirection )
+		const repeatedCorners: CornerSegment[] = this.cornerSegments.filter(
+			notSameDirection
+		)
 
 		this.removeCornerSegments( repeatedCorners )
 
-		function createCorner( segmentPoint: Segment, index: number, clonedSegmentsPoints ) {
+		function createCorner(
+			segmentPoint: Segment,
+			index: number,
+			clonedSegmentsPoints
+		) {
 			if ( notFirst( index ) ) {
 				const prev: Segment = clonedSegmentsPoints[ index - 1 ]
 
@@ -282,7 +329,11 @@ export default class OrthogonalLine extends Item {
 			}
 		}
 
-		function notSameDirection( corner: CornerSegment, index: number, array: CornerSegment[] ) {
+		function notSameDirection(
+			corner: CornerSegment,
+			index: number,
+			array: CornerSegment[]
+		) {
 			if ( !isFirst( index ) && !isLast( index, array ) ) {
 				const prev: CornerSegment = prevElement( array, index )
 				const next: CornerSegment = nextElement( array, index )
@@ -311,7 +362,7 @@ export default class OrthogonalLine extends Item {
 	_refreshLines() {
 		this._removeLines()
 
-		const { segments } = this
+		const { segments, notSimpleLine } = this
 		let startLine: StartLine = null
 		let endLine: EndLine = null
 		let innerLines: InnerLine[] = []
@@ -356,7 +407,6 @@ export default class OrthogonalLine extends Item {
 		} )
 	}
 
-
 	/**
 	 * Base on startSegment, endSegment, cornerSegments,
 	 * then refresh startLine, endLine, innerLines, centerSegments
@@ -386,7 +436,6 @@ export default class OrthogonalLine extends Item {
 		this.lines.map( line => line.updateCenterSegmentPosition() )
 	}
 
-
 	reGenerate( cornerPoints ) {
 		this.removeChildrenElements()
 
@@ -414,14 +463,13 @@ export default class OrthogonalLine extends Item {
 		this._refreshLines()
 	}
 
-
 	removeChildrenElements() {
 		this.actions.REMOVE_ELEMENTS( [
 			this.startSegment,
 			...this.cornerSegments,
 			this.endSegment,
 			...this.lines,
-			...this.centerSegments,
+			...this.centerSegments
 		] )
 
 		this.startSegment = null
@@ -431,11 +479,7 @@ export default class OrthogonalLine extends Item {
 
 	forceRemove() {
 		this.remove()
-
-
-
 	}
-
 
 	// ===============================
 	// =========== Interfaces ===========

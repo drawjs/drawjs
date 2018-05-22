@@ -4,7 +4,7 @@ import CommonLine from "./CommonLine"
 import CornerSegment from "./CornerSegment"
 import { notNil } from "../../../util/lodash/index"
 
-export default abstract class CommonSegment extends Segment {
+export default abstract class CommonStartEndSegment extends Segment {
 	orthogonalLine: OrthogonalLine
 
 	constructor( props ) {
@@ -19,6 +19,11 @@ export default abstract class CommonSegment extends Segment {
 		corner: CornerSegment,
 		getNextLine: Function
 	) {
+		if( this.orthogonalLine.isSimpleLine ) {
+			super.translateToPoint( point )
+			return
+		}
+
 		const self = this
 		const {
 			isVertical: cachedIsVertical,
@@ -77,7 +82,7 @@ export default abstract class CommonSegment extends Segment {
 	}
 
 	handleAfterDragging() {
-		this.orthogonalLine.updateCenterSegmentsPosition()
+		!this.orthogonalLine.isSimpleLine && this.orthogonalLine.updateCenterSegmentsPosition()
 
 		super.handleAfterDragging && super.handleAfterDragging()
 	}
