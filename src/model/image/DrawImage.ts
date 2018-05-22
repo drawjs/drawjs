@@ -17,10 +17,21 @@ export default class DrawImage extends Cell {
 	constructor( props ) {
 		super( props )
 
-		this.left = notNil( props.left ) ? props.left : this.left
-		this.top = notNil( props.top ) ? props.top : this.top
+		const { x, y, left, top } = props
+
 		this.width = notNil( props.width ) ? props.width : this.width
 		this.height = notNil( props.height ) ? props.height : this.height
+
+		const { width, height } = this
+
+		if ( notNil( x ) && notNil( y ) ) {
+			this.left = x - width / 2
+			this.top = y - height / 2
+		} else {
+			this.left = notNil( left ) ? left : this.left
+			this.top = notNil( top ) ? top : this.top
+		}
+
 		this.src = notNil( props.src ) ? props.src : this.src
 
 		this.img.src = this.src

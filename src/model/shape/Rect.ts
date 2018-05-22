@@ -25,7 +25,12 @@ export default class Rect extends Path {
 	constructor( props ) {
 		super( setPropsPointsDangerously( props ) )
 
-		const { x, y, left, top, width, height } = props
+		const { x, y, left, top } = props
+
+		this.width = notNil( props.width ) ? props.width : this.width
+		this.height = notNil( props.height ) ? props.height : this.height
+
+		const { width, height } = this
 
 		if ( notNil( x ) && notNil( y ) ) {
 			this.left = x - width / 2
@@ -35,8 +40,7 @@ export default class Rect extends Path {
 			this.top = notNil( top ) ? top : this.top
 		}
 
-		this.width = notNil( width ) ? width : this.width
-		this.height = notNil( height ) ? height : this.height
+
 		this.sizable = notNil( props.sizable ) ? props.sizable : this.sizable
 		this.rotatable = notNil( props.rotatable ) ?
 			props.rotatable :

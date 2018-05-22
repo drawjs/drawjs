@@ -90,6 +90,14 @@ export default class Path extends PathItem {
 		return res
 	}
 
+	get cx(): number {
+		return this.segmentsCenter.x
+	}
+
+	get cy(): number {
+		return this.segmentsCenter.y
+	}
+
 	get path2d(): Path2D {
 		const path2d = this.sharedGetters.getPath2dByCurves( this.curves, this.t )
 		return path2d
