@@ -22,7 +22,8 @@ export default class StartLinking extends CommonStartEndLinking {
 		this.segment = notNil( segment ) ? segment : new Segment( { draw: this.draw, ...point, fillColor: 'red' } )
 
 		this.segment.dragger.interfaceStopDrag = this.handleSegmentStopDrag.bind( this )
-		this.segment.dragger.interfaceAfterDragging = this.handleSegmentAfterDragging.bind( this )
+		this.segment.dragger.interfaceDragging = this.handleSegmentAfterDragging.bind( this )
+		this.segment.dragger.update = this.updateSegmentDrag.bind( this )
 	}
 
 	get startLine(): StartLine {

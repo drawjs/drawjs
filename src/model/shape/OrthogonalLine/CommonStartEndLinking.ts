@@ -72,25 +72,20 @@ export default abstract class CommonStartEndLinking extends Cell {
 		}
 	}
 
-	// updateDrag( event ) {
-		// const point: Point2DInitial = this.getters.getInitialPoint( event )
+	updateSegmentDrag( event ) {
+		const point: Point2DInitial = this.segment.getters.getInitialPoint( event )
 
-		// const dx = this.dragger.getDeltaXToPrevPoint( point )
-		// const dy = this.dragger.getDeltaYToPrevPoint( point )
+		const dx = this.segment.dragger.getDeltaXToPrevPoint( point )
+		const dy = this.segment.dragger.getDeltaYToPrevPoint( point )
 
-	// 	this.segment.translate( dx, dy )
-	// }
+		const { x, y } = this.segment.point
+		const newX = x + dx
+		const newY = y + dy
+
+		this.translateToPoint( { x: newX, y: newY } )
+	}
 
 	handleSegmentAfterDragging( event ) {
-		const point: Point2DInitial = this.getters.getInitialPoint( event )
-
-		const dx = this.dragger.getDeltaXToPrevPoint( point )
-		const dy = this.dragger.getDeltaYToPrevPoint( point )
-
-		this.segment.translate( -dx, -dy )
-
-		this.translateToPoint( point )
-
 		!this.orthogonalLine.isSimpleLine && this.orthogonalLine.updateCenterSegmentsPosition()
 	}
 

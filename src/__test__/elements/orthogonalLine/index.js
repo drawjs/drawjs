@@ -10,6 +10,11 @@ const segment2 = draw.addElement( 'segment', {
 	y: 200
 } )
 
+const segment3 = draw.addElement( 'segment', {
+	x: 200,
+	y: 0
+} )
+
 const instance1 = draw.addElement( "orthogonal-line", {
 	showArrow: true,
 	startSegment: segment1,
@@ -143,5 +148,16 @@ const instance1 = draw.addElement( "orthogonal-line", {
 	]
 } )
 
+const instance2 = draw.addElement( "orthogonal-line", {
+	showArrow: true,
+	startSegment: segment1,
+	endSegment: segment3,
+	corners: [
+		{
+			x: 200,
+			y: 100
+		}
+	],
+} )
 
 draw.render()
