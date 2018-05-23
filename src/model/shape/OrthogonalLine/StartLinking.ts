@@ -19,7 +19,7 @@ export default class StartLinking extends CommonStartEndLinking {
 		function setPropsDangerously( props ) {
 			props.segmentFillColor = 'red'
 			return props
-		  }
+		}
 	}
 
 	get startLine(): StartLine {

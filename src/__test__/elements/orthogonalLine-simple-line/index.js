@@ -1,23 +1,24 @@
 const draw = new Draw( document.getElementById( "canvas" ) )
 
-// const segment1 = draw.addElement( 'segment', {
-// 	x: 100,
-// 	y: 100
-// } )
+const segment1 = draw.addElement( 'segment', {
+	x: 100,
+	y: 100
+} )
 
-// const segment2 = draw.addElement( 'segment', {
-// 	x: 200,
-// 	y: 200
-// } )
+const segment2 = draw.addElement( 'segment', {
+	x: 200,
+	y: 200
+} )
 
-// const segment3 = draw.addElement( 'segment', {
-// 	x: 200,
-// 	y: 0
-// } )
+const segment3 = draw.addElement( 'segment', {
+	x: 200,
+	y: 0
+} )
 
 const instance1 = draw.addElement( "orthogonal-line", {
-	// startSegment: segment1,
-	// endSegment: segment2,
+	showArrow: false,
+	startSegment: segment1,
+	endSegment: segment2,
 	// corners: [
 	// 	{
 	// 		x: 130,
@@ -37,14 +38,14 @@ const instance1 = draw.addElement( "orthogonal-line", {
 		/**
 		 * One line, two points
 		 */
-		{
-			x: 100,
-			y: 100
-		},
-		{
-			x: 200,
-			y: 100
-		},
+		// {
+		// 	x: 100,
+		// 	y: 100
+		// },
+		// {
+		// 	x: 200,
+		// 	y: 100
+		// },
 
 		/**
 		 * Two line - Horizontal
@@ -89,17 +90,21 @@ const instance1 = draw.addElement( "orthogonal-line", {
 		// 	y: 100
 		// },
 		// {
-		// 	x: 300,
+		// 	x: 200,
 		// 	y: 100
+		// },
+		// {
+		// 	x: 300,
+		// 	y: 300
 		// },
 
 		// {
 		// 	x: 300,
-		// 	y: 300
+		// 	y: 400
 		// },
 		// {
 		// 	x: 500 ,
-		// 	y: 300
+		// 	y: 500
 		// },
 
 
@@ -152,16 +157,16 @@ const instance1 = draw.addElement( "orthogonal-line", {
 	]
 } )
 
-// const instance2 = draw.addElement( "orthogonal-line", {
-// 	showArrow: true,
-// 	startSegment: segment1,
-// 	endSegment: segment3,
-// 	corners: [
-// 		{
-// 			x: 200,
-// 			y: 100
-// 		}
-// 	],
-// } )
+const instance2 = draw.addElement( "orthogonal-line", {
+	showArrow: true,
+	startSegment: segment1,
+	endSegment: segment3,
+	// corners: [
+	// 	{
+	// 		x: 200,
+	// 		y: 100
+	// 	}
+	// ],
+} )
 
 draw.render()

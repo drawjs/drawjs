@@ -42,9 +42,9 @@ export default abstract class CommonStartEndLinking extends Cell {
 		getNextLine: Function
 	) {
 		if( this.orthogonalLine.isSimpleLine ) {
-			this.segment.translateToPoint( point )
 			return
 		}
+
 
 		const self = this
 		const {
@@ -61,16 +61,16 @@ export default abstract class CommonStartEndLinking extends Cell {
 		if ( isCoincided ) {
 			const secondLine = getNextLine( line )
 			if ( notNil( secondLine ) ) {
-				secondLine.isHorizontal &&
+				secondLine.isHorizontal && notNil( corner ) &&
 					this.sharedActions.updateSegmentX( corner, x )
-				secondLine.isVertical && this.sharedActions.updateSegmentY( corner, y )
+				secondLine.isVertical && notNil( corner ) && this.sharedActions.updateSegmentY( corner, y )
 
 				if ( secondLine.isCoincided ) {
 					const thirdLine = getNextLine( secondLine )
 					if ( notNil( thirdLine ) ) {
 						thirdLine.isVertical &&
 							this.sharedActions.updateSegmentX( corner, x )
-						thirdLine.isHorizontal && this.sharedActions.updateSegmentY( corner, y )
+						thirdLine.isHorizontal && notNil( corner ) && this.sharedActions.updateSegmentY( corner, y )
 
 					} else {
 						defaultUpdateCornerPosition()
@@ -80,12 +80,12 @@ export default abstract class CommonStartEndLinking extends Cell {
 				defaultUpdateCornerPosition()
 			}
 		} else {
-			cachedIsVertical && this.sharedActions.updateSegmentX( corner, point.x )
-			cachedIsHorizontal && this.sharedActions.updateSegmentY( corner, point.y )
+			cachedIsVertical && notNil( corner ) && this.sharedActions.updateSegmentX( corner, point.x )
+			cachedIsHorizontal && notNil( corner ) && this.sharedActions.updateSegmentY( corner, point.y )
 		}
 
 		function defaultUpdateCornerPosition() {
-			self.sharedActions.updateSegmentX( corner, x )
+			notNil( corner ) && self.sharedActions.updateSegmentX( corner, x )
 		}
 	}
 

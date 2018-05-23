@@ -66,6 +66,9 @@ export default class OrthogonalLine extends Item {
 		const { points = [], startSegment, endSegment, corners = [] } = props
 		const { length } = points
 
+		this.showArrow = notNil( props.showArrow ) ? props.showArrow : this.showArrow
+
+
 		if ( notNil( startSegment ) && notNil( endSegment ) ) {
 			this.startLinking = new StartLinking( { draw: this.draw, orthogonalLine: this, segment: startSegment } )
 			this.endLinking = new EndLinking( { draw: this.draw, orthogonalLine: this, segment: endSegment } )
@@ -81,41 +84,20 @@ export default class OrthogonalLine extends Item {
 			throw "Orthgonal line: Require at lest 2 points!"
 		}
 
-		this.showArrow = notNil( props.showArrow ) ? props.showArrow : this.showArrow
 
 
-		if ( length === 2  ) {
+		if ( length >= 2 ) {
 			const segments = points.map( mapCreateSegmentInConstructor( this ) )
-			// this.startSegment = firstElement( segments )
-			// this.endSegment = lastElement( segments )
-
-
-			this._initializeCornerSegments()
-			this._refreshLines()
-		}
-
-		if ( length >= 3 ) {
-			const segments = points.map( mapCreateSegmentInConstructor( this ) )
-			const potentialStartSegment = segments[ 0 ]
-			const potentialEndSegment = segments[ segments.length - 1 ]
-
-			// this.getters.testUtils.delayRenderPoints( points, 'purple' )
-
-			if ( notNil( potentialStartSegment ) ) {
-				// this.startSegment = potentialStartSegment
-				// this.startSegment.orthogonalLine = this
-			}
-
-			if ( notNil( potentialEndSegment ) ) {
-				// this.endSegment = potentialEndSegment
-			}
+			const startSegment = firstElement( segments )
+			const endSegment = lastElement( segments )
+			this.startLinking = new StartLinking( { draw: this.draw, orthogonalLine: this, segment: startSegment } )
+			this.endLinking = new EndLinking( { draw: this.draw, orthogonalLine: this, segment: endSegment } )
 
 			this.cornerSegments = segments
 				.filter( notFirstElement )
 				.filter( notLastElement )
 
 			this._initializeCornerSegments()
-
 			this._refreshLines()
 		}
 	}
@@ -181,6 +163,24 @@ export default class OrthogonalLine extends Item {
 	/**
 	 * Initialization
 	 */
+	createStartSegment( props: any ) {
+		return new Segment( {
+			draw          : this.draw,
+			orthogonalLine: this,
+			fillColor     : "darkRed",
+			...props,
+		} )
+	}
+
+	createEndSegment( props: any ) {
+		return new Segment( {
+			draw          : this.draw,
+			orthogonalLine: this,
+			fillColor     : "darkBlue",
+			...props,
+		} )
+	}
+
 	createCornerSegment( props: any ) {
 		return new CornerSegment( {
 			draw          : this.draw,
