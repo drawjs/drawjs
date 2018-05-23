@@ -55,6 +55,17 @@ export function findArrayLastIndex( array: any[], element: any ) {
 	return res
 }
 
+export function isFirstElementOf( array: any[], element: any ) {
+	const index = findArrayFirstIndex( array, element )
+	return isFirst( index )
+}
+
+export function isLastElementOf( array: any[], element: any ) {
+	const index = findArrayFirstIndex( array, element )
+	return isLast( index, array )
+}
+
+
 /**
  * Find element
  */

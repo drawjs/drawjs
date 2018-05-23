@@ -15,15 +15,11 @@ import CommonStartEndLinking from "./CommonStartEndLinking";
 
 export default class StartLinking extends CommonStartEndLinking {
 	constructor( props ) {
-		super( props )
-
-		const { segment, point } = props
-
-		this.segment = notNil( segment ) ? segment : new Segment( { draw: this.draw, ...point, fillColor: 'red' } )
-
-		this.segment.dragger.interfaceStopDrag = this.handleSegmentStopDrag.bind( this )
-		this.segment.dragger.interfaceDragging = this.handleSegmentAfterDragging.bind( this )
-		this.segment.dragger.update = this.updateSegmentDrag.bind( this )
+		super( setPropsDangerously( props ) )
+		function setPropsDangerously( props ) {
+			props.segmentFillColor = 'red'
+			return props
+		  }
 	}
 
 	get startLine(): StartLine {
@@ -70,10 +66,10 @@ export default class StartLinking extends CommonStartEndLinking {
 			const { cornerSegments } = this.orthogonalLine
 			const index = findArrayFirstIndex( cornerSegments, corner )
 
-			this.translateToPoint( corner.point )
+			this.translateLinkingToPoint( corner.point )
+			this.segment.translateToPoint( corner.point )
 
 			if ( notNil( index ) ) {
-				console.log( index )
 				const removingCorners = cornerSegments.filter(
 					( element, theIndex ) => theIndex <= index
 				)
@@ -83,8 +79,8 @@ export default class StartLinking extends CommonStartEndLinking {
 		}
 	}
 
-	translateToPoint( point: Point2D ) {
-		this.translateToPointWith( point, this.startLine, <CornerSegment>this.firstCornerSegment, this.orthogonalLine.getNextLine.bind(this.orthogonalLine) )
+	translateLinkingToPoint( point: Point2D ) {
+		this.translateLinkingToPointWith( point, this.startLine, <CornerSegment>this.firstCornerSegment, this.orthogonalLine.getNextLine.bind(this.orthogonalLine) )
 	}
 
 	handleSegmentStopDrag( event ) {

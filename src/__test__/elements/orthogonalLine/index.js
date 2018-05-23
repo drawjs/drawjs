@@ -21,9 +21,18 @@ const instance1 = draw.addElement( "orthogonal-line", {
 	endSegment: segment2,
 	corners: [
 		{
-			x: 200,
+			x: 130,
 			y: 100
+		},
+		{
+			x: 130,
+			y: 130,
+		},
+		{
+			x: 200,
+			y: 130
 		}
+
 	],
 	points: [
 		/**

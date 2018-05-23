@@ -13,13 +13,12 @@ import CommonStartEndLinking from "./CommonStartEndLinking"
 
 export default class EndLinking extends CommonStartEndLinking {
 	constructor( props ) {
-		super( props )
+		super( setPropsDangerously( props ) )
 
-		const { segment, point } = props
-
-		this.segment = notNil( segment ) ? segment : new Segment( { draw: this.draw, ...point, fillColor: 'blue' } )
-
-		this.segment.handleStopDrag = this.handleSegmentStopDrag.bind( this )
+		function setPropsDangerously( props ) {
+			props.segmentFillColor = 'blue'
+			return props
+		}
 	}
 
 	get endLine(): EndLine {
@@ -64,7 +63,8 @@ export default class EndLinking extends CommonStartEndLinking {
 			const { cornerSegments } = this.orthogonalLine
 			const index = findArrayFirstIndex( cornerSegments, corner )
 
-			this.translateToPoint( corner.point )
+			this.translateLinkingToPoint( corner.point )
+			this.segment.translateToPoint( corner.point )
 
 			if ( notNil( index ) ) {
 				const removingCorners = cornerSegments.filter(
@@ -76,8 +76,8 @@ export default class EndLinking extends CommonStartEndLinking {
 		}
 	}
 
-	translateToPoint( point: Point2D ) {
-		this.translateToPointWith( point, this.endLine, <CornerSegment>this.lastCornerSegment, this.orthogonalLine.getPrevLine.bind(this.orthogonalLine) )
+	translateLinkingToPoint( point: Point2D ) {
+		this.translateLinkingToPointWith( point, this.endLine, <CornerSegment>this.lastCornerSegment, this.orthogonalLine.getPrevLine.bind(this.orthogonalLine) )
 	}
 
 	handleSegmentStopDrag( event ) {

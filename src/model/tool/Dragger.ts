@@ -147,10 +147,11 @@ class Dragger extends Particle {
 
 	_applyInterfaceFn( interfaceFn: Function, interfaceFnList: Function[], event ) {
 		const isEmptyFnList = isEmpty( interfaceFnList )
+
 		isEmptyFnList && interfaceFn && interfaceFn( event, this )
-		if ( !isEmptyFnList ) {
-			interfaceFnList.map( fn => fn( event, this ) )
-		}
+		!isEmptyFnList && interfaceFnList.map( fn => {
+			return fn( event, this )
+		} )
 	}
 
 }
