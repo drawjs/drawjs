@@ -1,10 +1,17 @@
-import Segment from '../../Segment';
+import Segment from "../../Segment"
 import OrthogonalLine from "./OrthogonalLine"
 import CommonLine from "./CommonLine"
 import CornerSegment from "./CornerSegment"
 import { notNil } from "../../../util/lodash/index"
-import Cell from '../../Cell';
-import { removeElement, isFirst, isFirstElement, findArrayFirstIndex, isLastElementOf, notEmpty } from '../../../util/js/array';
+import Cell from "../../Cell"
+import {
+	removeElement,
+	isFirst,
+	isFirstElement,
+	findArrayFirstIndex,
+	isLastElementOf,
+	notEmpty
+} from "../../../util/js/array"
 
 export default abstract class CommonStartEndLinking extends Cell {
 	orthogonalLine: OrthogonalLine
@@ -14,23 +21,27 @@ export default abstract class CommonStartEndLinking extends Cell {
 		super( props )
 
 		const { segment, point } = props
-		this.segment = notNil( segment ) ? segment : new Segment( { draw: this.draw, ...point, fillColor: props.segmentFillColor } )
+		this.segment = notNil( segment ) ?
+			segment :
+			new Segment( {
+					draw     : this.draw,
+					...point,
+					fillColor: props.segmentFillColor
+			  } )
 
-		this.handleSegmentAfterDragging = this.handleSegmentAfterDragging.bind( this )
+		this.handleSegmentAfterDragging = this.handleSegmentAfterDragging.bind(
+			this
+		)
 		this.handleSegmentStopDrag = this.handleSegmentStopDrag.bind( this )
 		this.updateSegmentDrag = this.updateSegmentDrag.bind( this )
-
 
 		this.orthogonalLine = props.orthogonalLine
 
 		const { dragger } = this.segment
 
-
-
 		dragger.interfaceStopDragList.push( this.handleSegmentStopDrag )
 		dragger.interfaceDraggingList.push( this.handleSegmentAfterDragging )
 		dragger.updateList.push( this.updateSegmentDrag )
-
 	}
 
 	abstract translateLinkingToPoint( point: Point2D )
@@ -41,10 +52,9 @@ export default abstract class CommonStartEndLinking extends Cell {
 		corner: CornerSegment,
 		getNextLine: Function
 	) {
-		if( this.orthogonalLine.isSimpleLine ) {
+		if ( this.orthogonalLine.isSimpleLine ) {
 			return
 		}
-
 
 		const self = this
 		const {
@@ -61,17 +71,21 @@ export default abstract class CommonStartEndLinking extends Cell {
 		if ( isCoincided ) {
 			const secondLine = getNextLine( line )
 			if ( notNil( secondLine ) ) {
-				secondLine.isHorizontal && notNil( corner ) &&
+				secondLine.isHorizontal &&
+					notNil( corner ) &&
 					this.sharedActions.updateSegmentX( corner, x )
-				secondLine.isVertical && notNil( corner ) && this.sharedActions.updateSegmentY( corner, y )
+				secondLine.isVertical &&
+					notNil( corner ) &&
+					this.sharedActions.updateSegmentY( corner, y )
 
 				if ( secondLine.isCoincided ) {
 					const thirdLine = getNextLine( secondLine )
 					if ( notNil( thirdLine ) ) {
 						thirdLine.isVertical &&
 							this.sharedActions.updateSegmentX( corner, x )
-						thirdLine.isHorizontal && notNil( corner ) && this.sharedActions.updateSegmentY( corner, y )
-
+						thirdLine.isHorizontal &&
+							notNil( corner ) &&
+							this.sharedActions.updateSegmentY( corner, y )
 					} else {
 						defaultUpdateCornerPosition()
 					}
@@ -80,8 +94,12 @@ export default abstract class CommonStartEndLinking extends Cell {
 				defaultUpdateCornerPosition()
 			}
 		} else {
-			cachedIsVertical && notNil( corner ) && this.sharedActions.updateSegmentX( corner, point.x )
-			cachedIsHorizontal && notNil( corner ) && this.sharedActions.updateSegmentY( corner, point.y )
+			cachedIsVertical &&
+				notNil( corner ) &&
+				this.sharedActions.updateSegmentX( corner, point.x )
+			cachedIsHorizontal &&
+				notNil( corner ) &&
+				this.sharedActions.updateSegmentY( corner, point.y )
 		}
 
 		function defaultUpdateCornerPosition() {
@@ -90,42 +108,50 @@ export default abstract class CommonStartEndLinking extends Cell {
 	}
 
 	updateSegmentDrag( event ) {
-		const point: Point2DInitial = this.segment.getters.getInitialPoint( event )
-		const { dragger } = this.segment
-		const { updateList } = dragger
-		const notEmptyUpdateList = notEmpty( updateList )
+		if ( this.segment.draggable ) {
+			const point: Point2DInitial = this.segment.getters.getInitialPoint(
+				event
+			)
+			const { dragger } = this.segment
+			const { updateList } = dragger
+			const notEmptyUpdateList = notEmpty( updateList )
 
-		const dx = dragger.getDeltaXToPrevPoint( point )
-		const dy = dragger.getDeltaYToPrevPoint( point )
+			const dx = dragger.getDeltaXToPrevPoint( point )
+			const dy = dragger.getDeltaYToPrevPoint( point )
 
+			let { x, y } = this.segment.point
 
-		let { x, y } = this.segment.point
+			x = x + dx
+			y = y + dy
 
-		x = x + dx
-		y = y + dy
+			this.translateLinkingToPoint( { x, y } )
 
-		this.translateLinkingToPoint( { x, y } )
-
-		if ( ! notEmptyUpdateList || ( notEmptyUpdateList && isLastElementOf( updateList, this.updateSegmentDrag ) ) ) {
-			this.segment.translateToPoint( { x, y } )
+			if (
+				!notEmptyUpdateList ||
+				( notEmptyUpdateList &&
+					isLastElementOf( updateList, this.updateSegmentDrag ) )
+			) {
+				this.segment.translateToPoint( { x, y } )
+			}
 		}
 	}
 
 	handleSegmentAfterDragging( event ) {
-		!this.orthogonalLine.isSimpleLine && this.orthogonalLine.updateCenterSegmentsPosition()
+		this.segment.draggable && !this.orthogonalLine.isSimpleLine &&
+			this.orthogonalLine.updateCenterSegmentsPosition()
 	}
 
 	abstract handleSegmentStopDrag( point: Point2D )
 
-
-	contain() {
-
-	}
+	contain() {}
 
 	remove() {
 		const { dragger } = this.segment
-		removeElement( dragger.interfaceStopDragList, this.handleSegmentStopDrag  )
-		removeElement( dragger.interfaceAfterDraggingList, this.handleSegmentAfterDragging  )
+		removeElement( dragger.interfaceStopDragList, this.handleSegmentStopDrag )
+		removeElement(
+			dragger.interfaceAfterDraggingList,
+			this.handleSegmentAfterDragging
+		)
 		super.remove()
 	}
 

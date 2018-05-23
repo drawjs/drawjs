@@ -16,7 +16,7 @@ export default class EndLinking extends CommonStartEndLinking {
 		super( setPropsDangerously( props ) )
 
 		function setPropsDangerously( props ) {
-			props.segmentFillColor = 'blue'
+			props.segmentFillColor = "blue"
 			return props
 		}
 	}
@@ -77,20 +77,26 @@ export default class EndLinking extends CommonStartEndLinking {
 	}
 
 	translateLinkingToPoint( point: Point2D ) {
-		this.translateLinkingToPointWith( point, this.endLine, <CornerSegment>this.lastCornerSegment, this.orthogonalLine.getPrevLine.bind(this.orthogonalLine) )
+		this.translateLinkingToPointWith(
+			point,
+			this.endLine,
+			<CornerSegment>this.lastCornerSegment,
+			this.orthogonalLine.getPrevLine.bind( this.orthogonalLine )
+		)
 	}
 
 	handleSegmentStopDrag( event ) {
-		const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
+		if ( this.segment.draggable ) {
+			const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
 
-		if ( notNil( cornerSegmentToBeCombined ) ) {
-			this._combineCornerSegment( cornerSegmentToBeCombined )
-			this.orthogonalLine.refresh()
+			if ( notNil( cornerSegmentToBeCombined ) ) {
+				this._combineCornerSegment( cornerSegmentToBeCombined )
+				this.orthogonalLine.refresh()
+			}
+
+			this.orthogonalLine.handleEndSegmentStopDrag( event )
+
+			super.handleStopDrag && super.handleStopDrag()
 		}
-
-		this.orthogonalLine.handleEndSegmentStopDrag( event )
-
-		super.handleStopDrag && super.handleStopDrag()
 	}
-
 }

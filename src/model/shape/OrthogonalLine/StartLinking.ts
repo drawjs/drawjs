@@ -11,13 +11,13 @@ import CornerSegment from "./CornerSegment"
 import distance from "../../../util/geometry/distance"
 import OrthogonalLine from "./OrthogonalLine"
 import CommonLine from "./CommonLine"
-import CommonStartEndLinking from "./CommonStartEndLinking";
+import CommonStartEndLinking from "./CommonStartEndLinking"
 
 export default class StartLinking extends CommonStartEndLinking {
 	constructor( props ) {
 		super( setPropsDangerously( props ) )
 		function setPropsDangerously( props ) {
-			props.segmentFillColor = 'red'
+			props.segmentFillColor = "red"
 			return props
 		}
 	}
@@ -80,17 +80,24 @@ export default class StartLinking extends CommonStartEndLinking {
 	}
 
 	translateLinkingToPoint( point: Point2D ) {
-		this.translateLinkingToPointWith( point, this.startLine, <CornerSegment>this.firstCornerSegment, this.orthogonalLine.getNextLine.bind(this.orthogonalLine) )
+		this.translateLinkingToPointWith(
+			point,
+			this.startLine,
+			<CornerSegment>this.firstCornerSegment,
+			this.orthogonalLine.getNextLine.bind( this.orthogonalLine )
+		)
 	}
 
 	handleSegmentStopDrag( event ) {
-		const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
+		if ( this.segment.draggable ) {
+			const cornerSegmentToBeCombined = this._getCornerSegmentToBeCombined()
 
-		if ( notNil( cornerSegmentToBeCombined ) ) {
-			this._combineCornerSegment( cornerSegmentToBeCombined )
-			this.orthogonalLine.refresh()
+			if ( notNil( cornerSegmentToBeCombined ) ) {
+				this._combineCornerSegment( cornerSegmentToBeCombined )
+				this.orthogonalLine.refresh()
+			}
+
+			this.orthogonalLine.handleStartSegmentStopDrag( event )
 		}
-
-		this.orthogonalLine.handleStartSegmentStopDrag( event )
 	}
 }

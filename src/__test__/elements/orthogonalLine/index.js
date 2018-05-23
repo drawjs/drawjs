@@ -37,14 +37,14 @@ const instance1 = draw.addElement( "orthogonal-line", {
 		/**
 		 * One line, two points
 		 */
-		{
-			x: 100,
-			y: 100
-		},
-		{
-			x: 200,
-			y: 100
-		},
+		// {
+		// 	x: 100,
+		// 	y: 100
+		// },
+		// {
+		// 	x: 200,
+		// 	y: 100
+		// },
 
 		/**
 		 * Two line - Horizontal
@@ -84,23 +84,23 @@ const instance1 = draw.addElement( "orthogonal-line", {
 		/**
 		 * Horizontal
 		 */
-		// {
-		// 	x: 100,
-		// 	y: 100
-		// },
-		// {
-		// 	x: 300,
-		// 	y: 100
-		// },
+		{
+			x: 100,
+			y: 100
+		},
+		{
+			x: 300,
+			y: 100
+		},
 
-		// {
-		// 	x: 300,
-		// 	y: 300
-		// },
-		// {
-		// 	x: 500 ,
-		// 	y: 300
-		// },
+		{
+			x: 300,
+			y: 300
+		},
+		{
+			x: 500 ,
+			y: 300
+		},
 
 
 		/**
