@@ -143,11 +143,11 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Drag
 	 */
-	updateDrag( event?: any ) {}
-	handleStartDrag( event?: any ) {}
-	handleBeforeDragging( event?: any ) {}
-	handleDragging( event?: any ) {}
-	handleAfterDragging( event?: any ) {
+	updateDrag( event: any, dragger: Dragger ) {}
+	handleStartDrag( event: any, dragger: Dragger ) {}
+	handleBeforeDragging( event: any, dragger: Dragger ) {}
+	handleDragging( event: any, dragger: Dragger ) {}
+	handleAfterDragging( event: any, dragger: Dragger ) {
 		this.getters.draw.render()
 	}
 	handleStopDrag( event?: any ) {

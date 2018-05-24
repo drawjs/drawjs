@@ -37,9 +37,9 @@ import InnerCenterSegment from "./InnerCenterSegment"
 import CommonLine from "./CommonLine"
 import MathSegmentLine from "../../../util/math/MathSegmentLine"
 import { clonePoints } from "../../../util/js/clone"
-import { firstElement, lastElement } from '../../../util/js/array';
-import StartLinking from './StartLinking';
-import EndLinking from './EndLinking';
+import { firstElement, lastElement } from "../../../util/js/array"
+import StartLinking from "./StartLinking"
+import EndLinking from "./EndLinking"
 
 const { abs } = Math
 
@@ -56,7 +56,21 @@ export default class OrthogonalLine extends Item {
 
 	innerLines: InnerLine[] = []
 
+	/**
+	 * // Settings
+	 */
 	showArrow: boolean = true
+
+	showCenterSegment: boolean = true
+
+	showCorner: boolean = true
+
+	startLineFillColor: string = "red"
+	endLineFillColor: string = "blue"
+	innerLineFillColor: string = "grey"
+
+	startSegmentFillColor: string = "darkRed"
+	endSegmentFillColor: string = "darkBlue"
 
 	static COMBINE_INTERVAL = 10
 
@@ -66,14 +80,46 @@ export default class OrthogonalLine extends Item {
 		const { points = [], startSegment, endSegment, corners = [] } = props
 		const { length } = points
 
-		this.showArrow = notNil( props.showArrow ) ? props.showArrow : this.showArrow
-
+		this.showArrow = notNil( props.showArrow ) ?
+			props.showArrow :
+			this.showArrow
+		this.showCenterSegment = notNil( props.showCenterSegment ) ?
+			props.showCenterSegment :
+			this.showCenterSegment
+		this.showCorner = notNil( props.showCorner ) ?
+			props.showCorner :
+			this.showCorner
+		this.startLineFillColor = notNil( props.startLineFillColor ) ?
+			props.startLineFillColor :
+			this.startLineFillColor
+		this.endLineFillColor = notNil( props.endLineFillColor ) ?
+			props.endLineFillColor :
+			this.endLineFillColor
+		this.innerLineFillColor = notNil( props.innerLineFillColor ) ?
+			props.innerLineFillColor :
+			this.innerLineFillColor
+		this.startSegmentFillColor = notNil( props.startSegmentFillColor ) ?
+			props.startSegmentFillColor :
+			this.startSegmentFillColor
+		this.endSegmentFillColor = notNil( props.endSegmentFillColor ) ?
+			props.endSegmentFillColor :
+			this.endSegmentFillColor
 
 		if ( notNil( startSegment ) && notNil( endSegment ) ) {
-			this.startLinking = new StartLinking( { draw: this.draw, orthogonalLine: this, segment: startSegment } )
-			this.endLinking = new EndLinking( { draw: this.draw, orthogonalLine: this, segment: endSegment } )
+			this.startLinking = new StartLinking( {
+				draw          : this.draw,
+				orthogonalLine: this,
+				segment       : startSegment
+			} )
+			this.endLinking = new EndLinking( {
+				draw          : this.draw,
+				orthogonalLine: this,
+				segment       : endSegment
+			} )
 
-			this.cornerSegments = corners.map( point => this.createCornerSegment( point ) )
+			this.cornerSegments = corners.map( point =>
+				this.createCornerSegment( point )
+			)
 			this._initializeCornerSegments()
 
 			this._refreshLines()
@@ -84,14 +130,20 @@ export default class OrthogonalLine extends Item {
 			throw "Orthgonal line: Require at lest 2 points!"
 		}
 
-
-
 		if ( length >= 2 ) {
 			const segments = points.map( mapCreateSegmentInConstructor( this ) )
 			const startSegment = firstElement( segments )
 			const endSegment = lastElement( segments )
-			this.startLinking = new StartLinking( { draw: this.draw, orthogonalLine: this, segment: startSegment } )
-			this.endLinking = new EndLinking( { draw: this.draw, orthogonalLine: this, segment: endSegment } )
+			this.startLinking = new StartLinking( {
+				draw          : this.draw,
+				orthogonalLine: this,
+				segment       : startSegment
+			} )
+			this.endLinking = new EndLinking( {
+				draw          : this.draw,
+				orthogonalLine: this,
+				segment       : endSegment
+			} )
 
 			this.cornerSegments = segments
 				.filter( notFirstElement )
@@ -134,7 +186,7 @@ export default class OrthogonalLine extends Item {
 	}
 
 	get notSimpleLine(): boolean {
-		return ! this.isSimpleLine
+		return !this.isSimpleLine
 	}
 
 	getNextLine( line: CommonLine ): CommonLine {
@@ -167,8 +219,8 @@ export default class OrthogonalLine extends Item {
 		return new Segment( {
 			draw          : this.draw,
 			orthogonalLine: this,
-			fillColor     : "darkRed",
-			...props,
+			fillColor     : this.startSegmentFillColor,
+			...props
 		} )
 	}
 
@@ -176,8 +228,8 @@ export default class OrthogonalLine extends Item {
 		return new Segment( {
 			draw          : this.draw,
 			orthogonalLine: this,
-			fillColor     : "darkBlue",
-			...props,
+			fillColor     : this.endSegmentFillColor,
+			...props
 		} )
 	}
 
@@ -187,7 +239,8 @@ export default class OrthogonalLine extends Item {
 			...props,
 			orthogonalLine: this,
 			fillColor     : "grey",
-			draggable     : false
+			draggable     : false,
+			show          : this.showCorner
 		} )
 	}
 
@@ -195,6 +248,7 @@ export default class OrthogonalLine extends Item {
 		return new StartCenterSegment( {
 			draw          : this.draw,
 			orthogonalLine: this,
+			show          : this.showCenterSegment,
 			...props
 		} )
 	}
@@ -203,6 +257,7 @@ export default class OrthogonalLine extends Item {
 		return new EndCenterSegment( {
 			draw          : this.draw,
 			orthogonalLine: this,
+			show          : this.showCenterSegment,
 			...props
 		} )
 	}
@@ -211,6 +266,7 @@ export default class OrthogonalLine extends Item {
 		return new InnerCenterSegment( {
 			draw          : this.draw,
 			orthogonalLine: this,
+			show          : this.showCenterSegment,
 			...props
 		} )
 	}
@@ -221,8 +277,10 @@ export default class OrthogonalLine extends Item {
 			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor     : this.isSimpleLine ? 'grey' : "red",
-			draggable     : false,
+			fillColor     : this.isSimpleLine ?
+				this.innerLineFillColor :
+				this.startLineFillColor,
+			draggable: false,
 			showArrow: isSimpleLine ? showArrow : false
 		} )
 	}
@@ -233,7 +291,7 @@ export default class OrthogonalLine extends Item {
 			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			fillColor     : "blue",
+			fillColor     : this.endLineFillColor,
 			showArrow     : showArrow,
 			draggable     : false
 		} )
@@ -244,7 +302,8 @@ export default class OrthogonalLine extends Item {
 			draw          : this.draw,
 			...props,
 			orthogonalLine: this,
-			draggable     : false
+			draggable     : false,
+			fillColor     : this.innerLineFillColor
 		} )
 	}
 

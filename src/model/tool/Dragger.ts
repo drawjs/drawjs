@@ -106,10 +106,10 @@ class Dragger extends Particle {
 
 		this._applyInterfaceFn( this.interfaceStartDrag, this.interfaceStartDragList, event )
 
-		this.handleStart && this.handleStart( event )
+		this.handleStart && this.handleStart( event, this )
 	}
 	dragging( event ): void {
-		this.handleBeforeDragging && this.handleBeforeDragging( event )
+		this.handleBeforeDragging && this.handleBeforeDragging( event, this )
 
 		this._applyInterfaceFn( this.interfaceBeforeDragging, this.interfaceBeforeDraggingList, event )
 
@@ -120,11 +120,11 @@ class Dragger extends Particle {
 
 		this._applyInterfaceFn( this.interfaceDragging, this.interfaceDraggingList, event )
 
-		this.handleDragging && this.handleDragging( event )
+		this.handleDragging && this.handleDragging( event, this )
 
 		this.updatePrevEvent( event )
 
-		this.handleAfterDragging && this.handleAfterDragging( event )
+		this.handleAfterDragging && this.handleAfterDragging( event, this )
 
 		this._applyInterfaceFn( this.interfaceAfterDragging, this.interfaceAfterDraggingList, event )
 	}
@@ -133,17 +133,17 @@ class Dragger extends Particle {
 
 		this._applyInterfaceFn( this.interfaceStopDrag, this.interfaceStopDragList, event )
 
-		this.handleStop && this.handleStop( event )
+		this.handleStop && this.handleStop( event, this )
 	}
-	handleStart( event ) {}
-	handleBeforeDragging( event ) {
+	handleStart( event, dragger: Dragger ) {}
+	handleBeforeDragging( event, dragger: Dragger ) {
 
 	}
-	handleDragging( event ) {}
-	handleAfterDragging( event ) {
+	handleDragging( event, dragger: Dragger ) {}
+	handleAfterDragging( event, dragger: Dragger ) {
 
 	}
-	handleStop( event ) {}
+	handleStop( event, dragger: Dragger ) {}
 
 	_applyInterfaceFn( interfaceFn: Function, interfaceFnList: Function[], event ) {
 		const isEmptyFnList = isEmpty( interfaceFnList )

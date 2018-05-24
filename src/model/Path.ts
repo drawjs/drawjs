@@ -179,12 +179,12 @@ export default class Path extends PathItem {
 		return isContain
 	}
 
-	updateDrag( event ) {
+	updateDrag( event, dragger ) {
 		if ( this.draggable ) {
 			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-			const deltaX = this.dragger.getDeltaXToPrevPoint( point )
-			const deltaY = this.dragger.getDeltaYToPrevPoint( point )
+			const deltaX = dragger.getDeltaXToPrevPoint( point )
+			const deltaY = dragger.getDeltaYToPrevPoint( point )
 
 			this.sharedActions.translateSegments( this.segments, deltaX, deltaY )
 		}
