@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "ajv": "^5.5.2",
+    "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.2.3",
     "typescript": "^2.6.2",

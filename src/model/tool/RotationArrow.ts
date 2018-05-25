@@ -6,13 +6,13 @@ import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import { getPointAngleToOrigin } from "../../util/index"
 import {
 	RADIAN_TO_DEGREE,
-	ROTATION_ARROW_SRC,
 	ROTATION_ARROW_SPACE,
 	ROTATION_ARROW_SIZE
 } from "../../store/constant/index"
 import rotate from "../../util/geometry/rotate"
 import { ROTATION_ARROW } from "../../store/constant/cellType"
 import Item from "../Item"
+import { ROTATION_ARROW_ICON } from "../../store/constant/imageUrl";
 
 export default class RotationArrow extends Cell {
 	type: string = ROTATION_ARROW
@@ -105,7 +105,7 @@ export default class RotationArrow extends Cell {
 
 		this.target = props.target
 
-		this.img.src = ROTATION_ARROW_SRC
+		this.img.src = ROTATION_ARROW_ICON
 		this.img.onload = function() {
 			self.shouldRender && self.render()
 		}

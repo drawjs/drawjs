@@ -81,9 +81,9 @@ export default abstract class CommonStartEndSegment extends Segment {
 		this.translateToPoint( { x: newX, y: newY } )
 	}
 
-	handleAfterDragging() {
+	handleAfterDragging( event, dragger ) {
 		!this.orthogonalLine.isSimpleLine && this.orthogonalLine.updateCenterSegmentsPosition()
 
-		super.handleAfterDragging && super.handleAfterDragging()
+		super.handleAfterDragging && super.handleAfterDragging( event, dragger )
 	}
 }

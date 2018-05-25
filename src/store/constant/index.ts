@@ -30,7 +30,7 @@ export enum HandleType {
 /**
  * Rotation Arrow
  */
-export const ROTATION_ARROW_SRC = "/build/asset/svg/rotate-icon.svg"
+// export const ROTATION_ARROW_SRC = "/build/asset/svg/rotate-icon.svg"
 export const ROTATION_ARROW_SPACE = 20
 export const ROTATION_ARROW_SIZE = 20
 

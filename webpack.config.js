@@ -1,6 +1,6 @@
 const path = require( 'path' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' )
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require( 'clean-webpack-plugin' )
 
 module.exports = {
 	entry: {
@@ -9,7 +9,7 @@ module.exports = {
 
 		// generate source map for __test__
 		'__test__/comprehensive/index.js': './src/__test__/comprehensive/index.js',
-		// '__test__/importData/index.js': './src/__test__/importData/index.js',
+	// '__test__/importData/index.js': './src/__test__/importData/index.js',
 	},
 	output: {
 		filename: '[name]',
@@ -22,6 +22,12 @@ module.exports = {
 				test: /\.ts?$/,
 				use: 'ts-loader',
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(png|svg|jpg|gif)$/,
+				use: [
+					'file-loader'
+				]
 			}
 		]
 	},
@@ -45,7 +51,9 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new CleanWebpackPlugin( [ 'build' ] ),
+		new CleanWebpackPlugin( [
+			'build'
+		] ),
 		new CopyWebpackPlugin( [
 			{
 				from: './src/__test__',

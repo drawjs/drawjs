@@ -1,6 +1,5 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
 import { isNil, cloneDeep, intersection } from "lodash"
-import Draw from "Draw"
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"
 import storeElementFields from "../../store/storeElementFields"
@@ -17,6 +16,7 @@ import TestUtils from "../../shared/TestUtils"
 import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
+import Draw from "../..";
 
 export default class Actions {
 	drawStore: DrawStore

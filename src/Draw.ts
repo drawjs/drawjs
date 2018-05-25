@@ -26,7 +26,7 @@ import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
 import TextInput from "./model/tool/TextInput"
-import { notNil } from './util/lodash/index';
+import { notNil } from "./util/lodash/index"
 
 const ajv = new Ajv()
 
@@ -59,13 +59,14 @@ export default class Draw {
 	onGraphClick: Function
 	onGraphHover: Function
 
-	constructor( canvas: HTMLCanvasElement ) {
-
-		this.drawStore = new DrawStore()
-		this.getters = new Getters( this.drawStore )
-		this.actions = new Actions( this.drawStore, this.getters )
-		this.actions.UPDATE_CANVAS( canvas )
-		this._initialize()
+	constructor( canvas: HTMLCanvasElement, isExtended: boolean = false ) {
+		if ( !isExtended ) {
+			this.drawStore = new DrawStore()
+			this.getters = new Getters( this.drawStore )
+			this.actions = new Actions( this.drawStore, this.getters )
+			this.actions.UPDATE_CANVAS( canvas )
+			this._initialize()
+		}
 	}
 
 	_initialize() {
@@ -92,11 +93,14 @@ export default class Draw {
 		const grid = new Grid( { draw: this, canvas: this.getters.canvas } )
 		this.actions.UPDATE_GRID( grid )
 
-		if ( notNil( this.drawStore.textInput ) && notNil( this.drawStore.textInput.input ) ) {
+		if (
+			notNil( this.drawStore.textInput ) &&
+			notNil( this.drawStore.textInput.input )
+		) {
 			this.drawStore.textInput.input.remove()
 		}
 		const textInput: TextInput = new TextInput( { draw: this } )
-		 this.actions.UPDATE_TEXT_INPUT( textInput )
+		this.actions.UPDATE_TEXT_INPUT( textInput )
 
 		const interaction = new Interaction( { draw: this } )
 		this.actions.UPDATE_INTERACTION( interaction )
