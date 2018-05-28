@@ -172,6 +172,12 @@ export default class Path extends PathItem {
 			ctx.lineWidth = strokeWidth
 			ctx.stroke( this.path2d )
 		}
+
+		if ( this.shouldSelect ) {
+			ctx.strokeStyle = 'yellow'
+			ctx.lineWidth = 1
+			ctx.stroke( this.path2d )
+		}
 	}
 
 	contain( x: number, y: number ) {

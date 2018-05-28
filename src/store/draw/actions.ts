@@ -16,7 +16,7 @@ import TestUtils from "../../shared/TestUtils"
 import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
-import Draw from "../..";
+import Draw from '../../index';
 
 export default class Actions {
 	drawStore: DrawStore
