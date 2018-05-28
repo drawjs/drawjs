@@ -66,6 +66,9 @@ export default class Draw {
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
 			this._initialize()
+
+			const interaction = new Interaction( { draw: this } )
+			this.actions.UPDATE_INTERACTION( interaction )
 		}
 	}
 
@@ -101,9 +104,6 @@ export default class Draw {
 		}
 		const textInput: TextInput = new TextInput( { draw: this } )
 		this.actions.UPDATE_TEXT_INPUT( textInput )
-
-		const interaction = new Interaction( { draw: this } )
-		this.actions.UPDATE_INTERACTION( interaction )
 
 		this.actions.MODIFY_ACTIVE_PANEL_ID( this.getters.storeActivePanelId )
 
