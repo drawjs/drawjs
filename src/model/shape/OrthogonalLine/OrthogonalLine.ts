@@ -41,7 +41,7 @@ import { firstElement, lastElement } from "../../../util/js/array"
 import StartLinking from "./StartLinking"
 import EndLinking from "./EndLinking"
 
-const { abs } = Math
+const { abs, min, max } = Math
 
 export default class OrthogonalLine extends Item {
 	startLinking: StartLinking = null
@@ -157,8 +157,8 @@ export default class OrthogonalLine extends Item {
 	// ===============================
 	// =========== getters ===========
 	// ===============================
-	contain() {
-		return false
+	contain( x: number, y: number ) {
+		return this.lines.some( line => line.contain( x, y ) )
 	}
 
 	get startSegment(): Segment {
@@ -187,6 +187,50 @@ export default class OrthogonalLine extends Item {
 
 	get notSimpleLine(): boolean {
 		return !this.isSimpleLine
+	}
+
+	get bounds(): Bounds {
+		const { segments } = this
+		let left = null
+		let right = null
+		let top = null
+		let bottom = null
+		segments.map( ( { x, y } ) => {
+			if ( isNil( left ) ) {
+				left = x
+			}
+			if ( notNil( left ) ) {
+				left = min( x, left )
+			}
+
+			if ( isNil( right ) ) {
+				right = x
+			}
+			if ( notNil( right ) ) {
+				right = max( x, right )
+			}
+
+			if ( isNil( top ) ) {
+				top = y
+			}
+			if ( notNil( top ) ) {
+				top = min( y, top )
+			}
+
+			if ( isNil( bottom ) ) {
+				bottom = y
+			}
+			if ( notNil( bottom ) ) {
+				bottom = max( y, bottom )
+			}
+		} )
+
+		left = notNil( left ) ? left : 0
+		right = notNil( right ) ? right : 0
+		top = notNil( top ) ? top : 0
+		bottom = notNil( bottom ) ? bottom : 0
+
+		return { left, right, top, bottom }
 	}
 
 	getNextLine( line: CommonLine ): CommonLine {
@@ -504,6 +548,21 @@ export default class OrthogonalLine extends Item {
 		this.lines.map( line => line.updateCenterSegmentPosition() )
 	}
 
+	select() {
+		this.sharedActions.selectCells( this.lines )
+	}
+
+	updateDrag( event, dragger ) {
+		if ( this.draggable ) {
+			const point: Point2DInitial = this.getters.getInitialPoint( event )
+
+			const dx = dragger.getDeltaXToPrevPoint( point )
+			const dy = dragger.getDeltaYToPrevPoint( point )
+
+			this.sharedActions.translateSegments( this.segments, dx, dy )
+		}
+	}
+
 	reGenerate( cornerPoints ) {
 		this.removeChildrenElements()
 
@@ -551,6 +610,7 @@ export default class OrthogonalLine extends Item {
 		this.removeChildrenElements()
 		this.remove()
 	}
+
 
 	// ===============================
 	// =========== Interfaces ===========

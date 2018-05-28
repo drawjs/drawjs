@@ -178,4 +178,15 @@ export default abstract class Cell extends Particle {
 		this.prevKY = this.kY
 		this.kY = kY
 	}
+
+	/**
+	 * Selection
+	 */
+	select() {
+		this.shouldSelect = true
+	}
+
+	deselect() {
+		this.shouldSelect = false
+	}
 }

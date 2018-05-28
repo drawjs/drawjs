@@ -256,6 +256,11 @@ export default class Getters {
 	get selector(): Selector {
 		return this.drawStore.selector
 	}
+
+	get selectedCells(): Cell[] {
+		return this.cellList.filter( ( { shouldSelect } ) => shouldSelect === true )
+	}
+
 	get cellsInSelectorRigion(): Cell[] {
 		const self = this
 		const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )

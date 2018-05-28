@@ -55,11 +55,19 @@ export default class SharedActions {
 	}
 
 	selectCell( cell: Cell ) {
-		cell.shouldSelect = true
+		cell.select()
+	}
+
+	selectCells( cells: Cell[] ) {
+		cells.map( cell => cell.select() )
 	}
 
 	deselectCell( cell: Cell ) {
-		cell.shouldSelect = false
+		cell.deselect()
+	}
+
+	deselectCells( cells: Cell[] ) {
+		cells.map( cell => cell.deselect() )
 	}
 
 	enableCellRotate( cell: Cell ) {

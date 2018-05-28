@@ -263,7 +263,7 @@ export default class Actions {
 	 * // Select
 	 */
 	DESELECT_ALL_CELLS() {
-		this.getters.cellList.map( this.sharedActions.deselectCell )
+		this.getters.selectedCells.map( this.sharedActions.deselectCell )
 	}
 
 	SELECT_MOST_TOP_CELL_FOCUSED( point: Point2D ) {

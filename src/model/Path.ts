@@ -12,6 +12,7 @@ import { isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
 import { notUndefined, notNil } from "../util/lodash/index"
+import { renderHightlightedPath } from '../drawUtil/render/index';
 
 const { min, max } = Math
 
@@ -178,6 +179,8 @@ export default class Path extends PathItem {
 			ctx.lineWidth = 1
 			ctx.stroke( this.path2d )
 		}
+
+		this.shouldSelect && renderHightlightedPath( ctx, this.path2d )
 	}
 
 	contain( x: number, y: number ) {

@@ -7,6 +7,7 @@ import Segment from "../Segment"
 import getArrowPoints from "../../util/geometry/getArrowPoints"
 import { notNil } from "../../util/lodash/index";
 import { LINE_DEFAULT_COLOR } from '../../store/constant/color';
+import { renderHightlightedPath } from '../../drawUtil/render/index';
 
 export default class Line extends Path {
 	type = LINE
@@ -140,6 +141,9 @@ export default class Line extends Path {
 		ctx.save()
 		ctx.fillStyle = this.fillColor
 		ctx.fill( this.hitRegionPath2d )
+
+		this.shouldSelect && renderHightlightedPath( ctx, this.hitRegionPath2d )
+
 		ctx.restore()
 	}
 
@@ -149,6 +153,9 @@ export default class Line extends Path {
 			ctx.save()
 			ctx.fillStyle = this.fillColor
 			ctx.fill( this.targetArrowPath2d )
+
+			this.shouldSelect && renderHightlightedPath( ctx, this.targetArrowPath2d )
+
 			ctx.restore()
 		}
 	}

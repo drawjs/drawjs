@@ -1,6 +1,14 @@
 import { notNil } from "../lodash/index"
 
 /**
+ * Index
+ */
+export function getLastIndex( array: any[] ): number {
+	return array.length - 1
+}
+
+
+/**
  * // Judgement
  */
 export function isFirst( index: number ) {
@@ -96,3 +104,5 @@ export function removeElement( array: any[], element: any ) {
 		array.splice( index, 1 )
 	}
 }
+
+
