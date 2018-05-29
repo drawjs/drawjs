@@ -108,14 +108,10 @@ export default class Segment extends Cell {
 		if ( this.draggable ) {
 			const point: Point2DInitial = this.getters.getInitialPoint( event )
 
-			const deltaX = dragger.getDeltaXToPrevPoint( point )
-			const deltaY = dragger.getDeltaYToPrevPoint( point )
+			const dx = dragger.getDeltaXToPrevPoint( point )
+			const dy = dragger.getDeltaYToPrevPoint( point )
 
-			const { x, y } = this.point
-			const newX = x + deltaX
-			const newY = y + deltaY
-			this.sharedActions.updateSegmentX( this, newX )
-			this.sharedActions.updateSegmentY( this, newY )
+			this.translate( dx, dy )
 		}
 	}
 

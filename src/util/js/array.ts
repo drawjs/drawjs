@@ -1,4 +1,5 @@
 import { notNil } from "../lodash/index"
+import { includes } from 'lodash';
 
 /**
  * Index
@@ -72,6 +73,14 @@ export function isLastElementOf( array: any[], element: any ) {
 	const index = findArrayFirstIndex( array, element )
 	return isLast( index, array )
 }
+
+export const isIn = ( element: any, array: any[] ) => array.includes( element )
+export const notIn = ( element: any, array: any[] ) => !isIn( element, array )
+
+export const filterIsIn = ( array: any[] ) => ( element: any ) => isIn( element, array )
+export const filterNotIn = ( array: any[] ) => ( element: any ) => notIn( element, array )
+
+
 
 
 /**
