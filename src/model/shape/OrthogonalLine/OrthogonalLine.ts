@@ -553,6 +553,7 @@ export default class OrthogonalLine extends Item {
 
 	select() {
 		this.sharedActions.selectCells( this.lines )
+		super.select()
 	}
 
 	updateDrag( event, dragger ) {
