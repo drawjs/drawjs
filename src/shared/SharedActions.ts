@@ -46,6 +46,10 @@ export default class SharedActions {
 		cell.dragger.stop( event )
 	}
 
+	clickCell( cell: Cell, event: any ) {
+		cell.handleClick && cell.handleClick( event )
+	}
+
 	doubleClickCell( cell: Cell, event: any ) {
 		cell.handleDoubleClick && cell.handleDoubleClick( event )
 	}

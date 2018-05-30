@@ -253,6 +253,12 @@ export default class Actions {
 		}
 	}
 
+	CLICK_MOST_TOP_CELL_FOCUSED( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		const cell = this.getters.getMostTopCellFocused( point )
+		isNotNil( cell ) && this.sharedActions.clickCell( cell, event )
+	}
+
 	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const cell = this.getters.getMostTopCellFocused( point )

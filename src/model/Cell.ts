@@ -155,6 +155,11 @@ export default abstract class Cell extends Particle {
 	}
 
 	/**
+	 *  Click
+	 */
+	handleClick( event?: any ) {}
+
+	/**
 	 * Double click
 	 */
 	handleDoubleClick( event?: any ) {}
