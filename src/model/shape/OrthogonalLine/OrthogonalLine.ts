@@ -325,7 +325,8 @@ export default class OrthogonalLine extends Item {
 				this.innerLineFillColor :
 				this.startLineFillColor,
 			draggable: false,
-			showArrow: isSimpleLine ? showArrow : false
+			showArrow: isSimpleLine ? showArrow : false,
+			isPart   : true
 		} )
 	}
 
@@ -337,7 +338,8 @@ export default class OrthogonalLine extends Item {
 			orthogonalLine: this,
 			fillColor     : this.endLineFillColor,
 			showArrow     : showArrow,
-			draggable     : false
+			draggable     : false,
+			isPart        : true
 		} )
 	}
 
@@ -347,7 +349,8 @@ export default class OrthogonalLine extends Item {
 			...props,
 			orthogonalLine: this,
 			draggable     : false,
-			fillColor     : this.innerLineFillColor
+			fillColor     : this.innerLineFillColor,
+			isPart        : true
 		} )
 	}
 
@@ -560,6 +563,7 @@ export default class OrthogonalLine extends Item {
 			const dy = dragger.getDeltaYToPrevPoint( point )
 
 			this.sharedActions.translateSegments( this.segments, dx, dy )
+			this.updateCenterSegmentsPosition()
 		}
 	}
 
@@ -610,7 +614,6 @@ export default class OrthogonalLine extends Item {
 		this.removeChildrenElements()
 		this.remove()
 	}
-
 
 	// ===============================
 	// =========== Interfaces ===========

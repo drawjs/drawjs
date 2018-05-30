@@ -119,14 +119,14 @@ export default class Getters {
 		}
 	}
 
-	getMostTopCellFocused( { x, y }: Point2D ): Cell {
+	getTopCell( { x, y }: Point2D ): Cell {
 		let res: Cell
 		this.cellList.map( getProperCell )
 		return res
 
-		function getProperCell( Cell ) {
-			if ( Cell.contain( x, y ) ) {
-				res = Cell
+		function getProperCell( cell ) {
+			if ( ! cell.isPart && cell.contain( x, y ) ) {
+				res = cell
 			}
 		}
 	}
@@ -263,11 +263,15 @@ export default class Getters {
 
 	get cellsInSelectorRigion(): Cell[] {
 		const self = this
-		const res: Cell[] = this.cellList.filter( shouldExclude ).filter( inRigion )
+		const res: Cell[] = this.cellList.filter( include ).filter( notCellPart ).filter( inRigion )
 
-		function shouldExclude( { type }: Cell ): boolean {
+		function include( { type }: Cell ): boolean {
 			const res: boolean = !includes( selectionExcludingCellTypes, type )
 			return res
+		}
+
+		function notCellPart( cell ) {
+			return ! cell.isPart
 		}
 
 		function inRigion( cell: Graph ): boolean {
@@ -281,7 +285,7 @@ export default class Getters {
 
 	pointOnSelectionExcludingCells( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		const mostTopCell: Cell = this.getTopCell( point )
 		if ( isNotNil( mostTopCell ) ) {
 			res = includes( selectionExcludingCellTypes, mostTopCell.type )
 		}
@@ -290,7 +294,7 @@ export default class Getters {
 
 	pointOnCellSelected( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		const mostTopCell: Cell = this.getTopCell( point )
 		if ( isNotNil( mostTopCell ) ) {
 			const { shouldSelect } = mostTopCell
 			res = shouldSelect === true
@@ -300,7 +304,7 @@ export default class Getters {
 
 	pointOnCellDeselected( point: Point2D ): boolean {
 		let res: boolean = false
-		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		const mostTopCell: Cell = this.getTopCell( point )
 		if ( isNotNil( mostTopCell ) ) {
 			const { shouldSelect } = mostTopCell
 			res = shouldSelect === false
@@ -354,7 +358,7 @@ export default class Getters {
 	}
 
 	pointOnEmpty( point: Point2D ): boolean {
-		const mostTopCell: Cell = this.getMostTopCellFocused( point )
+		const mostTopCell: Cell = this.getTopCell( point )
 		const res: boolean = isNil( mostTopCell )
 		return res
 	}

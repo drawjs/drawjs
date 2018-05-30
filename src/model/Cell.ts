@@ -10,6 +10,7 @@ import Particle from "./Particle"
 import Curve from "./Curve"
 import Path from "./Path"
 import { DEGREE_TO_RADIAN } from "../store/constant/index"
+import { notNil } from "../util/lodash/index"
 
 const { abs } = Math
 
@@ -31,9 +32,14 @@ export default abstract class Cell extends Particle {
 	/**
 	 * // Style
 	 */
-	fillColor: string= "#000"
-	strokeColor: string= "#000"
+	fillColor: string = "#000"
+	strokeColor: string = "#000"
 	strokeWidth: number = 1
+
+	/**
+	 * Whether this is a part of another cell or not
+	 */
+	isPart: boolean = false
 
 	get radian(): number {
 		const res = this.angle * constant.DEGREE_TO_RADIAN
@@ -114,13 +120,14 @@ export default abstract class Cell extends Particle {
 	constructor( props ) {
 		super( props )
 
-		this.fillColor = isNotNil( props.fillColor ) ?
+		this.fillColor = notNil( props.fillColor ) ?
 			props.fillColor :
 			this.fillColor
-		this.show = isNotNil( props.show ) ? props.show : this.show
-		this.draggable = isNotNil( props.draggable ) ?
+		this.show = notNil( props.show ) ? props.show : this.show
+		this.draggable = notNil( props.draggable ) ?
 			props.draggable :
 			this.draggable
+		this.isPart = notNil( props.isPart ) ? props.isPart : this.isPart
 
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )

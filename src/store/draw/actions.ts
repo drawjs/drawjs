@@ -219,7 +219,7 @@ export default class Actions {
 	 */
 	START_DRAG_MOST_TOP_CELL_FOCUSED( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
-		const cell = this.getters.getMostTopCellFocused( point )
+		const cell = this.getters.getTopCell( point )
 		this.sharedActions.startDragCell( cell, event )
 	}
 
@@ -255,13 +255,13 @@ export default class Actions {
 
 	CLICK_MOST_TOP_CELL_FOCUSED( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
-		const cell = this.getters.getMostTopCellFocused( point )
+		const cell = this.getters.getTopCell( point )
 		isNotNil( cell ) && this.sharedActions.clickCell( cell, event )
 	}
 
 	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
-		const cell = this.getters.getMostTopCellFocused( point )
+		const cell = this.getters.getTopCell( point )
 		isNotNil( cell ) && this.sharedActions.doubleClickCell( cell, event )
 	}
 
@@ -273,7 +273,7 @@ export default class Actions {
 	}
 
 	SELECT_MOST_TOP_CELL_FOCUSED( point: Point2D ) {
-		const mostTopCell = this.getters.getMostTopCellFocused( point )
+		const mostTopCell = this.getters.getTopCell( point )
 		this.sharedActions.selectCell( mostTopCell )
 	}
 

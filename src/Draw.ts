@@ -27,6 +27,7 @@ import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
 import TextInput from "./model/tool/TextInput"
 import { notNil } from "./util/lodash/index"
+import renderBackground from "./util/canvas/renderBackground";
 
 const ajv = new Ajv()
 
@@ -137,6 +138,8 @@ export default class Draw {
 		// // this.getters.miniMap.viewBox.render()
 		// miniMap.saveImageDataInRigion()
 		// renderer.clear()
+
+		renderBackground( this.getters.canvas, "#1B2430" )
 
 		renderer.setTransformViewPort()
 		this.renderMain()
