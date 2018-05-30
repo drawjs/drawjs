@@ -71,9 +71,13 @@ export default class Draw {
 			const interaction = new Interaction( { draw: this } )
 			this.actions.UPDATE_INTERACTION( interaction )
 		}
+
+		console.log( this.drawStore )
 	}
 
 	_initialize() {
+		this.actions.UPDATE_DRAW_ROOT_ID()
+
 		const testUtils = new TestUtils( this.getters )
 		this.actions.UPDATE_TEST_UTILS( testUtils )
 

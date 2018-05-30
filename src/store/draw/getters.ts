@@ -16,6 +16,7 @@ import MiniMap from '../../model/tool/MiniMap';
 import TestUtils from '../../shared/TestUtils';
 import { MINI_MAP } from "../constant/cellType";
 import TextInput from '../../model/tool/TextInput';
+import { DRAW_ROOT, DRAW_ELEMENT } from '../constant/name';
 
 export default class Getters {
 	drawStore: DrawStore
@@ -70,9 +71,13 @@ export default class Getters {
 		return this.drawStore.panels
 	}
 
-	generateUniqueDrawId(): string {
+	generateUniqueDrawRootId(): string {
+		return generateId( DRAW_ROOT )
+	}
+
+	generateUniqueDrawElementId(): string {
 		const self = this
-		let id: string = generateId()
+		let id: string = generateId( DRAW_ELEMENT )
 		id = checkAndUpdateIdIfNeeded( id )
 
 		function checkAndUpdateIdIfNeeded( id: string ) {
@@ -82,6 +87,7 @@ export default class Getters {
 		}
 		return id
 	}
+
 
 	/**
 	 * // Cell list

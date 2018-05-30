@@ -14,7 +14,7 @@ export default class Particle {
 		const { draw } = props
 		this.draw = draw
 
-		this.id = this.getters.generateUniqueDrawId()
+		this.id = this.getters.generateUniqueDrawElementId()
 	}
 
 	get drawStore(): DrawStore {

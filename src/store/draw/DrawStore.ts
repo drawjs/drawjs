@@ -11,6 +11,8 @@ import TestUtils from '../../shared/TestUtils';
 import TextInput from "../../model/tool/TextInput";
 
 export default class DrawStore {
+	rootId:string = ''
+
 	activePanelId = null
 
 	panels = [

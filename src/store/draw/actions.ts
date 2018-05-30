@@ -53,6 +53,10 @@ export default class Actions {
 		this.drawStore[ "canvas" ] = canvas
 	}
 
+	UPDATE_DRAW_ROOT_ID() {
+		this.drawStore.rootId = this.getters.generateUniqueDrawRootId()
+	}
+
 	/**
 	 * View port
 	 */
@@ -168,7 +172,7 @@ export default class Actions {
 
 	ADD_PANEL( name: string ) {
 		this.getters.storePanels.push( {
-			id      : this.getters.generateUniqueDrawId(),
+			id      : this.getters.generateUniqueDrawElementId(),
 			name,
 			elements: []
 		} )

@@ -1,4 +1,4 @@
-export default function( topic='Draw' ): string {
+export default function( topic='' ): string {
 	var result, i, j
 	result = ''
 	for( j = 0; j < 32; j++ ) {
