@@ -21,6 +21,8 @@ import { DRAW_ROOT, DRAW_ELEMENT } from '../constant/name';
 export default class Getters {
 	drawStore: DrawStore
 
+	ctx: CanvasRenderingContext2D
+
 	constructor( drawStore ) {
 		this.drawStore = drawStore
 	}
@@ -173,11 +175,6 @@ export default class Getters {
 			x: this.canvas.width / 2,
 			y: this.canvas.height / 2
 		}
-		return res
-	}
-
-	get ctx(): CanvasRenderingContext2D {
-		const res: CanvasRenderingContext2D = this.canvas.getContext( "2d" )
 		return res
 	}
 
@@ -367,6 +364,10 @@ export default class Getters {
 		const mostTopCell: Cell = this.getTopCell( point )
 		const res: boolean = isNil( mostTopCell )
 		return res
+	}
+
+	setCtx( ctx: CanvasRenderingContext2D ) {
+		this.ctx = ctx
 	}
 
 

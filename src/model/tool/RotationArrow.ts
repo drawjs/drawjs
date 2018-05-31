@@ -141,8 +141,6 @@ export default class RotationArrow extends Cell {
 	public handleStartDrag( event ) {
 		this.sharedActions.deselectCell( this.target )
 		this.sharedActions.enableCellRotate( this.target )
-
-		this.draw.render()
 	}
 	public updateDrag( event ) {
 		const self = this
@@ -187,8 +185,6 @@ export default class RotationArrow extends Cell {
 
 		this.sharedActions.disableCellRotate( this.target )
 		this.sharedActions.selectCell( this.target )
-
-		this.draw.render()
 	}
 
 	// // ******* Drag ******

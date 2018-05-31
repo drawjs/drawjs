@@ -81,6 +81,8 @@ export default class Interaction extends Particle {
 			actions.START_DRAG_CELLS_SHOULD_SELECT( event )
 			return
 		}
+
+		getters.draw.render()
 	}
 
 	mousemoveListener( event ) {
@@ -93,6 +95,8 @@ export default class Interaction extends Particle {
 		getters.viewPort.shouldPan && getters.viewPort.panning( event )
 
 		this.actions.DRAGGING_CELLS_SHOULD_DRAG( event )
+
+		getters.draw.render()
 	}
 
 	mouseupListener( event ) {
@@ -105,6 +109,8 @@ export default class Interaction extends Particle {
 		actions.STOP_DRAG_CELLS_SHOULD_DRAG( event )
 
 		getters.viewPort.stopPan()
+
+		getters.draw.render()
 	}
 
 	mousewheelListener( event ) {
@@ -158,14 +164,12 @@ export default class Interaction extends Particle {
 		getters.selector.shouldSelect = true
 
 		getters.selector.startPoint = getters.getInitialPoint( event )
-		getters.draw.render()
 	}
 
 	selecting( event ) {
 		const { getters } = this
 
 		getters.selector.endPoint = getters.getInitialPoint( event )
-		getters.draw.render()
 	}
 
 	stopSelect( event ) {
@@ -175,6 +179,5 @@ export default class Interaction extends Particle {
 
 		getters.selector.startPoint = null
 		getters.selector.endPoint = null
-		getters.draw.render()
 	}
 }

@@ -51,6 +51,7 @@ export default class Actions {
 
 	UPDATE_CANVAS( canvas: HTMLCanvasElement ) {
 		this.drawStore[ "canvas" ] = canvas
+		this.getters.setCtx( canvas.getContext( '2d' ) )
 	}
 
 	UPDATE_DRAW_ROOT_ID() {

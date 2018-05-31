@@ -155,10 +155,10 @@ export default abstract class Cell extends Particle {
 	handleBeforeDragging( event: any, dragger: Dragger ) {}
 	handleDragging( event: any, dragger: Dragger ) {}
 	handleAfterDragging( event: any, dragger: Dragger ) {
-		this.getters.draw.render()
+		// this.getters.draw.render()
 	}
 	handleStopDrag( event?: any ) {
-		this.getters.draw.render()
+		// this.getters.draw.render()
 	}
 
 	/**
@@ -177,7 +177,7 @@ export default abstract class Cell extends Particle {
 	rotate( angle ) {
 		this.prevAngle = this.angle
 		this.angle = angle
-		this.draw.render()
+		// this.draw.render()
 	}
 
 	/**

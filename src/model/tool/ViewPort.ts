@@ -248,7 +248,7 @@ export default class ViewPort extends Particle {
 
 		this.panBy( deltaX, deltaY )
 
-		this.draw.render()
+		// this.draw.render()
 	}
 
 	stopPan() {

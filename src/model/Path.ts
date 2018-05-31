@@ -206,7 +206,7 @@ export default class Path extends PathItem {
 			this.itemCenter
 		)
 
-		this.draw.render()
+		// this.draw.render()
 
 		this.prevAngle = this.angle
 		this.angle = angle
