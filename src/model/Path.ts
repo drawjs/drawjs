@@ -20,11 +20,6 @@ export default class Path extends PathItem {
 	segments: Segment[] = []
 	curves: Curve[] = []
 
-	/**
-	 * Beizer variable, which determines curve's smooth degree
-	 */
-	t = 0.001
-
 	boundsContainer: BoundsContainer
 
 	fillColor: string = "#8cccf0"
@@ -100,7 +95,7 @@ export default class Path extends PathItem {
 	}
 
 	get path2d(): Path2D {
-		const path2d = this.sharedGetters.getPath2dByCurves( this.curves, this.t )
+		const path2d = this.sharedGetters.getPath2dByCurves( this.curves )
 		return path2d
 	}
 

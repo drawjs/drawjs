@@ -146,7 +146,7 @@ export default class Getters {
 
 	get canvasLeft(): number {
 		return this.canvas.getBoundingClientRect().left
-	}
+}
 
 	get canvasRight(): number {
 		return this.canvas.getBoundingClientRect().right

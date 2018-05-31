@@ -22,6 +22,14 @@ export default class Curve extends Particle {
 
 	path: Path
 
+	useCanvasCurve: boolean = true
+	// useCanvasCurve: boolean = false
+
+	/**
+	 * Beizer variable, which determines curve's smooth degree
+	 */
+	t = 0.001
+
 	constructor( props ) {
 		super( props )
 
@@ -71,10 +79,14 @@ export default class Curve extends Particle {
 	get path2d(): Path2D {
 		let path2d = new Path2D()
 
-		const { handle1Point, handle2Point, point1, point2 } = this
-		const { t } = this.path
+		const { handle1Point, handle2Point, point1, point2, useCanvasCurve, t } = this
 
-		bezierCurve( [ point1, handle1Point, handle2Point, point2 ], t, path2d )
+		!useCanvasCurve && bezierCurve( [ point1, handle1Point, handle2Point, point2 ], t, path2d )
+
+		if ( useCanvasCurve ) {
+			path2d.moveTo( point1.x, point1.y )
+			path2d.bezierCurveTo( handle1Point.x, handle1Point.y, handle2Point.x, handle2Point.y, point2.x, point2.y )
+		}
 
 		return path2d
 	}

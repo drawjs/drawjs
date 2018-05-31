@@ -16,12 +16,12 @@ const basicOrigin = {
 // } )
 
 const instance1 = draw.addElement( "polygon", {
-	fill     : "blue",
+	fill: "blue",
 	// angle    : 0,
-	points   : triangle(),
+	points: triangle(),
 	rotatable: true,
-	// kX: 1,
-	// kY: 1
+// kX: 1,
+// kY: 1
 } )
 
 // const instance2 = draw.addElement( "polygon", {
@@ -102,12 +102,10 @@ function polygon() {
 			x: 300,
 			y: 100
 		},
-
 		{
 			x: 100,
 			y: 300
 		},
-
 		{
 			x: 150,
 			y: 300
@@ -126,3 +124,58 @@ function polygon() {
 		}
 	]
 }
+
+
+
+
+
+/**
+ * Test performance
+ */
+// performanceTest()
+
+
+// function performanceTest() {
+// 	let res = null
+// 	const speed = 1
+// 	const maxStep = 100
+// 	let mockEvent = {
+// 		x: 0,
+// 		y: 0
+// 	}
+// 	const start = performance.now()
+// 	let end = null
+
+// 	instance1.dragger.enable = true;
+// 	instance1.dragger.start( mockEvent )
+
+// 	for ( let i = 0; i <= maxStep; i++ ) {
+// 		if ( i < maxStep ) {
+// 			mockEvent = {
+// 				x: i * speed,
+// 				y: i * speed
+// 			}
+
+// 			instance1.dragger.dragging( mockEvent )
+// 		}
+
+// 		if ( i === maxStep ) {
+// 			instance1.dragger.stop( mockEvent )
+// 			end = performance.now()
+// 			res = end - start
+// 		}
+// 	}
+
+// 	return res
+// }
+
+// function averagePerformanceTest( performanceTestFn, count = 1 ) {
+// 	let sum = 0
+// 	for ( let i = 0; i < count; i++ ) {
+// 		sum = sum + performanceTestFn()
+// 	}
+// 	return sum / count
+// }
+
+console.log( draw.sharedActions.averageMockDragCellPerformanceTest( instance1, 100, 1 ) )
+// console.log( performanceTest() )

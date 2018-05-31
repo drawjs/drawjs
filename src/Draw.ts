@@ -71,8 +71,6 @@ export default class Draw {
 			const interaction = new Interaction( { draw: this } )
 			this.actions.UPDATE_INTERACTION( interaction )
 		}
-
-		console.log( this.drawStore )
 	}
 
 	_initialize() {

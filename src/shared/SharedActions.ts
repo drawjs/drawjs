@@ -18,6 +18,8 @@ import DrawText from '../model/text/DrawText';
 import Path from '../model/Path';
 import { isLast } from '../util/js/array';
 import { clonePoint } from '../util/js/clone';
+import mockDragCellPerformanceTest from "../drawUtil/performance/mockDragCellPerformanceTest";
+import { averagePerformanceTest } from '../util/performance/index';
 
 /**
  * Feature: Emphasize that one method is couple with other class or classes
@@ -437,5 +439,15 @@ export default class SharedActions {
 	 */
 	updateTextInputTarget( textInput: TextInput, target: DrawText ) {
 		textInput.target = target
+	}
+
+	/**
+	 * Performance test
+	 */
+	mockDragCellPerformanceTest( cell, maxStep: number ) {
+		return mockDragCellPerformanceTest( cell, maxStep )
+	}
+	averageMockDragCellPerformanceTest( cell, maxStep: number, count: number, ) {
+		return averagePerformanceTest( () => this.mockDragCellPerformanceTest( cell, maxStep ), count )
 	}
 }

@@ -141,20 +141,20 @@ export default class SharedGetters {
 	/**
 	 * // Path
 	 */
-	getPath2dByCurves( curves: Curve[], t = 1 ) {
+	getPath2dByCurves( curves: Curve[] ) {
 		let path2d = new Path2D()
 
 		curves.map( resolve )
 
 		function resolve( curve: Curve, index: number ) {
-			const { handle1, handle2, segment1, segment2 } = curve
+			const { handle1, handle2, segment1, segment2, useCanvasCurve, t } = curve
 
 			if ( isFirst( index ) ) {
 				path2d.moveTo( segment1.x, segment1.y )
 			}
 
-			bezierCurve( [ segment1, handle1, handle2, segment2 ], t, path2d )
-			// path2d.bezierCurveTo( handle1.x, handle1.y, handle2.x, handle2.y, segment2.x, segment2.y )
+			!useCanvasCurve && bezierCurve( [ segment1, handle1, handle2, segment2 ], t, path2d )
+			useCanvasCurve && path2d.bezierCurveTo( handle1.x, handle1.y, handle2.x, handle2.y, segment2.x, segment2.y )
 		}
 
 		return path2d
