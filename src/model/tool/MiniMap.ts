@@ -3,6 +3,7 @@ import zoomPoint from "../../util/geometry/zoom"
 import MiniMapViewBox from "./MiniMapViewBox"
 import { isNotNil } from "../../util/index";
 import { MINI_MAP } from '../../store/constant/cellType';
+import renderBackground from "../../util/canvas/renderBackground";
 
 export default class MiniMap extends Cell {
 	type = MINI_MAP
@@ -18,6 +19,9 @@ export default class MiniMap extends Cell {
 
 	imageDataInRigion: any
 
+	renderingMainCells: boolean = false
+
+	preventDefaultCellsRenderInMiniMap: boolean = false
 
 	constructor( props ) {
 		super( props )
@@ -63,6 +67,26 @@ export default class MiniMap extends Cell {
 		path2d.rect( left, top, width, height )
 
 		return path2d
+	}
+
+	enablePreventDefaultCellsRenderInMiniMap() {
+		return this.preventDefaultCellsRenderInMiniMap = true
+	}
+
+	renderMainCells() {
+		const { renderer, canvas } = this.getters
+
+		renderBackground( canvas, "#1B2430" )
+		renderer.setTransformViewPortToRenderMiniMap()
+
+		this.renderingMainCells = true
+
+		this.draw.renderMain()
+
+		this.renderingMainCells = false
+
+		// renderer.resetTransform()
+		// this.getters.miniMap.viewBox.render()
 	}
 
 	render() {

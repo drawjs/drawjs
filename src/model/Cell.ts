@@ -117,8 +117,17 @@ export default abstract class Cell extends Particle {
 	 */
 	fill: string = "black"
 
+
+	/**
+	 * // MiniMap
+	 */
+	shouldRenderInMiniMap: boolean = true
+	renderFnInMiniMap: Function = null
+
 	constructor( props ) {
 		super( props )
+
+		const { miniMap } = this.getters
 
 		this.fillColor = notNil( props.fillColor ) ?
 			props.fillColor :
@@ -138,6 +147,12 @@ export default abstract class Cell extends Particle {
 		this.dragger.handleStop = this.handleStopDrag.bind( this )
 
 		this.actions.ADD_ELEMENT_TO_CELL_LIST( this )
+
+		if ( miniMap && miniMap.preventDefaultCellsRenderInMiniMap ) {
+			this.shouldRenderInMiniMap = false
+		}
+		this.shouldRenderInMiniMap = notNil( props.shouldRenderInMiniMap ) ? props.shouldRenderInMiniMap : this.shouldRenderInMiniMap
+
 	}
 
 	render() {}

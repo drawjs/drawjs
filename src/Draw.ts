@@ -131,29 +131,27 @@ export default class Draw {
 
 		renderer.clear()
 
-		// /**
-		//  * Save image data on mini map
-		//  */
-		// renderer.setTransformViewPortToRenderMiniMap()
-		// this.renderMain()
-		// // renderer.resetTransform()
-		// // this.getters.miniMap.viewBox.render()
-		// miniMap.saveImageDataInRigion()
-		// renderer.clear()
+		/**
+		 * Save image data on mini map
+		 */
+		miniMap.renderMainCells()
+		miniMap.saveImageDataInRigion()
+		renderer.clear()
 
 		renderBackground( this.getters.canvas, "#1B2430" )
 
 		renderer.setTransformViewPort()
 		this.renderMain()
 
-		// this.getters.renderer.resetTransform()
-		// this.getters.miniMap.render()
+		this.getters.renderer.resetTransform()
+		this.getters.miniMap.render()
 
 		// this.getters.renderer.setTransformViewPortToRenderMiniMap()
 		// testUtils.renderPoint( { x: 0, y: 0 }, "blue" )
 	}
 
 	renderMain() {
+		const { renderingMainCells } = this.getters.miniMap
 		const { renderElement } = this.sharedActions
 
 		this.getters.ctx.strokeStyle = "blue"
@@ -171,7 +169,7 @@ export default class Draw {
 		// 	color: "#888"
 		// } )
 
-		this.getters.cellListShouldRender.map( renderElement )
+		this.getters.cellListShouldRender.map( cell => renderElement( cell, renderingMainCells ) )
 
 		this.getters.selector.render()
 	}

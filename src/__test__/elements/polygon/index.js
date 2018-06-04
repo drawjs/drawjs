@@ -177,6 +177,6 @@ function polygon() {
 // 	return sum / count
 // }
 
-console.log( draw.sharedActions.averageMockDragCellPerformanceTest( instance1, 1, 1000 ) )
+// console.log( draw.sharedActions.averageMockDragCellPerformanceTest( instance1, 1, 1000 ) )
 // console.log( draw.sharedActions.averageMockDragCellPerformanceTest( instance1, 100, 1 ) )
 // console.log( performanceTest() )

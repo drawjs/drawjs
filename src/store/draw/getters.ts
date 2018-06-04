@@ -99,12 +99,17 @@ export default class Getters {
 	}
 
 	get cellListShouldRender(): Cell[] {
-		const res: Cell[] = this.cellList.filter( include )
+		const { renderingMainCells } = this.miniMap
+		const res: Cell[] = renderingMainCells ? this.cellList.filter( include ).filter( shouldRenderWhenMiniMapRendering ): this.cellList.filter( include )
 		return res
 
 
 		function include(  { type }: Cell  ): boolean {
 			return ! includes( drawRenderExcludingCellTypes, type )
+		}
+
+		function shouldRenderWhenMiniMapRendering( cell: Cell ) {
+			return cell.shouldRenderInMiniMap
 		}
 	}
 

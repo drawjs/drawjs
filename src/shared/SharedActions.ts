@@ -1,7 +1,7 @@
 import Particle from "../model/Particle"
 import DrawStore from "../store/draw/DrawStore"
 import Getters from "../store/draw/Getters"
-import { includes } from "lodash"
+import { includes, isNil } from 'lodash';
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
@@ -20,6 +20,7 @@ import { isLast } from '../util/js/array';
 import { clonePoint } from '../util/js/clone';
 import mockDragCellPerformanceTest from "../drawUtil/performance/mockDragCellPerformanceTest";
 import { averagePerformanceTest } from '../util/performance/index';
+import { notNil } from '../util/lodash/index';
 
 /**
  * Feature: Emphasize that one method is couple with other class or classes
@@ -90,8 +91,15 @@ export default class SharedActions {
 	renderParticle( particle: any ) {
 		particle.render()
 	}
-	renderElement( cell: any ) {
-		cell.render()
+	renderElement( cell: Cell, miniMapRenderingMainCells: boolean = false ) {
+		if ( ! miniMapRenderingMainCells ) {
+			cell.render()
+		}
+
+		if ( miniMapRenderingMainCells ) {
+			notNil( cell.renderFnInMiniMap ) && cell.renderFnInMiniMap()
+			isNil( cell.renderFnInMiniMap ) && cell.render()
+		}
 	}
 
 	/**

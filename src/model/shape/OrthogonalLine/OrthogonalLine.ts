@@ -326,7 +326,8 @@ export default class OrthogonalLine extends Item {
 				this.startLineFillColor,
 			draggable: false,
 			showArrow: isSimpleLine ? showArrow : false,
-			isPart   : true
+			isPart   : true,
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap
 		} )
 	}
 
@@ -339,7 +340,8 @@ export default class OrthogonalLine extends Item {
 			fillColor     : this.endLineFillColor,
 			showArrow     : showArrow,
 			draggable     : false,
-			isPart        : true
+			isPart        : true,
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap
 		} )
 	}
 
@@ -350,7 +352,8 @@ export default class OrthogonalLine extends Item {
 			orthogonalLine: this,
 			draggable     : false,
 			fillColor     : this.innerLineFillColor,
-			isPart        : true
+			isPart        : true,
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap
 		} )
 	}
 

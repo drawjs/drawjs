@@ -65,7 +65,6 @@ export default class StartSegment extends CommonStartEndSegment {
 			this.translateToPoint( corner.point )
 
 			if ( notNil( index ) ) {
-				console.log( index )
 				const removingCorners = cornerSegments.filter(
 					( element, theIndex ) => theIndex <= index
 				)
