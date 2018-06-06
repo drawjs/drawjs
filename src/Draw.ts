@@ -27,7 +27,7 @@ import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
 import TextInput from "./model/tool/TextInput"
 import { notNil } from "./util/lodash/index"
-import renderBackground from "./util/canvas/renderBackground";
+import renderBackground from "./util/canvas/renderBackground"
 
 const ajv = new Ajv()
 
@@ -127,6 +127,8 @@ export default class Draw {
 			canvasHeight
 		} = this.getters
 
+		const { shouldRender: shouldRenderMiniMap } = miniMap
+
 		const self = this
 
 		renderer.clear()
@@ -134,17 +136,21 @@ export default class Draw {
 		/**
 		 * Save image data on mini map
 		 */
-		miniMap.renderMainCells()
-		miniMap.saveImageDataInRigion()
-		renderer.clear()
+		if ( shouldRenderMiniMap ) {
+			miniMap.renderMainCells()
+			miniMap.saveImageDataInRigion()
+			renderer.clear()
+		}
 
 		renderBackground( this.getters.canvas, "#1B2430" )
 
 		renderer.setTransformViewPort()
 		this.renderMain()
 
-		this.getters.renderer.resetTransform()
-		this.getters.miniMap.render()
+		if ( shouldRenderMiniMap ) {
+			this.getters.renderer.resetTransform()
+			this.getters.miniMap.render()
+		}
 
 		// this.getters.renderer.setTransformViewPortToRenderMiniMap()
 		// testUtils.renderPoint( { x: 0, y: 0 }, "blue" )
@@ -169,7 +175,9 @@ export default class Draw {
 		// 	color: "#888"
 		// } )
 
-		this.getters.cellListShouldRender.map( cell => renderElement( cell, renderingMainCells ) )
+		this.getters.cellListShouldRender.map( cell =>
+			renderElement( cell, renderingMainCells )
+		)
 
 		this.getters.selector.render()
 	}

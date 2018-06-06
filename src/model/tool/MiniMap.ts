@@ -23,6 +23,8 @@ export default class MiniMap extends Cell {
 
 	preventDefaultCellsRenderInMiniMap: boolean = false
 
+	shouldRender: boolean = false
+
 	constructor( props ) {
 		super( props )
 
@@ -71,6 +73,14 @@ export default class MiniMap extends Cell {
 
 	enablePreventDefaultCellsRenderInMiniMap() {
 		return this.preventDefaultCellsRenderInMiniMap = true
+	}
+
+	enableRender() {
+		this.shouldRender = true
+	}
+
+	disableRender() {
+		this.shouldRender = false
 	}
 
 	renderMainCells() {
