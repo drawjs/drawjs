@@ -43,7 +43,7 @@ export default class Interaction extends Particle {
 
 		notNil( textInput ) && textInput.bindEvents()
 
-		this.eventKeyboard.handleKeyDown = this.keyBoardDownListener
+		this.eventKeyboard.handleKeyDown = this.keyBoardDownListener.bind( this )
 	}
 
 	mousedownListener( event ) {
