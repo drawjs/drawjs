@@ -4,7 +4,7 @@ import Item from '../model/Item';
 
 const { min, max } = Math
 
-export function getItemsBounds( items: Item[] ) {
+export function getItemsBounds( items: any[] ) {
 	const itemsBounds = items.map( ( { bounds } ) => bounds )
     return getBoundsByManyBounds( itemsBounds )
 }
