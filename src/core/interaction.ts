@@ -7,6 +7,9 @@ const drawSelection = false
 
 export default class Interaction extends Particle {
 	eventKeyboard: EventKeyboard
+
+	prevHovingDsElement: any
+
 	constructor( props ) {
 		super( props )
 
@@ -44,6 +47,10 @@ export default class Interaction extends Particle {
 		notNil( textInput ) && textInput.bindEvents()
 
 		this.eventKeyboard.handleKeyDown = this.keyBoardDownListener.bind( this )
+	}
+
+	updatePrevHovingDsElement( dsElement ) {
+		this.prevHovingDsElement = dsElement
 	}
 
 	mousedownListener( event ) {
@@ -95,6 +102,8 @@ export default class Interaction extends Particle {
 		getters.viewPort.shouldPan && getters.viewPort.panning( event )
 
 		this.actions.DRAGGING_CELLS_SHOULD_DRAG( event )
+
+		this.actions.HOVER_MOST_TOP_CELL_FOCUSED( event, this )
 
 		getters.draw.render()
 	}

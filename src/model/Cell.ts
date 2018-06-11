@@ -117,7 +117,6 @@ export default abstract class Cell extends Particle {
 	 */
 	fill: string = "black"
 
-
 	/**
 	 * // MiniMap
 	 */
@@ -151,8 +150,9 @@ export default abstract class Cell extends Particle {
 		if ( miniMap && miniMap.preventDefaultCellsRenderInMiniMap ) {
 			this.shouldRenderInMiniMap = false
 		}
-		this.shouldRenderInMiniMap = notNil( props.shouldRenderInMiniMap ) ? props.shouldRenderInMiniMap : this.shouldRenderInMiniMap
-
+		this.shouldRenderInMiniMap = notNil( props.shouldRenderInMiniMap ) ?
+			props.shouldRenderInMiniMap :
+			this.shouldRenderInMiniMap
 	}
 
 	render() {}
@@ -185,6 +185,13 @@ export default abstract class Cell extends Particle {
 	 * Double click
 	 */
 	handleDoubleClick( event?: any ) {}
+
+	/**
+	 * Handle hover
+	 */
+	handleMouseIn( event: any ) {}
+	handleMouseMove( event: any ) {}
+	handleMouseOut( event: any ) {}
 
 	/**
 	 * Rotate

@@ -7,8 +7,9 @@
 		{
 			"type": "chrome",
 			"request": "launch",
-			"name": "Launch Chrome ",
-			"port": 9222,
+			"name": "Launch Chrome",
+			"url": "http://localhost:8080",
+			"webRoot": "${workspaceFolder}",
 			// "url": "http://localhost:8600/build/__test__/Path/SegmentsAndHandles/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/Point/index.html",
 			"url": "http://localhost:8600/build/__test__/elements/polygon/index.html",
@@ -19,30 +20,6 @@
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine-updateCornerSegments/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine-simple-line/index.html",
-			"pathMapping": {
-				"/": "${workspaceFolder}"
-			},
 		},
-
-		// {
-		// 	"type": "chrome",
-		// 	"request": "launch",
-		// 	"name": "Launch Chrome ",
-		// 	"port": 9222,
-		// 	// "url": "http://localhost:8600/build/__test__/selector/index.html",
-		// 	"url": "http://localhost:8600/build/__test__/elements/Polygon/index.html",
-		// 	"pathMapping": {
-		// 		"/": "${workspaceFolder}"
-		// 	},
-		// }
-
-		// {
-        //     "name": "Attach",
-        //     "type": "chrome",
-        //     "request": "attach",
-        //     "port": 9222,
-		// 	"url": "http://localhost:8600/build/__test__/comprehensive/index.html",
-        //     "webRoot": "${workspaceFolder}"
-        // }
     ]
 }

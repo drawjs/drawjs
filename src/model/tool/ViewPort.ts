@@ -162,7 +162,7 @@ export default class ViewPort extends Particle {
 	) {
 		const self = this
 
-		if ( willNotInZoomScope() ) {
+		if ( wontBeyondZoomScope() ) {
 			return
 		}
 
@@ -182,7 +182,7 @@ export default class ViewPort extends Particle {
 
 		this.draw.render()
 
-		function willNotInZoomScope() {
+		function wontBeyondZoomScope() {
 			const potentialNewZoom: number = self.zoom + deltaZoom
 			const { MAX_ZOOM, MIN_ZOOM } = ViewPort
 			const res: boolean =

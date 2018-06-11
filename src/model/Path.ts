@@ -158,7 +158,7 @@ export default class Path extends PathItem {
 		ctx.restore()
 
 		this.segments.map( this.sharedActions.renderParticle )
-		isNil( strokeColor ) && this.curves.map( this.sharedActions.renderParticle )
+		// isNil( strokeColor ) && this.curves.map( this.sharedActions.renderParticle )
 
 		this.renderTransformWidget()
 		// this.boundsContainer.render()

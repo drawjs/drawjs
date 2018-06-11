@@ -16,7 +16,7 @@ import TestUtils from "../../shared/TestUtils"
 import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
-import Draw from '../../index';
+import Draw from "../../index"
 
 export default class Actions {
 	drawStore: DrawStore
@@ -51,7 +51,7 @@ export default class Actions {
 
 	UPDATE_CANVAS( canvas: HTMLCanvasElement ) {
 		this.drawStore[ "canvas" ] = canvas
-		this.getters.setCtx( canvas.getContext( '2d' ) )
+		this.getters.setCtx( canvas.getContext( "2d" ) )
 	}
 
 	UPDATE_DRAW_ROOT_ID() {
@@ -262,6 +262,25 @@ export default class Actions {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const cell = this.getters.getTopCell( point )
 		isNotNil( cell ) && this.sharedActions.clickCell( cell, event )
+	}
+
+	HOVER_MOST_TOP_CELL_FOCUSED( event, interaction: Interaction ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		const cell = this.getters.getTopCell( point )
+
+		const { prevHovingDsElement } = interaction
+
+		if ( cell && cell !== prevHovingDsElement ) {
+			this.sharedActions.mouseInCell( cell, event )
+		}
+
+		if ( prevHovingDsElement && cell !== prevHovingDsElement ) {
+			this.sharedActions.mouseOutCell( prevHovingDsElement, event )
+		}
+
+		notNil( cell ) && this.sharedActions.mouseMoveCell( cell, event )
+
+		interaction.updatePrevHovingDsElement( cell )
 	}
 
 	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
