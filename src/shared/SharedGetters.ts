@@ -76,8 +76,8 @@ export default class SharedGetters {
 		prevSegemnt: Segment,
 		segment: Segment,
 		nextSegment: Segment,
-		length: number = DEFAULT_LENGTH
 	): Point2D {
+		const length = segment ? segment.defaultHandleLength : DEFAULT_LENGTH
 		const A: Point2D = new MathPoint(
 			prevSegemnt.point.x,
 			prevSegemnt.point.y

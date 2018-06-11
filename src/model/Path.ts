@@ -13,6 +13,7 @@ import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
 import { notUndefined, notNil } from "../util/lodash/index"
 import { renderHightlightedPath } from '../drawUtil/render/index';
+import { DEFAULT_LENGTH } from '../store/constant/index';
 
 const { min, max } = Math
 
@@ -25,6 +26,10 @@ export default class Path extends PathItem {
 	fillColor: string = "#8cccf0"
 	strokeColor: string = null
 	strokeWidth: number = 1
+
+	showHandle: boolean = false
+
+	defaultSegmentHandleLength: number = DEFAULT_LENGTH
 
 	constructor( props ) {
 		super( props )
@@ -45,6 +50,12 @@ export default class Path extends PathItem {
 		this.strokeWidth = notUndefined( props.strokeWidth ) ?
 			props.strokeWidth :
 			this.strokeWidth
+		this.showHandle = notNil( props.showHandle ) ?
+			props.showHandle :
+			this.showHandle
+		this.defaultSegmentHandleLength = notNil( props.defaultSegmentHandleLength ) ?
+			props.defaultSegmentHandleLength :
+			this.defaultSegmentHandleLength
 
 		if ( isNil( props.segments ) ) {
 			segments = isNotNil( props.points ) ?
@@ -52,7 +63,7 @@ export default class Path extends PathItem {
 						this.sharedGetters.createSegmentByPoint(
 							point,
 							this.draw,
-							{ path: this }
+							{ path: this, defaultHandleLength: this.defaultSegmentHandleLength }
 						)
 				  ) :
 				this.segments
@@ -74,6 +85,10 @@ export default class Path extends PathItem {
 			const kY: number = isNotNil( props.kY ) ? props.kY : this.kY
 
 			this.size( props.kX, props.kY, this.itemCenter )
+		}
+
+		if ( ! this.showHandle ) {
+			this.sharedActions.hideSegmentsHandles( this.segments )
 		}
 	}
 

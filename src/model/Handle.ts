@@ -8,6 +8,7 @@ import {
 import Dragger from "./tool/Dragger"
 import { Cell } from "./index"
 import distance from "../util/geometry/distance"
+import { notNil } from '../util/lodash/index';
 
 const { cos, sin, PI } = Math
 
@@ -18,7 +19,7 @@ export default class Handle extends Cell {
 
 	dragger: Dragger
 
-	show: boolean = false
+	show: boolean = true
 
 	/**
 	 * The relative point of handle
@@ -27,10 +28,11 @@ export default class Handle extends Cell {
 
 	partner: Handle = null
 
-	static DEFAULT_LENGTH = DEFAULT_LENGTH
+	defaultLength: number = DEFAULT_LENGTH
 
 	constructor( props ) {
 		super( props )
+		const self = this
 
 		this.segment = props.segment
 
@@ -41,6 +43,8 @@ export default class Handle extends Cell {
 		if ( isNotNil( props.partner ) ) {
 			this.partner = props.partner
 		}
+
+		this.defaultLength = notNil( props.defaultLength ) ? props.defaultLength : this.defaultLength
 
 		this.relativePoint = getHandleRelativePoint(
 			this.segmentPoint,
@@ -66,9 +70,9 @@ export default class Handle extends Cell {
 
 			const { x, y } = segmentPoint
 
-			const { DEFAULT_LENGTH } = Handle
-			const deltaX = DEFAULT_LENGTH * cos( angle * DEGREE_TO_RADIAN )
-			const deltaY = DEFAULT_LENGTH * sin( angle * DEGREE_TO_RADIAN )
+			const { defaultLength } = self
+			const deltaX = defaultLength * cos( angle * DEGREE_TO_RADIAN )
+			const deltaY = defaultLength * sin( angle * DEGREE_TO_RADIAN )
 			const handleRelativePoint: Point2D = {
 				x: deltaX,
 				y: deltaY

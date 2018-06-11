@@ -1,6 +1,6 @@
 import Particle from "./Particle"
 import Handle from "./Handle"
-import { HandleType } from "../store/constant/index"
+import { HandleType, DEFAULT_LENGTH } from '../store/constant/index';
 import Cell from "./Cell"
 import Path from "./Path"
 import { isNotNil } from "../util/index"
@@ -31,6 +31,8 @@ export default class Segment extends Cell {
 
 	fillColor: string = "#4a86e8"
 
+	defaultHandleLength: number = DEFAULT_LENGTH
+
 	constructor( props ) {
 		super( props )
 
@@ -40,17 +42,20 @@ export default class Segment extends Cell {
 		this.path = isNotNil( props.path ) ? props.path : this.path
 		this.show = isNotNil( props.show ) ? props.show : this.show
 		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.defaultHandleLength = isNotNil( props.defaultHandleLength ) ? props.defaultHandleLength : this.defaultHandleLength
 
 
 		this.handleIn = new Handle( {
 			draw   : this.draw,
 			segment: this,
-			type   : HandleType.HANDLE_IN
+			type   : HandleType.HANDLE_IN,
+			defaultLength: this.defaultHandleLength
 		} )
 		this.handleOut = new Handle( {
 			draw   : this.draw,
 			segment: this,
-			type   : HandleType.HANDLE_OUT
+			type   : HandleType.HANDLE_OUT,
+			defaultLength: this.defaultHandleLength
 		} )
 
 		this.handleIn.partner = this.handleOut

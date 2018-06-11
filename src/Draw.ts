@@ -115,21 +115,11 @@ export default class Draw {
 
 	render() {
 		const {
-			testUtils,
-			viewPort,
 			renderer,
-			grid,
-			zoom,
-			pan,
 			miniMap,
-			ctx,
-			canvasWidth,
-			canvasHeight
 		} = this.getters
 
 		const { shouldRender: shouldRenderMiniMap } = miniMap
-
-		const self = this
 
 		renderer.clear()
 
@@ -141,8 +131,6 @@ export default class Draw {
 			miniMap.saveImageDataInRigion()
 			renderer.clear()
 		}
-
-		renderBackground( this.getters.canvas, "#1B2430" )
 
 		renderer.setTransformViewPort()
 		this.renderMain()
@@ -160,13 +148,13 @@ export default class Draw {
 		const { renderingMainCells } = this.getters.miniMap
 		const { renderElement } = this.sharedActions
 
-		this.getters.ctx.strokeStyle = "blue"
-		this.getters.ctx.strokeRect(
-			0,
-			0,
-			this.getters.canvasWidth,
-			this.getters.canvasHeight
-		)
+		// this.getters.ctx.strokeStyle = "blue"
+		// this.getters.ctx.strokeRect(
+		// 	0,
+		// 	0,
+		// 	this.getters.canvasWidth,
+		// 	this.getters.canvasHeight
+		// )
 
 		// this.getters.grid.render( 10, this.getters.zoom, this.getters.pan, {
 		// 	color: "#ddd"

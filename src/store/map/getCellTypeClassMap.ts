@@ -12,11 +12,12 @@ import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
 import Point from "../../model/shape/Point"
 import Polygon from "../../model/shape/Polygon"
-import { SEGMENT, TEXT, POLYLINE, ORTHOGONAL_LINE } from '../constant/cellType';
+import { SEGMENT, TEXT, POLYLINE, ORTHOGONAL_LINE, CIRCLE } from '../constant/cellType';
 import Segment from "../../model/Segment"
 import DrawText from '../../model/text/DrawText';
 import Polyline from '../../model/shape/Polyline';
 import OrthogonalLine from '../../model/shape/OrthogonalLine/OrthogonalLine';
+import Circle from '../../model/shape/Circle';
 
 export default function() {
 	return {
@@ -31,6 +32,7 @@ export default function() {
 		[ ORTHOGONAL_LINE ]   : OrthogonalLine,
 		[ POINT ]  : Point,
 		[ POLYGON ]: Polygon,
+		[ CIRCLE ]: Circle,
 
 		/**
 		 * Text
