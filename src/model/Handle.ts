@@ -44,7 +44,10 @@ export default class Handle extends Cell {
 			this.partner = props.partner
 		}
 
+
+
 		this.defaultLength = notNil( props.defaultLength ) ? props.defaultLength : this.defaultLength
+		this.show = notNil( props.show ) ? props.show : this.show
 
 		this.relativePoint = getHandleRelativePoint(
 			this.segmentPoint,

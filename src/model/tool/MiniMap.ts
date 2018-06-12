@@ -13,7 +13,7 @@ export default class MiniMap extends Cell {
 	width: number = 0
 	height: number = 0
 
-	show: boolean = false
+	show: boolean = true
 
 	viewBox: MiniMapViewBox
 
@@ -23,7 +23,8 @@ export default class MiniMap extends Cell {
 
 	preventDefaultCellsRenderInMiniMap: boolean = false
 
-	shouldRender: boolean = false
+	shouldRender: boolean = true
+
 
 	constructor( props ) {
 		super( props )
@@ -86,7 +87,8 @@ export default class MiniMap extends Cell {
 	renderMainCells() {
 		const { renderer, canvas } = this.getters
 
-		renderBackground( canvas, "#1B2430" )
+		this.draw.renderBackground()
+
 		renderer.setTransformViewPortToRenderMiniMap()
 
 		this.renderingMainCells = true

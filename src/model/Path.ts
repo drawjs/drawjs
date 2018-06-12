@@ -63,7 +63,7 @@ export default class Path extends PathItem {
 						this.sharedGetters.createSegmentByPoint(
 							point,
 							this.draw,
-							{ path: this, defaultHandleLength: this.defaultSegmentHandleLength }
+							{ path: this, defaultHandleLength: this.defaultSegmentHandleLength, showHandle: this.showHandle }
 						)
 				  ) :
 				this.segments

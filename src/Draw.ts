@@ -132,6 +132,7 @@ export default class Draw {
 			renderer.clear()
 		}
 
+		this.renderBackground()
 		renderer.setTransformViewPort()
 		this.renderMain()
 
@@ -142,6 +143,10 @@ export default class Draw {
 
 		// this.getters.renderer.setTransformViewPortToRenderMiniMap()
 		// testUtils.renderPoint( { x: 0, y: 0 }, "blue" )
+	}
+
+	renderBackground() {
+		// renderBackground( this.getters.canvas, "blue" )
 	}
 
 	renderMain() {

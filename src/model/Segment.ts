@@ -4,6 +4,7 @@ import { HandleType, DEFAULT_LENGTH } from '../store/constant/index';
 import Cell from "./Cell"
 import Path from "./Path"
 import { isNotNil } from "../util/index"
+import { notNil } from '../util/lodash/index';
 
 const { PI } = Math
 
@@ -33,29 +34,34 @@ export default class Segment extends Cell {
 
 	defaultHandleLength: number = DEFAULT_LENGTH
 
+	showHandle: boolean = false
+
 	constructor( props ) {
 		super( props )
 
 		this.x = props.x
 		this.y = props.y
 
-		this.path = isNotNil( props.path ) ? props.path : this.path
-		this.show = isNotNil( props.show ) ? props.show : this.show
-		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
-		this.defaultHandleLength = isNotNil( props.defaultHandleLength ) ? props.defaultHandleLength : this.defaultHandleLength
+		this.path = notNil( props.path ) ? props.path : this.path
+		this.show = notNil( props.show ) ? props.show : this.show
+		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.defaultHandleLength = notNil( props.defaultHandleLength ) ? props.defaultHandleLength : this.defaultHandleLength
+		this.showHandle = notNil( props.showHandle ) ? props.showHandle : this.showHandle
 
 
 		this.handleIn = new Handle( {
 			draw   : this.draw,
 			segment: this,
 			type   : HandleType.HANDLE_IN,
-			defaultLength: this.defaultHandleLength
+			defaultLength: this.defaultHandleLength,
+			show: this.showHandle
 		} )
 		this.handleOut = new Handle( {
 			draw   : this.draw,
 			segment: this,
 			type   : HandleType.HANDLE_OUT,
-			defaultLength: this.defaultHandleLength
+			defaultLength: this.defaultHandleLength,
+			show: this.showHandle
 		} )
 
 		this.handleIn.partner = this.handleOut
