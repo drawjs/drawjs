@@ -1,5 +1,5 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
-import { isNil, cloneDeep, intersection } from "lodash"
+import { isNil, cloneDeep, intersection, mapValues, isPlainObject, isNumber, isBoolean, isString, isDate } from 'lodash';
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"
 import storeElementFields from "../../store/storeElementFields"
@@ -17,6 +17,7 @@ import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
 import Draw from "../../index"
+import { DRAW } from '../constant/name';
 
 export default class Actions {
 	drawStore: DrawStore
@@ -111,42 +112,11 @@ export default class Actions {
 			...setting
 		} )
 
-		const {
-			type,
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			points,
-			draggable,
-			shouldSelect
-		}: {
-			type: string
-			top: number
-			left: number
-			width: number
-			height: number
-			fill: string
-			angle: number
-			points: Point2D[]
-			draggable: boolean
-			shouldSelect: boolean
-		} = setting
 
-		const wholeElement = {
+		const exportableData = getExportableData( instance )
+		const wholeElement: any = {
 			__instance__: instance,
-			type,
-			top,
-			left,
-			width,
-			height,
-			fill,
-			angle,
-			points,
-			draggable,
-			shouldSelect
+			...exportableData
 		}
 
 		if ( isNil( panelId ) ) {
@@ -158,6 +128,18 @@ export default class Actions {
 		}
 
 		return instance
+
+		function getExportableData( instance: any ) {
+			let res = {}
+			mapValues( instance, resolve )
+
+			function resolve( value, key ) {
+				if ( isPlainObject( value ) || isNumber( value ) || isString( value ) || isBoolean( value ) || isDate( value ) || isNil( value ) ) {
+					res[ key ] = value
+				}
+			}
+			return res
+		}
 	}
 
 	REMOVE_ELEMENT( element: any ) {

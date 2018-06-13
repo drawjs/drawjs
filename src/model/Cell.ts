@@ -128,9 +128,9 @@ export default abstract class Cell extends Particle {
 
 		const { miniMap } = this.getters
 
-		this.fillColor = notNil( props.fillColor ) ?
-			props.fillColor :
-			this.fillColor
+		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.strokeColor = notNil( props.strokeColor ) ? props.strokeColor : this.strokeColor
+		this.strokeWidth = notNil( props.strokeWidth ) ? props.strokeWidth : this.strokeWidth
 		this.show = notNil( props.show ) ? props.show : this.show
 		this.draggable = notNil( props.draggable ) ?
 			props.draggable :

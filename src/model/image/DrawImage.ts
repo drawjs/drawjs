@@ -12,6 +12,8 @@ export default class DrawImage extends Cell {
 	image: HTMLImageElement = new Image()
 	src: string = ""
 
+	strokeColor: string = null
+
 	static DEFAULT_WIDTH = 0
 	static DEFAULT_HEIGHT = 0
 
@@ -22,6 +24,8 @@ export default class DrawImage extends Cell {
 		// this.height = notNil(props.height) ? props.height : this.height
 
 		this.src = notNil( props.src ) ? props.src : this.src
+		this.strokeColor = notNil( props.strokeColor ) ? props.strokeColor : this.strokeColor
+
 
 		this.image.src = this.src
 		this.image.onload = () => {
@@ -97,14 +101,25 @@ export default class DrawImage extends Cell {
 	}
 
 	render() {
-		const { left, top, width, height, image, getters } = this
+		const {
+			left,
+			top,
+			width,
+			height,
+			image,
+			getters,
+			strokeColor,
+			strokeWidth
+		} = this
 
 		if ( notNil( width ) && notNil( height ) ) {
 			const { ctx } = getters
 
-			ctx.lineWidth = 1
-			ctx.strokeStyle = "#ddd"
-			ctx.stroke( this.path2d )
+			if ( notNil( strokeColor ) ) {
+				ctx.lineWidth = strokeWidth
+				ctx.strokeStyle = strokeColor
+				ctx.stroke( this.path2d )
+			}
 
 			ctx.drawImage( image, left, top, width, height )
 		}
