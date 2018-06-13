@@ -13,7 +13,9 @@ export default class DrawText extends Cell {
 
 	text: string = ""
 
-	fontSize: number = 12
+	fontSize: number = DrawText.DEFAULT_FONT_SIZE
+
+	static DEFAULT_FONT_SIZE = 12
 
 	constructor( props ) {
 		super( props )
@@ -21,6 +23,7 @@ export default class DrawText extends Cell {
 		this.x = isNotNil( props.x ) ? props.x : this.x
 		this.y = isNotNil( props.y ) ? props.y : this.y
 		this.text = isNotNil( props.text ) ? props.text : this.text
+		this.fontSize = isNotNil( props.fontSize ) ? props.fontSize : this.fontSize
 	}
 
 	get width(): number {
@@ -107,5 +110,9 @@ export default class DrawText extends Cell {
 	translate( dx: number, dy: number ) {
 		this.x = this.x + dx
 		this.y = this.y + dy
+	}
+
+	updateText( text: string ) {
+		this.text = text
 	}
 }

@@ -21,6 +21,7 @@ export const TEXT = 'text'
  * Image
  */
 export const RECT_IMAGE = 'rect-image'
+export const DRAW_IMAGE = 'image'
 
 /**
  * Tool

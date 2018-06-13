@@ -22,7 +22,7 @@ export default class RotationArrow extends Cell {
 	 */
 	target: Item
 
-	img: HTMLImageElement = new Image()
+	image: HTMLImageElement = new Image()
 
 	/**
 	 * Space between icon and graph the topo of target's rect container
@@ -105,8 +105,8 @@ export default class RotationArrow extends Cell {
 
 		this.target = props.target
 
-		this.img.src = ROTATION_ARROW_ICON
-		this.img.onload = function() {
+		this.image.src = ROTATION_ARROW_ICON
+		this.image.onload = function() {
 			self.shouldRender && self.render()
 		}
 	}
@@ -124,7 +124,7 @@ export default class RotationArrow extends Cell {
 				this.rotatedArrowCenter.x,
 				this.rotatedArrowCenter.y
 			)
-			ctx.drawImage( this.img, -SIZE / 2, -SIZE / 2, SIZE, SIZE )
+			ctx.drawImage( this.image, -SIZE / 2, -SIZE / 2, SIZE, SIZE )
 			ctx.restore()
 			this.getters.renderer.setTransformViewPort()
 		}

@@ -12,12 +12,13 @@ import Rect from "../../model/shape/Rect"
 import Line from "../../model/shape/Line"
 import Point from "../../model/shape/Point"
 import Polygon from "../../model/shape/Polygon"
-import { SEGMENT, TEXT, POLYLINE, ORTHOGONAL_LINE, CIRCLE } from '../constant/cellType';
+import { SEGMENT, TEXT, POLYLINE, ORTHOGONAL_LINE, CIRCLE, DRAW_IMAGE } from '../constant/cellType';
 import Segment from "../../model/Segment"
 import DrawText from '../../model/text/DrawText';
 import Polyline from '../../model/shape/Polyline';
 import OrthogonalLine from '../../model/shape/OrthogonalLine/OrthogonalLine';
 import Circle from '../../model/shape/Circle';
+import DrawImage from '../../model/image/DrawImage';
 
 export default function() {
 	return {
@@ -34,10 +35,16 @@ export default function() {
 		[ POLYGON ]: Polygon,
 		[ CIRCLE ]: Circle,
 
+
 		/**
 		 * Text
 		 */
 		[ TEXT ]: DrawText,
+
+		/**
+		 * Draw image
+		 */
+		[ DRAW_IMAGE ]: DrawImage,
 
 		/**
 		 * Tool

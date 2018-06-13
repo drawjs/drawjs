@@ -281,7 +281,8 @@ export default class Path extends PathItem {
 		const { x: cx, y: cy } = this.itemCenter
 		const dx: number = x - cx
 		const dy: number = y - cy
-		this.sharedActions.translateSegments( this.segments, dx, dy )
+		// this.sharedActions.translateSegments( this.segments, dx, dy )
+		this.translateTo( dx, dy )
 	}
 	translateToPoint( point: Point2D ) {
 		this.translateTo( point.x, point.y )

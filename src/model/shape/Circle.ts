@@ -25,7 +25,11 @@ export default class Circle extends Path {
 	constructor( props ) {
 		super( setPropsPointsDangerously( props ) )
 
-		const { x, y, r } = props
+		const { x, y, radius } = props
+
+		this.x = notNil( x ) ? x : this.x
+		this.y = notNil( y ) ? y : this.y
+		this.radius = notNil( radius ) ? radius : this.radius
 
 		this.sizable = notNil( props.sizable ) ? props.sizable : this.sizable
 		this.rotatable = notNil( props.rotatable ) ?
@@ -35,9 +39,6 @@ export default class Circle extends Path {
 		// this.sharedActions.clearSegmentsHandles( this.segments )
 		this.sharedActions.hideSegments( this.segments )
 
-
-		const { left, right, top, bottom } = this.bounds
-		console.log( right - left, bottom - top )
 
 		function setPropsPointsDangerously( props ) {
 			const {
@@ -90,5 +91,11 @@ export default class Circle extends Path {
 				return points
 			}
 		}
+	}
+
+	translate( dx: number, dy: number ) {
+		super.translate( dx, dy )
+		this.x = this.x + dx
+		this.y = this.y + dy
 	}
 }

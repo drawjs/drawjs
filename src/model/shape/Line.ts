@@ -28,12 +28,16 @@ export default class Line extends Path {
 	// Segment
 	target: any
 
-	lineWidth: number = 2 || 0.5
+	lineWidth: number = 1
 
 	showArrow: boolean = false
 
 	constructor( props: LineProps ) {
 		super( setPropsPointsSegmentsDangerously( props ) )
+
+		const { lineWidth } = props
+
+		this.lineWidth = notNil( lineWidth ) ? lineWidth: this.lineWidth
 
 		const { length } = this.segments
 		this.source = this.segments[ 0 ]

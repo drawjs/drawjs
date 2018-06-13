@@ -2,40 +2,66 @@ import Cell from "../Cell"
 import { notNil } from "../../util/lodash/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
+import { isNil } from "lodash"
 
 export default class DrawImage extends Cell {
 	left: number = 0
 	top: number = 0
-	width: number = DrawImage.DEFAULT_WIDTH
-	height: number = DrawImage.DEFAULT_HEIGHT
-	img: HTMLImageElement = new Image()
-	src: string = ''
+	width: number = null
+	height: number = null
+	image: HTMLImageElement = new Image()
+	src: string = ""
 
-	static DEFAULT_WIDTH = 50
-	static DEFAULT_HEIGHT = 50
+	static DEFAULT_WIDTH = 0
+	static DEFAULT_HEIGHT = 0
 
 	constructor( props ) {
 		super( props )
 
-		const { x, y, left, top } = props
-
-		this.width = notNil( props.width ) ? props.width : this.width
-		this.height = notNil( props.height ) ? props.height : this.height
-
-		const { width, height } = this
-
-		if ( notNil( x ) && notNil( y ) ) {
-			this.left = x - width / 2
-			this.top = y - height / 2
-		} else {
-			this.left = notNil( left ) ? left : this.left
-			this.top = notNil( top ) ? top : this.top
-		}
+		// this.width = notNil(props.width) ? props.width : this.width
+		// this.height = notNil(props.height) ? props.height : this.height
 
 		this.src = notNil( props.src ) ? props.src : this.src
 
-		this.img.src = this.src
-		this.img.onload = () => {
+		this.image.src = this.src
+		this.image.onload = () => {
+			const { width: propsWidth, height: propsHeight } = props
+			const { width: imageWidth, height: imageHeight } = this.image
+
+			if ( notNil( propsWidth ) && notNil( propsHeight ) ) {
+				this.updateWidth( propsWidth )
+				this.updateHeight( propsHeight )
+			}
+
+			if ( notNil( propsWidth ) && isNil( propsHeight ) ) {
+				this.updateWidth( propsWidth )
+				const height = ( imageHeight / imageWidth ) * propsWidth
+				this.updateHeight( height )
+			}
+
+			if ( notNil( propsHeight ) && isNil( propsWidth ) ) {
+				this.updateHeight( propsHeight )
+				const width = ( imageWidth / imageHeight ) * propsHeight
+				this.updateWidth( width )
+			}
+
+			if ( isNil( propsWidth ) && isNil( propsHeight ) ) {
+				this.updateWidth( imageWidth )
+				this.updateHeight( imageHeight )
+			}
+
+			const { width, height } = this
+
+			const { x, y, left, top } = props
+
+			if ( notNil( x ) && notNil( y ) ) {
+				this.left = x - width / 2
+				this.top = y - height / 2
+			} else {
+				this.left = notNil( left ) ? left : this.left
+				this.top = notNil( top ) ? top : this.top
+			}
+
 			this.render()
 		}
 	}
@@ -55,20 +81,33 @@ export default class DrawImage extends Cell {
 		return path
 	}
 
+	get bounds(): Bounds {
+		const { left, top, width, height } = this
+		return {
+			left,
+			top,
+			right : left + width,
+			bottom: top + height
+		}
+	}
+
 	contain( x: number, y: number ) {
 		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
 	}
 
 	render() {
-		const { left, top, width, height, img } = this
-		this.getters.ctx.drawImage(
-			img,
-			left,
-			top,
-			width,
-			height
-		)
+		const { left, top, width, height, image, getters } = this
+
+		if ( notNil( width ) && notNil( height ) ) {
+			const { ctx } = getters
+
+			ctx.lineWidth = 1
+			ctx.strokeStyle = "#ddd"
+			ctx.stroke( this.path2d )
+
+			ctx.drawImage( image, left, top, width, height )
+		}
 	}
 
 	updateDrag( event ) {
@@ -85,5 +124,13 @@ export default class DrawImage extends Cell {
 	translate( dx: number, dy: number ) {
 		this.left = this.left + dx
 		this.top = this.top + dy
+	}
+
+	updateWidth( width: number ) {
+		this.width = width
+	}
+
+	updateHeight( height: number ) {
+		this.height = height
 	}
 }
