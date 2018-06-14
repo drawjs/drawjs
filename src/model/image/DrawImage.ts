@@ -17,6 +17,8 @@ export default class DrawImage extends Cell {
 	static DEFAULT_WIDTH = 0
 	static DEFAULT_HEIGHT = 0
 
+	interfaceOnImageLoaded: Function
+
 	constructor( props ) {
 		super( props )
 
@@ -66,7 +68,10 @@ export default class DrawImage extends Cell {
 				this.top = notNil( top ) ? top : this.top
 			}
 
+
 			this.render()
+
+			this.interfaceOnImageLoaded && this.interfaceOnImageLoaded()
 		}
 	}
 
@@ -147,5 +152,13 @@ export default class DrawImage extends Cell {
 
 	updateHeight( height: number ) {
 		this.height = height
+	}
+
+	updateLeft( left: number ) {
+		this.left = left
+	}
+
+	updateTop( top: number ) {
+		this.top = top
 	}
 }
