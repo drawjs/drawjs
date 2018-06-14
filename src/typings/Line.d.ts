@@ -7,5 +7,6 @@ interface LineProps {
 	points?: Point2D[]
 	segments?: any[],
 	fillColor?: string,
-	lineWidth?: number
+	lineWidth?: number,
+	getErasingPath2d: Function,
 }

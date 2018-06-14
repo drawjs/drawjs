@@ -25,8 +25,9 @@ export default class Renderer extends Particle {
 	}
 
 	setTransformViewPort() {
-		const { zoom, movementX, movementY }: Getters = this.getters
-		this.ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
+		const { zoom, movementX, movementY, ctx }: Getters = this.getters
+		// ctx.globalCompositeOperation = "source-over"
+		ctx.setTransform( zoom, 0, 0, zoom, movementX, movementY )
 		// this.ctx.setTransform( 2, 0, 0, 2, 100,100 )
 	}
 

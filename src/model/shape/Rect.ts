@@ -78,4 +78,12 @@ export default class Rect extends Path {
 			return props
 		}
 	}
+
+	updateWidth( width ) {
+		this.width = width
+	}
+
+	updateHeight( height ) {
+		this.height = height
+	}
 }

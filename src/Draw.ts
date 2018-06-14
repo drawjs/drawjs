@@ -66,6 +66,8 @@ export default class Draw {
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
+
+
 			this._initialize()
 
 			const interaction = new Interaction( { draw: this } )
@@ -74,6 +76,14 @@ export default class Draw {
 	}
 
 	_initialize() {
+		const tmpCanvas: HTMLCanvasElement = document.createElement(
+			"canvas",
+		)
+		tmpCanvas.width = 1000
+		tmpCanvas.height = 1000
+		this.actions.UPDATE_TMP_CANVAS( tmpCanvas )
+
+
 		this.actions.UPDATE_DRAW_ROOT_ID()
 
 		const testUtils = new TestUtils( this.getters )
@@ -114,10 +124,7 @@ export default class Draw {
 	}
 
 	render() {
-		const {
-			renderer,
-			miniMap,
-		} = this.getters
+		const { renderer, miniMap } = this.getters
 
 		const { shouldRender: shouldRenderMiniMap } = miniMap
 

@@ -55,6 +55,11 @@ export default class Actions {
 		this.getters.setCtx( canvas.getContext( "2d" ) )
 	}
 
+	UPDATE_TMP_CANVAS( tmpCanvas: HTMLCanvasElement ) {
+		this.drawStore[ "tmpCanvas" ] = tmpCanvas
+		this.getters.setTmpCtx( tmpCanvas.getContext( "2d" ) )
+	}
+
 	UPDATE_DRAW_ROOT_ID() {
 		this.drawStore.rootId = this.getters.generateUniqueDrawRootId()
 	}
@@ -169,7 +174,6 @@ export default class Actions {
 		const { addedToBottom = false } = cell
 		! addedToBottom && this.drawStore.cellList.push( cell )
 		addedToBottom && this.drawStore.cellList.unshift( cell )
-		addedToBottom && console.log( true )
 	}
 
 	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {

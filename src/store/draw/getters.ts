@@ -23,6 +23,9 @@ export default class Getters {
 
 	ctx: CanvasRenderingContext2D
 
+	tmpCtx: CanvasRenderingContext2D
+
+
 	constructor( drawStore ) {
 		this.drawStore = drawStore
 	}
@@ -181,6 +184,10 @@ export default class Getters {
 			y: this.canvas.height / 2
 		}
 		return res
+	}
+
+	get tmpCanvas(): HTMLCanvasElement {
+		return this.drawStore.tmpCanvas
 	}
 
 	pointOnPath( point: Point2DInitial, path: Path2D ): boolean {
@@ -371,8 +378,15 @@ export default class Getters {
 		return res
 	}
 
+	/**
+	 * // Set ctx, tmp ctx
+	 */
 	setCtx( ctx: CanvasRenderingContext2D ) {
 		this.ctx = ctx
+	}
+
+	setTmpCtx( tmpCtx: CanvasRenderingContext2D ) {
+		this.tmpCtx = tmpCtx
 	}
 
 

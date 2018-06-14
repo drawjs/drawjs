@@ -33,6 +33,8 @@ export default class DrawStore {
 
 	canvas: HTMLCanvasElement = null
 
+	tmpCanvas: HTMLCanvasElement = null
+
 	viewPort: ViewPort = null
 
 	renderer: Renderer = null

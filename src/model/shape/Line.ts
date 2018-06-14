@@ -5,9 +5,9 @@ import getLineRotatableBounds from "../../util/geometry/getLineRotatableBounds"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import Segment from "../Segment"
 import getArrowPoints from "../../util/geometry/getArrowPoints"
-import { notNil } from "../../util/lodash/index";
-import { LINE_DEFAULT_COLOR } from '../../store/constant/color';
-import { renderHightlightedPath } from '../../drawUtil/render/index';
+import { notNil } from "../../util/lodash/index"
+import { LINE_DEFAULT_COLOR } from "../../store/constant/color"
+import { renderHightlightedPath } from "../../drawUtil/render/index"
 
 export default class Line extends Path {
 	type = LINE
@@ -32,12 +32,17 @@ export default class Line extends Path {
 
 	showArrow: boolean = false
 
+	getErasingPath2d: Function
+
 	constructor( props: LineProps ) {
 		super( setPropsPointsSegmentsDangerously( props ) )
 
-		const { lineWidth } = props
+		const { lineWidth, getErasingPath2d } = props
 
-		this.lineWidth = notNil( lineWidth ) ? lineWidth: this.lineWidth
+		this.lineWidth = notNil( lineWidth ) ? lineWidth : this.lineWidth
+		this.getErasingPath2d = notNil( getErasingPath2d ) ?
+			getErasingPath2d :
+			this.getErasingPath2d
 
 		const { length } = this.segments
 		this.source = this.segments[ 0 ]
@@ -51,7 +56,9 @@ export default class Line extends Path {
 		this.sharedActions.hideSegmentsHandles( this.segments )
 		// this.sharedActions.hideSegments( this.segments )
 
-		this.fillColor = isNotNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.fillColor = isNotNil( props.fillColor ) ?
+			props.fillColor :
+			this.fillColor
 
 		function setPropsPointsSegmentsDangerously( props: LineProps ) {
 			const { source, target, sourceSegment, targetSegment } = props
@@ -123,7 +130,7 @@ export default class Line extends Path {
 		const { x: sx, y: sy } = source
 		const { x: tx, y: ty } = target
 
-		return ( sx === tx && sy === ty )
+		return sx === tx && sy === ty
 	}
 
 	get center(): Point2D {
@@ -131,8 +138,13 @@ export default class Line extends Path {
 		const { x: tx, y: ty } = this.target
 		return {
 			x: ( sx + tx ) / 2,
-			y: ( sy + ty ) / 2,
+			y: ( sy + ty ) / 2
 		}
+	}
+
+	get erasingPath2d(): Path2D {
+		const { getErasingPath2d } = this
+		return getErasingPath2d ? getErasingPath2d() : null
 	}
 
 	render() {
@@ -141,12 +153,24 @@ export default class Line extends Path {
 	}
 
 	renderHitRegion() {
+		const { erasingPath2d } = this
 		const { ctx } = this.getters
+
+		const { tmpCtx, tmpCanvas } = this.getters
+		const { left, right, top, bottom } = this.bounds
+		const width = right - left
+		const height = bottom - top
+
 		ctx.save()
+
 		ctx.fillStyle = this.fillColor
 		ctx.fill( this.hitRegionPath2d )
 
 		this.shouldSelect && renderHightlightedPath( ctx, this.hitRegionPath2d )
+
+		ctx.globalCompositeOperation = "destination-out"
+
+		erasingPath2d && ctx.fill ( erasingPath2d )
 
 		ctx.restore()
 	}
@@ -158,7 +182,8 @@ export default class Line extends Path {
 			ctx.fillStyle = this.fillColor
 			ctx.fill( this.targetArrowPath2d )
 
-			this.shouldSelect && renderHightlightedPath( ctx, this.targetArrowPath2d )
+			this.shouldSelect &&
+				renderHightlightedPath( ctx, this.targetArrowPath2d )
 
 			ctx.restore()
 		}
