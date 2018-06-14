@@ -123,6 +123,12 @@ export default abstract class Cell extends Particle {
 	shouldRenderInMiniMap: boolean = true
 	renderFnInMiniMap: Function = null
 
+
+	/**
+	 * // Z-index
+	 */
+	addedToBottom: boolean = false
+
 	constructor( props ) {
 		super( props )
 
@@ -136,6 +142,7 @@ export default abstract class Cell extends Particle {
 			props.draggable :
 			this.draggable
 		this.isPart = notNil( props.isPart ) ? props.isPart : this.isPart
+		this.addedToBottom = notNil( props.addedToBottom ) ? props.addedToBottom : this.addedToBottom
 
 		this.dragger = new Dragger( { draw: this.draw, target: this } )
 		this.dragger.update = this.updateDrag.bind( this )

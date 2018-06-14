@@ -74,6 +74,8 @@ export default class OrthogonalLine extends Item {
 
 	static COMBINE_INTERVAL = 10
 
+	addedToBottom: boolean = false
+
 	constructor( props ) {
 		super( props )
 
@@ -104,6 +106,9 @@ export default class OrthogonalLine extends Item {
 		this.endSegmentFillColor = notNil( props.endSegmentFillColor ) ?
 			props.endSegmentFillColor :
 			this.endSegmentFillColor
+		this.addedToBottom = notNil( props.addedToBottom ) ?
+			props.addedToBottom :
+			this.addedToBottom
 
 		if ( notNil( startSegment ) && notNil( endSegment ) ) {
 			this.startLinking = new StartLinking( {
@@ -327,7 +332,8 @@ export default class OrthogonalLine extends Item {
 			draggable: false,
 			showArrow: isSimpleLine ? showArrow : false,
 			isPart   : true,
-			shouldRenderInMiniMap: this.shouldRenderInMiniMap
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
+			addedToBottom: this.addedToBottom,
 		} )
 	}
 
@@ -341,7 +347,8 @@ export default class OrthogonalLine extends Item {
 			showArrow     : showArrow,
 			draggable     : false,
 			isPart        : true,
-			shouldRenderInMiniMap: this.shouldRenderInMiniMap
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
+			addedToBottom: this.addedToBottom
 		} )
 	}
 
@@ -353,7 +360,8 @@ export default class OrthogonalLine extends Item {
 			draggable     : false,
 			fillColor     : this.innerLineFillColor,
 			isPart        : true,
-			shouldRenderInMiniMap: this.shouldRenderInMiniMap
+			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
+			addedToBottom: this.addedToBottom
 		} )
 	}
 

@@ -166,7 +166,10 @@ export default class Actions {
 	}
 
 	ADD_ELEMENT_TO_CELL_LIST( cell: Cell ) {
-		this.drawStore.cellList.push( cell )
+		const { addedToBottom = false } = cell
+		! addedToBottom && this.drawStore.cellList.push( cell )
+		addedToBottom && this.drawStore.cellList.unshift( cell )
+		addedToBottom && console.log( true )
 	}
 
 	UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES() {
