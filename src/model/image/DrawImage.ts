@@ -161,4 +161,19 @@ export default class DrawImage extends Cell {
 	updateTop( top: number ) {
 		this.top = top
 	}
+
+	sizeOnCenter( kX: number, kY: number) {
+		const dKX = kX - this.kX
+		const dKY = kY - this.kX
+
+		this.kX = kX
+		this.kY = kY
+
+		const { left, top, width, height } = this
+		this.width = width * ( 1 + dKX )
+		this.height = height * ( 1 + dKY )
+		this.left = left - dKX * width / 2
+		this.top = top - dKY * height / 2
+
+	}
 }
