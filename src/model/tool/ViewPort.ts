@@ -197,17 +197,11 @@ export default class ViewPort extends Particle {
 		const deltaZoom = zoom - this.zoom
 		this.zoomBy( center, deltaZoom )
 	}
-	zoomIn( point: Point2DCurrent ) {
+	zoomIn( point: Point2DCurrent = this.getters.canvasCenterPoint ) {
 		this.zoomBy( point, ViewPort.ZOOM_VARIATION )
 	}
-	zoomOut( point: Point2DCurrent ) {
+	zoomOut( point: Point2DCurrent = this.getters.canvasCenterPoint ) {
 		this.zoomBy( point, -ViewPort.ZOOM_VARIATION )
-	}
-	resetZoom( center: Point2DCurrent = {
-		x: 0,
-		y: 0
-	} ) {
-		this.zoomTo( 1, center )
 	}
 
 	/**

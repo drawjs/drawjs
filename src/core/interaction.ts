@@ -32,6 +32,9 @@ export default class Interaction extends Particle {
 		canvas.removeEventListener( "mouseup", this.mouseupListener.bind( this ) )
 		canvas.addEventListener( "mouseup", this.mouseupListener.bind( this ) )
 
+		canvas.removeEventListener( "click", this.clickListener.bind( this ) )
+		canvas.addEventListener( "click", this.clickListener.bind( this ) )
+
 		canvas.removeEventListener( "dblclick", this.dblclickListener.bind( this ) )
 		canvas.addEventListener( "dblclick", this.dblclickListener.bind( this ) )
 
