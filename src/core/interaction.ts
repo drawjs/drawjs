@@ -10,6 +10,8 @@ export default class Interaction extends Particle {
 
 	prevHovingDsElement: any
 
+	interfaceOnEmptyClick: Function
+
 	constructor( props ) {
 		super( props )
 
@@ -67,6 +69,8 @@ export default class Interaction extends Particle {
 
 		if ( getters.pointOnEmpty( point ) ) {
 			actions.DESELECT_ALL_CELLS()
+
+			this.interfaceOnEmptyClick && this.interfaceOnEmptyClick( event )
 
 			this.startSelect( event )
 
