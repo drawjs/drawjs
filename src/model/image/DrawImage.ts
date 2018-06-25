@@ -162,6 +162,11 @@ export default class DrawImage extends Cell {
 		this.top = top
 	}
 
+	udpateSrc( src: string ) {
+		this.src = src
+		this.image.src = src
+	}
+
 	sizeOnCenter( kX: number, kY: number) {
 		const dKX = kX - this.kX
 		const dKY = kY - this.kX
@@ -172,8 +177,7 @@ export default class DrawImage extends Cell {
 		const { left, top, width, height } = this
 		this.width = width * ( 1 + dKX )
 		this.height = height * ( 1 + dKY )
-		this.left = left - dKX * width / 2
-		this.top = top - dKY * height / 2
-
+		this.left = left - ( dKX * width ) / 2
+		this.top = top - ( dKY * height ) / 2
 	}
 }
