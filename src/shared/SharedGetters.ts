@@ -11,8 +11,7 @@ import getPointsBoundsCenter from "../util/geometry/getPointsBoundsCenter"
 import origin from "../util/geometry/origin"
 import rotate from "../util/geometry/rotate"
 import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
-import { isNotNil } from "util/index"
-import Draw from 'Draw';
+import Draw from '../Draw';
 import { isLast } from '../util/js/array';
 
 const { PI, min, max } = Math

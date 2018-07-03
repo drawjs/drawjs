@@ -1,6 +1,6 @@
 import * as _ from "lodash"
 import { generateId, isNotNil } from "../util/index"
-import Draw from "Draw"
+import Draw from "../Draw"
 import * as constant from "../store/constant/index"
 import Dragger from "./tool/Dragger"
 import Getters from "../store/draw/Getters"
