@@ -1,5 +1,5 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
-import { isNil, cloneDeep, intersection, mapValues, isPlainObject, isNumber, isBoolean, isString, isDate } from 'lodash';
+import { isNil, cloneDeep, intersection, mapValues, isPlainObject, isNumber, isBoolean, isString, isDate, values } from 'lodash';
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"
 import storeElementFields from "../../store/storeElementFields"
@@ -17,7 +17,9 @@ import TextInput from "../../model/tool/TextInput"
 import { notNil } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
 import Draw from "../../index"
-import { DRAW } from '../constant/name';
+import { DRAW, EXPORTABLE } from '../constant/name';
+import isJsonDataType from "../../util/js/isJsonDataType";
+import isBasicJsonDataType from "../../util/js/isBasicJsonDataType";
 
 export default class Actions {
 	drawStore: DrawStore
@@ -60,8 +62,11 @@ export default class Actions {
 		this.getters.setTmpCtx( tmpCanvas.getContext( "2d" ) )
 	}
 
-	UPDATE_DRAW_ROOT_ID() {
+	INTIALIZE_DRAW_ROOT_ID() {
 		this.drawStore.rootId = this.getters.generateUniqueDrawRootId()
+	}
+	UPDATE_DRAW_ROOT_ID( rootId ) {
+		this.drawStore.rootId = rootId
 	}
 
 	/**
@@ -105,6 +110,8 @@ export default class Actions {
 		setting: any,
 		panelId?: string
 	) {
+		
+
 		const cellTypeClassMap = getCellTypeClassMap()
 		const ElementClass = cellTypeClassMap[ elementType ]
 
@@ -117,6 +124,7 @@ export default class Actions {
 			...setting
 		} )
 
+		instance[ EXPORTABLE ] = true
 
 		const exportableData = getExportableData( instance )
 		const wholeElement: any = {
@@ -205,6 +213,53 @@ export default class Actions {
 					"__instance__"
 				][ field ]
 			}
+		}
+	}
+
+	/**
+	 * // Sync store
+	 */
+	UPDATE_SYNC_STORE_ROOT_ID( rootId: string ) {
+		this.drawStore.syncStore.rootId = rootId
+	}
+
+	REFRESH_SYNC_STORE_ROOT_ID() {
+		const { rootId } = this.drawStore
+		this.UPDATE_SYNC_STORE_ROOT_ID( rootId )
+	}
+
+	UPDATE_SYNC_STORE_ELEMENTS( elements: SyncStoreElement[] ) {
+		this.drawStore.syncStore.elements = elements
+	}
+
+	REFRESH_SYNC_STORE_ELEMENTS() {
+		const { cellList } = this.drawStore
+		let elements:SyncStoreElement[] = []
+
+		cellList.filter( cell => cell[ EXPORTABLE ] ).map( cell => {
+			let element: SyncStoreElement = {
+				__instance__: null,
+				data: null
+			}
+			// element.__instance__ = element
+			element.data = filterJsonDataType( cell )
+			elements.push( element )
+			return element
+		} )
+		
+
+		this.UPDATE_SYNC_STORE_ELEMENTS( elements )
+
+		function filterJsonDataType( object ) {
+			let res = {}
+
+			mapValues( object, ( value, key ) => {
+				if( isBasicJsonDataType( value ) ) {
+					res[key] = value
+				}
+			} )
+
+			return res
 		}
 	}
 

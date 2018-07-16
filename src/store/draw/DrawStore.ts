@@ -15,6 +15,11 @@ export default class DrawStore {
 
 	activePanelId = null
 
+	syncStore: SyncStore = {
+		rootId: '',
+		elements: []
+	}
+
 	panels = [
 		{
 			id      : generateId(),

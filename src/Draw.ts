@@ -84,7 +84,7 @@ export default class Draw {
 		this.actions.UPDATE_TMP_CANVAS( tmpCanvas )
 
 
-		this.actions.UPDATE_DRAW_ROOT_ID()
+		this.actions.INTIALIZE_DRAW_ROOT_ID()
 
 		const testUtils = new TestUtils( this.getters )
 		this.actions.UPDATE_TEST_UTILS( testUtils )
@@ -195,6 +195,16 @@ export default class Draw {
 	}
 
 	importData( dataString ) {
+		const data = JSON.parse( dataString )
+
+		const { rootId, elements } = data
+
+		this.actions.UPDATE_DRAW_ROOT_ID( rootId )
+		
+		elements.map( ( { data } ) => this.actions.ADD_ELEMENT( this, data.type, data, '' ) )
+
+		this.render()
+		return
 		const self = this
 		if ( checkDataString( dataString ) ) {
 			const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
@@ -268,10 +278,16 @@ export default class Draw {
 	}
 
 	exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		this.actions.UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
-		const dataString: string = JSON.stringify(
-			this.getters.clonedStoreWithoutCircularObjects
-		)
+		// this.actions.UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
+		// const dataString: string = JSON.stringify(
+		// 	this.getters.clonedStoreWithoutCircularObjects
+		// )
+
+		this.actions.REFRESH_SYNC_STORE_ROOT_ID()
+		this.actions.REFRESH_SYNC_STORE_ELEMENTS()
+
+		const data = this.drawStore.syncStore
+		const dataString = JSON.stringify( data )
 		download( dataString, `${fileName}.json` )
 	}
 }
