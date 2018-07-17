@@ -86,4 +86,10 @@ export default class Rect extends Path {
 	updateHeight( height ) {
 		this.height = height
 	}
+
+	translate( dx: number, dy: number ) {
+		this.left = this.left + dx
+		this.top = this.top + dy
+		super.translate( dx, dy )
+	}
 }

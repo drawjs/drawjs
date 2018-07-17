@@ -205,6 +205,7 @@ export default class Draw {
 
 		this.render()
 		return
+		
 		const self = this
 		if ( checkDataString( dataString ) ) {
 			const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
