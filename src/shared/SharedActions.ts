@@ -471,4 +471,12 @@ export default class SharedActions {
 	averageMockDragCellPerformanceTest( cell, maxStep: number, count: number, ) {
 		return averagePerformanceTest( () => this.mockDragCellPerformanceTest( cell, maxStep ), count )
 	}
+
+
+	/**
+	 * // Formmater
+	 */
+	forceRemoveFlows( flows ) {
+		flows.map( flow => flow.forceRemove() )
+	}
 }

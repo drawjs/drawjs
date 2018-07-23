@@ -163,6 +163,7 @@ export default class Actions {
 	}
 
 	REMOVE_ELEMENTS( elements: any[] ) {
+		elements.map( element => element && element.remove() )
 		elements.map( this.REMOVE_ELEMENT.bind( this ) )
 	}
 
