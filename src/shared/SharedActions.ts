@@ -477,6 +477,6 @@ export default class SharedActions {
 	 * // Formmater
 	 */
 	forceRemoveFlows( flows ) {
-		flows.map( flow => flow.forceRemove() )
+		flows.map( flow => flow && flow.forceRemove() )
 	}
 }

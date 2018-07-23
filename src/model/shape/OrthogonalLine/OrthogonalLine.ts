@@ -607,12 +607,12 @@ export default class OrthogonalLine extends Item {
 	}
 
 	removeChildrenElements() {
-		this.startLinking.remove()
-		this.endLinking.remove()
 		this.actions.REMOVE_ELEMENTS( [
 			...this.cornerSegments,
 			...this.lines,
-			...this.centerSegments
+			...this.centerSegments,
+			this.startLinking,
+			this.endLinking,
 		] )
 
 		this.startLinking = null
@@ -621,8 +621,8 @@ export default class OrthogonalLine extends Item {
 	}
 
 	forceRemove() {
-		this.startLinking.forceRemove()
-		this.endLinking.forceRemove()
+		this.startLinking && this.startLinking.forceRemove()
+		this.endLinking && this.endLinking.forceRemove()
 		this.removeChildrenElements()
 		this.remove()
 	}
