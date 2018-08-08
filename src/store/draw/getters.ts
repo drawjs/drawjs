@@ -431,17 +431,4 @@ export default class Getters {
 		const { textInput } = this.drawStore
 		return textInput
 	}
-
-
-	/**
-	 * // Export
-	 */
-	get exportingTypes(): string [] {
-		
-		return []
-	}
-	get exportingData(): SyncStore {
-
-		return
-	}
 }
