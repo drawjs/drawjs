@@ -6,6 +6,15 @@ export default class CommonLine extends Line {
 
 	centerSegment: any = null
 
+	renderFnInMiniMap: Function = () => {
+		const { ctx } = this.getters
+		ctx.lineWidth = 5
+		ctx.fillStyle = "#2aaffa"
+		ctx.strokeStyle = "#2aaffa"
+    this.hitRegionPath2d && ctx.fill( this.hitRegionPath2d )
+    this.hitRegionPath2d && ctx.stroke( this.hitRegionPath2d )
+	}
+
 	constructor( props ) {
 		super( props )
 
