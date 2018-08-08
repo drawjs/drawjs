@@ -110,7 +110,7 @@ export default class MiniMap extends Cell {
 		ctx.fillStyle = "#ddd"
 
 		/* render background */
-		ctx.fill( this.path2d )
+		// ctx.fill( this.path2d )
 
 		/* Unexcptional white line occurs because of following code line */
 		// this.renderViewBoxBasicPanel()
