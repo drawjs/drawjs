@@ -108,9 +108,12 @@ export default class MiniMap extends Cell {
 		ctx.save()
 
 		ctx.fillStyle = "#ddd"
+
+		/* render background */
 		ctx.fill( this.path2d )
 
-		this.renderViewBoxBasicPanel()
+		/* Unexcptional white line occurs because of following code line */
+		// this.renderViewBoxBasicPanel()
 
 		if ( isNotNil( this.imageDataInRigion ) ) {
 			ctx.putImageData( this.imageDataInRigion, basicLeft, basicTop )
