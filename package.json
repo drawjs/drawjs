@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/lodash": "^4.14.116",
     "ajv": "^5.5.2",
     "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
@@ -20,7 +21,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "@types/lodash": "^4.14.91",
     "browser-sync": "^2.19.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.3.1",

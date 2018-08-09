@@ -3,16 +3,16 @@ import Curve from "../model/Curve"
 import MathPoint from "../util/math/MathPoint"
 import MathVector from "../util/math/MathVector"
 import { DEFAULT_LENGTH } from "../store/constant/index"
-import Path from '../model/Path';
+import Path from '../model/Path'
 import bezierCurve from "../util/geometry/bezierCurve"
-import { isNil } from "lodash"
 import rotatePoints from "../util/geometry/rotatePoints"
 import getPointsBoundsCenter from "../util/geometry/getPointsBoundsCenter"
 import origin from "../util/geometry/origin"
 import rotate from "../util/geometry/rotate"
 import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
-import Draw from '../Draw';
-import { isLast } from '../util/js/array';
+import Draw from '../Draw'
+import { isLast } from '../util/js/array'
+import { isNil } from "../util/lodash/index"
 
 const { PI, min, max } = Math
 export default class SharedGetters {
@@ -56,7 +56,7 @@ export default class SharedGetters {
 		const res: Point2D = getPointsBoundsCenter( segments )
 		return res
 	}
-	createSegmentByPoint( point: Point2D, draw: Draw, segmentProps: any = {}) {
+	createSegmentByPoint( point: Point2D, draw: Draw, segmentProps: any = {} ) {
 		const { x, y }: Point2D = point
 		const segment: Segment = new Segment( {
 			draw: draw,

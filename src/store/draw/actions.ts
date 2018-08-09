@@ -1,5 +1,4 @@
 import getCellTypeClassMap from "../map/getCellTypeClassMap"
-import { isNil, cloneDeep, intersection, mapValues, isPlainObject, isNumber, isBoolean, isString, isDate, values } from 'lodash';
 import Cell from "../../model/Cell"
 import { isNotNil } from "../../util/index"
 import storeElementFields from "../../store/storeElementFields"
@@ -14,12 +13,12 @@ import SharedActions from "../../shared/SharedActions"
 import MiniMap from "../../model/tool/MiniMap"
 import TestUtils from "../../shared/TestUtils"
 import TextInput from "../../model/tool/TextInput"
-import { notNil } from "../../util/lodash/index"
+import { notNil, isNil, cloneDeep, intersection, mapValues, isPlainObject, isNumber, isBoolean, isString, isDate } from "../../util/lodash/index"
 import { removeElement } from "../../util/js/array"
 import Draw from "../../index"
-import { DRAW, EXPORTABLE } from '../constant/name';
-import isJsonDataType from "../../util/js/isJsonDataType";
-import isBasicJsonDataType from "../../util/js/isBasicJsonDataType";
+import { DRAW, EXPORTABLE } from '../constant/name'
+import isJsonDataType from "../../util/js/isJsonDataType"
+import isBasicJsonDataType from "../../util/js/isBasicJsonDataType"
 
 export default class Actions {
 	drawStore: DrawStore
@@ -240,7 +239,7 @@ export default class Actions {
 		cellList.filter( cell => cell[ EXPORTABLE ] ).map( cell => {
 			let element: SyncStoreElement = {
 				__instance__: null,
-				data: null
+				data        : null
 			}
 			// element.__instance__ = element
 			element.data = filterJsonDataType( cell )
@@ -256,7 +255,7 @@ export default class Actions {
 
 			mapValues( object, ( value, key ) => {
 				if( isBasicJsonDataType( value ) ) {
-					res[key] = value
+					res[ key ] = value
 				}
 			} )
 

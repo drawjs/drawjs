@@ -1,9 +1,7 @@
-import * as _ from "lodash"
 import RotationArrow from "../model/tool/RotationArrow"
-import { isBoolean } from "lodash"
 import SizeContainer from "./tool/SizeContainer"
-import ScalePoint from "./tool/ScalePoint";
-import Geometry from "./Geometry";
+import ScalePoint from "./tool/ScalePoint"
+import Geometry from "./Geometry"
 
 export default abstract class Graph extends Geometry {
 	// SizeContainer: SizeContainer

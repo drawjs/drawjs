@@ -1,26 +1,25 @@
 import Particle from "../model/Particle"
 import DrawStore from "../store/draw/DrawStore"
 import Getters from "../store/draw/Getters"
-import { includes, isNil } from 'lodash';
 import selectionRendererExcludingCellTypes from "../store/exclude/selectionRendererExcludingCellTypes"
 import drawRenderExcludingCellTypes from "../store/exclude/drawRenderExcludingCellTypes"
 import { Cell } from "../model/index"
-import Segment from '../model/Segment';
+import Segment from '../model/Segment'
 import { getRotatedPoint } from "../util/index"
 import Handle from "../model/Handle"
 import distance from "../util/geometry/distance"
 import absolute from "../util/geometry/absolute"
 import Item from "../model/Item"
 import sizePoint from "../util/geometry/sizePoint"
-import origin from "../util/geometry/origin";
-import TextInput from '../model/tool/TextInput';
-import DrawText from '../model/text/DrawText';
-import Path from '../model/Path';
-import { isLast } from '../util/js/array';
-import { clonePoint } from '../util/js/clone';
-import mockDragCellPerformanceTest from "../drawUtil/performance/mockDragCellPerformanceTest";
-import { averagePerformanceTest } from '../util/performance/index';
-import { notNil } from '../util/lodash/index';
+import origin from "../util/geometry/origin"
+import TextInput from '../model/tool/TextInput'
+import DrawText from '../model/text/DrawText'
+import Path from '../model/Path'
+import { isLast } from '../util/js/array'
+import { clonePoint } from '../util/js/clone'
+import mockDragCellPerformanceTest from "../drawUtil/performance/mockDragCellPerformanceTest"
+import { averagePerformanceTest } from '../util/performance/index'
+import { notNil, includes, isNil } from '../util/lodash/index'
 
 /**
  * Feature: Emphasize that one method is couple with other class or classes

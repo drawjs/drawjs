@@ -1,8 +1,7 @@
 import Cell from "../Cell"
-import { notNil } from "../../util/lodash/index"
+import { notNil, isNil } from "../../util/lodash/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
-import { isNil } from "lodash"
 
 export default class DrawImage extends Cell {
 	left: number = 0
@@ -167,7 +166,7 @@ export default class DrawImage extends Cell {
 		this.image.src = src
 	}
 
-	sizeOnCenter( kX: number, kY: number) {
+	sizeOnCenter( kX: number, kY: number ) {
 		const dKX = kX - this.kX
 		const dKY = kY - this.kX
 

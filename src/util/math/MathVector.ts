@@ -1,5 +1,5 @@
-import { isNumber, isPlainObject } from 'lodash';
 import MathPoint from "./MathPoint"
+import { isNumber } from "../lodash/index"
 
 const { sqrt, pow, atan, abs, PI } = Math
 
@@ -30,7 +30,7 @@ export default class MathVector {
 			let res: boolean = false
 			try {
 				res = isNumber( value.x ) && isNumber( value.y )
-			} catch(e) {}
+			} catch( e ) {}
 			return res
 		}
 	}

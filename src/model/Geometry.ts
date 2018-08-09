@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 
 import { generateId } from '../util/index'
 import Cell from '../model/Cell'

@@ -2,7 +2,6 @@
 // import { coupleUpdateZoomPanZoom, coupleUpdateDeltaPointForMiniMap } from "mixin/index"
 // import { renderElement, renderGridMiniMap } from 'shared/index';
 // import { Point } from 'interface/index'
-// import * as _ from "lodash"
 // import { log } from 'util/index';
 
 
