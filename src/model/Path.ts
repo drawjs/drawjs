@@ -8,12 +8,11 @@ import rotate from "../util/geometry/rotate"
 import distance from "../util/geometry/distance"
 import origin from "../util/geometry/origin"
 import getRotatedPoint from "../util/getRotatedPoint"
-import { isNil } from "lodash"
 import isNotNil from "../util/isNotNil"
 import sizePoint from "../util/geometry/sizePoint"
-import { notUndefined, notNil } from "../util/lodash/index"
-import { renderHightlightedPath } from '../drawUtil/render/index';
-import { DEFAULT_LENGTH } from '../store/constant/index';
+import { notUndefined, notNil, isNil } from "../util/lodash/index"
+import { renderHightlightedPath } from '../drawUtil/render/index'
+import { DEFAULT_LENGTH } from '../store/constant/index'
 
 const { min, max } = Math
 

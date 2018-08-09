@@ -1,4 +1,3 @@
-import * as _ from "lodash"
 import { getRotatedPoint } from "../util/index"
 // import { getTransformedPointForContainPoint } from "shared/index"
 

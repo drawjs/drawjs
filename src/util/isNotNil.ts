@@ -1,7 +1,6 @@
-import * as _ from "lodash";
-
+import isNil from "lodash/isNil"
 
 export default function ( value: any ) {
-	const res = ! _.isNil( value )
+	const res = ! isNil( value )
 	return res
 }

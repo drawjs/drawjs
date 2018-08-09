@@ -1,4 +1,3 @@
-import { isNil, find, includes, cloneDeep } from 'lodash';
 import { generateId, isNotNil } from "../../util/index"
 import { Cell } from "../../model/index"
 import Graph from "../../model/Graph"
@@ -11,12 +10,13 @@ import Interaction from "../../core/interaction"
 import Grid from "../../model/tool/Grid"
 import Renderer from "../../model/tool/Renderer"
 import DrawStore from "./DrawStore"
-import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes";
-import MiniMap from '../../model/tool/MiniMap';
-import TestUtils from '../../shared/TestUtils';
-import { MINI_MAP } from "../constant/cellType";
-import TextInput from '../../model/tool/TextInput';
-import { DRAW_ROOT, DRAW_ELEMENT } from '../constant/name';
+import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes"
+import MiniMap from '../../model/tool/MiniMap'
+import TestUtils from '../../shared/TestUtils'
+import { MINI_MAP } from "../constant/cellType"
+import TextInput from '../../model/tool/TextInput'
+import { DRAW_ROOT, DRAW_ELEMENT } from '../constant/name'
+import { cloneDeep, isNil, find, includes } from '../../util/lodash/index'
 
 export default class Getters {
 	drawStore: DrawStore
@@ -103,7 +103,7 @@ export default class Getters {
 
 	get cellListShouldRender(): Cell[] {
 		const { renderingMainCells } = this.miniMap
-		const res: Cell[] = renderingMainCells ? this.cellList.filter( include ).filter( shouldRenderWhenMiniMapRendering ): this.cellList.filter( include )
+		const res: Cell[] = renderingMainCells ? this.cellList.filter( include ).filter( shouldRenderWhenMiniMapRendering ) : this.cellList.filter( include )
 		return res
 
 

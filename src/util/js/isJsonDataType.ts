@@ -1,4 +1,4 @@
-import { isString, isNumber, isBoolean, isNull, isArray, isObject, values } from "lodash";
+import { isArray, isString, isNumber, isBoolean, isNull, isObject, values } from "../lodash/index"
 
 export default function isJsonDataType( value: any ) {
   let res: boolean = false

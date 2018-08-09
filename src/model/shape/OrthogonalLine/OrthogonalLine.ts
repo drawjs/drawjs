@@ -3,7 +3,6 @@ import Line from ".././Line"
 import Path from "../../Path"
 import { isNotNil } from "../../../util/index"
 import Item from "../../Item"
-import { isNil, cloneDeep } from "lodash"
 import { LINE, SEGMENT } from "../../../store/constant/cellType"
 import {
 	isLast,
@@ -12,7 +11,7 @@ import {
 	notLastElement,
 	isFirst
 } from "../../../util/js/array"
-import { isIndexFound, notNil } from "../../../util/lodash/index"
+import { isIndexFound, notNil, isNil } from "../../../util/lodash/index"
 import {
 	isLineVertical,
 	isNextCornerPoint,
@@ -329,39 +328,39 @@ export default class OrthogonalLine extends Item {
 			fillColor     : this.isSimpleLine ?
 				this.innerLineFillColor :
 				this.startLineFillColor,
-			draggable: false,
-			showArrow: isSimpleLine ? showArrow : false,
-			isPart   : true,
+			draggable            : false,
+			showArrow            : isSimpleLine ? showArrow : false,
+			isPart               : true,
 			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
-			addedToBottom: this.addedToBottom,
+			addedToBottom        : this.addedToBottom,
 		} )
 	}
 
 	createEndLine( props: any ) {
 		const { showArrow } = this
 		return new EndLine( {
-			draw          : this.draw,
+			draw                 : this.draw,
 			...props,
-			orthogonalLine: this,
-			fillColor     : this.endLineFillColor,
-			showArrow     : showArrow,
-			draggable     : false,
-			isPart        : true,
+			orthogonalLine       : this,
+			fillColor            : this.endLineFillColor,
+			showArrow            : showArrow,
+			draggable            : false,
+			isPart               : true,
 			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
-			addedToBottom: this.addedToBottom
+			addedToBottom        : this.addedToBottom
 		} )
 	}
 
 	createInnerLine( props: any ) {
 		return new InnerLine( {
-			draw          : this.draw,
+			draw                 : this.draw,
 			...props,
-			orthogonalLine: this,
-			draggable     : false,
-			fillColor     : this.innerLineFillColor,
-			isPart        : true,
+			orthogonalLine       : this,
+			draggable            : false,
+			fillColor            : this.innerLineFillColor,
+			isPart               : true,
 			shouldRenderInMiniMap: this.shouldRenderInMiniMap,
-			addedToBottom: this.addedToBottom
+			addedToBottom        : this.addedToBottom
 		} )
 	}
 

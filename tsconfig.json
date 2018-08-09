@@ -1,24 +1,14 @@
 {
-	"include": [
-		"src/**/*"
-	],
-	"exclude": [
-		"node_modules",
-		"src/__tmp__"
-	],
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "src/__tmp__"],
 	"compilerOptions": {
 		"module": "es6",
 		"target": "es5",
 		"allowJs": true,
 		"outDir": "./build/",
 		"sourceMap": true,
-		"lib": [
-			"dom",
-			"es2016"
-		],
-		"typeRoots": [
-			"../node_modules/@types",
-			"src/typings/**"
-		]
+		"lib": ["dom", "es2016"],
+		"typeRoots": ["../node_modules/@types", "src/typings/**"],
+		"allowSyntheticDefaultImports": true
 	}
 }

@@ -1,5 +1,5 @@
-import { isNumber, isPlainObject, isNil } from 'lodash';
 import MathVector from "./MathVector"
+import { isNumber, isPlainObject, isNil } from '../lodash/index'
 
 const { PI, sin, cos } = Math
 

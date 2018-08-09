@@ -1,12 +1,11 @@
-import Segment from '../../../model/Segment';
+import Segment from '../../../model/Segment'
 import { SEGMENT } from "../../../store/constant/cellType"
-import { notFirst, notLast, isFirst, isLast, notFirstElement, notLastElement } from '../../../util/js/array';
-import OrthogonalLine from '../../../model/shape/OrthogonalLine/OrthogonalLine';
-import Line from '../../../model/shape/Line';
-import { notNil } from '../../../util/lodash/index';
-import { isNil } from 'lodash';
-import StartSegment from '../../../model/shape/OrthogonalLine/StartSegment';
-import EndSegment from '../../../model/shape/OrthogonalLine/EndSegment';
+import { notFirst, notLast, isFirst, isLast, notFirstElement, notLastElement } from '../../../util/js/array'
+import OrthogonalLine from '../../../model/shape/OrthogonalLine/OrthogonalLine'
+import Line from '../../../model/shape/Line'
+import { notNil } from '../../../util/lodash/index'
+import StartSegment from '../../../model/shape/OrthogonalLine/StartSegment'
+import EndSegment from '../../../model/shape/OrthogonalLine/EndSegment'
 
 /**
  * // Constructor

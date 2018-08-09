@@ -1,9 +1,8 @@
 import MathRect from "./MathRect"
 import MathVector from "./MathVector"
 import { allElementsEqual, equalPoint } from "../js/compare"
-import intersect from "../geometry/intersect";
-import { includes } from 'lodash';
-import { notNil } from "../lodash/index";
+import intersect from "../geometry/intersect"
+import { notNil } from "../lodash/index"
 
 const { abs } = Math
 
@@ -120,7 +119,7 @@ export default class MathSegmentLine {
 				}
 
 				if ( this.include( s2 ) && !this.include( t2 ) ) {
-					if ( equalPoint( s1, s2 ) || equalPoint( t1, s2 )) {
+					if ( equalPoint( s1, s2 ) || equalPoint( t1, s2 ) ) {
 						res.point = s2
 					} else {
 						res.isInfinite = true

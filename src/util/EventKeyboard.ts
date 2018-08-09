@@ -1,4 +1,4 @@
-import * as _ from "lodash"
+import { includes, uniq } from "./lodash/index"
 
 
 export default class EventKeyboard {
@@ -11,17 +11,17 @@ export default class EventKeyboard {
 	keyboardKeysPressing = []
 
 	get isAltPressing() {
-		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ALT )
+		const res = includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ALT )
 		return res
 	}
 
 	get isSpacePressing() {
-		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.SPACE )
+		const res = includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.SPACE )
 		return res
 	}
 
 	get isEnterPressing() {
-		const res = _.includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ENTER )
+		const res = includes( this.keyboardKeysPressing, EventKeyboard.KEYBOARD_KEYS.ENTER )
 		return res
 	}
 
@@ -42,7 +42,7 @@ export default class EventKeyboard {
 	}
 
 	_addToKeyboardKeysPressing( key: string ) {
-		this.keyboardKeysPressing = _.uniq( [ ...this.keyboardKeysPressing, key ] )
+		this.keyboardKeysPressing = uniq( [ ...this.keyboardKeysPressing, key ] )
 	}
 
 	_removeFromKeyboardKeysPressing( key: string ) {

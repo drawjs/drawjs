@@ -1,5 +1,3 @@
-import * as _ from "lodash"
-
 import {
 	DRAW_INSTANCE_NAME,
 	DRAW_STORE_PANEL_DEFAULT_NAME,
@@ -25,7 +23,7 @@ import SharedGetters from "./shared/SharedGetters"
 import TestUtils from "./shared/TestUtils"
 import MiniMap from "./model/tool/MiniMap"
 import TextInput from "./model/tool/TextInput"
-import { notNil } from "./util/lodash/index"
+import { notNil, cloneDeep } from "./util/lodash/index"
 import renderBackground from "./util/canvas/renderBackground"
 
 export default class Draw {
@@ -218,7 +216,7 @@ export default class Draw {
 		function addStoreElementsAndInstances(
 			storeCleanElements: DrawStoreWithoutInstance
 		) {
-			const store = _.cloneDeep( storeCleanElements )
+			const store = cloneDeep( storeCleanElements )
 			if ( store && store.panels ) {
 				store.panels.map( resolveElements )
 			}
@@ -244,7 +242,7 @@ export default class Draw {
 		function cleanStoreElements(
 			storeWithoutInstance: DrawStoreWithoutInstance
 		): DrawStoreWithoutInstance {
-			const store = _.cloneDeep( storeWithoutInstance )
+			const store = cloneDeep( storeWithoutInstance )
 			store.panels.map( cleanElements )
 
 			function cleanElements( value, panelIndex: number ) {
