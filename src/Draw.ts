@@ -1,5 +1,4 @@
 import * as _ from "lodash"
-import * as Ajv from "./lib/ajv"
 
 import {
 	DRAW_INSTANCE_NAME,
@@ -29,36 +28,34 @@ import TextInput from "./model/tool/TextInput"
 import { notNil } from "./util/lodash/index"
 import renderBackground from "./util/canvas/renderBackground"
 
-const ajv = new Ajv()
-
 export default class Draw {
 	/**
 	 * Draw store
 	 */
-	drawStore: DrawStore
+	drawStore: DrawStore;
 
 	/**
 	 * Draw getters, based on "drawStore"
 	 */
-	getters: Getters
+	getters: Getters;
 
 	/**
 	 * Draw actions, which mutates "drawStore"
 	 */
-	actions: Actions
+	actions: Actions;
 
 	/**
 	 * Draw shared getters, which isn't based on "drawStore"
 	 */
-	sharedGetters: SharedGetters
+	sharedGetters: SharedGetters;
 
 	/**
 	 * Draw shared actions, which is based on "drawStore" but doesn't mutate "drawStore"
 	 */
-	sharedActions: SharedActions
+	sharedActions: SharedActions;
 
-	onGraphClick: Function
-	onGraphHover: Function
+	onGraphClick: Function;
+	onGraphHover: Function;
 
 	constructor( canvas: HTMLCanvasElement, isExtended: boolean = false ) {
 		if ( !isExtended ) {
@@ -66,7 +63,6 @@ export default class Draw {
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
-
 
 			this._initialize()
 
@@ -76,13 +72,10 @@ export default class Draw {
 	}
 
 	_initialize() {
-		const tmpCanvas: HTMLCanvasElement = document.createElement(
-			"canvas",
-		)
+		const tmpCanvas: HTMLCanvasElement = document.createElement( "canvas" )
 		tmpCanvas.width = 1000
 		tmpCanvas.height = 1000
 		this.actions.UPDATE_TMP_CANVAS( tmpCanvas )
-
 
 		this.actions.INTIALIZE_DRAW_ROOT_ID()
 
@@ -200,43 +193,27 @@ export default class Draw {
 		const { rootId, elements } = data
 
 		this.actions.UPDATE_DRAW_ROOT_ID( rootId )
-		
-		elements.map( ( { data } ) => this.actions.ADD_ELEMENT( this, data.type, data, '' ) )
+
+		elements.map( ( { data } ) =>
+			this.actions.ADD_ELEMENT( this, data.type, data, "" )
+		)
 
 		this.render()
 		return
-		
+
 		const self = this
-		if ( checkDataString( dataString ) ) {
-			const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
-				dataString
-			)
-			const storeWithoutInstanceCleanElements = cleanStoreElements(
-				storeWithoutInstance
-			)
+		const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
+			dataString
+		)
+		const storeWithoutInstanceCleanElements = cleanStoreElements(
+			storeWithoutInstance
+		)
 
-			this.actions.UPDATE_STORE( storeWithoutInstanceCleanElements )
+		this.actions.UPDATE_STORE( storeWithoutInstanceCleanElements )
 
-			addStoreElementsAndInstances( storeWithoutInstance )
+		addStoreElementsAndInstances( storeWithoutInstance )
 
-			this.render()
-		}
-
-		function checkDataString( dataString: string ) {
-			try {
-				const importedData: DrawStoreWithoutInstance = JSON.parse(
-					dataString
-				)
-				const isValid = ajv.validate(
-					SchemaDrawStoreWithoutInstance,
-					importedData
-				)
-				return isValid
-			} catch ( e ) {
-				console.log( e )
-				return false
-			}
-		}
+		this.render()
 
 		function addStoreElementsAndInstances(
 			storeCleanElements: DrawStoreWithoutInstance
@@ -250,8 +227,8 @@ export default class Draw {
 				elements,
 				id: panelId
 			}: {
-				elements: DrawStoreElementWithoutInstance[]
-				id: string
+				elements: DrawStoreElementWithoutInstance[];
+				id: string;
 			} ) {
 				elements.map( addElementToDraw( panelId ) )
 			}
