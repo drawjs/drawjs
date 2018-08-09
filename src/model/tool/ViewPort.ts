@@ -332,4 +332,17 @@ export default class ViewPort extends Particle {
 
 		this.panBy( dx, dy )
 	}
+
+	/**
+	 * Update viewport
+	 */
+	update( zoom: number, center: Point2DCurrent ) {
+		this.zoomTo( zoom )
+
+		const { x, y } = center
+		const { x: cx, y: cy } = this.center
+		const dx = x - cx
+		const dy = y - cy
+		this.panBy( dx, dy )
+	}
 }
