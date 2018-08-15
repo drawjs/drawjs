@@ -2,6 +2,7 @@ import zoomPoint from "../../util/geometry/zoom"
 import isMouseMiddleClick from "../../util/isMouseMiddleClick"
 import { ZOOM_VARIATION, MAX_ZOOM, MIN_ZOOM } from "../../store/constant/index"
 import Particle from "../Particle"
+import { isNumber } from "../../util/lodash/index"
 
 const { abs, max } = Math
 
@@ -301,6 +302,9 @@ export default class ViewPort extends Particle {
 	 */
 	centerLayout( bounds: Bounds ) {
 		const { left, top, right, bottom } = bounds
+		if ( [ left, top, right, bottom ].some( value => !isFinite( value ) ) ) {
+			return
+		}
 		const padding = 100
 		const boundsCenter = {
 			x: ( left + right ) / 2,
