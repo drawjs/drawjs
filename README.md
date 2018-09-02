@@ -34,7 +34,7 @@ import 'ts-draw'
 
 
 ## How to use
-There're many explicit interative examples describing the use of `draw` on the [official website](https://drawjs.github.io).
+There're many explicit interative examples describing the use of `draw` on its [official website](https://drawjs.github.io).
 
 
 ## Example
