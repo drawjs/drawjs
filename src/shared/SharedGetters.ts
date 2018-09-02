@@ -19,7 +19,7 @@ export default class SharedGetters {
 	/**
 	 * // Segment
 	 */
-	getCurves( segments: Segment[], draw ): Curve[] {
+	getCurves( segments: Segment[], useCanvasCurve:boolean, t: number, draw ): Curve[] {
 		const { length } = segments
 
 		if ( length <= 1 ) {
@@ -39,7 +39,9 @@ export default class SharedGetters {
 				draw,
 				segment1,
 				segment2,
-				path
+				path,
+				useCanvasCurve,
+				t
 			} )
 
 			curves.push( curve )

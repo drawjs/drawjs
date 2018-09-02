@@ -1,8 +1,8 @@
-const draw = new Draw( document.getElementById( "canvas" ) )
+const draw = new Draw( document.getElementById( "canvas" ), { showSegments: true } )
 
 draw.addElement( "point", {
-	x: 300,
-	y: 300,
+	x   : 300,
+	y   : 300,
 	fill: 'blue'
 } )
 

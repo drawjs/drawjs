@@ -31,9 +31,12 @@ const instance1 = draw.addElement( "polygon", {
 	showHandle: true,
 	// sizable   : false,
 	// draggable : false,
+	// curveUsesCanvasApi: true,
+	curveRate : 0.2
 // kX: 1,
 // kY: 1
 } )
+
 
 // const instance2 = draw.addElement( "polygon", {
 // 	fill     : "blue",

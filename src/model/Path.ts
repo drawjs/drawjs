@@ -18,7 +18,10 @@ const { min, max } = Math
 
 export default class Path extends PathItem {
 	segments: Segment[] = []
+
 	curves: Curve[] = []
+	curveUsesCanvasApi: boolean
+	curveRate: number
 
 	boundsContainer: BoundsContainer
 
@@ -39,6 +42,9 @@ export default class Path extends PathItem {
 		if ( isNotNil( props.segments ) ) {
 			segments = props.segments
 		}
+
+		this.curveUsesCanvasApi = notNil( props.curveUsesCanvasApi ) ? props.curveUsesCanvasApi : this.curveUsesCanvasApi
+		this.curveRate = notNil( props.curveRate ) ? props.curveRate : this.curveRate
 
 		this.fillColor = notUndefined( props.fillColor ) ?
 			props.fillColor :
@@ -267,7 +273,7 @@ export default class Path extends PathItem {
 		} )
 
 		this.actions.REMOVE_ELEMENTS( this.curves )
-		this.curves = this.sharedGetters.getCurves( this.segments, this.draw )
+		this.curves = this.sharedGetters.getCurves( this.segments, this.curveUsesCanvasApi, this.curveRate,  this.draw )
 	}
 
 	/**

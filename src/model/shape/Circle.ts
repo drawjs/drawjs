@@ -71,11 +71,12 @@ export default class Circle extends Path {
 			}
 
 			// props.points = [ leftCenter, rightCenter ]
-			props.points = getCirclePoints(x, y, r)
+			props.points = getCirclePoints( x, y, r )
 
 			// props.showHandle = true
 			props.sizable = false
 			props.defaultSegmentHandleLength = r * 0.35726558990816404
+			props.curveUsesCanvasApi = true
 
 			return props
 

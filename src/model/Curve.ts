@@ -44,8 +44,11 @@ export default class Curve extends Particle {
 		this.path = props.path
 
 		const { curveUsesCanvasApi, curveRate } = this.drawStore.setting
-		this.useCanvasCurve = notNil( curveUsesCanvasApi ) ? curveUsesCanvasApi : true
-		this.t = notNil( curveRate ) ? curveRate : 0.3
+		this.useCanvasCurve = notNil( curveUsesCanvasApi ) ? curveUsesCanvasApi : false
+		this.useCanvasCurve = notNil( props.useCanvasCurve ) ? props.useCanvasCurve : this.useCanvasCurve
+
+		this.t = notNil( curveRate ) ? curveRate : 1
+		this.t = notNil( props.t ) ? props.t : this.t
 	}
 
 	get point1(): Point2D {
