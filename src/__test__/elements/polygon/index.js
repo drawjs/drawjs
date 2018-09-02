@@ -1,4 +1,6 @@
-const draw = new Draw( document.getElementById( "canvas" ) )
+const draw = new Draw( document.getElementById( "canvas" ), {
+	enableMiniMap: false
+} )
 
 const basicOrigin = {
 	x: 100,
@@ -16,9 +18,9 @@ const basicOrigin = {
 // } )
 
 const instance1 = draw.addElement( "polygon", {
-	fill: "blue",
+	fill     : "blue",
 	// angle    : 0,
-	points: triangle(),
+	points   : triangle(),
 	rotatable: true,
 // kX: 1,
 // kY: 1

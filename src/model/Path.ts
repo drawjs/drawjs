@@ -26,7 +26,7 @@ export default class Path extends PathItem {
 	strokeColor: string = null
 	strokeWidth: number = 1
 
-	showHandle: boolean = false
+	showHandle: boolean = true
 
 	defaultSegmentHandleLength: number = DEFAULT_LENGTH
 

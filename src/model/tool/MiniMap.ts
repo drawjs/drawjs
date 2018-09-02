@@ -1,9 +1,10 @@
 import Cell from "../Cell"
 import zoomPoint from "../../util/geometry/zoom"
 import MiniMapViewBox from "./MiniMapViewBox"
-import { isNotNil } from "../../util/index";
-import { MINI_MAP } from '../../store/constant/cellType';
-import renderBackground from "../../util/canvas/renderBackground";
+import { isNotNil } from "../../util/index"
+import { MINI_MAP } from '../../store/constant/cellType'
+import renderBackground from "../../util/canvas/renderBackground"
+import { notNil } from "../../util/lodash/index"
 
 export default class MiniMap extends Cell {
 	type = MINI_MAP
@@ -13,7 +14,7 @@ export default class MiniMap extends Cell {
 	width: number = 0
 	height: number = 0
 
-	show: boolean = true
+	show: boolean = false
 
 	viewBox: MiniMapViewBox
 
@@ -23,11 +24,13 @@ export default class MiniMap extends Cell {
 
 	preventDefaultCellsRenderInMiniMap: boolean = false
 
-	shouldRender: boolean = false
+	shouldRender: boolean
 
 
 	constructor( props ) {
 		super( props )
+
+		this.shouldRender = notNil( props.shouldRender ) ? props.shouldRender : this.shouldRender
 
 		this.width = 300
 		this.height = 200

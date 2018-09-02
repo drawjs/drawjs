@@ -55,21 +55,23 @@ export default class Draw {
 	onGraphClick: Function;
 	onGraphHover: Function;
 
-	constructor( canvas: HTMLCanvasElement, isExtended: boolean = false ) {
+	constructor( canvas: HTMLCanvasElement, setting: Setting = {} ) {
+		const { isExtended, showMiniMap } = setting
 		if ( !isExtended ) {
 			this.drawStore = new DrawStore()
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
 
-			this._initialize()
+			this._initialize( setting )
 
 			const interaction = new Interaction( { draw: this } )
 			this.actions.UPDATE_INTERACTION( interaction )
+
 		}
 	}
 
-	_initialize() {
+	_initialize( setting: Setting ) {
 		const tmpCanvas: HTMLCanvasElement = document.createElement( "canvas" )
 		tmpCanvas.width = 1000
 		tmpCanvas.height = 1000
@@ -94,7 +96,8 @@ export default class Draw {
 		const selector = new Selector( { draw: this } )
 		this.actions.UPDATE_SELECTOR( selector )
 
-		const miniMap = new MiniMap( { draw: this } )
+		const { showMiniMap: shouldRender } = setting
+		const miniMap = new MiniMap( { draw: this, shouldRender } )
 		this.actions.UPDATE_MINIMAP( miniMap )
 
 		const grid = new Grid( { draw: this, canvas: this.getters.canvas } )
@@ -198,67 +201,9 @@ export default class Draw {
 
 		this.render()
 		return
-
-		const self = this
-		const storeWithoutInstance: DrawStoreWithoutInstance = JSON.parse(
-			dataString
-		)
-		const storeWithoutInstanceCleanElements = cleanStoreElements(
-			storeWithoutInstance
-		)
-
-		this.actions.UPDATE_STORE( storeWithoutInstanceCleanElements )
-
-		addStoreElementsAndInstances( storeWithoutInstance )
-
-		this.render()
-
-		function addStoreElementsAndInstances(
-			storeCleanElements: DrawStoreWithoutInstance
-		) {
-			const store = cloneDeep( storeCleanElements )
-			if ( store && store.panels ) {
-				store.panels.map( resolveElements )
-			}
-
-			function resolveElements( {
-				elements,
-				id: panelId
-			}: {
-				elements: DrawStoreElementWithoutInstance[];
-				id: string;
-			} ) {
-				elements.map( addElementToDraw( panelId ) )
-			}
-
-			function addElementToDraw( panelId: string ) {
-				return props => {
-					const { type } = props
-					self.addElement( type, props, panelId )
-				}
-			}
-		}
-
-		function cleanStoreElements(
-			storeWithoutInstance: DrawStoreWithoutInstance
-		): DrawStoreWithoutInstance {
-			const store = cloneDeep( storeWithoutInstance )
-			store.panels.map( cleanElements )
-
-			function cleanElements( value, panelIndex: number ) {
-				store.panels[ panelIndex ][ "elements" ] = []
-			}
-
-			return store
-		}
 	}
 
 	exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		// this.actions.UPDATE_STORE_ELEMENTS_BY_THEIR_INSTANCES()
-		// const dataString: string = JSON.stringify(
-		// 	this.getters.clonedStoreWithoutCircularObjects
-		// )
-
 		this.actions.REFRESH_SYNC_STORE_ROOT_ID()
 		this.actions.REFRESH_SYNC_STORE_ELEMENTS()
 
