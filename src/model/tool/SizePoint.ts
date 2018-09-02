@@ -3,6 +3,7 @@ import SizePoints from "./SizePoints"
 import Item from "../Item"
 import SizeUtils from "../../shared/SizeUtils"
 import { SIZE_POINT } from "../../store/constant/cellType"
+import { notNil } from "../../util/lodash/index"
 
 const { PI } = Math
 
@@ -18,7 +19,7 @@ export abstract class SizePoint extends Cell {
 	}
 
 	get sizable(): boolean {
-		return this.target.sizable
+		return this.target && this.target.sizable
 	}
 
 	get path2d(): Path2D {
@@ -44,7 +45,7 @@ export abstract class SizePoint extends Cell {
 	}
 
 	get target(): Item {
-		return this.sizePoints.target
+		return notNil( this.sizePoints ) ? this.sizePoints.target : null
 	}
 
 	get targetUnitKX(): number {

@@ -19,7 +19,7 @@ export default class SizeContainer extends Particle {
 	}
 
 	get targetSizable(): boolean {
-		return this.target.sizable
+		return this.target && this.target.sizable
 	}
 
 	get radian(): number {

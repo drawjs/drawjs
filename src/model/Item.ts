@@ -23,11 +23,12 @@ export default abstract class Item extends Cell {
 	/**
 	 * Be able to size
 	 */
-	sizable: boolean = true
+	sizable: boolean
 
 	constructor( props ) {
 		super( props )
 
+		this.sizable = notNil( props.sizable ) ? props.sizable : this.sizable
 		if ( this.sizable ) {
 			this.sizeContainer = new SizeContainer( {
 				draw  : this.draw,
@@ -38,7 +39,7 @@ export default abstract class Item extends Cell {
 		/**
 		 * // Rotation
 		 */
-		this.rotatable = notNil( props.rotatable ) ? props.rotatable : true
+		this.rotatable = notNil( props.rotatable ) ? props.rotatable : this.rotatable
 		if ( this.rotatable ) {
 			this.rotationArrow = new RotationArrow( {
 				draw  : this.draw,
@@ -241,12 +242,12 @@ export default abstract class Item extends Cell {
 	renderTransformWidget() {
 		const { shouldSelect } = this
 
-		if ( shouldSelect ) {
+		if ( shouldSelect && this.sizeContainer && this.sizePoints ) {
 			this.sizeContainer.render()
 			this.sizePoints.render()
 		}
 
-		if ( this.rotationArrow && this.rotationArrow.shouldRender ) {
+		if ( this.rotationArrow && this.rotationArrow.shouldRender && this.sizeContainer && this.rotationArrow ) {
 			this.sizeContainer.render()
 			this.rotationArrow.render()
 		}

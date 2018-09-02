@@ -1,7 +1,7 @@
 // 将设置放入此文件中以覆盖默认设置
 {
 	// eslint
-	"eslint.autoFixOnSave": true,
+  "eslint.autoFixOnSave": true,
 	"eslint.validate": [
 	  "javascript",
 	  { "language": "typescript", "autoFix": true },

@@ -23,7 +23,7 @@ const instance1 = draw.addElement( "polygon", {
 	points    : triangle(),
 	rotatable : false,
 	showHandle: false,
-	sizable   : false,
+	sizable   : true,
 // kX: 1,
 // kY: 1
 } )

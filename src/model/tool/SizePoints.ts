@@ -2,7 +2,7 @@ import SizeContainer from "./SizeContainer"
 import Particle from "../Particle"
 import Cell from "../Cell"
 import Item from "../Item"
-import { SizePoint } from './SizePoint';
+import { SizePoint } from './SizePoint'
 import {
 	LeftTop,
 	Top,
@@ -13,6 +13,7 @@ import {
 	Bottom,
 	RightBottom
 } from "./SizePoint"
+import { notNil } from "../../util/lodash/index"
 
 export default class SizePoints extends Particle {
 	sizeContainer: SizeContainer
@@ -45,7 +46,7 @@ export default class SizePoints extends Particle {
 	}
 
 	get target(): Item {
-		return this.sizeContainer.target
+		return  notNil( this.sizeContainer ) ? this.sizeContainer.target : null
 	}
 
 	get targetSizable(): boolean {
