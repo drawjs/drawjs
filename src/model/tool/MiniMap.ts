@@ -113,10 +113,10 @@ export default class MiniMap extends Cell {
 
 
 		/* render background */
-		ctx.fillStyle = "#20232a"
+		ctx.fillStyle = "#181b20"
 		ctx.fill( this.path2d )
 
-		ctx.strokeStyle = "#20232a"
+		ctx.strokeStyle = "#181b20"
 		ctx.stroke( this.path2d )
 
 		/* Unexcptional white line occurs because of following code line */

@@ -1,9 +1,10 @@
 const draw = new Draw( document.getElementById( "canvas" ), {
 	showSegments: true,
-	showMiniMap : true,
+	
 	// curveUsesCanvasApi: false,
 	// curveRate         : 0.5,
 
+  showMiniMap  : true,
 	miniMapWidth : 100,
 	miniMapHeight: 80,
 } )
@@ -12,15 +13,6 @@ const basicOrigin = {
 	x: 100,
 	y: 100
 }
-
-draw.addElement( 'text', {
-	text     : 'M Yy text',
-	x        : 100,
-	y        : 100,
-	fontSize : 50,
-	fillColor: 'deepSkyBlue',
-} )
-
 
 const instance1 = draw.addElement( "polygon", {
 fill     : "blue",
