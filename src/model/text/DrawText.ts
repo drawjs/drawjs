@@ -27,11 +27,21 @@ export default class DrawText extends Cell {
 	}
 
 	get width(): number {
+		const { fontSize } = this
+		const { ctx } = this.getters
+		ctx.textBaseline = 'bottom'
+		ctx.textAlign = "center"
+		ctx.font = `${ fontSize }px sans-serif`
 		return this.getters.ctx.measureText( this.text ).width
 	}
 
 	get height(): number {
-		return this.fontSize
+		const { fontSize } = this
+		const { ctx } = this.getters
+		ctx.textBaseline = 'bottom'
+		ctx.textAlign = "center"
+		ctx.font = `${ fontSize }px Arial`
+		return ctx.measureText( 'yy' ).width
 	}
 
 	get path2d(): Path2D {
@@ -68,12 +78,14 @@ export default class DrawText extends Cell {
 
 			ctx.save()
 
+			ctx.textBaseline = 'bottom'
 			ctx.textAlign = "center"
-			ctx.strokeStyle = "#0de2c6"
+
+			// ctx.strokeStyle = "#0de2c6"
 			// ctx.stroke( this.path2d )
 
 			ctx.fillStyle = this.fillColor
-			ctx.font = `${fontSize}px`
+			ctx.font = `${ fontSize }px sans-serif`
 			ctx.fillText( text, x, y )
 
 			ctx.restore()
