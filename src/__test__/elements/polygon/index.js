@@ -1,5 +1,7 @@
 const draw = new Draw( document.getElementById( "canvas" ), {
-	enableMiniMap: false
+	enableMiniMap     : false,
+	curveUsesCanvasApi: false,
+	// curveRate         : 0.5
 } )
 
 const basicOrigin = {
@@ -23,7 +25,8 @@ const instance1 = draw.addElement( "polygon", {
 	points    : triangle(),
 	rotatable : false,
 	showHandle: false,
-	sizable   : true,
+	sizable   : false,
+	draggable : false,
 // kX: 1,
 // kY: 1
 } )

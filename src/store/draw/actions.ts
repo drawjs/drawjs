@@ -68,6 +68,10 @@ export default class Actions {
 		this.drawStore.rootId = rootId
 	}
 
+	UPDATE_SETTING( setting: Setting ) {
+		this.drawStore.setting = setting
+	}
+
 	/**
 	 * View port
 	 */

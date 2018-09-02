@@ -7,7 +7,8 @@ import MathVector from "../util/math/MathVector"
 import Path from "./Path"
 import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
 import rotate from "../util/geometry/rotate"
-import origin from "../util/geometry/origin";
+import origin from "../util/geometry/origin"
+import { notNil } from "../util/lodash/index"
 
 const { PI } = Math
 
@@ -22,13 +23,12 @@ export default class Curve extends Particle {
 
 	path: Path
 
-	useCanvasCurve: boolean = true
-	// useCanvasCurve: boolean = false
+	useCanvasCurve: boolean
 
 	/**
 	 * Beizer variable, which determines curve's smooth degree
 	 */
-	t = 0.001
+	t
 
 	constructor( props ) {
 		super( props )
@@ -42,6 +42,10 @@ export default class Curve extends Particle {
 		this.handle2 = this.segment2.handleIn
 
 		this.path = props.path
+
+		const { curveUsesCanvasApi, curveRate } = this.drawStore.setting
+		this.useCanvasCurve = notNil( curveUsesCanvasApi ) ? curveUsesCanvasApi : true
+		this.t = notNil( curveRate ) ? curveRate : 0.3
 	}
 
 	get point1(): Point2D {

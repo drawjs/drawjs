@@ -62,8 +62,9 @@ export default class Draw {
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
+			this.actions.UPDATE_SETTING( setting )
 
-			this._initialize( setting )
+			this._initialize()
 
 			const interaction = new Interaction( { draw: this } )
 			this.actions.UPDATE_INTERACTION( interaction )
@@ -71,7 +72,7 @@ export default class Draw {
 		}
 	}
 
-	_initialize( setting: Setting ) {
+	_initialize() {
 		const tmpCanvas: HTMLCanvasElement = document.createElement( "canvas" )
 		tmpCanvas.width = 1000
 		tmpCanvas.height = 1000
@@ -96,7 +97,7 @@ export default class Draw {
 		const selector = new Selector( { draw: this } )
 		this.actions.UPDATE_SELECTOR( selector )
 
-		const { showMiniMap: shouldRender } = setting
+		const { showMiniMap: shouldRender } = this.drawStore.setting
 		const miniMap = new MiniMap( { draw: this, shouldRender } )
 		this.actions.UPDATE_MINIMAP( miniMap )
 
