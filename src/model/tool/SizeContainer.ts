@@ -49,7 +49,7 @@ export default class SizeContainer extends Particle {
 			ctx.save()
 
 			ctx.lineWidth = 1
-			ctx.strokeStyle = "blue"
+			ctx.strokeStyle = "#5FB3B3"
 			ctx.stroke( this.path2d )
 
 			ctx.restore()

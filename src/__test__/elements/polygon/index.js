@@ -23,15 +23,15 @@ draw.addElement( 'text', {
 
 
 const instance1 = draw.addElement( "polygon", {
-fill      : "blue",
+fill     : "blue",
 	// angle    : 0,
-	points    : triangle(),
-	// rotatable : false,
-	showHandle: true,
-	// sizable   : false,
+	points   : triangle(),
+	rotatable: true,
+	sizable  : true,
+	// showHandle: true,
 	// draggable : false,
 	// curveUsesCanvasApi: true,
-	curveRate : 0.2
+	curveRate: 0.2,
 // kX: 1,
 // kY: 1
 } )

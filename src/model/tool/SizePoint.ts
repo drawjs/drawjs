@@ -60,7 +60,7 @@ export abstract class SizePoint extends Cell {
 		const { ctx } = this.getters
 
 		ctx.save()
-		ctx.fillStyle = "black"
+		ctx.fillStyle = "#3b99fc"
 		ctx.fill( this.path2d )
 		ctx.restore()
 	}
