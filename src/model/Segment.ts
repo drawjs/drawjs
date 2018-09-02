@@ -30,7 +30,7 @@ export default class Segment extends Cell {
 
 	path: Path
 
-	fillColor: string = "#4a86e8"
+	fillColor: string = "deepSkyBlue"
 
 	defaultHandleLength: number = DEFAULT_LENGTH
 

@@ -32,9 +32,10 @@ export default class MiniMap extends Cell {
 
 		this.shouldRender = notNil( props.shouldRender ) ? props.shouldRender : this.shouldRender
 
-		this.width = 300
-		this.height = 200
-		this.left = 0
+		const { miniMapWidth, miniMapHeight } = this.drawStore.setting
+		this.width = notNil( miniMapWidth ) ? miniMapWidth : 300
+		this.height = notNil( miniMapHeight ) ? miniMapHeight : 200
+		this.left = this.getters.canvasRight - this.width
 		this.top = this.getters.canvasHeight - this.height
 
 		this.viewBox = new MiniMapViewBox( { draw: this.draw, miniMap: this } )
@@ -110,10 +111,13 @@ export default class MiniMap extends Cell {
 
 		ctx.save()
 
-		ctx.fillStyle = "#ddd"
 
 		/* render background */
-		// ctx.fill( this.path2d )
+		ctx.fillStyle = "#20232a"
+		ctx.fill( this.path2d )
+
+		ctx.strokeStyle = "#20232a"
+		ctx.stroke( this.path2d )
 
 		/* Unexcptional white line occurs because of following code line */
 		// this.renderViewBoxBasicPanel()

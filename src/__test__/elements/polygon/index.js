@@ -1,8 +1,11 @@
 const draw = new Draw( document.getElementById( "canvas" ), {
-	// showSegments: true,
-	// enableMiniMap     : false,
+	showSegments: true,
+	showMiniMap : true,
 	// curveUsesCanvasApi: false,
-	// curveRate         : 0.5
+	// curveRate         : 0.5,
+
+	miniMapWidth : 100,
+	miniMapHeight: 80,
 } )
 
 const basicOrigin = {
@@ -21,11 +24,11 @@ const basicOrigin = {
 // } )
 
 const instance1 = draw.addElement( "polygon", {
-	fill  : "blue",
+	fill      : "blue",
 	// angle    : 0,
-	points: triangle(),
+	points    : triangle(),
 	// rotatable : false,
-	// showHandle: false,
+	showHandle: true,
 	// sizable   : false,
 	// draggable : false,
 // kX: 1,

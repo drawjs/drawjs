@@ -5,5 +5,8 @@ interface Setting {
   showSegments?: boolean
 
   curveUsesCanvasApi?: boolean
-  curveRate?: number 
+  curveRate?: number,
+
+  miniMapWidth?: number,
+  miniMapHeight?: number,
 }

@@ -22,7 +22,7 @@ export default class Path extends PathItem {
 
 	boundsContainer: BoundsContainer
 
-	fillColor: string = "#8cccf0"
+	fillColor: string = "#61dafb"
 	strokeColor: string = null
 	strokeWidth: number = 1
 
@@ -163,7 +163,7 @@ export default class Path extends PathItem {
 		ctx.save()
 
 		if ( notNil( fillColor ) ) {
-			ctx.fillStyle = notUndefined( fillColor ) ? fillColor : "#8cccf0"
+			ctx.fillStyle = notUndefined( fillColor ) ? fillColor : "#61dafb"
 			ctx.fill( this.path2d )
 		}
 

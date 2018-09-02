@@ -8,7 +8,7 @@ import {
 import Dragger from "./tool/Dragger"
 import { Cell } from "./index"
 import distance from "../util/geometry/distance"
-import { notNil } from '../util/lodash/index';
+import { notNil } from '../util/lodash/index'
 
 const { cos, sin, PI } = Math
 
@@ -140,7 +140,7 @@ export default class Handle extends Cell {
 		const { linePath } = this
 		ctx.save()
 
-		ctx.strokeStyle = "#4a86e8"
+		ctx.strokeStyle = "deepSkyBlue"
 		ctx.stroke( linePath )
 
 		ctx.restore()
@@ -152,7 +152,7 @@ export default class Handle extends Cell {
 
 		ctx.save()
 
-		ctx.fillStyle = this.type === HandleType.HANDLE_IN ? "red" : "blue"
+		ctx.fillStyle = this.type === HandleType.HANDLE_IN ? "#fc929e" : "#79b6f2"
 		ctx.fill( pointPath )
 
 		ctx.restore()
