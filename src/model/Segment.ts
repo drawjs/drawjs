@@ -1,10 +1,10 @@
 import Particle from "./Particle"
 import Handle from "./Handle"
-import { HandleType, DEFAULT_LENGTH } from '../store/constant/index';
+import { HandleType, DEFAULT_LENGTH } from '../store/constant/index'
 import Cell from "./Cell"
 import Path from "./Path"
 import { isNotNil } from "../util/index"
-import { notNil } from '../util/lodash/index';
+import { notNil } from '../util/lodash/index'
 
 const { PI } = Math
 
@@ -12,7 +12,7 @@ export default class Segment extends Cell {
 	x: number
 	y: number
 
-	show: boolean = true
+	show: boolean = false
 
 	selected: boolean = false
 
@@ -43,25 +43,29 @@ export default class Segment extends Cell {
 		this.y = props.y
 
 		this.path = notNil( props.path ) ? props.path : this.path
+
 		this.show = notNil( props.show ) ? props.show : this.show
+		const { showSegments } = this.drawStore.setting
+		this.show = notNil( showSegments ) ? showSegments : this.show
+
 		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
 		this.defaultHandleLength = notNil( props.defaultHandleLength ) ? props.defaultHandleLength : this.defaultHandleLength
 		this.showHandle = notNil( props.showHandle ) ? props.showHandle : this.showHandle
 
 
 		this.handleIn = new Handle( {
-			draw   : this.draw,
-			segment: this,
-			type   : HandleType.HANDLE_IN,
+			draw         : this.draw,
+			segment      : this,
+			type         : HandleType.HANDLE_IN,
 			defaultLength: this.defaultHandleLength,
-			show: this.showHandle
+			show         : this.showHandle
 		} )
 		this.handleOut = new Handle( {
-			draw   : this.draw,
-			segment: this,
-			type   : HandleType.HANDLE_OUT,
+			draw         : this.draw,
+			segment      : this,
+			type         : HandleType.HANDLE_OUT,
 			defaultLength: this.defaultHandleLength,
-			show: this.showHandle
+			show         : this.showHandle
 		} )
 
 		this.handleIn.partner = this.handleOut
