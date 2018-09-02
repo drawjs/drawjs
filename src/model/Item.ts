@@ -3,6 +3,7 @@ import SizeContainer from "../model/tool/SizeContainer"
 import RotationArrow from "./tool/RotationArrow"
 import rotate from "../util/geometry/rotate"
 import SizePoints from "./tool/SizePoints"
+import { notNil } from "../util/lodash/index"
 
 const { abs } = Math
 
@@ -13,7 +14,7 @@ export default abstract class Item extends Cell {
 	/**
 	 * // Rotation
 	 */
-	rotatable: boolean = true
+	rotatable: boolean
 	rotationArrow: RotationArrow
 
 	/**
@@ -37,6 +38,7 @@ export default abstract class Item extends Cell {
 		/**
 		 * // Rotation
 		 */
+		this.rotatable = notNil( props.rotatable ) ? props.rotatable : true
 		if ( this.rotatable ) {
 			this.rotationArrow = new RotationArrow( {
 				draw  : this.draw,
@@ -244,7 +246,7 @@ export default abstract class Item extends Cell {
 			this.sizePoints.render()
 		}
 
-		if ( this.rotationArrow.shouldRender ) {
+		if ( this.rotationArrow && this.rotationArrow.shouldRender ) {
 			this.sizeContainer.render()
 			this.rotationArrow.render()
 		}
