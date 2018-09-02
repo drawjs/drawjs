@@ -47,8 +47,8 @@ export default class Curve extends Particle {
 		this.useCanvasCurve = notNil( curveUsesCanvasApi ) ? curveUsesCanvasApi : false
 		this.useCanvasCurve = notNil( props.useCanvasCurve ) ? props.useCanvasCurve : this.useCanvasCurve
 
-		this.t = notNil( curveRate ) ? curveRate : 1
-		this.t = notNil( props.t ) ? props.t : this.t
+		this.t = notNil( curveRate ) && curveRate !== 0 ? curveRate : 1
+		this.t = notNil( props.t ) && props.t !== 0 ? props.t : this.t
 	}
 
 	get point1(): Point2D {
