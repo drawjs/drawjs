@@ -4,9 +4,12 @@ import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import TextInput from "../tool/TextInput"
+import { EXPORTABLE } from "../../store/constant/name"
 
 export default class DrawText extends Cell {
 	type = TEXT
+
+	
 
 	x: number = 0
 	y: number = 0
@@ -16,6 +19,7 @@ export default class DrawText extends Cell {
 	fontSize: number = DrawText.DEFAULT_FONT_SIZE
 
 	static DEFAULT_FONT_SIZE = 12
+
 
 	constructor( props ) {
 		super( props )

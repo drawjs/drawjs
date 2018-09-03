@@ -60,5 +60,9 @@ export default class DrawStore {
 	 * Input that updates the text of Text element
 	 */
 	textInput: TextInput = null
+
+	constructor( draw: Draw ) {
+		this.draw = draw
+	}
 }
 

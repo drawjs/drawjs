@@ -2,13 +2,12 @@ import { POLYLINE } from "../../store/constant/cellType"
 import Segment from "../Segment"
 import getLineRotatableBounds from "../../util/geometry/getLineRotatableBounds"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
-import Line from './Line';
-import getArrowPoints from "../../util/geometry/getArrowPoints";
+import Line from './Line'
+import getArrowPoints from "../../util/geometry/getArrowPoints"
+import { EXPORTABLE } from "../../store/constant/name"
 
 export default class Polyline extends Line {
 	type: string = POLYLINE
-
-
 	constructor( props: PolylineProps ) {
 		super( props )
 	}

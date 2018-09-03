@@ -3,6 +3,7 @@ import { RECT } from "../../store/constant/cellType"
 import { isNotNil } from "../../util/index"
 import getRectPoints from "../../util/getRectPoints"
 import { notUndefined, notNil } from "../../util/lodash/index"
+import { EXPORTABLE } from "../../store/constant/name"
 
 export default class Rect extends Path {
 	type = RECT

@@ -39,6 +39,7 @@ import { clonePoints } from "../../../util/js/clone"
 import { firstElement, lastElement } from "../../../util/js/array"
 import StartLinking from "./StartLinking"
 import EndLinking from "./EndLinking"
+import { EXPORTABLE } from "../../../store/constant/name"
 
 const { abs, min, max } = Math
 
@@ -74,6 +75,7 @@ export default class OrthogonalLine extends Item {
 	static COMBINE_INTERVAL = 10
 
 	addedToBottom: boolean = false
+
 
 	constructor( props ) {
 		super( props )

@@ -1,10 +1,10 @@
-import Draw from "../index";
-import DrawStore from "../store/draw/DrawStore";
-import Getters from "../store/draw/Getters";
-import Actions from "../store/draw/Actions";
-import SharedActions from '../shared/SharedActions';
-import SharedGetters from '../shared/SharedGetters';
-import TestUtils from "../shared/TestUtils";
+import Draw from "../index"
+import DrawStore from "../store/draw/DrawStore"
+import Getters from "../store/draw/Getters"
+import Actions from "../store/draw/Actions"
+import SharedActions from '../shared/SharedActions'
+import SharedGetters from '../shared/SharedGetters'
+import TestUtils from "../shared/TestUtils"
 
 export default class Particle {
 	draw: Draw

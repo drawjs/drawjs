@@ -8,6 +8,7 @@ import getArrowPoints from "../../util/geometry/getArrowPoints"
 import { notNil } from "../../util/lodash/index"
 import { LINE_DEFAULT_COLOR } from "../../store/constant/color"
 import { renderHightlightedPath } from "../../drawUtil/render/index"
+import { EXPORTABLE } from "../../store/constant/name"
 
 export default class Line extends Path {
 	type = LINE

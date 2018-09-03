@@ -1,9 +1,11 @@
 const draw = new Draw( document.getElementById( 'canvas' ) )
+const uploadButton = document.getElementById( 'uploadButton' )
 
 function onFileInputChange( callback ) {
     try {
         const reader = new FileReader()
         function onReaderLoad( event ) {
+            uploadButton.value = ''
             callback( event.target.result )
         }
         reader.onload = onReaderLoad

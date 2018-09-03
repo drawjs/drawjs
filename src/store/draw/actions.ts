@@ -107,55 +107,45 @@ export default class Actions {
 		this.drawStore[ "textInput" ] = textInput
 	}
 
-	ADD_ELEMENT(
-		draw: Draw,
-		elementType: string,
-		setting: any,
-		panelId?: string
-	) {
-		
-
+	ADD_ELEMENT( type: string, props: any = {} ) {	
 		const cellTypeClassMap = getCellTypeClassMap()
-		const ElementClass = cellTypeClassMap[ elementType ]
+		const ElementClass = cellTypeClassMap[ type ]
 
 		if ( isNil( ElementClass ) ) {
-			console.log( `Type not found: "${elementType}"` )
+			console.log( `Type not found: "${type}"` )
 			return
 		}
-		const instance = new ElementClass( {
-			draw,
-			...setting
-		} )
+		const instance = new ElementClass( props )
 
 		instance[ EXPORTABLE ] = true
 
-		const exportableData = getExportableData( instance )
-		const wholeElement: any = {
-			__instance__: instance,
-			...exportableData
-		}
+		// const exportableData = getExportableData( instance )
+		// const wholeElement: any = {
+		// 	__instance__: instance,
+		// 	// ...exportableData
+		// }
 
-		if ( isNil( panelId ) ) {
-			this.getters.storeActiveElements.push( wholeElement )
-		}
+		// if ( isNil( panelId ) ) {
+		// 	this.getters.storeActiveElements.push( wholeElement )
+		// }
 
-		if ( !isNil( panelId ) ) {
-			this.getters.getStoreElementsByPanelId( panelId ).push( wholeElement )
-		}
+		// if ( !isNil( panelId ) ) {
+		// 	this.getters.getStoreElementsByPanelId( panelId ).push( wholeElement )
+		// }
 
 		return instance
 
-		function getExportableData( instance: any ) {
-			let res = {}
-			mapValues( instance, resolve )
+		// function getExportableData( instance: any ) {
+		// 	let res = {}
+		// 	mapValues( instance, resolve )
 
-			function resolve( value, key ) {
-				if ( isPlainObject( value ) || isNumber( value ) || isString( value ) || isBoolean( value ) || isDate( value ) || isNil( value ) ) {
-					res[ key ] = value
-				}
-			}
-			return res
-		}
+		// 	function resolve( value, key ) {
+		// 		if ( isPlainObject( value ) || isNumber( value ) || isString( value ) || isBoolean( value ) || isDate( value ) || isNil( value ) ) {
+		// 			res[ key ] = value
+		// 		}
+		// 	}
+		// 	return res
+		// }
 	}
 
 	REMOVE_ELEMENT( element: any ) {

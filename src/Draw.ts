@@ -58,7 +58,7 @@ export default class Draw {
 	constructor( canvas: HTMLCanvasElement, setting: Setting = {} ) {
 		const { isExtended, showMiniMap } = setting
 		if ( !isExtended ) {
-			this.drawStore = new DrawStore()
+			this.drawStore = new DrawStore( this )
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
@@ -177,8 +177,8 @@ export default class Draw {
 		this.getters.selector.render()
 	}
 
-	addElement( type: string, setting: any, panelId?: string ) {
-		return this.actions.ADD_ELEMENT( this, type, setting, panelId )
+	addElement( type: string, props: any = {} ) {
+		return this.actions.ADD_ELEMENT( type, { ...props, draw: this } )
 	}
 
 	removeElement( element: any ) {
@@ -192,24 +192,35 @@ export default class Draw {
 	importData( dataString ) {
 		const data = JSON.parse( dataString )
 
-		const { rootId, elements } = data
+		const { rootId, elements, zoom, center } = data
 
-		this.actions.UPDATE_DRAW_ROOT_ID( rootId )
+		if (
+			notNil( rootId ) &&
+			notNil( elements )
+		) {
+			this.actions.UPDATE_DRAW_ROOT_ID( rootId )
 
-		elements.map( ( { data } ) =>
-			this.actions.ADD_ELEMENT( this, data.type, data, "" )
-		)
+			// create elements
+			elements.forEach( ( element ) => {
+				const { type } = element
+				this.addElement( type, element )
+			} )
 
+			// Recover viewport
+			if ( notNil( zoom ) && notNil( center ) ) {
+				this.drawStore.viewPort.update( zoom, center )
+      }
+		}
 		this.render()
-		return
 	}
 
 	exportData( fileName: string = getDefaultDrawExportFileName() ) {
-		this.actions.REFRESH_SYNC_STORE_ROOT_ID()
-		this.actions.REFRESH_SYNC_STORE_ELEMENTS()
+		// this.actions.REFRESH_SYNC_STORE_ROOT_ID()
+		// this.actions.REFRESH_SYNC_STORE_ELEMENTS()
 
-		const data = this.drawStore.syncStore
-		const dataString = JSON.stringify( data )
+		const { exportingData } = this.getters
+		// console.log( exportingData )
+		const dataString = JSON.stringify( exportingData )
 		download( dataString, `${fileName}.json` )
 	}
 }

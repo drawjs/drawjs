@@ -13,10 +13,11 @@ import DrawStore from "./DrawStore"
 import drawRenderExcludingCellTypes from "../exclude/drawRenderExcludingCellTypes"
 import MiniMap from '../../model/tool/MiniMap'
 import TestUtils from '../../shared/TestUtils'
-import { MINI_MAP } from "../constant/cellType"
+import { MINI_MAP, POLYGON } from "../constant/cellType"
 import TextInput from '../../model/tool/TextInput'
-import { DRAW_ROOT, DRAW_ELEMENT } from '../constant/name'
-import { cloneDeep, isNil, find, includes } from '../../util/lodash/index'
+import { DRAW_ROOT, DRAW_ELEMENT, EXPORTABLE } from '../constant/name'
+import { cloneDeep, isNil, find, includes, mapValues, isPlainObject, isArray, notNil } from '../../util/lodash/index'
+import isBasicJsonDataType from "../../util/js/isBasicJsonDataType"
 
 export default class Getters {
 	drawStore: DrawStore
@@ -430,5 +431,60 @@ export default class Getters {
 	get textInput(): TextInput {
 		const { textInput } = this.drawStore
 		return textInput
+	}
+
+
+	/**
+	 * Export
+	 */
+	get exportingElements(): any[] {
+		return this.drawStore.cellList.filter( element => {
+			return element && element[ EXPORTABLE ]
+		} ).map( element => {
+			let res: any = {}
+
+				// Special situation
+				const { type, points } = element
+				if ( notNil( points ) ) {
+					res[ 'points' ] = points
+				}
+
+        mapValues( element, ( value, key ) => {
+          // if ( isBasicJsonDataType( value ) || isPlainObject( value ) ) {
+          //   res[ key ] = value
+					// }
+					res[ key ] = recurToGetValidValue( value )
+        } )
+
+        return res
+		} )
+
+		function recurToGetValidValue( value ) {
+			if ( isBasicJsonDataType( value ) || isPlainObject( value ) ) {
+				return value
+			}
+
+			if ( isArray( value ) && isValidArray( value )  ) {
+				value.map( el => recurToGetValidValue( el ) )
+			}
+
+			return null
+		}
+
+		function isValidArray( array ) {
+			return array.every( el => isBasicJsonDataType( el ) || isPlainObject( el ) )
+		}
+	}
+
+	get exportingData(): ExportingData {
+		const { rootId, viewPort } = this.drawStore
+		const { zoom, center } = viewPort
+		const { exportingElements: elements } = this
+		return {
+			rootId,
+			zoom,
+			center,
+			elements
+		}
 	}
 }

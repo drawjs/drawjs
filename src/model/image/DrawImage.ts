@@ -2,6 +2,7 @@ import Cell from "../Cell"
 import { notNil, isNil } from "../../util/lodash/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
+import { EXPORTABLE } from "../../store/constant/name"
 
 export default class DrawImage extends Cell {
 	left: number = 0
@@ -17,7 +18,6 @@ export default class DrawImage extends Cell {
 	static DEFAULT_HEIGHT = 0
 
 	interfaceOnImageLoaded: Function
-
 	constructor( props ) {
 		super( props )
 

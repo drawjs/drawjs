@@ -2,6 +2,7 @@ import Path from "../Path"
 import { CIRCLE } from "../../store/constant/cellType"
 import { notNil } from "../../util/lodash/index"
 import getRectPoints from "../../util/getRectPoints"
+import { EXPORTABLE } from "../../store/constant/name"
 
 const { sin, cos, PI } = Math
 
@@ -11,25 +12,29 @@ export default class Circle extends Path {
 	x: number = Circle.DEFAULT_CX
 	y: number = Circle.DEFAULT_CY
 
-	radius: number = Circle.DEFAULT_RADIUS
+
+	radius: number 
 
 	static DEFAULT_CX = 0
 	static DEFAULT_CY = 0
 	static DEFAULT_RADIUS = 200
 
+
 	/**
 	 * Override
 	 */
 	// t = 1
+	
+
 
 	constructor( props ) {
 		super( setPropsPointsDangerously( props ) )
-
+		
 		const { x, y, radius } = props
 
 		this.x = notNil( x ) ? x : this.x
 		this.y = notNil( y ) ? y : this.y
-		this.radius = notNil( radius ) ? radius : this.radius
+		this.radius = notNil( radius ) ? radius : Circle.DEFAULT_RADIUS
 
 		this.sizable = notNil( props.sizable ) ? props.sizable : this.sizable
 		this.rotatable = notNil( props.rotatable ) ?
