@@ -198,6 +198,10 @@ export default class Draw {
 			notNil( rootId ) &&
 			notNil( elements )
 		) {
+			// Reset
+			this.actions.RESET()
+
+			
 			this.actions.UPDATE_DRAW_ROOT_ID( rootId )
 
 			// create elements

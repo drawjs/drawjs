@@ -34,6 +34,9 @@ export default class Actions {
 		this.getters = getters
 	}
 
+
+
+
 	/**
 	 * // Update props in drawStore
 	 */
@@ -70,6 +73,10 @@ export default class Actions {
 
 	UPDATE_SETTING( setting: Setting ) {
 		this.drawStore.setting = setting
+	}
+
+	RESET() {
+		this.REMOVE_ELEMENTS( this.drawStore.cellList )
 	}
 
 	/**
