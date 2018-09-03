@@ -29,6 +29,7 @@ export default class Path extends PathItem {
 	strokeColor: string = null
 	strokeWidth: number = 1
 
+	showSegments: boolean = false
 	showHandle: boolean = false
 
 	defaultSegmentHandleLength: number = DEFAULT_LENGTH
@@ -58,6 +59,9 @@ export default class Path extends PathItem {
 		this.showHandle = notNil( props.showHandle ) ?
 			props.showHandle :
 			this.showHandle
+		this.showSegments = notNil( props.showSegments ) ?
+			props.showHandle :
+			this.showHandle
 		this.defaultSegmentHandleLength = notNil( props.defaultSegmentHandleLength ) ?
 			props.defaultSegmentHandleLength :
 			this.defaultSegmentHandleLength
@@ -68,7 +72,7 @@ export default class Path extends PathItem {
 						this.sharedGetters.createSegmentByPoint(
 							point,
 							this.draw,
-							{ path: this, defaultHandleLength: this.defaultSegmentHandleLength, showHandle: this.showHandle }
+							{ path: this, defaultHandleLength: this.defaultSegmentHandleLength, showHandle: this.showHandle, show: this.showSegments }
 						)
 				  ) :
 				this.segments
