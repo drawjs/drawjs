@@ -11,14 +11,14 @@ Add a canvas in html, like:
 ```html
 <canvas id="myCanvas"></canvas>
 ```
-Then you can just use it
+Then you can just use it in script
 ```js
 const canvas = document.getElementById( 'myCanvas' )
 const draw = window.Draw( canvas )
 ```
 
-### NodeJS
-It also supports NodeJS use
+### Node.js
+It also supports Node.js
 ```bash
 npm install ts-draw --save-dev
 ```
