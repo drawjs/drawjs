@@ -1,6 +1,10 @@
 Draw.js is a basic 2d canvas graph library, which is under development currently.
 
 
+## Features
+There're many explicit interative examples describing the use of `draw` on its [official website](https://drawjs.github.io).
+
+
 ## Get started
 ### CDN
 Add following script into your HTML header 
@@ -30,11 +34,6 @@ or
 ```js
 import 'ts-draw'
 ```
-
-
-
-## How to use
-There're many explicit interative examples describing the use of `draw` on its [official website](https://drawjs.github.io).
 
 
 ## Example
