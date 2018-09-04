@@ -2,7 +2,7 @@ Draw.js is a basic 2d canvas graph library, which is under development currently
 
 
 ## Features
-There're many explicit interative examples describing the use of `draw` on its [official website](https://drawjs.github.io).
+There're many explicit interative examples describing the features of `draw` on its [official website](https://drawjs.github.io).
 
 
 ## Get started
