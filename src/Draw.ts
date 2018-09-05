@@ -201,7 +201,6 @@ export default class Draw {
 			// Reset
 			this.actions.RESET()
 
-			
 			this.actions.UPDATE_DRAW_ROOT_ID( rootId )
 
 			// create elements

@@ -76,7 +76,7 @@ export default class Actions {
 	}
 
 	RESET() {
-		this.REMOVE_ELEMENTS( this.drawStore.cellList )
+		this.drawStore.cellList = []
 	}
 
 	/**
