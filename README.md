@@ -18,7 +18,7 @@ Add a canvas in html, like:
 Then you can just use it in script
 ```js
 const canvas = document.getElementById( 'myCanvas' )
-const draw = window.Draw( canvas )
+const draw = new window.Draw( canvas )
 ```
 
 ### Node.js
