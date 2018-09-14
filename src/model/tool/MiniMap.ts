@@ -35,7 +35,7 @@ export default class MiniMap extends Cell {
 		const { miniMapWidth, miniMapHeight } = this.drawStore.setting
 		this.width = notNil( miniMapWidth ) ? miniMapWidth : 300
 		this.height = notNil( miniMapHeight ) ? miniMapHeight : 200
-		this.left = this.getters.canvasRight - this.width
+		this.left = this.getters.canvasWidth - this.width
 		this.top = this.getters.canvasHeight - this.height
 
 		this.viewBox = new MiniMapViewBox( { draw: this.draw, miniMap: this } )

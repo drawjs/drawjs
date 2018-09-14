@@ -23,7 +23,8 @@
 			// "url": "http://localhost:8600/build/__test__/elements/text/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/drawImage/index.html",
 			// "url": "http://localhost:8600/build/__test__/exportData/index.html",
-			"url": "http://localhost:8600/build/__test__/importData/index.html",
+			// "url": "http://localhost:8600/build/__test__/importData/index.html",
+			"url": "http://localhost:8600/build/__test__/minimap/index.html",
 		},
     ]
 }
