@@ -191,7 +191,6 @@ export default class SharedActions {
 		segment.translateTo( x, y )
 	}
 	translateSegmentsTo( segments: Segment[], x: number, y: number ) {
-		console.log( segments, x, y )
 		segments.map( segment => segment.translateTo( x, y ) )
 	}
 	translateSegmentToPoint( segment: Segment, point: Point2D ) {

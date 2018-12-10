@@ -40,6 +40,9 @@ export default class Interaction extends Particle {
 		canvas.removeEventListener( "dblclick", this.dblclickListener.bind( this ) )
 		canvas.addEventListener( "dblclick", this.dblclickListener.bind( this ) )
 
+		canvas.removeEventListener( "contextmenu", this.contextmenuListener.bind( this ) )
+		canvas.addEventListener( "contextmenu", this.contextmenuListener.bind( this ) )
+
 		canvas.removeEventListener(
 			"mousewheel",
 			this.mousewheelListener.bind( this )
@@ -164,6 +167,10 @@ export default class Interaction extends Particle {
 
 	dblclickListener( event ) {
 		this.actions.DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event )
+	}
+
+	contextmenuListener( event ) {
+		event.preventDefault()
 	}
 
 	keyBoardDownListener( event ) {
