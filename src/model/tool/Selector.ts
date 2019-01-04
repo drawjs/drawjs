@@ -1,6 +1,9 @@
 import Cell from "../Cell"
 import { isNotNil } from "../../util/index"
 import Particle from "../Particle"
+import isPointInRect from "../../util/geometry/isPointInRect"
+import getCenterPoint from "../../util/geometry/basic/getCenterPoint"
+import isTwoRectIntersected from "../../util/geometry/isTwoRectIntersected"
 
 const { min, max, abs } = Math
 
@@ -44,6 +47,11 @@ export default class Selector extends Particle {
 		return res
 	}
 
+	get center(): Point2D {
+		const res = getCenterPoint( this.startPoint, this.endPoint )
+		return res
+	}
+
 	render() {
 		const { ctx } = this.getters
 		if ( isNotNil( this.startPoint ) && isNotNil( this.endPoint ) ) {
@@ -78,6 +86,14 @@ export default class Selector extends Particle {
 				bottom <= selectorBottom
 		}
 
+		return res
+	}
+
+	boundsIntersectedWithSelectionArea( bounds: Bounds ): boolean {
+		const { left, right, top, bottom } = bounds
+		const center = { x: ( left + right ) / 2, y: ( top + bottom ) / 2 }
+
+		const res: boolean = isTwoRectIntersected( center, left, top, this.center, this.left, this.top )
 		return res
 	}
 }

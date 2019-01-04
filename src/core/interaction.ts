@@ -197,7 +197,6 @@ export default class Interaction extends Particle {
 
 	stopSelect( event ) {
 		const { getters, actions } = this
-
 		actions.SELECT_CELLS_IN_SELECTOR_RIGION()
 
 		getters.selector.startPoint = null
