@@ -237,7 +237,7 @@ export default abstract class Item extends Cell {
 		return res
 	}
 
-	size( kX: number, kY: number, center: Point2D ) {}
+	size( kX: number, kY: number, center?: Point2D ) {}
 
 	renderTransformWidget() {
 		const { shouldSelect } = this

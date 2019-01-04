@@ -213,7 +213,7 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Size
 	 */
-	size( kX: number, kY: number, center: Point2D ) {
+	size( kX: number, kY: number, center?: Point2D ) {
 		this.prevKX = this.kX
 		this.kX = kX
 

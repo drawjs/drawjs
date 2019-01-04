@@ -3,6 +3,8 @@ import { notNil, isNil } from "../../util/lodash/index"
 import getRectPoints from "../../util/getRectPoints"
 import connectPolygonPoints from "../../util/canvas/connectPolygonPoints"
 import { EXPORTABLE } from "../../store/constant/name"
+import getCenterPoint from "../../util/geometry/basic/getCenterPoint"
+import { Right } from "../tool/SizePoint"
 
 export default class DrawImage extends Cell {
 	left: number = 0
@@ -99,6 +101,11 @@ export default class DrawImage extends Cell {
 		}
 	}
 
+	get center(): Point2D {
+		const { left, top, bottom, right } = this.bounds
+		return getCenterPoint( { x: left, y: top }, { x: right, y: bottom } )
+	}
+
 	contain( x: number, y: number ) {
 		const isContain = this.getters.pointOnPath( { x, y }, this.path2d )
 		return isContain
@@ -166,17 +173,11 @@ export default class DrawImage extends Cell {
 		this.image.src = src
 	}
 
-	sizeOnCenter( kX: number, kY: number ) {
-		const dKX = kX - this.kX
-		const dKY = kY - this.kX
-
-		this.kX = kX
-		this.kY = kY
-
+	sizeOnCenter( rateX: number, rateY: number ) {
 		const { left, top, width, height } = this
-		this.width = width * ( 1 + dKX )
-		this.height = height * ( 1 + dKY )
-		this.left = left - ( dKX * width ) / 2
-		this.top = top - ( dKY * height ) / 2
+		this.width = width * rateX
+		this.height = height * rateY
+		this.left = left - ( ( rateX - 1 ) * width ) / 2
+		this.top = top - ( ( rateY - 1 ) * height ) / 2
 	}
 }
