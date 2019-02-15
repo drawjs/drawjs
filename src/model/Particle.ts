@@ -10,32 +10,53 @@ export default class Particle {
 	draw: Draw
 	id: string = null
 
+	drawStore: DrawStore
+	store: DrawStore
+	getters: Getters
+	actions: Actions
+
+	sharedGetters: SharedGetters
+	sharedActions: SharedActions
 	constructor( props ) {
 		const { draw } = props
 		this.draw = draw
 
+		this.drawStore = this.draw.drawStore
+		this.store = this.draw.store
+		this.store = this.draw.store
+		this.getters = this.draw.getters
+		this.getters = this.draw.getters
+		this.actions = this.draw.actions
+
+		this.sharedGetters = this.draw.sharedGetters
+		this.sharedActions = this.draw.sharedActions
+
 		this.id = this.getters.generateUniqueDrawElementId()
 	}
 
-	get drawStore(): DrawStore {
-		return this.draw.drawStore
-	}
+	// get drawStore(): DrawStore {
+	// 	return this.draw.drawStore
+	// }
 
-	get getters(): Getters {
-		return this.draw.getters
-	}
+	// get store(): DrawStore {
+	// 	return this.drawStore
+	// }
 
-	get actions(): Actions {
-		return this.draw.actions
-	}
+	// get getters(): Getters {
+	// 	return this.draw.getters
+	// }
 
-	get sharedGetters(): SharedGetters {
-		return this.draw.sharedGetters
-	}
+	// get actions(): Actions {
+	// 	return this.draw.actions
+	// }
 
-	get sharedActions(): SharedActions {
-		return this.draw.sharedActions
-	}
+	// get sharedGetters(): SharedGetters {
+	// 	return this.draw.sharedGetters
+	// }
+
+	// get sharedActions(): SharedActions {
+	// 	return this.draw.sharedActions
+	// }
 
 	/**
 	 * Remove

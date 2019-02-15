@@ -33,6 +33,11 @@ export default class Draw {
 	drawStore: DrawStore;
 
 	/**
+	 * Store = Draw store
+	 */
+	store: DrawStore
+
+	/**
 	 * Draw getters, based on "drawStore"
 	 */
 	getters: Getters;
@@ -43,12 +48,12 @@ export default class Draw {
 	actions: Actions;
 
 	/**
-	 * Draw shared getters, which isn't based on "drawStore"
+	 * Draw shared getters, which aren't based on "drawStore"
 	 */
 	sharedGetters: SharedGetters;
 
 	/**
-	 * Draw shared actions, which is based on "drawStore" but doesn't mutate "drawStore"
+	 * Draw shared actions, which aren't based on "drawStore" but doesn't mutate "drawStore"
 	 */
 	sharedActions: SharedActions;
 
@@ -59,6 +64,7 @@ export default class Draw {
 		const { isExtended, showMiniMap } = setting
 		if ( !isExtended ) {
 			this.drawStore = new DrawStore( this )
+			this.store = this.drawStore
 			this.getters = new Getters( this.drawStore )
 			this.actions = new Actions( this.drawStore, this.getters )
 			this.actions.UPDATE_CANVAS( canvas )
@@ -68,7 +74,6 @@ export default class Draw {
 
 			const interaction = new Interaction( { draw: this } )
 			this.actions.UPDATE_INTERACTION( interaction )
-
 		}
 	}
 

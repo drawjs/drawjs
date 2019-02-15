@@ -31,8 +31,8 @@ export default abstract class Cell extends Particle {
 	/**
 	 * // Style
 	 */
-	fillColor: string = "#000"
-	strokeColor: string = "#000"
+	fillColor: string  
+	strokeColor: string
 	strokeWidth: number = 1
 
 	/**
@@ -200,6 +200,11 @@ export default abstract class Cell extends Particle {
 	handleMouseIn( event: any ) {}
 	handleMouseMove( event: any ) {}
 	handleMouseOut( event: any ) {}
+
+	/**
+	 * Other handles
+	 */
+	handleMouseUp( event: any ) { }
 
 	/**
 	 * Rotate

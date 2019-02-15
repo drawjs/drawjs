@@ -6,5 +6,6 @@ interface RectPoints {
 	topCenter?: Point2D
 	rightCenter?: Point2D
 	bottomCenter?: Point2D
-	leftCenter?: Point2D
+	leftCenter?: Point2D,
+	cornerPoints?: Point2D[]
 }

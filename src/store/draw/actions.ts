@@ -309,6 +309,12 @@ export default class Actions {
 		isNotNil( cell ) && this.sharedActions.clickCell( cell, event )
 	}
 
+	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		const cell = this.getters.getTopCell( point )
+		isNotNil( cell ) && this.sharedActions.doubleClickCell( cell, event )
+	}
+
 	HOVER_MOST_TOP_CELL_FOCUSED( event, interaction: Interaction ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const cell = this.getters.getTopCell( point )
@@ -328,10 +334,10 @@ export default class Actions {
 		interaction.updatePrevHovingDsElement( cell )
 	}
 
-	DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event ) {
+	MOUSE_UP_TOP_CELL_FOCUSED( event ) {
 		const point: Point2DInitial = this.getters.getInitialPoint( event )
 		const cell = this.getters.getTopCell( point )
-		isNotNil( cell ) && this.sharedActions.doubleClickCell( cell, event )
+		notNil( cell ) && this.sharedActions.mouseUpCell( cell, event )
 	}
 
 	/**

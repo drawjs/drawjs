@@ -1,6 +1,6 @@
 import Particle from "../Particle"
-import Cell from '../../model/Cell';
-import { isEmpty } from '../../util/js/array';
+import Cell from '../../model/Cell'
+import { isEmpty } from '../../util/js/array'
 
 class Dragger extends Particle {
 	target: Cell
@@ -30,6 +30,7 @@ class Dragger extends Particle {
 		super( props )
 
 		this.target = props.target
+		this.enable = false
 	}
 
 	get prevPoint(): Point2DInitial {

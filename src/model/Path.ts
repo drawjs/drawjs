@@ -177,8 +177,6 @@ export default class Path extends PathItem {
 			ctx.fill( this.path2d )
 		}
 
-
-
 		ctx.restore()
 
 		this.segments.map( this.sharedActions.renderParticle )
@@ -189,6 +187,7 @@ export default class Path extends PathItem {
 
 		if ( notNil( strokeColor ) ) {
 			ctx.strokeStyle = strokeColor
+
 			ctx.lineWidth = strokeWidth
 			ctx.stroke( this.path2d )
 		}

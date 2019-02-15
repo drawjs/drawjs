@@ -127,6 +127,8 @@ export default class Interaction extends Particle {
 
 		actions.STOP_DRAG_CELLS_SHOULD_DRAG( event )
 
+		this.actions.MOUSE_UP_TOP_CELL_FOCUSED( event )
+
 		getters.viewPort.stopPan()
 
 		getters.draw.render()

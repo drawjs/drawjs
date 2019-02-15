@@ -1,21 +1,23 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
 		{
 			"type": "chrome",
 			"request": "launch",
 			"name": "Launch Chrome",
 			"url": "http://localhost:8080",
 			"webRoot": "${workspaceFolder}",
+			"sourceMaps": true,
 			// "url": "http://localhost:8600/build/__test__/Path/SegmentsAndHandles/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/Point/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/polygon/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/rect/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/line/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/polyline/index.html",
+			"url": "http://localhost:8600/build/__test__/elements/curve/index.html"
 			// "url": "http://localhost:8600/build/__test__/elements/circle/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine/index.html",
 			// "url": "http://localhost:8600/build/__test__/elements/orthogonalLine-updateCornerSegments/index.html",
@@ -24,7 +26,7 @@
 			// "url": "http://localhost:8600/build/__test__/elements/drawImage/index.html",
 			// "url": "http://localhost:8600/build/__test__/exportData/index.html",
 			// "url": "http://localhost:8600/build/__test__/importData/index.html",
-			"url": "http://localhost:8600/build/__test__/minimap/index.html",
-		},
-    ]
+			// "url": "http://localhost:8600/build/__test__/minimap/index.html",
+		}
+	]
 }

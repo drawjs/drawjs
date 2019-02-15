@@ -9,10 +9,11 @@ import getBizerCurveBounds from "../util/geometry/checkBezierCurveBounds"
 import rotate from "../util/geometry/rotate"
 import origin from "../util/geometry/origin"
 import { notNil } from "../util/lodash/index"
+import Cell from "./Cell"
 
 const { PI } = Math
 
-export default class Curve extends Particle {
+export default class Curve extends Cell {
 	segment1: Segment
 
 	segment2: Segment
@@ -30,18 +31,31 @@ export default class Curve extends Particle {
 	 */
 	t
 
+	setLineDash: number[]
+	lineWidth: number = 1
+
 	constructor( props ) {
 		super( props )
 
 		const self = this
 
-		this.segment1 = props.segment1
-		this.segment2 = props.segment2
+		const { points = [] } = props
 
+		if ( points.length > 0 ) {
+			this.segment1  = this.sharedGetters.createSegmentByPoint( points[ 0 ], this.draw, { showHandle: false } )
+			this.segment2  = this.sharedGetters.createSegmentByPoint( points[ 1 ], this.draw, { showHandle: false } )
+		} else {
+			this.segment1 = props.segment1
+			this.segment2 = props.segment2
+		}
+
+		
 		this.handle1 = this.segment1.handleOut
 		this.handle2 = this.segment2.handleIn
 
 		this.path = props.path
+
+		if ( notNil( props.setLineDash ) )  { this.setLineDash = props.setLineDash }
 
 		const { curveUsesCanvasApi, curveRate } = this.drawStore.setting
 		this.useCanvasCurve = notNil( curveUsesCanvasApi ) ? curveUsesCanvasApi : false
@@ -117,11 +131,17 @@ export default class Curve extends Particle {
 		return res
 	}
 
+	contain() {
+		return false
+	}
+
 	render() {
 		const { ctx } = this.getters
+		const { setLineDash, lineWidth } = this
 		ctx.save()
-		ctx.lineWidth = 1
+		ctx.lineWidth = lineWidth
 		ctx.strokeStyle = "#00f0ff"
+		if ( notNil( setLineDash ) ) { ctx.setLineDash( setLineDash ) }
 		ctx.stroke( this.path2d )
 		ctx.restore()
 	}

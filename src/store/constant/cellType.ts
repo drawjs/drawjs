@@ -11,6 +11,7 @@ export const POLYLINE = 'polyline'
 export const ORTHOGONAL_LINE = 'orthogonal-line'
 export const POINT = 'point'
 export const CIRCLE = 'circle'
+export const CURVE = 'curve'
 
 /**
  * Text

@@ -1,6 +1,6 @@
-import { isNotNil } from "./index";
+import { isNotNil } from "./index"
 
-export default function( {
+export default function getRectPoints( {
 		left,
 		top,
 		right,
@@ -63,8 +63,19 @@ export default function( {
 			topCenter,
 			rightCenter,
 			bottomCenter,
-			leftCenter
+			leftCenter,
+			cornerPoints: [
+				leftTop,
+				rightTop,
+				rightBottom,
+				leftBottom
+			]
 		}
 
 		return rectPoints
+	}
+
+
+	export function getReactCornerPoints( props: any ) {
+		return getRectPoints( props ).cornerPoints
 	}

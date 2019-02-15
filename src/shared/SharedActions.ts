@@ -56,6 +56,10 @@ export default class SharedActions {
 		cell.handleDoubleClick && cell.handleDoubleClick( event )
 	}
 
+	mouseUpCell( cell: Cell, event: any ) {
+		cell.handleMouseUp && cell.handleMouseUp( event )
+	}
+
 	mouseInCell( cell: Cell, event: any ) {
 		cell.handleMouseIn && cell.handleMouseIn( event )
 	}

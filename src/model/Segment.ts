@@ -4,7 +4,7 @@ import { HandleType, DEFAULT_LENGTH } from '../store/constant/index'
 import Cell from "./Cell"
 import Path from "./Path"
 import { isNotNil } from "../util/index"
-import { notNil } from '../util/lodash/index'
+import { notNil, notUndefined } from '../util/lodash/index'
 
 const { PI } = Math
 
@@ -30,7 +30,7 @@ export default class Segment extends Cell {
 
 	path: Path
 
-	fillColor: string = "deepSkyBlue"
+	fillColor: string
 
 	defaultHandleLength: number = DEFAULT_LENGTH
 
@@ -48,7 +48,7 @@ export default class Segment extends Cell {
 		const { showSegments } = this.drawStore.setting
 		this.show = notNil( showSegments ) ? showSegments : this.show
 
-		this.fillColor = notNil( props.fillColor ) ? props.fillColor : this.fillColor
+		this.fillColor = notUndefined( props.fillColor ) ? props.fillColor : "deepSkyBlue"
 		this.defaultHandleLength = notNil( props.defaultHandleLength ) ? props.defaultHandleLength : this.defaultHandleLength
 		this.showHandle = notNil( props.showHandle ) ? props.showHandle : this.showHandle
 
@@ -90,10 +90,23 @@ export default class Segment extends Cell {
 	render() {
 		if ( this.show ) {
 			const { ctx } = this.getters
+			const { fillColor, strokeColor, strokeWidth } = this
 			ctx.save()
-			ctx.lineWidth = 3
-			ctx.fillStyle = this.fillColor
-			ctx.fill( this.path2d )
+
+			if ( notNil( strokeWidth ) ) {
+				ctx.lineWidth = strokeWidth
+			}
+
+			if ( notNil( fillColor ) ) {
+				ctx.fillStyle = fillColor
+				ctx.fill( this.path2d )
+			}
+
+			if ( notNil( strokeColor ) ) {
+				ctx.strokeStyle = strokeColor
+				ctx.stroke( this.path2d )
+			}
+			
 			ctx.restore()
 
 			this.handleIn.render()

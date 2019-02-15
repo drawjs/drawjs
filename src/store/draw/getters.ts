@@ -278,7 +278,6 @@ export default class Getters {
 	}
 
 	get cellsInSelectorRigion(): Cell[] {
-		console.log( 'cellsInSelectorRigion' )
 		const self = this
 		const res: Cell[] = this.cellList.filter( include ).filter( notCellPart ).filter( inRigion )
 
