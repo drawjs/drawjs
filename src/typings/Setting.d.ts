@@ -9,4 +9,7 @@ interface Setting {
 
   miniMapWidth?: number,
   miniMapHeight?: number,
+
+  maxZoom?: number
+  minZoom?: number
 }

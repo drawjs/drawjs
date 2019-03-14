@@ -186,8 +186,11 @@ export default class ViewPort extends Particle {
 		function wontBeyondZoomScope() {
 			const potentialNewZoom: number = self.zoom + deltaZoom
 			const { MAX_ZOOM, MIN_ZOOM } = ViewPort
+			const { maxZoom, minZoom } = self.store.setting
+			const max = maxZoom != null ? maxZoom : MAX_ZOOM
+			const min = minZoom != null ? minZoom : MIN_ZOOM
 			const res: boolean =
-				potentialNewZoom > MAX_ZOOM || potentialNewZoom < MIN_ZOOM
+				potentialNewZoom > max || potentialNewZoom < min
 			return res
 		}
 	}

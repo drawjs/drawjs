@@ -5,12 +5,14 @@ import Cell from "./Cell"
 import Path from "./Path"
 import { isNotNil } from "../util/index"
 import { notNil, notUndefined } from '../util/lodash/index'
+import getDefined from "../util/js/getDefined"
 
 const { PI } = Math
 
 export default class Segment extends Cell {
 	x: number
 	y: number
+	radius: number
 
 	show: boolean = true
 
@@ -41,6 +43,7 @@ export default class Segment extends Cell {
 
 		this.x = props.x
 		this.y = props.y
+		this.radius = getDefined( props.radius, 5 )
 
 		this.path = notNil( props.path ) ? props.path : this.path
 
@@ -83,7 +86,7 @@ export default class Segment extends Cell {
 
 	get path2d(): Path2D {
 		const path = new Path2D()
-		path.arc( this.x, this.y, 5, 0, PI * 2 )
+		path.arc( this.x, this.y, this.radius, 0, PI * 2 )
 		return path
 	}
 
