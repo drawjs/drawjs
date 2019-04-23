@@ -340,6 +340,12 @@ export default class Actions {
 		notNil( cell ) && this.sharedActions.mouseUpCell( cell, event )
 	}
 
+	RIGHT_CLICK_TOP_CELL_FOCUSED( event ) {
+		const point: Point2DInitial = this.getters.getInitialPoint( event )
+		const cell = this.getters.getTopCell( point )
+		notNil( cell ) && this.sharedActions.rightClickCell( cell, event )
+	}
+
 	/**
 	 * // Select
 	 */

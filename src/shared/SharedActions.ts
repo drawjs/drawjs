@@ -72,6 +72,10 @@ export default class SharedActions {
 		cell.handleMouseOut && cell.handleMouseOut( event )
 	}
 
+	rightClickCell( cell: Cell, event: any ) {
+		cell.handleRightClick && cell.handleRightClick( event )
+	}
+
 	rotateCell( cell: Cell, angle: number ) {
 		cell.rotate( angle )
 	}

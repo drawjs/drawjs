@@ -204,6 +204,7 @@ export default abstract class Cell extends Particle {
 	/**
 	 * Other handles
 	 */
+	handleRightClick( event: any ) {}
 	handleMouseUp( event: any ) { }
 
 	/**

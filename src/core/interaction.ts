@@ -11,6 +11,7 @@ export default class Interaction extends Particle {
 	prevHovingDsElement: any
 
 	interfaceOnEmptyClick: Function
+	interfaceOnEmptyRightClick: Function
 
 	constructor( props ) {
 		super( props )
@@ -40,8 +41,8 @@ export default class Interaction extends Particle {
 		canvas.removeEventListener( "dblclick", this.dblclickListener.bind( this ) )
 		canvas.addEventListener( "dblclick", this.dblclickListener.bind( this ) )
 
-		canvas.removeEventListener( "contextmenu", this.contextmenuListener.bind( this ) )
-		canvas.addEventListener( "contextmenu", this.contextmenuListener.bind( this ) )
+		canvas.removeEventListener( "contextmenu", this.rightClickListener.bind( this ) )
+		canvas.addEventListener( "contextmenu", this.rightClickListener.bind( this ) )
 
 		canvas.removeEventListener(
 			"mousewheel",
@@ -171,8 +172,16 @@ export default class Interaction extends Particle {
 		this.actions.DOUBLE_CLICK_MOST_TOP_CELL_FOCUSED( event )
 	}
 
-	contextmenuListener( event ) {
+	rightClickListener( event ) {
 		event.preventDefault()
+		const { getters, actions } = this
+		const point: Point2DInitial = getters.getInitialPoint( event )
+
+		if ( getters.pointOnEmpty( point ) ) {
+			this.interfaceOnEmptyRightClick && this.interfaceOnEmptyRightClick( event )
+		} else {
+			this.actions.RIGHT_CLICK_TOP_CELL_FOCUSED( event )
+		}
 	}
 
 	keyBoardDownListener( event ) {
