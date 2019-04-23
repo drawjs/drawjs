@@ -25,6 +25,12 @@ export default class EventKeyboard {
 		return res
 	}
 
+	isKeyPressing( key ) {
+		const res = includes( this.keyboardKeysPressing, key )
+		return res
+	}
+
+
 	constructor() {
 		window.addEventListener( "keydown", this._keydownListener.bind( this ) )
 		window.addEventListener( "keyup", this._keyupListener.bind( this ) )
