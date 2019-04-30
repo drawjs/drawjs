@@ -56,6 +56,7 @@ export default class Interaction extends Particle {
 		notNil( textInput ) && textInput.bindEvents()
 
 		this.eventKeyboard.handleKeyDown = this.keyBoardDownListener.bind( this )
+		this.eventKeyboard.handleKeyUp = this.keyBoardUpListener.bind( this )
 	}
 
 	updatePrevHovingDsElement( dsElement ) {
@@ -191,6 +192,10 @@ export default class Interaction extends Particle {
 			// Text input
 			textInput.isShowing && textInput.hideSelfAndUpdateTarget()
 		}
+	}
+
+	keyBoardUpListener( event ) {
+
 	}
 
 	startSelect( event ) {

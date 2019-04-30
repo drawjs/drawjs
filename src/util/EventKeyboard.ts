@@ -45,6 +45,8 @@ export default class EventKeyboard {
 	_keyupListener( event ) {
 		const { key } = event
 		this._removeFromKeyboardKeysPressing( key )
+		
+		this.handleKeyUp && this.handleKeyUp( event )
 	}
 
 	_addToKeyboardKeysPressing( key: string ) {
@@ -60,4 +62,5 @@ export default class EventKeyboard {
 	}
 
 	handleKeyDown( event ) {}
+	handleKeyUp( event ) {}
 }
