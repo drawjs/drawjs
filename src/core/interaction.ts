@@ -150,7 +150,7 @@ export default class Interaction extends Particle {
 		const animationTime = 200
 		const times = animationTime / 1000 * 32
 		const unit = ViewPort.ZOOM_VARIATION / times
-		let countTime = 0
+		let countTime = 1
 		const animate = () => window.requestAnimationFrame( () => {
 			if ( isDecreasing() ) {
 				getters.viewPort.zoomBy( point, unit )
