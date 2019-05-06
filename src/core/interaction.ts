@@ -2,6 +2,7 @@ import EventKeyboard from "../util/EventKeyboard"
 import Particle from "../model/Particle"
 import { notNil } from "../util/lodash/index"
 import { isMiddleClick } from "../drawUtil/model/interaction/index"
+import ViewPort from "../model/tool/ViewPort"
 
 const drawSelection = false
 
@@ -145,15 +146,25 @@ export default class Interaction extends Particle {
 		const point: Point2D = getters.getPoint( event )
 		const { deltaX, deltaY }: { deltaX: number; deltaY: number } = event
 
-		// if ( isDecreasing() && eventKeyboard.isAltPressing ) {
-		if ( isDecreasing() ) {
-			getters.viewPort.zoomIn( point )
-		}
-
-		// if ( isIncreasing() && eventKeyboard.isAltPressing ) {
-		if ( isIncreasing() ) {
-			getters.viewPort.zoomOut( point )
-		}
+		// # animate
+		const animationTime = 200
+		const times = animationTime / 1000 * 32
+		const unit = ViewPort.ZOOM_VARIATION / times
+		let countTime = 0
+		const animate = () => window.requestAnimationFrame( () => {
+			if ( isDecreasing() ) {
+				getters.viewPort.zoomBy( point, unit )
+			}
+	
+			if ( isIncreasing() ) {
+				getters.viewPort.zoomBy( point, -unit )
+			}
+			countTime++
+			if ( countTime <= times ) {
+				animate()
+			}
+		} )
+		animate()
 
 		function isIncreasing() {
 			const res = deltaX > 0 || deltaY > 0
