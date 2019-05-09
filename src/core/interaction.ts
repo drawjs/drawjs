@@ -148,7 +148,7 @@ export default class Interaction extends Particle {
 
 		// # animate
 		const animationTime = 200
-		const times = animationTime / 1000 * 32
+		const times = animationTime / 1000 * 60
 		const unit = ViewPort.ZOOM_VARIATION / times
 		let countTime = 1
 		const animate = () => window.requestAnimationFrame( () => {
@@ -177,6 +177,7 @@ export default class Interaction extends Particle {
 	}
 
 	clickListener( event ) {
+		console.log( 'click' )
 		this.actions.CLICK_MOST_TOP_CELL_FOCUSED( event )
 	}
 
