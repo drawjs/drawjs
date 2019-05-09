@@ -148,7 +148,7 @@ export default class Interaction extends Particle {
 
 		// # animate
 		const animationTime = 200
-		const times = animationTime / 1000 * 60
+		const times = animationTime / 1000 * 30
 		const unit = ViewPort.ZOOM_VARIATION / times
 		let countTime = 1
 		const animate = () => window.requestAnimationFrame( () => {

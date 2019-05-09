@@ -3,15 +3,16 @@ const browserSync = require( 'browser-sync' )
 const bs = browserSync.create()
 const serverPath = __dirname
 
+const PORT = 8600
 const serverconfig = {
 	server: {
-		baseDir: serverPath,
+		baseDir  : serverPath,
 		directory: true,
 	},
 	files: [
 		`${serverPath}/build/**`
 	],
-	port: 8600,
+	port: PORT,
 	open: false,
 }
 
@@ -23,6 +24,8 @@ function init() {
 		init()
 	}
 }
+
+// console.log( `listening on http://localhost:${PORT}` )
 
 init()
 
