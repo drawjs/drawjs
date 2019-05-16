@@ -61,7 +61,7 @@ export default class Draw {
 	onGraphHover: Function;
 
 	constructor( canvas: HTMLCanvasElement, setting: Setting = {} ) {
-		const { isExtended, showMiniMap } = setting
+		const { isExtended, showMiniMap, enableInteraction = true } = setting
 		if ( !isExtended ) {
 			this.drawStore = new DrawStore( this )
 			this.store = this.drawStore
@@ -72,8 +72,10 @@ export default class Draw {
 
 			this._initialize()
 
-			const interaction = new Interaction( { draw: this } )
-			this.actions.UPDATE_INTERACTION( interaction )
+			if ( enableInteraction ) {
+				const interaction = new Interaction( { draw: this } )
+				this.actions.UPDATE_INTERACTION( interaction )
+			}
 		}
 	}
 

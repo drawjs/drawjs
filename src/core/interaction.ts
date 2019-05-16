@@ -177,7 +177,6 @@ export default class Interaction extends Particle {
 	}
 
 	clickListener( event ) {
-		console.log( 'click' )
 		this.actions.CLICK_MOST_TOP_CELL_FOCUSED( event )
 	}
 

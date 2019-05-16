@@ -2,6 +2,8 @@ interface Setting {
   showMiniMap?: boolean
   isExtended?: boolean
 
+  enableInteraction?: boolean
+
   showSegments?: boolean
 
   curveUsesCanvasApi?: boolean
