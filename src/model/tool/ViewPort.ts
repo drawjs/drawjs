@@ -308,23 +308,45 @@ export default class ViewPort extends Particle {
 		if ( [ left, top, right, bottom ].some( value => !isFinite( value ) ) ) {
 			return
 		}
-		const padding = 100
 		const boundsCenter = {
 			x: ( left + right ) / 2,
 			y: ( top + bottom ) / 2
 		}
+		this.panCanvasCenterToPoint( boundsCenter )
+	}
+
+	zoomToFitViewport( bounds: Bounds ) {
+		const { left, top, right, bottom } = bounds
+		if ( [ left, top, right, bottom ].some( value => !isFinite( value ) ) ) {
+			return
+		}
+		const padding = 100
 		const boundsWidth = abs( right - left ) + padding
 		const boundsHeight = abs( bottom - top ) + padding
 
 		const { canvasWidth, canvasHeight, canvasCenterPoint } = this.getters
-
-		this.panCanvasCenterToPoint( boundsCenter )
-
 		const xRate = boundsWidth / canvasWidth
 		const yRate = boundsHeight / canvasHeight
 		const rate = max( xRate, yRate )
 		const zoom = rate !== 0 ? 1 / rate : 1
 		this.zoomTo( zoom, canvasCenterPoint )
+	}
+
+	zoomForBestDisplay( bounds: Bounds ) {
+		const { left, top, right, bottom } = bounds
+		if ( [ left, top, right, bottom ].some( value => !isFinite( value ) ) ) {
+			return
+		}
+		const padding = 100
+		const boundsWidth = abs( right - left ) + padding
+		const boundsHeight = abs( bottom - top ) + padding
+
+		const { canvasWidth, canvasHeight, canvasCenterPoint } = this.getters
+		if ( boundsWidth > canvasWidth || boundsHeight > canvasHeight ) {
+			this.zoomToFitViewport( bounds )
+		} else {
+			this.zoomTo( 1, canvasCenterPoint )
+		}
 	}
 
 	panCanvasCenterToPoint( point: Point2DInitial ) {
