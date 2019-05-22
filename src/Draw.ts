@@ -5,7 +5,7 @@ import {
 	DRAW_PANEL_ID_PREFIX
 } from "./store/constant/index"
 
-import * as download from "./lib/download.js"
+import download from "./lib/download.js"
 import { getDefaultDrawExportFileName } from "./store/index"
 import { log } from "./util/index"
 import SchemaDrawStoreWithoutInstance from "./schema/SchemaDrawStoreWithoutInstance"
