@@ -120,10 +120,11 @@ export default class DrawImage extends Cell {
 			image,
 			getters,
 			strokeColor,
-			strokeWidth
+			strokeWidth,
+			show
 		} = this
-
-		if ( notNil( width ) && notNil( height ) ) {
+		console.log( show )
+		if ( show && notNil( width ) && notNil( height ) ) {
 			const { ctx } = getters
 
 			if ( notNil( strokeColor ) ) {
