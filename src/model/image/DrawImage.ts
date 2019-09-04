@@ -123,7 +123,6 @@ export default class DrawImage extends Cell {
 			strokeWidth,
 			show
 		} = this
-		console.log( show )
 		if ( show && notNil( width ) && notNil( height ) ) {
 			const { ctx } = getters
 
